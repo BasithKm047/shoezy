@@ -18,6 +18,7 @@ class CostumWidget {
     FontWeight? fontWeight,
     bool? isPrefix,
     Widget? widget,
+    bool? isRounded,
   }) {
     return Container(
       width: width,
@@ -34,7 +35,7 @@ class CostumWidget {
 
         style: ElevatedButton.styleFrom(
           elevation: 0,
-          side: BorderSide.none,
+          side: isRounded?? true ? BorderSide.none: BorderSide(),
           backgroundColor: backgroundColor,
           foregroundColor: foregroundColor,
           shape: RoundedRectangleBorder(
@@ -216,31 +217,38 @@ class CostumWidget {
       ),
     );
   }
-
-  static showCustomSnackbar({
-    required BuildContext context,
-    required String message,
-    Color backgroundColor = Colors.blue,
-    Duration duration = const Duration(seconds: 2),
-    double elevation = 5,
-    double borderRadius = 10,
-    Color borderColor = Colors.white,
-    Color textColor = Colors.white,
-    double fontSize = 16,
-  }) {
-    final snackbar = SnackBar(
-      content: Text(
+static showCustomSnackbar({
+  required BuildContext context,
+  required String message,
+  Color backgroundColor = Colors.blue,
+  Duration duration = const Duration(seconds: 2),
+  double elevation = 5,
+  double borderRadius = 10,
+  // Color borderColor = Colors.white,
+  Color textColor = Colors.white,
+  double fontSize = 16,
+  EdgeInsetsGeometry contentPadding = const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+  EdgeInsetsGeometry margin = const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+}) {
+  final snackbar = SnackBar(
+    behavior: SnackBarBehavior.floating, 
+    margin: margin, 
+    elevation: elevation,
+    backgroundColor: backgroundColor,
+    duration: duration,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(borderRadius),
+      // side: BorderSide(color: borderColor),
+    ),
+    content: Padding(
+      padding: contentPadding,
+      child: Text(
         message,
         style: TextStyle(color: textColor, fontSize: fontSize),
       ),
-      backgroundColor: backgroundColor,
-      duration: duration,
-      elevation: elevation,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
-        side: BorderSide(color: borderColor),
-      ),
-    );
-    ScaffoldMessenger.of(context).showSnackBar(snackbar);
-  }
+    ),
+  );
+
+  ScaffoldMessenger.of(context).showSnackBar(snackbar);
+}
 }
