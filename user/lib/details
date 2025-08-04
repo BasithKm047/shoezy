@@ -1,0 +1,14 @@
+lib/
+├── core/                 ✅ Common code used across the app
+├── data/                 ✅ Firebase, API logic
+│   ├── datasources/      ✅ Actual Firebase or local data calls
+│   └── repositories/     ✅ Implements domain repositories using datasources
+├── domain/               ✅ Pure logic layer (no Firebase/Flutter dependencies)
+│   ├── entities/         ✅ Models used in the app
+│   └── repositories/     ✅ Abstract contracts for data access
+├── application/          ✅ Business logic (usecases)
+├── presentation/         ✅ UI + BLoC logic
+│   ├── blocs/            ✅ All BLoC, Cubit, States, Events
+│   ├── screens/          ✅ App screens like Home, Cart, Auth
+│   └── widgets/          ✅ Reusable UI widgets
+└── main.dart             ✅ App entry point

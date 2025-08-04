@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "5296069020",
+    "project_id": "shoezy-29a92",
+    "storage_bucket": "shoezy-29a92.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:5296069020:android:d29349512110ae3a815059",
+        "android_client_info": {
+          "package_name": "com.example.shoezy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALACy2iDLSuGFEaCzzqEkVJle7-UTDmV0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:5296069020:android:5e18a68e20961969815059",
+        "android_client_info": {
+          "package_name": "com.example.shoezy_admin"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALACy2iDLSuGFEaCzzqEkVJle7-UTDmV0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
