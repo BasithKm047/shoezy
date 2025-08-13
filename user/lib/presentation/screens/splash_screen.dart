@@ -1,7 +1,8 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:shoezy/application/bloc/auth_cubit/cubit/auth_cubit_cubit.dart';
+import 'package:shoezy/application/bloc/auth_bloc/bloc/auth_bloc.dart';
 import 'package:shoezy/presentation/screens/home_screen.dart';
 import 'package:shoezy/presentation/screens/signin_screen.dart';
 import 'package:shoezy/presentation/screens/signup_screen.dart';
@@ -16,15 +17,14 @@ class SplashScreen extends StatelessWidget {
 
     final screenWidth = MediaQuery.of(context).size.width;
     
-    return BlocListener<AuthCubitCubit, AuthCubitState>(
+    return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
-       if(state is NotLoggedIn){
-       Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>SigninScreen()));
-       }else if(state is AuthSuccess){
-        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomeScreen(),));
-       }else if(state is AuthFailure){
-        CostumWidget.showCustomSnackbar(context: context, message: state.message);
+       if(state is AuthLoggedIn){
+       Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>HomeScreen()));
+       }else if(state is AuthLogOUt){
+        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => SigninScreen(),));
        }
+
       },
       child: Scaffold(
         backgroundColor: AppColors.splashScreenBackroundColor,

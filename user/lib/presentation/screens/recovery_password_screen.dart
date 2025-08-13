@@ -1,39 +1,51 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shoezy/application/bloc/auth_cubit/cubit/auth_cubit_cubit.dart';
-import 'package:shoezy/data/models/user_model.dart';
+import 'package:shoezy/application/bloc/auth_bloc/bloc/auth_bloc.dart';
 import 'package:shoezy/presentation/widgets/costum_widget.dart';
 import 'package:shoezy/utils/const/colors.dart';
 import 'package:shoezy/utils/const/commonFunctions.dart';
 
 // ignore: must_be_immutable
-class RecoveryPasswordScreen extends StatelessWidget {
-   RecoveryPasswordScreen({super.key});
+class RecoveryPasswordScreen extends StatefulWidget {
+  const RecoveryPasswordScreen({super.key});
 
-    TextEditingController emailController=TextEditingController();
+  @override
+  State<RecoveryPasswordScreen> createState() => _RecoveryPasswordScreenState();
+}
+
+class _RecoveryPasswordScreenState extends State<RecoveryPasswordScreen> {
+  TextEditingController emailController = TextEditingController();
+
+  GlobalKey<FormState> formkey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
-    GlobalKey<FormState>formkey=GlobalKey();
     final screenWidth = MediaQuery.of(context).size.width;
-    return BlocListener<AuthCubitCubit,AuthCubitState>(
+    return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
-        if(state is AuthLoading){
-          CircularProgressIndicator();
-        }else if(state is AuthSuccess){
-          CostumWidget.showCustomSnackbar(context: context, message: 'Email send to your gmailaccount');
-        }else if(state is AuthFailure){
-          CostumWidget.showCustomSnackbar(context: context, message: state.message,backgroundColor: AppColors.red);
+        if (state is RestPasswordState) {
+          Navigator.of(context).pop();
+          CostumWidget.showCustomSnackbar(
+            context: context,
+            message: 'Email send to your gmail account',
+          );
+        } else if (state is RestPasswordFailureState) {
+          Navigator.of(context).pop();
+          CostumWidget.showCustomSnackbar(
+            context: context,
+            message: state.message,
+            backgroundColor: AppColors.red,
+          );
         }
       },
       child: Scaffold(
-        appBar: CostumWidget.backButton(context),
+        // appBar:AppBar(),
         body: SafeArea(
           child: Form(
             key: formkey,
             child: Column(
               children: [
-                // SizedBox(height: 20),
+                SizedBox(height: 50.0),
                 Center(
                   child: Column(
                     children: [
@@ -79,24 +91,34 @@ class RecoveryPasswordScreen extends StatelessWidget {
                   width: screenWidth / 1.1,
                   validator: (value) => Commonfunctions.emailValidator(value),
                 ),
-            
+
                 SizedBox(height: 40),
-            
-                CostumWidget.costumElevatedButton(
-                  context: context,
-                  title: 'Continue',
-                  width: screenWidth / 1.1,
-                  fontSize: 17,
-                  borderRadius: 50,
-                  ontap: () {
-                    if(formkey.currentState!.validate()){
-                      try{
-                       UserModel user=UserModel(userName: '', phoneNumber: '', email: emailController.text, imagePath: '');
-                       context.read<AuthCubitCubit>().forgetPassword(user: user);
-                      }catch(e){
-                        print(e);
-                      }
-                    }
+
+                BlocBuilder<AuthBloc, AuthState>(
+                  builder: (context, state) {
+                    return CostumWidget.costumElevatedButton(
+                      context: context,
+                      title: 'Continue',
+                      width: screenWidth / 1.1,
+                      fontSize: 17,
+                      isLoading: state is AuthLoading ? true : false,
+                      loading: CircularProgressIndicator(
+                        color: AppColors.white,
+                      ),
+                      borderRadius: 50,
+                      ontap: () {
+                        if (formkey.currentState!.validate()) {
+                          context.read<AuthBloc>().add(
+                            ForgetPasswordEvent(emailController.text.trim()),
+                          );
+                        } else {
+                          CostumWidget.showCustomSnackbar(
+                            context: context,
+                            message: 'Please Enter email',
+                          );
+                        }
+                      },
+                    );
                   },
                 ),
                 SizedBox(height: 20),

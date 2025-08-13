@@ -1,34 +1,33 @@
 import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:shoezy/data/models/user_model.dart';
-// import 'package:firebase_core/firebase_core.dart';
-// import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-
-
+import 'package:shoezy/data/models/user_model.dart';
 
 class AuthServices {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   final firestore = FirebaseFirestore.instance.collection('User');
+
   User? get currentUser => firebaseAuth.currentUser;
   Stream<User?> get authStateChanges => firebaseAuth.authStateChanges();
 
-  Future<void> createAccount({required UserModel user,required String password}) async {
+  Future<void> createAccount({
+    required UserModel user,
+    required String password,
+  }) async {
     try {
-      await firebaseAuth.createUserWithEmailAndPassword(
-        email: user.email,
-        password: password,
-      );
+      UserCredential userCred = await firebaseAuth
+          .createUserWithEmailAndPassword(
+            email: user.email,
+            password: password,
+          );
 
-      UserModel newModel = user.copyWith(id: createId());
-      log(newModel.id.toString());
-    log(newModel.toString());
+      UserModel newModel = user.copyWith(id: userCred.user!.uid);
       await firestore.doc(newModel.id).set(newModel.toMap());
+    } on FirebaseAuthException catch (e) {
+      throw _firebaseErrorMessage(e);
     } catch (e) {
-      log(e.toString());
-      rethrow;
+      throw e.toString(); 
     }
   }
 
@@ -36,11 +35,16 @@ class AuthServices {
     required String email,
     required String password,
   }) async {
-    
-    return await firebaseAuth.signInWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
+    try {
+      return await firebaseAuth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+    } on FirebaseAuthException catch (e) {
+      throw _firebaseErrorMessage(e);
+    } catch (e) {
+      throw e.toString();
+    }
   }
 
   Future<void> signOut() async {
@@ -67,53 +71,67 @@ class AuthServices {
     await currentUser!.delete();
     await firebaseAuth.signOut();
   }
-  Future<void>signInWithGoogle()async{
-    try{
-     
- final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
- if(googleUser==null){
-    throw Exception("Google sign-in aborted by user.");
- }
- 
- final GoogleSignInAuthentication auth=await googleUser.authentication;
- if(auth==null){
-  log(auth.toString());
- }
-  final credential = GoogleAuthProvider.credential(
+
+  Future<void> signInWithGoogle({required bool isNewUser}) async {
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      if (googleUser == null) {
+        throw "Google sign-in aborted by user.";
+      }
+
+      final GoogleSignInAuthentication auth = await googleUser.authentication;
+
+      final credential = GoogleAuthProvider.credential(
         accessToken: auth.accessToken,
         idToken: auth.idToken,
       );
-      log(auth.accessToken.toString());
-      log(auth.idToken.toString());
-    final userCredential = await firebaseAuth.signInWithCredential(credential);
- final firebaseUser=userCredential.user;
- 
-      if (firebaseUser != null) {
-        // Check if user already exists in Firestore
-        final existingUser = await firestore.where('email', isEqualTo: firebaseUser.email).get();
 
-        if (existingUser.docs.isEmpty) {
+      final userCredential = await firebaseAuth.signInWithCredential(credential);
+      final firebaseUser = userCredential.user;
+
+      if (firebaseUser != null) {
+        final existingUser = await firestore
+            .where('email', isEqualTo: firebaseUser.email)
+            .get();
+
+        bool isNewUser = existingUser.docs.isEmpty;
+        if (isNewUser) {
           final newUser = UserModel(
             id: createId(),
             userName: firebaseUser.displayName ?? '',
             email: firebaseUser.email ?? '',
             phoneNumber: firebaseUser.phoneNumber ?? '',
-            imagePath: '', 
+            imagePath: '',
           );
 
           await firestore.doc(newUser.id).set(newUser.toMap());
         }
+      } else {
+        throw "Google sign-in failed";
       }
-   
-
     } catch (e) {
       log("Google Sign-In Error: $e");
       rethrow;
+    }
+  }
 
+  String _firebaseErrorMessage(FirebaseAuthException e) {
+    switch (e.code) {
+      case 'email-already-in-use':
+        return 'This email is already registered';
+      case 'weak-password':
+        return 'Password should be at least 6 characters';
+      case 'invalid-email':
+        return 'Please enter a valid email address';
+      case 'user-not-found':
+        return 'No account found with this email';
+      case 'wrong-password':
+        return 'Incorrect password';
+      default:
+        return e.message ?? 'Authentication failed';
     }
   }
 }
-
 
 String createId() {
   return FirebaseFirestore.instance.collection("hj").doc().id;

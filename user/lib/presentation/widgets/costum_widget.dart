@@ -6,6 +6,7 @@ class CostumWidget {
     required BuildContext context,
     required String title,
     Widget? child,
+    Widget? loading,
     Color backgroundColor = Colors.blue,
     Color foregroundColor = Colors.white,
     double? borderRadius,
@@ -19,6 +20,9 @@ class CostumWidget {
     bool? isPrefix,
     Widget? widget,
     bool? isRounded,
+    bool ? isLoading,
+    
+    
   }) {
     return Container(
       width: width,
@@ -43,9 +47,9 @@ class CostumWidget {
             borderRadius: BorderRadius.all(Radius.circular(borderRadius ?? 10)),
           ),
         ),
-        child: isPrefix ?? false
-            ? widget
-            : Text(
+        child: isLoading ?? false
+            ? loading
+            : (isPrefix ??false) ?  widget: Text(
                 title,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: foregroundColor,
@@ -185,11 +189,16 @@ class CostumWidget {
             ),
             // Custom error text displayed outside
             if (fieldState.hasError)
-              Padding(
-                padding: const EdgeInsets.only(top: 5, left: 8),
-                child: Text(
-                  fieldState.errorText!,
-                  style: TextStyle(color: AppColors.red, fontSize: 14),
+              SizedBox(
+                width: width,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 5, left: 8),
+                  child: Text(
+                
+                    fieldState.errorText!,
+                    style: TextStyle(color: AppColors.red, fontSize: 14),
+                   
+                  ),
                 ),
               ),
           ],

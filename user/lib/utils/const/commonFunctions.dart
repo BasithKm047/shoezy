@@ -18,9 +18,7 @@ class Commonfunctions {
     try {
       if (value != null && value.isEmpty) {
         return 'Please enter an email address';
-      } else if (!RegExp(
-        r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
-      ).hasMatch(value!.trim())) {
+      } else if (!RegExp(r'^[a-zA-Z0-9._%+-]+@gmail\.com$').hasMatch(value!.trim())) {
         return 'Please enter a valid email address';
       }
     } catch (e) {
