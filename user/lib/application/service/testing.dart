@@ -46,36 +46,18 @@
 
 // Logout Button
 
-//  BlocListener<AuthBloc, AuthState>(
-//           listener: (context, state) {
-//             if (state is AuthLogOUt) {
-//               Navigator.of(context).pushAndRemoveUntil(
-//                 MaterialPageRoute(builder: (context) => SigninScreen()),
-//                 ((Route route) => false),
-//               );
-//             }
-
-//             if (state is AuthFailure) {
-//               CostumWidget.showCustomSnackbar(
-//                 context: context,
-//                 message: state.message,
-//                 backgroundColor: AppColors.red,
-//               );
-//             }
-//           },
-
-//           child: ElevatedButton(
-//             onPressed: () {
-//               context.read<AuthBloc>().add(LogoutEvent());
-//             },
-//             child: Text('Logout'),
-//           ),
-//         ),
-
 
 void main(List<String> args) {
   String a='apple';
   String b='banana';
    int h=a.compareTo(b);
 print(h);
+
+int ? j;
+// j?? 5;
+// j ??=10;
+// j?.isEven;
+print(j?.isEven);
+
+
 }
