@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:shoezy/application/bloc/auth_bloc/bloc/auth_bloc.dart';
+import 'package:shoezy/presentation/screens/cart_screen.dart';
+import 'package:shoezy/presentation/screens/favourote_screen.dart';
+import 'package:shoezy/presentation/screens/notification_screen.dart';
+import 'package:shoezy/presentation/screens/orders_screen.dart';
+import 'package:shoezy/presentation/screens/profile_screen.dart';
+import 'package:shoezy/presentation/screens/settings_screen.dart';
 import 'package:shoezy/presentation/screens/signin_screen.dart';
 import 'package:shoezy/presentation/widgets/costum_widget.dart';
 import 'package:shoezy/utils/const/colors.dart';
@@ -31,15 +36,6 @@ class MyDrawer extends StatelessWidget {
           ),
           SizedBox(height: 20),
 
-          // Padding(
-          //   padding: const EdgeInsets.only(left: 20),
-          //   child: Text('Hey ',
-          //     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-          //       color: AppColors.white,
-
-          //     ),),
-          // ),
-          //  SizedBox(height: 20.0,),
           Padding(
             padding: const EdgeInsets.only(left: 20.0),
             child: Text(
@@ -53,9 +49,9 @@ class MyDrawer extends StatelessWidget {
           buttons(
             context: context,
             ontap: () {
-              ScaffoldMessenger.of(
+              Navigator.of(
                 context,
-              ).showSnackBar(SnackBar(content: Text('Profile')));
+              ).push(MaterialPageRoute(builder: (context) => ProfileScreen()));
             },
             icon: Icons.account_circle_outlined,
             title: 'Profile',
@@ -65,9 +61,9 @@ class MyDrawer extends StatelessWidget {
           buttons(
             context: context,
             ontap: () {
-              ScaffoldMessenger.of(
+              Navigator.of(
                 context,
-              ).showSnackBar(SnackBar(content: Text('Settings')));
+              ).push(MaterialPageRoute(builder: (context) => SettingsScreen()));
             },
             icon: Icons.settings,
             title: 'Settings',
@@ -75,9 +71,9 @@ class MyDrawer extends StatelessWidget {
           SizedBox(height: 20),
           buttons(
             ontap: () {
-              ScaffoldMessenger.of(
+              Navigator.of(
                 context,
-              ).showSnackBar(SnackBar(content: Text('My Cart')));
+              ).push(MaterialPageRoute(builder: (context) => CartScreen()));
             },
             context: context,
             icon: Icons.shopping_cart_outlined,
@@ -86,9 +82,9 @@ class MyDrawer extends StatelessWidget {
           SizedBox(height: 20),
           buttons(
             ontap: () {
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(SnackBar(content: Text('My Cart')));
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => FavouroteScreen()),
+              );
             },
             icon: Icons.favorite_border,
             title: 'Favourite',
@@ -97,27 +93,34 @@ class MyDrawer extends StatelessWidget {
           SizedBox(height: 20),
           buttons(
             ontap: () {
-              ScaffoldMessenger.of(
+              Navigator.of(
                 context,
-              ).showSnackBar(SnackBar(content: Text('Orders')));
+              ).push(MaterialPageRoute(builder: (context) => OrdersScreen()));
             },
-            icon: EvilIcons.cart,
+            icon: Icons.local_shipping_sharp,
             title: 'Orders',
             context: context,
           ),
           SizedBox(height: 20),
           buttons(
             ontap: () {
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(SnackBar(content: Text('Notifications')));
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => NotificationScreen()),
+              );
             },
             icon: Icons.notifications_none_outlined,
             title: 'Notifications',
             context: context,
           ),
-          SizedBox(height: 50),
-          Divider(thickness: 5, color: Colors.grey),
+          // SizedBox(height: 60),
+          Spacer(),
+          Padding(
+            padding: const EdgeInsets.only(left: 20.0),
+            child: SizedBox(
+              width: 200,
+              child: Divider(thickness: 2, color: Colors.grey),
+            ),
+          ),
 
           Spacer(),
 
@@ -149,7 +152,7 @@ class MyDrawer extends StatelessWidget {
               context: context,
             ),
           ),
-          SizedBox(height: 10),
+          SizedBox(height: 20),
         ],
       ),
     );
