@@ -53,11 +53,19 @@ void main(List<String> args) {
    int h=a.compareTo(b);
 print(h);
 
-int ? j;
+// int ? j;
 // j?? 5;
 // j ??=10;
 // j?.isEven;
-print(j?.isEven);
+// print(j?.isEven);
 
 
 }
+
+/*Trending	 |  Shoes where isTrending = true or based on recent sales
+New Arrivals	| Order by createdAt (newest first) or isNewArrival = true
+Most Popular	| Order by popularity/salesCount field, descending
+Recommended For You |	Personalized using user preferences or browsing history
+On Sale / Offers	 |  Shoes with a discount or onSale = true
+Featured Brands |	Filter by selected brands
+Bestsellers |	Like Most Popular, usually over a longer period*/

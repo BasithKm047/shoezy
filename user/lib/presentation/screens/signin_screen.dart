@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:shoezy/application/bloc/auth_bloc/bloc/auth_bloc.dart';
+import 'package:shoezy/application/bloc/auth_bloc/auth_bloc.dart';
 import 'package:shoezy/presentation/screens/home_screen.dart';
 import 'package:shoezy/presentation/screens/recovery_password_screen.dart';
 import 'package:shoezy/presentation/screens/signup_screen.dart';
