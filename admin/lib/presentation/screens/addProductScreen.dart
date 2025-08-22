@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoezy_admin/data/model/brandModel.dart';
-import 'package:shoezy_admin/data/model/category_model.dart';
 import 'package:shoezy_admin/presentation/bloc/addProducts/add_product_bloc_bloc.dart';
-import 'package:shoezy_admin/presentation/widgets/costumWidget.dart';
-import 'package:shoezy_admin/presentation/widgets/imageUploader.dart';
+import 'package:shoezy_admin/widgets/costumWidget.dart';
+import 'package:shoezy_admin/widgets/imageUploader.dart';
 
 class Addproductscreen extends StatelessWidget {
   const Addproductscreen({super.key});
@@ -134,39 +133,39 @@ class Addproductscreen extends StatelessWidget {
                           SizedBox(height: 10),
                           CostumWidget.labelText(context, 'Select Category'),
                           SizedBox(height: 10),
-                          CostumWidget.costumDropdown(
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please select a category';
-                              }
-                              return null;
-                            },
-                            items: state.availableCategories
-                                .map((c) => c.name)
-                                .toList(),
-                            selectedValue: state.selectedCategory?.name,
-                            hintText: 'Category',
-                            onChanged: (value) {
-                              final catogeryId = state.availableCategories
-                                  .firstWhere(
-                                    (c) => c.name == value,
-                                    orElse: () => CategoryModel(
-                                      id: '',
-                                      name: '',
-                                      sizes: [],
-                                    ),
-                                  )
-                                  .id;
-                              context.read<AddProductBlocBloc>().add(
-                                AddProductBlocEvent.categorySelected(
-                                  catogeryId,
-                                ),
-                              );
-                            },
-                            borderRaduis: 10,
-                            width: screenWidth / 2,
-                          ),
-                          SizedBox(height: 10),
+                          // CostumWidget.costumDropdown(
+                          //   validator: (value) {
+                          //     if (value == null || value.isEmpty) {
+                          //       return 'Please select a category';
+                          //     }
+                          //     return null;
+                          //   },
+                          //   items: state.availableCategories
+                          //       .map((c) => c.name)
+                          //       .toList(),
+                          //   selectedValue: state.selectedCategory?.name,
+                          //   hintText: 'Category',
+                          //   onChanged: (value) {
+                          //     final catogeryId = state.availableCategories
+                          //         .firstWhere(
+                          //           (c) => c.name == value,
+                          //           orElse: () => CategoryModel(
+                          //             id: '',
+                          //             name: '',
+                          //             // sizes: [],
+                          //           ),
+                          //         )
+                          //         .id;
+                          //     context.read<AddProductBlocBloc>().add(
+                          //       AddProductBlocEvent.categorySelected(
+                          //         catogeryId,
+                          //       ),
+                          //     );
+                          //   },
+                          //   borderRaduis: 10,
+                          //   width: screenWidth / 2,
+                          // ),
+                          // SizedBox(height: 10),
                           CostumWidget.labelText(context, 'Select Color'),
                           SizedBox(height: 10),
                           FormField<String>(
@@ -370,17 +369,17 @@ class Addproductscreen extends StatelessWidget {
                             },
                           ),
                           SizedBox(height: 30),
-                          CostumImageUploader(
-                            images: state.productImage,
-                            onImagesChanged: (changed) {
-                              // final currentImages = state.productImage;
+                          // CostumImageUploader(
+                          //   images: state.productImage,
+                          //   onImagesChanged: (changed) {
+                          //     // final currentImages = state.productImage;
 
-                              context.read<AddProductBlocBloc>().add(
-                                AddProductBlocEvent.imagesUpdated(changed),
-                              );
-                              print('Images Updated: ${changed.length}');
-                            },
-                          ),
+                          //     context.read<AddProductBlocBloc>().add(
+                          //       AddProductBlocEvent.imagesUpdated(changed),
+                          //     );
+                          //     print('Images Updated: ${changed.length}');
+                          //   },
+                          // ),
                           SizedBox(height: 20),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,

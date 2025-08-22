@@ -1081,7 +1081,7 @@ $Res call({
 });
 
 
-
+$CategoryModelCopyWith<$Res>? get selectedCategory;
 
 }
 /// @nodoc
@@ -1116,7 +1116,19 @@ as bool,errorMessage: freezed == errorMessage ? _self.errorMessage : errorMessag
 as String?,
   ));
 }
+/// Create a copy of AddProductBlocState
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$CategoryModelCopyWith<$Res>? get selectedCategory {
+    if (_self.selectedCategory == null) {
+    return null;
+  }
 
+  return $CategoryModelCopyWith<$Res>(_self.selectedCategory!, (value) {
+    return _then(_self.copyWith(selectedCategory: value));
+  });
+}
 }
 
 
@@ -1351,7 +1363,7 @@ $Res call({
 });
 
 
-
+@override $CategoryModelCopyWith<$Res>? get selectedCategory;
 
 }
 /// @nodoc
@@ -1387,7 +1399,19 @@ as String?,
   ));
 }
 
+/// Create a copy of AddProductBlocState
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$CategoryModelCopyWith<$Res>? get selectedCategory {
+    if (_self.selectedCategory == null) {
+    return null;
+  }
 
+  return $CategoryModelCopyWith<$Res>(_self.selectedCategory!, (value) {
+    return _then(_self.copyWith(selectedCategory: value));
+  });
+}
 }
 
 // dart format on

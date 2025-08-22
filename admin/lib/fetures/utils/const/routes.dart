@@ -13,5 +13,8 @@ class Routes {
   static String orderDetailScreen='/orderDetailScreen';
   static String addCategoryScreen='/addCategoryScreen';
   static String addBrandScreen='/addBrandScreen';
+  static String varientsScreen='/varientScreen';
+  static String addvarientsScreen='/addVarientScreen';
+
 
 }

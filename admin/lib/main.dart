@@ -10,10 +10,12 @@ import 'package:shoezy_admin/presentation/bloc/addProducts/add_product_bloc_bloc
 import 'package:shoezy_admin/presentation/bloc/brand/bloc/brand_bloc_bloc.dart';
 import 'package:shoezy_admin/presentation/bloc/dashBoard_bloc/bloc/dashboard_bloc_bloc.dart';
 import 'package:shoezy_admin/presentation/bloc/orderSelection_cubit/cubit/order_selection_cubit.dart';
+import 'package:shoezy_admin/presentation/bloc/varients_bloc/bloc/varients_bloc.dart';
 // import 'package:shoezy_admin/presentation/bloc/dashBoard_bloc/bloc/dashboard_bloc.dart';
 import 'package:shoezy_admin/presentation/screens/addBrand_screen.dart';
 import 'package:shoezy_admin/presentation/screens/addCategory_screen.dart';
 import 'package:shoezy_admin/presentation/screens/addProductScreen.dart';
+import 'package:shoezy_admin/presentation/screens/addVarient.dart';
 import 'package:shoezy_admin/presentation/screens/adduserScreen.dart';
 import 'package:shoezy_admin/presentation/screens/brandScreen.dart';
 import 'package:shoezy_admin/presentation/screens/catogeryScreen.dart';
@@ -24,6 +26,7 @@ import 'package:shoezy_admin/presentation/screens/orderlistScreen.dart';
 import 'package:shoezy_admin/presentation/screens/productScreen.dart';
 import 'package:shoezy_admin/presentation/screens/settingsScreen.dart';
 import 'package:shoezy_admin/presentation/screens/usersList.dart';
+import 'package:shoezy_admin/presentation/screens/varients.dart';
 import 'firebase_options.dart';
 // ignore: depend_on_referenced_packages
 import 'package:flutter_web_plugins/url_strategy.dart';
@@ -41,6 +44,7 @@ void main() async {
         BlocProvider(create: (context) => BrandBlocBloc()),
         BlocProvider(create: (context)=>AdminProfileBloc()),
         BlocProvider(create: (context) => OrderSelectionCubit(),),
+        BlocProvider(create: (context) => VarientsBloc(),)
       ],
       child: MyApp(),
     ),
@@ -94,6 +98,14 @@ final GoRouter router = GoRouter(
       path: Routes.addBrandScreen,
       builder: (context, state) => AddbrandScreen(),
     ),
+     GoRoute(
+      path: Routes.varientsScreen,
+      builder: (context, state) => VarientsScreen(),
+    ),
+      GoRoute(
+      path: Routes.addvarientsScreen,
+      builder: (context, state) => AddvarientScreen(),
+    )
   ],
 );
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shoezy_admin/fetures/utils/const/commonFunction.dart';
-import 'package:shoezy_admin/presentation/widgets/costumWidget.dart';
+import 'package:shoezy_admin/widgets/costumWidget.dart';
 
 class Adduserscreen extends StatelessWidget {
    Adduserscreen({super.key});

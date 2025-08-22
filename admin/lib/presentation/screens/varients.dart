@@ -3,15 +3,18 @@ import 'package:go_router/go_router.dart';
 import 'package:shoezy_admin/fetures/utils/const/routes.dart';
 import 'package:shoezy_admin/widgets/costumWidget.dart';
 
-class Brandscreen extends StatelessWidget {
-  const Brandscreen({super.key});
+class VarientsScreen extends StatelessWidget {
+  const VarientsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth=MediaQuery.of(context).size.width;
-    return Scaffold(
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    return Padding(
+      padding: const EdgeInsets.only(left: 50.0, top: 50),
+      child: Scaffold(
         appBar: CostumWidget.appBar(
-          title: 'Brand',
+          title: 'Varient Options',
           context: context,
           centerTitle: true,
         ),
@@ -20,20 +23,20 @@ class Brandscreen extends StatelessWidget {
             SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.all(12.0),
-                
+
               child: SizedBox(
-                width: screenWidth/1.1,
+                width: screenWidth / 1.1,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     SizedBox(width: 15),
                     CostumWidget.costumElevatedButton(
                       ontap: () {
-                        context.go(Routes.addBrandScreen);
+                        context.go(Routes.addvarientsScreen);
                       },
                       width: screenWidth / 7,
                       context: context,
-                      title: 'Add Brand',
+                      title: 'Add Vareints',
                       backgroundColor: Colors.blue,
                       foregroundColor: Colors.white,
                     ),
@@ -49,20 +52,23 @@ class Brandscreen extends StatelessWidget {
               borderRaduis: 10,
               widget: Column(
                 children: [
-                  
-                  CostumWidget.costumHeader(height: 40, width: screenWidth/1.1,
-                  child: header(context: context),
+                  CostumWidget.costumHeader(
+                    height: 40,
+                    width: screenWidth / 1.1,
+                    child: header(context: context),
                   ),
 
                   Expanded(
                     child: ListView.separated(
                       itemBuilder: (context, index) {
-                        final listofCategory = ['Nike', 'Puma', 'Adidas'];
-                        final products=[10,20,50];
+                        // final listofCategory = ['Sneakers', 'Casual', 'Sports'];
                         return _widget(
                           context: context,
-                          title: listofCategory[index],
-                          product: products[index],
+                          image: 'image',
+                          name: 'Red',
+                          size: 10,
+                          stock: 200,
+                          // product: products[index],
                         );
                       },
                       separatorBuilder: (context, index) => Divider(),
@@ -74,14 +80,17 @@ class Brandscreen extends StatelessWidget {
             ),
           ],
         ),
-      );
-    
+      ),
+    );
   }
 }
+
 Widget _widget({
   required BuildContext context,
-  required String title,
-  required int product,
+  required String name,
+  required String image,
+  required int size,
+  required int stock,
   // bool? isFeild,
 }) {
   return Padding(
@@ -92,7 +101,7 @@ Widget _widget({
           flex: 3,
           child: CostumWidget.labelText(
             context,
-            title,
+            image,
             fontSize: 15,
             fontWeight: FontWeight.w500,
           ),
@@ -100,16 +109,36 @@ Widget _widget({
 
         Expanded(
           flex: 2,
+          child: CostumWidget.labelText(
+            context,
+            name,
+            fontSize: 15,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+
+        // Expanded(
+        //   flex: 2,
+        //   child: Center(
+        //     child: CostumWidget.labelText(
+        //       context,
+        //        size.toString(),
+        //       fontSize: 15,
+        //       fontWeight: FontWeight.w500,
+        //     ),
+        //   ),
+        // ),
+         Expanded(
+          flex: 2,
           child: Center(
             child: CostumWidget.labelText(
               context,
-              product.toString(),
+               stock.toString(),
               fontSize: 15,
               fontWeight: FontWeight.w500,
             ),
           ),
         ),
-
         Expanded(
           flex: 2,
           child: Row(
@@ -140,18 +169,38 @@ Widget header({required BuildContext context}) {
           flex: 3,
           child: CostumWidget.labelText(
             context,
-            'Name',
+            'Shoe Image',
+            fontSize: 15,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        Expanded(
+          flex: 2,
+          child: CostumWidget.labelText(
+            context,
+            'Color',
             fontSize: 15,
             fontWeight: FontWeight.bold,
           ),
         ),
 
-        Expanded(
+        // Expanded(
+        //   flex: 2,
+        //   child: Center(
+        //     child: CostumWidget.labelText(
+        //       context,
+        //       'Size',
+        //       fontSize: 15,
+        //       fontWeight: FontWeight.bold,
+        //     ),
+        //   ),
+        // ),
+          Expanded(
           flex: 2,
           child: Center(
             child: CostumWidget.labelText(
               context,
-              'Products',
+              'Stock',
               fontSize: 15,
               fontWeight: FontWeight.bold,
             ),
@@ -177,4 +226,3 @@ Widget header({required BuildContext context}) {
     ),
   );
 }
-

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shoezy_admin/presentation/widgets/costumWidget.dart';
+import 'package:shoezy_admin/widgets/costumWidget.dart';
 
 class OrderDetailScreen extends StatelessWidget {
   const OrderDetailScreen({super.key});

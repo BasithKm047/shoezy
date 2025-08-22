@@ -3,7 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shoezy_admin/fetures/utils/const/commonFunction.dart';
 import 'package:shoezy_admin/fetures/utils/const/routes.dart';
-import 'package:shoezy_admin/presentation/widgets/costumWidget.dart';
+import 'package:shoezy_admin/widgets/costumWidget.dart';
 
 class Drawers extends StatelessWidget {
   const Drawers({super.key});
@@ -56,8 +56,8 @@ class Drawers extends StatelessWidget {
               buildDrawerButton(context: context, title: 'Orders', icon: Icons.list_alt, routeName: Routes.orderList),
               buildDrawerButton(context: context, title: 'Category', icon: Icons.category, routeName: Routes.category),
               buildDrawerButton(context: context, title: 'Brand', icon: FontAwesomeIcons.brandsFontAwesome, routeName: Routes.brand),
+              buildDrawerButton(context: context, title: 'Varients', icon:Icons.style, routeName:Routes.varientsScreen ),
               buildDrawerButton(context: context, title: 'Settings', icon: Icons.settings, routeName: Routes.setting),
-              // buildDrawerButton(context: context, title: 'Logout', icon:Icons.logout, routeName: Routes.logout),
               const Spacer(), 
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),

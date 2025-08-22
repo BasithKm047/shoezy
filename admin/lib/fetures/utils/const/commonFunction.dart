@@ -5,7 +5,7 @@ import 'package:image_picker_web/image_picker_web.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shoezy_admin/fetures/utils/const/enums.dart';
 import 'package:shoezy_admin/fetures/utils/const/routes.dart';
-import 'package:shoezy_admin/presentation/widgets/costumWidget.dart';
+import 'package:shoezy_admin/widgets/costumWidget.dart';
 
 class Commonfunction {
 

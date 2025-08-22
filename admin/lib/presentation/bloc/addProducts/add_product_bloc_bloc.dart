@@ -1,9 +1,10 @@
 import 'dart:typed_data';
 
+// ignore: depend_on_referenced_packages
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:shoezy_admin/data/model/brandModel.dart';
-import 'package:shoezy_admin/data/model/category_model.dart';
+import 'package:shoezy_admin/data/model/categoryModel/category_model.dart';
 
 part 'add_product_bloc_event.dart';
 part 'add_product_bloc_state.dart';
@@ -28,9 +29,9 @@ class AddProductBlocBloc
           selectedColor: '',
           productStock: '',
           availableCategories: [
-            CategoryModel(id: '1', name: 'Men', sizes: ['7', '8', '9']),
-            CategoryModel(id: '2', name: 'Women', sizes: ['5', '6', '7']),
-            CategoryModel(id: '3', name: 'Kids', sizes: ['3', '4', '5']),
+            // CategoryModel(id: '1', name: 'Men', sizes: ['7', '8', '9']),
+            // CategoryModel(id: '2', name: 'Women', sizes: ['5', '6', '7']),
+            // CategoryModel(id: '3', name: 'Kids', sizes: ['3', '4', '5']),
           ],
           availableBrands: [
             Brandmodel(
@@ -114,21 +115,21 @@ class AddProductBlocBloc
     _CategorySelected event,
     Emitter<AddProductBlocState> emit,
   ) {
-    final currentState = state as _AddProductBlocState;
-    final category = currentState.availableCategories.firstWhere(
-      (c) => c.id == event.category,
-      orElse: () =>
-          CategoryModel(id: '1', name: 'Default', sizes: ['7', '8', '9']),
-    );
+    // final currentState = state as _AddProductBlocState;
+    // final category = currentState.availableCategories.firstWhere(
+    //   (c) => c.id == event.category,
+    //   orElse: () =>
+    //       // CategoryModel(id: '1', name: 'Default', sizes: ['7', '8', '9']),
+    // );
 
-    emit(
-      currentState.copyWith(
-        selectedCategory: category.id.isNotEmpty ? category : null,
-        selectedSizes: [],
-        sizeStockMap: {},
-        availableSize: category.sizes,
-      ),
-    );
+    // emit(
+    // //   currentState.copyWith(
+    // //     selectedCategory: category.id.isNotEmpty ? category : null,
+    // //     selectedSizes: [],
+    // //     sizeStockMap: {},
+    // //     availableSize: category.sizes,
+    // //   ),
+    // );
   }
 
   _onBrandChanged(_BrandChanged event, Emitter<AddProductBlocState> emit) {

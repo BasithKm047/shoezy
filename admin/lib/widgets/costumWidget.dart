@@ -459,7 +459,7 @@ static Widget costumDropdown<T>({
                 isExpanded: true,
                 iconEnabledColor: iconColor ?? Colors.black,
                 iconSize: 30,
-                value: selectedValue,
+                value: items.contains(selectedValue )? selectedValue:null,
                 dropdownColor: backgroundColor ?? Colors.white,
                 hint: Text(
                   hintText,
@@ -494,6 +494,7 @@ static Widget costumDropdown<T>({
     },
   );
 }
+
 
   static Text labelText(BuildContext context, String hintText,
   {double ?fontSize, FontWeight ?fontWeight}) {

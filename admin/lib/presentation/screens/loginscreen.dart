@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:shoezy_admin/fetures/core/admindetails.dart';
 import 'package:shoezy_admin/fetures/utils/const/routes.dart';
 import 'package:shoezy_admin/presentation/bloc/admin_details_bloc/cubit/admin_login_cubit.dart';
-import 'package:shoezy_admin/presentation/widgets/costumWidget.dart';
+import 'package:shoezy_admin/widgets/costumWidget.dart';
 
 // ignore: must_be_immutable
 class Loginscreen extends StatelessWidget {

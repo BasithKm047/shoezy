@@ -1,17 +1,18 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:shoezy_admin/presentation/bloc/addProducts/add_product_bloc_bloc.dart';
+// import 'package:image_picker/image_picker.dart';
 
 class CostumImageUploader extends StatelessWidget {
   final List<Uint8List> images;
   final Function(List<Uint8List>) onImagesChanged;
+  final Function onImageRemoved;
 
    CostumImageUploader({
     super.key,
     required this.images,
     required this.onImagesChanged,
+    required  this.onImageRemoved
   });
 
   final ImagePicker _picker = ImagePicker();
@@ -79,9 +80,7 @@ class CostumImageUploader extends StatelessWidget {
                 child: IconButton(
                   icon: const Icon(Icons.remove_circle, color: Colors.red),
                   onPressed: () {
-                    context.read<AddProductBlocBloc>().add(
-                          AddProductBlocEvent.imageRemoved(index),
-                        );
+                    onImageRemoved(images[index]);
                   },
                 ),
               ),
