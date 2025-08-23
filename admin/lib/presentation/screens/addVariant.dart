@@ -1,29 +1,34 @@
-import 'dart:typed_data';
+import 'dart:developer';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shoezy_admin/data/model/vareintModel/varientsModel.dart';
+import 'package:shoezy_admin/data/repositories/cloudinary_services.dart';
+import 'package:shoezy_admin/fetures/utils/const/commonFunction.dart';
 import 'package:shoezy_admin/presentation/bloc/varients_bloc/bloc/varients_bloc.dart';
-// import 'package:shoezy_admin/presentation/screens/widgets/imageUploader.dart';
 import 'package:shoezy_admin/widgets/costumWidget.dart';
 import 'package:shoezy_admin/widgets/imageUploader.dart';
 
-class AddvarientScreen extends StatelessWidget {
-  AddvarientScreen({super.key});
+class AddvariantScreen extends StatelessWidget {
+  AddvariantScreen({super.key});
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
+  TextEditingController colorController = TextEditingController();
+  TextEditingController sizeController = TextEditingController();
+  TextEditingController stockController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
       appBar: CostumWidget.appBar(
-        title: 'Add Varients',
+        title: 'Add Variants',
         context: context,
         centerTitle: true,
       ),
 
-      body: BlocConsumer<VarientsBloc, VarientsState>(
+      body: BlocConsumer<VariantsBloc, VariantsState>(
         listener: (context, state) {
           state.maybeWhen(
             loading: () {
@@ -66,6 +71,7 @@ class AddvarientScreen extends StatelessWidget {
                       ),
                       SizedBox(height: 20),
                       CostumWidget.costumTextformField(
+                        controller: colorController,
                         // controller: ,
                         keyboardType: TextInputType.text,
                         validator: (value) {
@@ -85,59 +91,85 @@ class AddvarientScreen extends StatelessWidget {
                           orElse: () => [],
                         ),
                         onImagesChanged: (addedImage) {
-                          context.read<VarientsBloc>().add(
-                            VarientsEvent.imageUpload(addedImage),
+                          context.read<VariantsBloc>().add(
+                            VariantsEvent.imageUpload(addedImage),
                           );
                         },
-                        onImageRemoved: (removedImage){
-                          context.read<VarientsBloc>().add(VarientsEvent.imageRemoved(removedImage));
+                        onImageRemoved: (removedImage) {
+                          context.read<VariantsBloc>().add(
+                            VariantsEvent.imageRemoved(removedImage),
+                          );
                         },
                       ),
-                      SizedBox(height: 20,),
-                  
+                      SizedBox(height: 20),
+
                       Row(
                         // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           CostumWidget.costumTextformField(
+                            controller: sizeController,
+                            validator: (value) =>
+                                Commonfunction.commonValidator(value, 'Size'),
                             hintText: 'Size',
                             width: screenWidth / 6,
                           ),
                           SizedBox(width: 50),
                           CostumWidget.costumTextformField(
+                            controller: stockController,
+                            validator: (value) =>
+                                Commonfunction.commonValidator(value, 'Stock'),
                             hintText: 'Stock',
                             width: screenWidth / 6,
                           ),
                         ],
                       ),
-                  
+
                       SizedBox(height: 50),
                       SizedBox(
                         width: screenWidth / 2,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            // SizedBox(width: 10,),
                             CostumWidget.costumElevatedButton(
-                              // ontap: () {
-                              //   Commonfunction.validateAndSubmitForm(
-                              //     context: context,
-                              //     formKey: _formKey,
-                              //     successMessage: 'Category added successfully',
-                              //     errorMessage: 'Failed to add category',
-                              //     onSuccess: () {
-                              //       print(
-                              //         'Category added: ${_categoryNameController.text}',
-                              //       );
-                              //       _categoryNameController.clear();
-                              // selectedCategory.value=null;
-                              //     },
-                              //   );
-                              //   // Handle form submission
-                              //   String categoryName = _categoryNameController.text;
-                              //   print('Category Name: $categoryName');
-                              // },
+                              ontap: () async{
+                                final List<Uint8List> images = state.maybeWhen(
+                                  orElse: () => [],
+                                  imageAddedState: (images) => images,
+                                );
+                                if (!Commonfunction.imageValidator(
+                                  images,
+                                  context,
+                                )) {
+                                  return;
+                                }
+                                CloudinaryServices cloudinaryServices = CloudinaryServices();
+                                  final cloudImages=await cloudinaryServices.uploadMultipleImages(images);
+
+                                Commonfunction.validateAndSubmitForm(
+                                  context: context,
+                                  formKey: _formKey,
+                                  successMessage: 'Varaint Added Succesfull',
+                                  errorMessage: 'Variant Adding Failed',
+                                );
+
+                                final variants = Variantsmodel(
+                                  color: colorController.text.trim(),
+                                  images: cloudImages,
+                                      
+                                  size: sizeController.text.split(','),
+                                  stock: stockController.text,
+                                );
+
+                                context.read<VariantsBloc>().add(
+                                  VariantsEvent.addVariants(variants),
+                                );
+                                clearfield(context);
+
+                                // log('Varient added succesfully');
+                                // print('variant added succesfully');
+                              },
                               context: context,
-                              title: 'Add Varients',
+                              title: 'Add Variants',
                               backgroundColor: Colors.blue,
                               foregroundColor: Colors.white,
                               width: screenWidth / 7,
@@ -154,5 +186,12 @@ class AddvarientScreen extends StatelessWidget {
         },
       ),
     );
+  }
+
+  clearfield(BuildContext context) {
+    sizeController.clear();
+    colorController.clear();
+    stockController.clear();
+    context.read<VariantsBloc>().add(VariantsEvent.resetImgae());
   }
 }

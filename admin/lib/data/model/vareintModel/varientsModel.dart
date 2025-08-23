@@ -5,16 +5,19 @@ part 'varientsModel.freezed.dart';
 part 'varientsModel.g.dart';
 
 @freezed
-// @JsonSerializable()
-abstract class Varientsmodel with _$Varientsmodel{
-  factory Varientsmodel({
+abstract class Variantsmodel with _$Variantsmodel{
+  factory Variantsmodel({
+    String ? id,
+    String ? brandId,
     required String color,
     required List<String>images,
-    required int size,
-    required List<int>stock,
-  })=_Varientsmodel;
+    
+    required List<String> size,
+    required String stock,
+  })=_Variantsmodel;
 
-  factory Varientsmodel.fromJson(Map<String, dynamic>json)=>_$VarientsmodelFromJson(json);
+  factory Variantsmodel.fromJson(Map<String, dynamic>json)=>_$VariantsmodelFromJson(json);
+  
   
 }
 

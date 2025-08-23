@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shoezy_admin/data/repositories/variants_services.dart';
 import 'package:shoezy_admin/fetures/utils/const/routes.dart';
 import 'package:shoezy_admin/fetures/utils/theme/theme.dart';
 import 'package:shoezy_admin/presentation/bloc/adminProfile/bloc/admin_profile_bloc.dart';
@@ -15,7 +16,7 @@ import 'package:shoezy_admin/presentation/bloc/varients_bloc/bloc/varients_bloc.
 import 'package:shoezy_admin/presentation/screens/addBrand_screen.dart';
 import 'package:shoezy_admin/presentation/screens/addCategory_screen.dart';
 import 'package:shoezy_admin/presentation/screens/addProductScreen.dart';
-import 'package:shoezy_admin/presentation/screens/addVarient.dart';
+import 'package:shoezy_admin/presentation/screens/addVariant.dart';
 import 'package:shoezy_admin/presentation/screens/adduserScreen.dart';
 import 'package:shoezy_admin/presentation/screens/brandScreen.dart';
 import 'package:shoezy_admin/presentation/screens/catogeryScreen.dart';
@@ -44,7 +45,7 @@ void main() async {
         BlocProvider(create: (context) => BrandBlocBloc()),
         BlocProvider(create: (context)=>AdminProfileBloc()),
         BlocProvider(create: (context) => OrderSelectionCubit(),),
-        BlocProvider(create: (context) => VarientsBloc(),)
+        BlocProvider(create: (context) => VariantsBloc(VariantsServices()),)
       ],
       child: MyApp(),
     ),
@@ -104,7 +105,7 @@ final GoRouter router = GoRouter(
     ),
       GoRoute(
       path: Routes.addvarientsScreen,
-      builder: (context, state) => AddvarientScreen(),
+      builder: (context, state) => AddvariantScreen(),
     )
   ],
 );

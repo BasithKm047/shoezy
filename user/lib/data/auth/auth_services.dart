@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shoezy/data/models/user_model.dart';
+import 'package:shoezy/utils/const/id.dart';
 
 class AuthServices {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
@@ -133,6 +134,3 @@ class AuthServices {
   }
 }
 
-String createId() {
-  return FirebaseFirestore.instance.collection("hj").doc().id;
-}

@@ -6,20 +6,22 @@ part of 'varientsModel.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_Varientsmodel _$VarientsmodelFromJson(Map<String, dynamic> json) =>
-    _Varientsmodel(
+_Variantsmodel _$VariantsmodelFromJson(Map<String, dynamic> json) =>
+    _Variantsmodel(
+      id: json['id'] as String?,
+      brandId: json['brandId'] as String?,
       color: json['color'] as String,
       images: (json['images'] as List<dynamic>)
           .map((e) => e as String)
           .toList(),
-      size: (json['size'] as num).toInt(),
-      stock: (json['stock'] as List<dynamic>)
-          .map((e) => (e as num).toInt())
-          .toList(),
+      size: (json['size'] as List<dynamic>).map((e) => e as String).toList(),
+      stock: json['stock'] as String,
     );
 
-Map<String, dynamic> _$VarientsmodelToJson(_Varientsmodel instance) =>
+Map<String, dynamic> _$VariantsmodelToJson(_Variantsmodel instance) =>
     <String, dynamic>{
+      'id': instance.id,
+      'brandId': instance.brandId,
       'color': instance.color,
       'images': instance.images,
       'size': instance.size,

@@ -32,7 +32,6 @@ class SignupScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(),
       body: BlocConsumer<AuthBloc, AuthState>(
-
         listener: (context, state) {
           if (state is AuthFailure) {
             CostumWidget.showCustomSnackbar(
@@ -40,7 +39,7 @@ class SignupScreen extends StatelessWidget {
               message: state.message,
               backgroundColor: AppColors.red,
             );
-          } else if (state is Authcreate ) {
+          } else if (state is Authcreate) {
             CostumWidget.showCustomSnackbar(
               context: context,
               message: 'Account created Succesfull',
@@ -48,10 +47,10 @@ class SignupScreen extends StatelessWidget {
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(builder: (context) => HomeScreen()),
             );
-          } 
+          }
           //   else if (state is GoogleSignInstate) {
           //   CostumWidget.showCustomSnackbar(context: context, message: state.message);
-            
+
           //   Navigator.of(context).pushReplacement(
           //     MaterialPageRoute(builder: (context) => HomeScreen()),
           //   );
@@ -96,8 +95,7 @@ class SignupScreen extends StatelessWidget {
 
                     CostumWidget.costumTextformField(
                       controller: usernameController,
-                      validator: (value) =>
-                          Commonfunctions.usernameValidator(value),
+                      validator: Commonfunctions.usernameValidator,
                       width: screenWidth / 1.2,
                       borderRadius: 50,
                       hintText: 'Name',
@@ -118,8 +116,7 @@ class SignupScreen extends StatelessWidget {
                       isBorderNotNeed: false,
                       borderRadius: 50,
                       controller: emailController,
-                      validator: (value) =>
-                          Commonfunctions.emailValidator(value),
+                      validator: Commonfunctions.emailValidator,
                     ),
 
                     SizedBox(height: 20),
@@ -152,8 +149,7 @@ class SignupScreen extends StatelessWidget {
                           borderRadius: 50,
                           isBorderNotNeed: false,
                           controller: passwordConttoller,
-                          validator: (value) =>
-                              Commonfunctions.passwordValidator(value),
+                          validator: Commonfunctions.passwordValidator,
                         );
                       },
                     ),
@@ -257,18 +253,23 @@ class SignupScreen extends StatelessWidget {
     );
   }
 
-  _signup(GlobalKey<FormState> formkey, BuildContext context) async {
+  Future<void> _signup(
+    GlobalKey<FormState> formkey,
+    BuildContext context,
+  ) async {
     if (formkey.currentState!.validate()) {
       UserModel user = UserModel(
-        userName: usernameController.text,
+        userName: usernameController.text.trim(),
         phoneNumber: '',
-        email: emailController.text,
+        email: emailController.text.trim(),
         imagePath: '',
       );
       context.read<AuthBloc>().add(
         SignUpEvent(user: user, password: passwordConttoller.text.trim()),
       );
-      log('Account Created Succesully');
+      log('Account Created Successfully');
+    } else {
+      log('Form validation failed');
     }
   }
 }

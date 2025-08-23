@@ -144,7 +144,16 @@ class MyDrawer extends StatelessWidget {
 
             child: buttons(
               ontap: () {
-                context.read<AuthBloc>().add(LogoutEvent());
+                CostumWidget.showCustomAlertDialog(
+                        context: context,
+                        title: 'Logout',
+                        content: 'Are you sure you want to logout?',
+                        confirmButtonText: 'Logout',
+                        confirmButtonColor: Colors.red,
+                        onConfirm: () {
+                          context.read<AuthBloc>().add(LogoutEvent());
+                        },
+                      );
               },
               icon: Icons.logout,
               size: 25,

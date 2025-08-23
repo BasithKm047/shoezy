@@ -1,12 +1,12 @@
 class Commonfunctions {
   static String? usernameValidator(String? value) {
     try {
-      if (value != null && value.trim().isEmpty) {
+      if (value == null || value.trim().isEmpty) {
         return 'Please Enter username';
-      } else if (value!.length < 3) {
+      } else if (value.length < 3) {
         return 'username should be morethan 3 character';
       } else if (!RegExp(r'^[a-zA-Z0-9]+$').hasMatch(value)) {
-        'Username can only contain letters and numbers';
+        return 'Username can only contain letters and numbers';
       }
     } catch (e) {
       print(e);
@@ -16,9 +16,9 @@ class Commonfunctions {
 
   static String? emailValidator(String? value) {
     try {
-      if (value != null && value.isEmpty) {
+      if (value == null ||value.trim().isEmpty) {
         return 'Please enter an email address';
-      } else if (!RegExp(r'^[a-zA-Z0-9._%+-]+@gmail\.com$').hasMatch(value!.trim())) {
+      } else if (!RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$').hasMatch(value.trim()))  {
         return 'Please enter a valid email address';
       }
     } catch (e) {
@@ -34,7 +34,6 @@ class Commonfunctions {
     if (value.length < 6) {
       return 'Password should be at least 6 characters';
     }
-    // Optional complexity checks:
     final pattern = RegExp(
       r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).+$',
     );

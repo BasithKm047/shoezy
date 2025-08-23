@@ -47,6 +47,11 @@ dependencies:
   logger: ^2.6.1
   google_sign_in: ^6.3.0
   firebase_ui_oauth_google: ^2.0.0
+  http: ^1.5.0
+  flutter_font_icons: ^2.2.7
+  icons_flutter: ^0.0.5
+  carousel_slider: ^5.1.1
+  smooth_page_indicator: ^1.2.1
 
 dev_dependencies:
   flutter_test:
@@ -81,7 +86,15 @@ flutter:
   assets:
   - ./asset/generated-image.png
   - ./asset/icons8-google.svg
-  
+  - ./asset/avatar.png
+  - ./asset/brand-nike-svgrepo-com.svg
+  - ./asset/adidas-svgrepo-com.svg
+  - ./asset/converse-logo3-logo-svgrepo-com.svg
+  - ./asset/puma-logo.svg
+  - ./asset/shoe_image_100.png
+  - ./asset/shoe_image_111.png
+  - ./asset/shoe_image_222.png
+  - ./asset/shoe_image_333.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

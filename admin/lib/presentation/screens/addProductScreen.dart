@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoezy_admin/data/model/brandModel.dart';
 import 'package:shoezy_admin/presentation/bloc/addProducts/add_product_bloc_bloc.dart';
 import 'package:shoezy_admin/widgets/costumWidget.dart';
-import 'package:shoezy_admin/widgets/imageUploader.dart';
 
 class Addproductscreen extends StatelessWidget {
   const Addproductscreen({super.key});

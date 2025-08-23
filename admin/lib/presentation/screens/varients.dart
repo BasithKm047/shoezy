@@ -14,7 +14,7 @@ class VarientsScreen extends StatelessWidget {
       padding: const EdgeInsets.only(left: 50.0, top: 50),
       child: Scaffold(
         appBar: CostumWidget.appBar(
-          title: 'Varient Options',
+          title: 'Variant Options',
           context: context,
           centerTitle: true,
         ),
@@ -36,7 +36,7 @@ class VarientsScreen extends StatelessWidget {
                       },
                       width: screenWidth / 7,
                       context: context,
-                      title: 'Add Vareints',
+                      title: 'Add Variants',
                       backgroundColor: Colors.blue,
                       foregroundColor: Colors.white,
                     ),
