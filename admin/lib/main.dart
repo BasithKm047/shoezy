@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shoezy_admin/data/repositories/brand_services.dart';
+import 'package:shoezy_admin/data/repositories/category_services.dart';
 import 'package:shoezy_admin/data/repositories/variants_services.dart';
 import 'package:shoezy_admin/fetures/utils/const/routes.dart';
 import 'package:shoezy_admin/fetures/utils/theme/theme.dart';
 import 'package:shoezy_admin/presentation/bloc/adminProfile/bloc/admin_profile_bloc.dart';
 import 'package:shoezy_admin/presentation/bloc/admin_details_bloc/cubit/admin_login_cubit.dart';
-import 'package:shoezy_admin/presentation/bloc/addProducts/add_product_bloc_bloc.dart';
-import 'package:shoezy_admin/presentation/bloc/brand/bloc/brand_bloc_bloc.dart';
+import 'package:shoezy_admin/presentation/bloc/brand/bloc/brand_bloc.dart';
+import 'package:shoezy_admin/presentation/bloc/category_bloc/bloc/category_bloc.dart';
 import 'package:shoezy_admin/presentation/bloc/dashBoard_bloc/bloc/dashboard_bloc_bloc.dart';
 import 'package:shoezy_admin/presentation/bloc/orderSelection_cubit/cubit/order_selection_cubit.dart';
 import 'package:shoezy_admin/presentation/bloc/varients_bloc/bloc/varients_bloc.dart';
@@ -41,11 +43,13 @@ void main() async {
       providers: [
         BlocProvider(create: (context) => AdminLoginCubit()),
         BlocProvider(create: (context) => DashboardBlocBloc()),
-        BlocProvider(create: (context) => AddProductBlocBloc()),
-        BlocProvider(create: (context) => BrandBlocBloc()),
+        // BlocProvider(create: (context) => AddProductBlocBloc()),
+        BlocProvider(create: (context) => BrandBloc(BrandServices())),
         BlocProvider(create: (context)=>AdminProfileBloc()),
         BlocProvider(create: (context) => OrderSelectionCubit(),),
-        BlocProvider(create: (context) => VariantsBloc(VariantsServices()),)
+        BlocProvider(create: (context) => VariantsBloc(VariantsServices()),),
+        BlocProvider(create: (context) => CategoryBloc(CategoryServices()),)
+
       ],
       child: MyApp(),
     ),

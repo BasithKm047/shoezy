@@ -1,34 +1,30 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shoezy_admin/data/model/categoryModel/category_model.dart';
-import 'package:uuid/uuid.dart';
+import 'package:shoezy_admin/fetures/core/id.dart';
 
 class CategoryServices {
-  final db = FirebaseFirestore.instance;
-  Future<void> addCategory(String type, List<String> name) async {
-    final id = Uuid().v4();
-    final category = CategoryModel(id: id, name: name, type: type);
-    await db.collection('categories').doc(id).set(category.toJson());
+  final db = FirebaseFirestore.instance.collection('categories');
+  Future<void> addCategory(String name, List<String> image) async {
+    final category = CategoryModel(id: createId(), name: name, image: image);
+    await db.add(category.toJson());
   }
 
   Future<void> deleteCategory(String id) async {
-    await db.collection('categories').doc(id).delete();
+    await db.doc(id).delete();
   }
 
-  Future<void> updateCategory(String name, String type, String id) async {
-    await db.collection('categories').doc(id).update({
-      'name': name,
-      'type': type,
-    });
+  Future<void> updateCategory(
+    String name,
+    List<String> image,
+    String id,
+  ) async {
+    await db.doc(id).update({'name': name, 'image': image});
   }
 
-  Stream<List<CategoryModel>> getCategories() {
-    return db
-        .collection('categories')
-        .snapshots()
-        .map(
-          (snapshot) => snapshot.docs
-              .map((doc) => CategoryModel.fromJson(doc.data()))
-              .toList(),
-        );
+  Future<List<CategoryModel>> getCategories() async {
+    final snapshot = await db.get();
+    return snapshot.docs
+        .map((doc) => CategoryModel.fromJson(doc.data()))
+        .toList();
   }
 }

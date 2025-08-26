@@ -24,6 +24,7 @@ class VariantsBloc extends Bloc<VariantsEvent, VariantsState> {
       }
     });
     on<_ImageRemoved>((event, emit) {
+      emit(_Loading());
       final currentImages = state.maybeWhen(
         imageAddedState: (images) => images,
         imageRemovedState: (image) => image,

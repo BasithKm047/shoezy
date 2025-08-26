@@ -1,8 +1,13 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shoezy_admin/presentation/bloc/brand/bloc/brand_bloc_bloc.dart';
+import 'package:logger/logger.dart';
+import 'package:shoezy_admin/data/model/brand/brand_model.dart';
+import 'package:shoezy_admin/data/repositories/cloudinary_services.dart';
+import 'package:shoezy_admin/fetures/utils/const/commonFunction.dart';
+import 'package:shoezy_admin/presentation/bloc/brand/bloc/brand_bloc.dart';
 import 'package:shoezy_admin/widgets/costumWidget.dart';
+import 'package:shoezy_admin/widgets/imageUploader.dart';
 
 // ignore: must_be_immutable
 class AddbrandScreen extends StatelessWidget {
@@ -15,20 +20,6 @@ class AddbrandScreen extends StatelessWidget {
   final TextEditingController _brandNameController = TextEditingController();
 
   // Future<void> _pickImage() async {
-  void _submitForm(BuildContext context, Uint8List? imageBytes) {
-    if (_formKey.currentState!.validate() && imageBytes != null) {
-      context.read<BrandBlocBloc>().add(
-        SubmitFormEvent(brandName: _brandNameController.text, logo: imageBytes),
-      );
-    } else {
-      CostumWidget.showCustomSnackbar(
-        context: context,
-        message: 'Please fill in all fields',
-        backgroundColor: Colors.red,
-        borderColor: Colors.white,
-      );
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,110 +32,106 @@ class AddbrandScreen extends StatelessWidget {
         centerTitle: true,
       ),
       body: Center(
-        child: BlocConsumer<BrandBlocBloc, BrandBlocState>(
+        child: BlocConsumer<BrandBloc, BrandState>(
           listener: (context, state) {
-            if (state is BrandFormSuccess) {
-              CostumWidget.showCustomSnackbar(
-                context: context,
-                message: 'Brand added successfully',
-                backgroundColor: Colors.blue,
-              );
-              _brandNameController.clear();
-            } else if (state is BrandFormFailure) {
-              CostumWidget.showCustomSnackbar(
-                context: context,
-                message: state.error,
-                backgroundColor: Colors.red,
-              );
-            }
+            state.maybeWhen(
+              orElse: () => [],
+              success: () {
+                CostumWidget.showCustomSnackbar(
+                  context: context,
+                  message: 'Brand added successfully',
+                  backgroundColor: Colors.blue,
+                );
+                _brandNameController.clear();
+              },
+              error: (message) {
+                CostumWidget.showCustomSnackbar(
+                  context: context,
+                  message: message,
+                  backgroundColor: Colors.red,
+                );
+              },
+            );
           },
           builder: (context, state) {
-            Uint8List? imageBytes;
-            if (state is ImagePickedState) {
-              imageBytes = state.imagePath;
-            }
             return SizedBox(
               width: screenWidth / 2,
               child: Form(
                 key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 20),
-                    CostumWidget.labelText(context, 'Brand Name'),
-                    const SizedBox(height: 10),
-                    CostumWidget.costumTextformField(
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter a brand name';
-                        }
-                        return null;
-                      },
-                      controller: _brandNameController,
-                      hintText: 'Enter brand name',
-                      width: screenWidth / 2,
-                    ),
-                    const SizedBox(height: 30),
-                    CostumWidget.labelText(context, 'Logo'),
-                    const SizedBox(height: 10),
-                    SizedBox(
-                      width: screenWidth / 5,
-                      height: 50,
-                      child: ElevatedButton.icon(
-                        onPressed: () {
-                       context.read<BrandBlocBloc>().add(PicImageEvent(imageBytes));
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 20),
+                      CostumWidget.labelText(context, 'Brand Name'),
+                      const SizedBox(height: 10),
+                      CostumWidget.costumTextformField(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter a brand name';
+                          }
+                          return null;
                         },
-                        icon: const Icon(Icons.image),
-                        label: const Text("Pick Logo Image"),
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 12,
-                          ),
-                          backgroundColor: Colors.blueAccent,
-                          foregroundColor: Colors.white,
-                        ),
+                        controller: _brandNameController,
+                        hintText: 'Enter brand name',
+                        width: screenWidth / 2,
                       ),
-                    ),
-                    const SizedBox(height: 20),
-                    if (imageBytes != null)
+                      const SizedBox(height: 30),
+                      CostumWidget.labelText(context, 'Logo'),
+                      const SizedBox(height: 10),
+                      CostumImageUploader(
+                        images: state.maybeWhen(
+                          orElse: () => [],
+                          imagesUpdated: (images) => images,
+                          removedImageState: (removedImages) => removedImages,
+                        ),
+
+                        onImagesChanged: (images) {
+                          context.read<BrandBloc>().add(ImageUploaded(images));
+                        },
+                        onImageRemoved: (image) {
+                          context.read<BrandBloc>().add(RemovedImage(image));
+                        },
+                      ),
+                      const SizedBox(height: 40),
                       Center(
-                        child: Column(
-                          children: [
-                            const Text('Selected Logo Preview:'),
-                            const SizedBox(height: 10),
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: Image.memory(
-                                imageBytes,
-                                height: 200,
-                                width: screenWidth / 5,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ],
+                        child: CostumWidget.costumElevatedButton(
+                          width: screenWidth / 6,
+                          context: context,
+                          title: 'Add Brand',
+                          ontap: () async {
+                            final List<Uint8List> images = state.maybeWhen(
+                              orElse: () => [],
+                              imagesUpdated: (images) => images,
+                              removedImageState: (removedImages) =>
+                                  removedImages,
+                            );
+                            if (!Commonfunction.imageValidator(images, context)) {
+                              return ;
+                            }
+
+                            CloudinaryServices cloudinaryServices =
+                                CloudinaryServices();
+                            final cloudImage = await cloudinaryServices
+                                .uploadMultipleImages(images);
+                            Commonfunction.validateAndSubmitForm(
+                              context: context,
+                              formKey: _formKey,
+                              // successMessage: 'Brand added successfully',
+                              // errorMessage: 'Failed to add brand',
+                            );
+                            Logger().d('Cloudinary Image: $cloudImage');
+                            final brands = BrandModel(
+                              name: _brandNameController.text,
+                              imageUrl: cloudImage,
+                            );
+                            context.read<BrandBloc>().add(AddBrand(brands));
+                          },
                         ),
                       ),
-                    const SizedBox(height: 40),
-                    Center(
-                      child: CostumWidget.costumElevatedButton(
-                        context: context,
-                        title: state is BrandFormSubmitting
-                            ? 'Submitting...'
-                            : 'Add Brand',
-                        backgroundColor: Colors.blue,
-                        foregroundColor: Colors.white,
-                        width: screenWidth / 7,
-                        ontap:
-                            state is BrandFormSubmitting || imageBytes == null
-                            ? null
-                            : () => _submitForm(context, imageBytes),
-                      ),
-                    ),
-                  ],
+                      SizedBox(height: 20),
+                    ],
+                  ),
                 ),
               ),
             );
@@ -152,5 +139,10 @@ class AddbrandScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+   clearfield(BuildContext context) {
+    _brandNameController.clear();
+
+    context.read<BrandBloc>().add(BrandEvent.clearImage());
   }
 }

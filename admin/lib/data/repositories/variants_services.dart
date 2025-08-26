@@ -5,7 +5,7 @@ import 'package:shoezy_admin/data/model/vareintModel/varientsModel.dart';
 import 'package:shoezy_admin/fetures/core/id.dart';
 
 class VariantsServices {
-      final fireStore = FirebaseFirestore.instance.collection('variants');
+  final fireStore = FirebaseFirestore.instance.collection('variants');
 
   Future<void> addVariant({
     required String color,
@@ -21,23 +21,22 @@ class VariantsServices {
         size: size,
         stock: stock,
       );
-    await fireStore.add(variants.toJson());
+      await fireStore.add(variants.toJson());
     } catch (e) {
       log(e.toString());
     }
   }
 
-  Future<List<Variantsmodel>> getVaraints()async{
-try{
-  final snapshot=await fireStore.get();
-  final varaintsList=snapshot.docs.map((doc)=>Variantsmodel.fromJson(doc.data())).toList();
-  return varaintsList;
-}   catch(e){
-  log(e.toString());
-  rethrow;
-}  
+  Future<List<Variantsmodel>> getVaraints() async {
+    try {
+      final snapshot = await fireStore.get();
+      final varaintsList = snapshot.docs
+          .map((doc) => Variantsmodel.fromJson(doc.data()))
+          .toList();
+      return varaintsList;
+    } catch (e) {
+      log(e.toString());
+      rethrow;
+    }
   }
-
-
 }
-

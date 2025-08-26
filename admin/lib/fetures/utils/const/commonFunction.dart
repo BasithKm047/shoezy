@@ -1,6 +1,4 @@
-import 'dart:io';
 import 'dart:typed_data';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker_web/image_picker_web.dart';
@@ -25,20 +23,20 @@ class Commonfunction {
   static Future<void>? validateAndSubmitForm({
     required BuildContext context,
     required GlobalKey<FormState> formKey,
-    required String successMessage,
-    required String errorMessage,
+     String? successMessage,
+     String? errorMessage,
     VoidCallback? onSuccess,
     FormType? type,
     List<Uint8List>? images,
   }) async {
     final isValid = formKey.currentState?.validate() ?? true;
     if (!isValid && images!.isEmpty) {
-      CostumWidget.showCustomSnackbar(
-        context: context,
-        message: errorMessage,
-        backgroundColor: Colors.blue,
-        borderColor: Colors.white,
-      );
+      // CostumWidget.showCustomSnackbar(
+      //   context: context,
+      //   message: errorMessage ?? '',
+      //   backgroundColor: Colors.blue,
+      //   borderColor: Colors.white,
+      // );
       return;
     }
 
@@ -51,12 +49,12 @@ class Commonfunction {
       print('onSuccess callback executed');
     }
 
-    CostumWidget.showCustomSnackbar(
-      context: context,
-      message: successMessage,
-      backgroundColor: Colors.blue,
-      borderColor: Colors.white,
-    );
+    // CostumWidget.showCustomSnackbar(
+    //   context: context,
+    //   message: successMessage ?? '',
+    //   backgroundColor: Colors.blue,
+    //   borderColor: Colors.white,
+    // );
   }
 
   static bool validateProductFields({

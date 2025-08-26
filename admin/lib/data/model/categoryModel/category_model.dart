@@ -6,11 +6,11 @@ part 'category_model.g.dart';
 abstract class CategoryModel with _$CategoryModel {
 
   factory CategoryModel({
-    required List<String> name,
-    required String type,
-    required String id,
+     String ?id,
+    required String name,
+     required List<String> image,
+
   }) = _CategoryModel;
   factory CategoryModel.fromJson(Map<String, dynamic> json) =>
       _$CategoryModelFromJson(json);
 }
-  enum Types{gender,color,size}

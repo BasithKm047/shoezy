@@ -61,7 +61,7 @@ extension VariantsEventPatterns on VariantsEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _ImageUploadedEvent value)?  imageUpload,TResult Function( _ImageRemoved value)?  imageRemoved,TResult Function( _AddVaraints value)?  addVariants,TResult Function( _Getvariants value)?  getVariants,TResult Function( _ResetImage value)?  resetImgae,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _ImageUploadedEvent value)?  imageUpload,TResult Function( _ImageRemoved value)?  imageRemoved,TResult Function( _AddVaraints value)?  addVariants,TResult Function( _Getvariants value)?  getVariants,TResult Function( _ResetImage value)?  resetImgae,TResult Function( _RemoveVariants value)?  removeVariants,TResult Function( _UpdateVariants value)?  updateVariants,TResult Function( _SearchVariants value)?  searchVariants,TResult Function( _DeleteVariants value)?  deleteVariants,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _ImageUploadedEvent() when imageUpload != null:
@@ -69,7 +69,11 @@ return imageUpload(_that);case _ImageRemoved() when imageRemoved != null:
 return imageRemoved(_that);case _AddVaraints() when addVariants != null:
 return addVariants(_that);case _Getvariants() when getVariants != null:
 return getVariants(_that);case _ResetImage() when resetImgae != null:
-return resetImgae(_that);case _:
+return resetImgae(_that);case _RemoveVariants() when removeVariants != null:
+return removeVariants(_that);case _UpdateVariants() when updateVariants != null:
+return updateVariants(_that);case _SearchVariants() when searchVariants != null:
+return searchVariants(_that);case _DeleteVariants() when deleteVariants != null:
+return deleteVariants(_that);case _:
   return orElse();
 
 }
@@ -87,7 +91,7 @@ return resetImgae(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _ImageUploadedEvent value)  imageUpload,required TResult Function( _ImageRemoved value)  imageRemoved,required TResult Function( _AddVaraints value)  addVariants,required TResult Function( _Getvariants value)  getVariants,required TResult Function( _ResetImage value)  resetImgae,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _ImageUploadedEvent value)  imageUpload,required TResult Function( _ImageRemoved value)  imageRemoved,required TResult Function( _AddVaraints value)  addVariants,required TResult Function( _Getvariants value)  getVariants,required TResult Function( _ResetImage value)  resetImgae,required TResult Function( _RemoveVariants value)  removeVariants,required TResult Function( _UpdateVariants value)  updateVariants,required TResult Function( _SearchVariants value)  searchVariants,required TResult Function( _DeleteVariants value)  deleteVariants,}){
 final _that = this;
 switch (_that) {
 case _ImageUploadedEvent():
@@ -95,7 +99,11 @@ return imageUpload(_that);case _ImageRemoved():
 return imageRemoved(_that);case _AddVaraints():
 return addVariants(_that);case _Getvariants():
 return getVariants(_that);case _ResetImage():
-return resetImgae(_that);case _:
+return resetImgae(_that);case _RemoveVariants():
+return removeVariants(_that);case _UpdateVariants():
+return updateVariants(_that);case _SearchVariants():
+return searchVariants(_that);case _DeleteVariants():
+return deleteVariants(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -112,7 +120,7 @@ return resetImgae(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _ImageUploadedEvent value)?  imageUpload,TResult? Function( _ImageRemoved value)?  imageRemoved,TResult? Function( _AddVaraints value)?  addVariants,TResult? Function( _Getvariants value)?  getVariants,TResult? Function( _ResetImage value)?  resetImgae,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _ImageUploadedEvent value)?  imageUpload,TResult? Function( _ImageRemoved value)?  imageRemoved,TResult? Function( _AddVaraints value)?  addVariants,TResult? Function( _Getvariants value)?  getVariants,TResult? Function( _ResetImage value)?  resetImgae,TResult? Function( _RemoveVariants value)?  removeVariants,TResult? Function( _UpdateVariants value)?  updateVariants,TResult? Function( _SearchVariants value)?  searchVariants,TResult? Function( _DeleteVariants value)?  deleteVariants,}){
 final _that = this;
 switch (_that) {
 case _ImageUploadedEvent() when imageUpload != null:
@@ -120,7 +128,11 @@ return imageUpload(_that);case _ImageRemoved() when imageRemoved != null:
 return imageRemoved(_that);case _AddVaraints() when addVariants != null:
 return addVariants(_that);case _Getvariants() when getVariants != null:
 return getVariants(_that);case _ResetImage() when resetImgae != null:
-return resetImgae(_that);case _:
+return resetImgae(_that);case _RemoveVariants() when removeVariants != null:
+return removeVariants(_that);case _UpdateVariants() when updateVariants != null:
+return updateVariants(_that);case _SearchVariants() when searchVariants != null:
+return searchVariants(_that);case _DeleteVariants() when deleteVariants != null:
+return deleteVariants(_that);case _:
   return null;
 
 }
@@ -137,14 +149,18 @@ return resetImgae(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( List<Uint8List> image)?  imageUpload,TResult Function( Uint8List removedImage)?  imageRemoved,TResult Function( Variantsmodel varaints)?  addVariants,TResult Function()?  getVariants,TResult Function()?  resetImgae,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( List<Uint8List> image)?  imageUpload,TResult Function( Uint8List removedImage)?  imageRemoved,TResult Function( Variantsmodel varaints)?  addVariants,TResult Function()?  getVariants,TResult Function()?  resetImgae,TResult Function( Variantsmodel variants)?  removeVariants,TResult Function( Variantsmodel variants)?  updateVariants,TResult Function( String query)?  searchVariants,TResult Function( String id)?  deleteVariants,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ImageUploadedEvent() when imageUpload != null:
 return imageUpload(_that.image);case _ImageRemoved() when imageRemoved != null:
 return imageRemoved(_that.removedImage);case _AddVaraints() when addVariants != null:
 return addVariants(_that.varaints);case _Getvariants() when getVariants != null:
 return getVariants();case _ResetImage() when resetImgae != null:
-return resetImgae();case _:
+return resetImgae();case _RemoveVariants() when removeVariants != null:
+return removeVariants(_that.variants);case _UpdateVariants() when updateVariants != null:
+return updateVariants(_that.variants);case _SearchVariants() when searchVariants != null:
+return searchVariants(_that.query);case _DeleteVariants() when deleteVariants != null:
+return deleteVariants(_that.id);case _:
   return orElse();
 
 }
@@ -162,14 +178,18 @@ return resetImgae();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( List<Uint8List> image)  imageUpload,required TResult Function( Uint8List removedImage)  imageRemoved,required TResult Function( Variantsmodel varaints)  addVariants,required TResult Function()  getVariants,required TResult Function()  resetImgae,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( List<Uint8List> image)  imageUpload,required TResult Function( Uint8List removedImage)  imageRemoved,required TResult Function( Variantsmodel varaints)  addVariants,required TResult Function()  getVariants,required TResult Function()  resetImgae,required TResult Function( Variantsmodel variants)  removeVariants,required TResult Function( Variantsmodel variants)  updateVariants,required TResult Function( String query)  searchVariants,required TResult Function( String id)  deleteVariants,}) {final _that = this;
 switch (_that) {
 case _ImageUploadedEvent():
 return imageUpload(_that.image);case _ImageRemoved():
 return imageRemoved(_that.removedImage);case _AddVaraints():
 return addVariants(_that.varaints);case _Getvariants():
 return getVariants();case _ResetImage():
-return resetImgae();case _:
+return resetImgae();case _RemoveVariants():
+return removeVariants(_that.variants);case _UpdateVariants():
+return updateVariants(_that.variants);case _SearchVariants():
+return searchVariants(_that.query);case _DeleteVariants():
+return deleteVariants(_that.id);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -186,14 +206,18 @@ return resetImgae();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( List<Uint8List> image)?  imageUpload,TResult? Function( Uint8List removedImage)?  imageRemoved,TResult? Function( Variantsmodel varaints)?  addVariants,TResult? Function()?  getVariants,TResult? Function()?  resetImgae,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( List<Uint8List> image)?  imageUpload,TResult? Function( Uint8List removedImage)?  imageRemoved,TResult? Function( Variantsmodel varaints)?  addVariants,TResult? Function()?  getVariants,TResult? Function()?  resetImgae,TResult? Function( Variantsmodel variants)?  removeVariants,TResult? Function( Variantsmodel variants)?  updateVariants,TResult? Function( String query)?  searchVariants,TResult? Function( String id)?  deleteVariants,}) {final _that = this;
 switch (_that) {
 case _ImageUploadedEvent() when imageUpload != null:
 return imageUpload(_that.image);case _ImageRemoved() when imageRemoved != null:
 return imageRemoved(_that.removedImage);case _AddVaraints() when addVariants != null:
 return addVariants(_that.varaints);case _Getvariants() when getVariants != null:
 return getVariants();case _ResetImage() when resetImgae != null:
-return resetImgae();case _:
+return resetImgae();case _RemoveVariants() when removeVariants != null:
+return removeVariants(_that.variants);case _UpdateVariants() when updateVariants != null:
+return updateVariants(_that.variants);case _SearchVariants() when searchVariants != null:
+return searchVariants(_that.query);case _DeleteVariants() when deleteVariants != null:
+return deleteVariants(_that.id);case _:
   return null;
 
 }
@@ -507,6 +531,312 @@ String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
 
 
 
+
+/// @nodoc
+
+
+class _RemoveVariants with DiagnosticableTreeMixin implements VariantsEvent {
+  const _RemoveVariants(this.variants);
+  
+
+ final  Variantsmodel variants;
+
+/// Create a copy of VariantsEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$RemoveVariantsCopyWith<_RemoveVariants> get copyWith => __$RemoveVariantsCopyWithImpl<_RemoveVariants>(this, _$identity);
+
+
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'VariantsEvent.removeVariants'))
+    ..add(DiagnosticsProperty('variants', variants));
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RemoveVariants&&(identical(other.variants, variants) || other.variants == variants));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,variants);
+
+@override
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+  return 'VariantsEvent.removeVariants(variants: $variants)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$RemoveVariantsCopyWith<$Res> implements $VariantsEventCopyWith<$Res> {
+  factory _$RemoveVariantsCopyWith(_RemoveVariants value, $Res Function(_RemoveVariants) _then) = __$RemoveVariantsCopyWithImpl;
+@useResult
+$Res call({
+ Variantsmodel variants
+});
+
+
+$VariantsmodelCopyWith<$Res> get variants;
+
+}
+/// @nodoc
+class __$RemoveVariantsCopyWithImpl<$Res>
+    implements _$RemoveVariantsCopyWith<$Res> {
+  __$RemoveVariantsCopyWithImpl(this._self, this._then);
+
+  final _RemoveVariants _self;
+  final $Res Function(_RemoveVariants) _then;
+
+/// Create a copy of VariantsEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? variants = null,}) {
+  return _then(_RemoveVariants(
+null == variants ? _self.variants : variants // ignore: cast_nullable_to_non_nullable
+as Variantsmodel,
+  ));
+}
+
+/// Create a copy of VariantsEvent
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$VariantsmodelCopyWith<$Res> get variants {
+  
+  return $VariantsmodelCopyWith<$Res>(_self.variants, (value) {
+    return _then(_self.copyWith(variants: value));
+  });
+}
+}
+
+/// @nodoc
+
+
+class _UpdateVariants with DiagnosticableTreeMixin implements VariantsEvent {
+  const _UpdateVariants(this.variants);
+  
+
+ final  Variantsmodel variants;
+
+/// Create a copy of VariantsEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$UpdateVariantsCopyWith<_UpdateVariants> get copyWith => __$UpdateVariantsCopyWithImpl<_UpdateVariants>(this, _$identity);
+
+
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'VariantsEvent.updateVariants'))
+    ..add(DiagnosticsProperty('variants', variants));
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UpdateVariants&&(identical(other.variants, variants) || other.variants == variants));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,variants);
+
+@override
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+  return 'VariantsEvent.updateVariants(variants: $variants)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$UpdateVariantsCopyWith<$Res> implements $VariantsEventCopyWith<$Res> {
+  factory _$UpdateVariantsCopyWith(_UpdateVariants value, $Res Function(_UpdateVariants) _then) = __$UpdateVariantsCopyWithImpl;
+@useResult
+$Res call({
+ Variantsmodel variants
+});
+
+
+$VariantsmodelCopyWith<$Res> get variants;
+
+}
+/// @nodoc
+class __$UpdateVariantsCopyWithImpl<$Res>
+    implements _$UpdateVariantsCopyWith<$Res> {
+  __$UpdateVariantsCopyWithImpl(this._self, this._then);
+
+  final _UpdateVariants _self;
+  final $Res Function(_UpdateVariants) _then;
+
+/// Create a copy of VariantsEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? variants = null,}) {
+  return _then(_UpdateVariants(
+null == variants ? _self.variants : variants // ignore: cast_nullable_to_non_nullable
+as Variantsmodel,
+  ));
+}
+
+/// Create a copy of VariantsEvent
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$VariantsmodelCopyWith<$Res> get variants {
+  
+  return $VariantsmodelCopyWith<$Res>(_self.variants, (value) {
+    return _then(_self.copyWith(variants: value));
+  });
+}
+}
+
+/// @nodoc
+
+
+class _SearchVariants with DiagnosticableTreeMixin implements VariantsEvent {
+  const _SearchVariants(this.query);
+  
+
+ final  String query;
+
+/// Create a copy of VariantsEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$SearchVariantsCopyWith<_SearchVariants> get copyWith => __$SearchVariantsCopyWithImpl<_SearchVariants>(this, _$identity);
+
+
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'VariantsEvent.searchVariants'))
+    ..add(DiagnosticsProperty('query', query));
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SearchVariants&&(identical(other.query, query) || other.query == query));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,query);
+
+@override
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+  return 'VariantsEvent.searchVariants(query: $query)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$SearchVariantsCopyWith<$Res> implements $VariantsEventCopyWith<$Res> {
+  factory _$SearchVariantsCopyWith(_SearchVariants value, $Res Function(_SearchVariants) _then) = __$SearchVariantsCopyWithImpl;
+@useResult
+$Res call({
+ String query
+});
+
+
+
+
+}
+/// @nodoc
+class __$SearchVariantsCopyWithImpl<$Res>
+    implements _$SearchVariantsCopyWith<$Res> {
+  __$SearchVariantsCopyWithImpl(this._self, this._then);
+
+  final _SearchVariants _self;
+  final $Res Function(_SearchVariants) _then;
+
+/// Create a copy of VariantsEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? query = null,}) {
+  return _then(_SearchVariants(
+null == query ? _self.query : query // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class _DeleteVariants with DiagnosticableTreeMixin implements VariantsEvent {
+  const _DeleteVariants(this.id);
+  
+
+ final  String id;
+
+/// Create a copy of VariantsEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$DeleteVariantsCopyWith<_DeleteVariants> get copyWith => __$DeleteVariantsCopyWithImpl<_DeleteVariants>(this, _$identity);
+
+
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'VariantsEvent.deleteVariants'))
+    ..add(DiagnosticsProperty('id', id));
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DeleteVariants&&(identical(other.id, id) || other.id == id));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,id);
+
+@override
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+  return 'VariantsEvent.deleteVariants(id: $id)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$DeleteVariantsCopyWith<$Res> implements $VariantsEventCopyWith<$Res> {
+  factory _$DeleteVariantsCopyWith(_DeleteVariants value, $Res Function(_DeleteVariants) _then) = __$DeleteVariantsCopyWithImpl;
+@useResult
+$Res call({
+ String id
+});
+
+
+
+
+}
+/// @nodoc
+class __$DeleteVariantsCopyWithImpl<$Res>
+    implements _$DeleteVariantsCopyWith<$Res> {
+  __$DeleteVariantsCopyWithImpl(this._self, this._then);
+
+  final _DeleteVariants _self;
+  final $Res Function(_DeleteVariants) _then;
+
+/// Create a copy of VariantsEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? id = null,}) {
+  return _then(_DeleteVariants(
+null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
 
 /// @nodoc
 mixin _$VariantsState implements DiagnosticableTreeMixin {

@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +30,7 @@ class AddvariantScreen extends StatelessWidget {
       body: BlocConsumer<VariantsBloc, VariantsState>(
         listener: (context, state) {
           state.maybeWhen(
+            
             loading: () {
               CircularProgressIndicator();
             },
