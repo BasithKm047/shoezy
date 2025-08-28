@@ -56,7 +56,7 @@ class Drawers extends StatelessWidget {
               buildDrawerButton(context: context, title: 'Orders', icon: Icons.list_alt, routeName: Routes.orderList),
               buildDrawerButton(context: context, title: 'Category', icon: Icons.category, routeName: Routes.category),
               buildDrawerButton(context: context, title: 'Brand', icon: FontAwesomeIcons.brandsFontAwesome, routeName: Routes.brand),
-              buildDrawerButton(context: context, title: 'Varients', icon:Icons.style, routeName:Routes.varientsScreen ),
+              // buildDrawerButton(context: context, title: 'Varients', icon:Icons.style, routeName:Routes.varientsScreen ),
               buildDrawerButton(context: context, title: 'Settings', icon: Icons.settings, routeName: Routes.setting),
               const Spacer(), 
                 Padding(

@@ -10,7 +10,6 @@ class BrandServices {
     required List<String> image,
   }) async {
     try {
-     
       final brand = BrandModel(id: createId(), name: name, imageUrl: image);
       await db.doc(brand.id).set(brand.toJson());
     } catch (e) {
@@ -31,10 +30,15 @@ class BrandServices {
     await db.doc(id).delete();
   }
 
-  Future<List<BrandModel>> getBrands() async {
-    final snapshot = await db.get();
-    return snapshot.docs
-        .map((doc) => BrandModel.fromJson(doc.data()))
-        .toList();
-  } 
+  Stream<List<BrandModel>> getBrands() {
+    return db.snapshots().map((snapshot) {
+      return snapshot.docs
+          .map((doc) => BrandModel.fromJson(doc.data()))
+          .toList();
+    });
+  }
+
+  Future<void> getBrandById(String id) async {
+    await db.doc(id).get();
+  }
 }

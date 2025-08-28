@@ -52,5 +52,24 @@ class BrandBloc extends Bloc<BrandEvent, BrandState> {
     on<ClearImage>((event, emit) {
      emit(BrandState.imagesUpdated([]));
     });
+    on<SelectedBrand>((event, emit) {
+     state.maybeWhen(orElse: (){},
+     loaded: (brands, selectedBrand){
+      emit(BrandState.loaded(brands: brands, selectedBrand: event.brandName));
+     });
+    });
+
+    on<FetchBrands>((event, emit) async{
+      emit(BrandState.loading());
+      try {
+           await emit.forEach<List<BrandModel>>(
+              brandServices.getBrands(),
+              onData: (brands) => BrandState.loaded(brands: brands),
+              onError: (error, stackTrace) => BrandState.error(error.toString()),
+            );
+      } catch (e) {
+        emit(BrandState.error(e.toString()));
+      }
+    });
   }
 }

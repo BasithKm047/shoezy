@@ -5,7 +5,9 @@ import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logger/logger.dart';
 import 'package:shoezy_admin/data/model/categoryModel/category_model.dart';
+import 'package:shoezy_admin/data/repositories/brand_services.dart';
 import 'package:shoezy_admin/data/repositories/category_services.dart';
+import 'package:shoezy_admin/presentation/bloc/brand/bloc/brand_bloc.dart';
 // import 'package:meta/meta.dart';
 part 'category_bloc.freezed.dart';
 
@@ -54,7 +56,27 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
    on<ResetImage>((event, emit) {
     emit(CategoryState.imagesUpdated([]));
   });
-  }
-  
 
+   
+   on<SelectedCategory>((event, emit) {
+     state.maybeWhen(orElse: (){}, 
+     loaded: (categories, selectedCategory){
+      emit(CategoryState.loaded(categories: categories, selectedCategory: event.categoryName));
+     });
+   });
+   on<GetCategories>((event, emit) async {
+     emit(CategoryState.loading());
+     try {
+       await emit.forEach<List<CategoryModel>>(
+         categoryServices.getCategories(),
+      onData: (categories)=> CategoryState.loaded(categories: categories),
+      onError: (error, stackTrace) => CategoryState.failure(error.toString()),
+        );
+     } catch (e) {
+       emit(CategoryState.failure(e.toString()));
+     }
+   });
+  }
 }
+
+

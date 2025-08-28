@@ -55,7 +55,7 @@ extension CategoryEventPatterns on CategoryEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( AddCategory value)?  addCategory,TResult Function( DeleteCategory value)?  deleteCategory,TResult Function( UpdateCategory value)?  updateCategory,TResult Function( Reset value)?  reset,TResult Function( ResetImage value)?  resetImage,TResult Function( GetCategories value)?  getCategories,TResult Function( SearchCategories value)?  searchCategories,TResult Function( ImagesUpdated value)?  imagesUpdated,TResult Function( ImageRemoved value)?  imageRemoved,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( AddCategory value)?  addCategory,TResult Function( DeleteCategory value)?  deleteCategory,TResult Function( UpdateCategory value)?  updateCategory,TResult Function( Reset value)?  reset,TResult Function( ResetImage value)?  resetImage,TResult Function( GetCategories value)?  getCategories,TResult Function( SearchCategories value)?  searchCategories,TResult Function( ImagesUpdated value)?  imagesUpdated,TResult Function( ImageRemoved value)?  imageRemoved,TResult Function( SelectedCategory value)?  selectedCategory,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case AddCategory() when addCategory != null:
@@ -67,7 +67,8 @@ return resetImage(_that);case GetCategories() when getCategories != null:
 return getCategories(_that);case SearchCategories() when searchCategories != null:
 return searchCategories(_that);case ImagesUpdated() when imagesUpdated != null:
 return imagesUpdated(_that);case ImageRemoved() when imageRemoved != null:
-return imageRemoved(_that);case _:
+return imageRemoved(_that);case SelectedCategory() when selectedCategory != null:
+return selectedCategory(_that);case _:
   return orElse();
 
 }
@@ -85,7 +86,7 @@ return imageRemoved(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( AddCategory value)  addCategory,required TResult Function( DeleteCategory value)  deleteCategory,required TResult Function( UpdateCategory value)  updateCategory,required TResult Function( Reset value)  reset,required TResult Function( ResetImage value)  resetImage,required TResult Function( GetCategories value)  getCategories,required TResult Function( SearchCategories value)  searchCategories,required TResult Function( ImagesUpdated value)  imagesUpdated,required TResult Function( ImageRemoved value)  imageRemoved,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( AddCategory value)  addCategory,required TResult Function( DeleteCategory value)  deleteCategory,required TResult Function( UpdateCategory value)  updateCategory,required TResult Function( Reset value)  reset,required TResult Function( ResetImage value)  resetImage,required TResult Function( GetCategories value)  getCategories,required TResult Function( SearchCategories value)  searchCategories,required TResult Function( ImagesUpdated value)  imagesUpdated,required TResult Function( ImageRemoved value)  imageRemoved,required TResult Function( SelectedCategory value)  selectedCategory,}){
 final _that = this;
 switch (_that) {
 case AddCategory():
@@ -97,7 +98,8 @@ return resetImage(_that);case GetCategories():
 return getCategories(_that);case SearchCategories():
 return searchCategories(_that);case ImagesUpdated():
 return imagesUpdated(_that);case ImageRemoved():
-return imageRemoved(_that);case _:
+return imageRemoved(_that);case SelectedCategory():
+return selectedCategory(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -114,7 +116,7 @@ return imageRemoved(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( AddCategory value)?  addCategory,TResult? Function( DeleteCategory value)?  deleteCategory,TResult? Function( UpdateCategory value)?  updateCategory,TResult? Function( Reset value)?  reset,TResult? Function( ResetImage value)?  resetImage,TResult? Function( GetCategories value)?  getCategories,TResult? Function( SearchCategories value)?  searchCategories,TResult? Function( ImagesUpdated value)?  imagesUpdated,TResult? Function( ImageRemoved value)?  imageRemoved,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( AddCategory value)?  addCategory,TResult? Function( DeleteCategory value)?  deleteCategory,TResult? Function( UpdateCategory value)?  updateCategory,TResult? Function( Reset value)?  reset,TResult? Function( ResetImage value)?  resetImage,TResult? Function( GetCategories value)?  getCategories,TResult? Function( SearchCategories value)?  searchCategories,TResult? Function( ImagesUpdated value)?  imagesUpdated,TResult? Function( ImageRemoved value)?  imageRemoved,TResult? Function( SelectedCategory value)?  selectedCategory,}){
 final _that = this;
 switch (_that) {
 case AddCategory() when addCategory != null:
@@ -126,7 +128,8 @@ return resetImage(_that);case GetCategories() when getCategories != null:
 return getCategories(_that);case SearchCategories() when searchCategories != null:
 return searchCategories(_that);case ImagesUpdated() when imagesUpdated != null:
 return imagesUpdated(_that);case ImageRemoved() when imageRemoved != null:
-return imageRemoved(_that);case _:
+return imageRemoved(_that);case SelectedCategory() when selectedCategory != null:
+return selectedCategory(_that);case _:
   return null;
 
 }
@@ -143,7 +146,7 @@ return imageRemoved(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( CategoryModel category)?  addCategory,TResult Function( String id)?  deleteCategory,TResult Function( String id,  String name,  List<Uint8List> image)?  updateCategory,TResult Function()?  reset,TResult Function()?  resetImage,TResult Function()?  getCategories,TResult Function( String query)?  searchCategories,TResult Function( List<Uint8List> images)?  imagesUpdated,TResult Function( Uint8List removedImages)?  imageRemoved,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( CategoryModel category)?  addCategory,TResult Function( String id)?  deleteCategory,TResult Function( String id,  String name,  List<Uint8List> image)?  updateCategory,TResult Function()?  reset,TResult Function()?  resetImage,TResult Function()?  getCategories,TResult Function( String query)?  searchCategories,TResult Function( List<Uint8List> images)?  imagesUpdated,TResult Function( Uint8List removedImages)?  imageRemoved,TResult Function( String? categoryName)?  selectedCategory,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case AddCategory() when addCategory != null:
 return addCategory(_that.category);case DeleteCategory() when deleteCategory != null:
@@ -154,7 +157,8 @@ return resetImage();case GetCategories() when getCategories != null:
 return getCategories();case SearchCategories() when searchCategories != null:
 return searchCategories(_that.query);case ImagesUpdated() when imagesUpdated != null:
 return imagesUpdated(_that.images);case ImageRemoved() when imageRemoved != null:
-return imageRemoved(_that.removedImages);case _:
+return imageRemoved(_that.removedImages);case SelectedCategory() when selectedCategory != null:
+return selectedCategory(_that.categoryName);case _:
   return orElse();
 
 }
@@ -172,7 +176,7 @@ return imageRemoved(_that.removedImages);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( CategoryModel category)  addCategory,required TResult Function( String id)  deleteCategory,required TResult Function( String id,  String name,  List<Uint8List> image)  updateCategory,required TResult Function()  reset,required TResult Function()  resetImage,required TResult Function()  getCategories,required TResult Function( String query)  searchCategories,required TResult Function( List<Uint8List> images)  imagesUpdated,required TResult Function( Uint8List removedImages)  imageRemoved,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( CategoryModel category)  addCategory,required TResult Function( String id)  deleteCategory,required TResult Function( String id,  String name,  List<Uint8List> image)  updateCategory,required TResult Function()  reset,required TResult Function()  resetImage,required TResult Function()  getCategories,required TResult Function( String query)  searchCategories,required TResult Function( List<Uint8List> images)  imagesUpdated,required TResult Function( Uint8List removedImages)  imageRemoved,required TResult Function( String? categoryName)  selectedCategory,}) {final _that = this;
 switch (_that) {
 case AddCategory():
 return addCategory(_that.category);case DeleteCategory():
@@ -183,7 +187,8 @@ return resetImage();case GetCategories():
 return getCategories();case SearchCategories():
 return searchCategories(_that.query);case ImagesUpdated():
 return imagesUpdated(_that.images);case ImageRemoved():
-return imageRemoved(_that.removedImages);case _:
+return imageRemoved(_that.removedImages);case SelectedCategory():
+return selectedCategory(_that.categoryName);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -200,7 +205,7 @@ return imageRemoved(_that.removedImages);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( CategoryModel category)?  addCategory,TResult? Function( String id)?  deleteCategory,TResult? Function( String id,  String name,  List<Uint8List> image)?  updateCategory,TResult? Function()?  reset,TResult? Function()?  resetImage,TResult? Function()?  getCategories,TResult? Function( String query)?  searchCategories,TResult? Function( List<Uint8List> images)?  imagesUpdated,TResult? Function( Uint8List removedImages)?  imageRemoved,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( CategoryModel category)?  addCategory,TResult? Function( String id)?  deleteCategory,TResult? Function( String id,  String name,  List<Uint8List> image)?  updateCategory,TResult? Function()?  reset,TResult? Function()?  resetImage,TResult? Function()?  getCategories,TResult? Function( String query)?  searchCategories,TResult? Function( List<Uint8List> images)?  imagesUpdated,TResult? Function( Uint8List removedImages)?  imageRemoved,TResult? Function( String? categoryName)?  selectedCategory,}) {final _that = this;
 switch (_that) {
 case AddCategory() when addCategory != null:
 return addCategory(_that.category);case DeleteCategory() when deleteCategory != null:
@@ -211,7 +216,8 @@ return resetImage();case GetCategories() when getCategories != null:
 return getCategories();case SearchCategories() when searchCategories != null:
 return searchCategories(_that.query);case ImagesUpdated() when imagesUpdated != null:
 return imagesUpdated(_that.images);case ImageRemoved() when imageRemoved != null:
-return imageRemoved(_that.removedImages);case _:
+return imageRemoved(_that.removedImages);case SelectedCategory() when selectedCategory != null:
+return selectedCategory(_that.categoryName);case _:
   return null;
 
 }
@@ -737,6 +743,72 @@ as Uint8List,
 }
 
 /// @nodoc
+
+
+class SelectedCategory implements CategoryEvent {
+  const SelectedCategory(this.categoryName);
+  
+
+ final  String? categoryName;
+
+/// Create a copy of CategoryEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$SelectedCategoryCopyWith<SelectedCategory> get copyWith => _$SelectedCategoryCopyWithImpl<SelectedCategory>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SelectedCategory&&(identical(other.categoryName, categoryName) || other.categoryName == categoryName));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,categoryName);
+
+@override
+String toString() {
+  return 'CategoryEvent.selectedCategory(categoryName: $categoryName)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $SelectedCategoryCopyWith<$Res> implements $CategoryEventCopyWith<$Res> {
+  factory $SelectedCategoryCopyWith(SelectedCategory value, $Res Function(SelectedCategory) _then) = _$SelectedCategoryCopyWithImpl;
+@useResult
+$Res call({
+ String? categoryName
+});
+
+
+
+
+}
+/// @nodoc
+class _$SelectedCategoryCopyWithImpl<$Res>
+    implements $SelectedCategoryCopyWith<$Res> {
+  _$SelectedCategoryCopyWithImpl(this._self, this._then);
+
+  final SelectedCategory _self;
+  final $Res Function(SelectedCategory) _then;
+
+/// Create a copy of CategoryEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? categoryName = freezed,}) {
+  return _then(SelectedCategory(
+freezed == categoryName ? _self.categoryName : categoryName // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
+
+}
+
+/// @nodoc
 mixin _$CategoryState {
 
 
@@ -780,7 +852,7 @@ extension CategoryStatePatterns on CategoryState {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Initial value)?  initial,TResult Function( _Loading value)?  loading,TResult Function( _Success value)?  success,TResult Function( _Failure value)?  failure,TResult Function( _ImagesUpdated value)?  imagesUpdated,TResult Function( _ImageRemoved value)?  imageRemoved,TResult Function( _Categories value)?  categories,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Initial value)?  initial,TResult Function( _Loading value)?  loading,TResult Function( _Success value)?  success,TResult Function( _Failure value)?  failure,TResult Function( _ImagesUpdated value)?  imagesUpdated,TResult Function( _ImageRemoved value)?  imageRemoved,TResult Function( _Categories value)?  categories,TResult Function( _Loaded value)?  loaded,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
@@ -790,7 +862,8 @@ return success(_that);case _Failure() when failure != null:
 return failure(_that);case _ImagesUpdated() when imagesUpdated != null:
 return imagesUpdated(_that);case _ImageRemoved() when imageRemoved != null:
 return imageRemoved(_that);case _Categories() when categories != null:
-return categories(_that);case _:
+return categories(_that);case _Loaded() when loaded != null:
+return loaded(_that);case _:
   return orElse();
 
 }
@@ -808,7 +881,7 @@ return categories(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Initial value)  initial,required TResult Function( _Loading value)  loading,required TResult Function( _Success value)  success,required TResult Function( _Failure value)  failure,required TResult Function( _ImagesUpdated value)  imagesUpdated,required TResult Function( _ImageRemoved value)  imageRemoved,required TResult Function( _Categories value)  categories,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Initial value)  initial,required TResult Function( _Loading value)  loading,required TResult Function( _Success value)  success,required TResult Function( _Failure value)  failure,required TResult Function( _ImagesUpdated value)  imagesUpdated,required TResult Function( _ImageRemoved value)  imageRemoved,required TResult Function( _Categories value)  categories,required TResult Function( _Loaded value)  loaded,}){
 final _that = this;
 switch (_that) {
 case _Initial():
@@ -818,7 +891,8 @@ return success(_that);case _Failure():
 return failure(_that);case _ImagesUpdated():
 return imagesUpdated(_that);case _ImageRemoved():
 return imageRemoved(_that);case _Categories():
-return categories(_that);case _:
+return categories(_that);case _Loaded():
+return loaded(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -835,7 +909,7 @@ return categories(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Initial value)?  initial,TResult? Function( _Loading value)?  loading,TResult? Function( _Success value)?  success,TResult? Function( _Failure value)?  failure,TResult? Function( _ImagesUpdated value)?  imagesUpdated,TResult? Function( _ImageRemoved value)?  imageRemoved,TResult? Function( _Categories value)?  categories,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Initial value)?  initial,TResult? Function( _Loading value)?  loading,TResult? Function( _Success value)?  success,TResult? Function( _Failure value)?  failure,TResult? Function( _ImagesUpdated value)?  imagesUpdated,TResult? Function( _ImageRemoved value)?  imageRemoved,TResult? Function( _Categories value)?  categories,TResult? Function( _Loaded value)?  loaded,}){
 final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
@@ -845,7 +919,8 @@ return success(_that);case _Failure() when failure != null:
 return failure(_that);case _ImagesUpdated() when imagesUpdated != null:
 return imagesUpdated(_that);case _ImageRemoved() when imageRemoved != null:
 return imageRemoved(_that);case _Categories() when categories != null:
-return categories(_that);case _:
+return categories(_that);case _Loaded() when loaded != null:
+return loaded(_that);case _:
   return null;
 
 }
@@ -862,7 +937,7 @@ return categories(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function()?  success,TResult Function( String message)?  failure,TResult Function( List<Uint8List> images)?  imagesUpdated,TResult Function( List<Uint8List> images)?  imageRemoved,TResult Function( List<CategoryModel> categories)?  categories,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function()?  success,TResult Function( String message)?  failure,TResult Function( List<Uint8List> images)?  imagesUpdated,TResult Function( List<Uint8List> images)?  imageRemoved,TResult Function( List<CategoryModel> categories)?  categories,TResult Function( List<CategoryModel> categories,  String? selectedCategory)?  loaded,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
 return initial();case _Loading() when loading != null:
@@ -871,7 +946,8 @@ return success();case _Failure() when failure != null:
 return failure(_that.message);case _ImagesUpdated() when imagesUpdated != null:
 return imagesUpdated(_that.images);case _ImageRemoved() when imageRemoved != null:
 return imageRemoved(_that.images);case _Categories() when categories != null:
-return categories(_that.categories);case _:
+return categories(_that.categories);case _Loaded() when loaded != null:
+return loaded(_that.categories,_that.selectedCategory);case _:
   return orElse();
 
 }
@@ -889,7 +965,7 @@ return categories(_that.categories);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function()  success,required TResult Function( String message)  failure,required TResult Function( List<Uint8List> images)  imagesUpdated,required TResult Function( List<Uint8List> images)  imageRemoved,required TResult Function( List<CategoryModel> categories)  categories,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function()  success,required TResult Function( String message)  failure,required TResult Function( List<Uint8List> images)  imagesUpdated,required TResult Function( List<Uint8List> images)  imageRemoved,required TResult Function( List<CategoryModel> categories)  categories,required TResult Function( List<CategoryModel> categories,  String? selectedCategory)  loaded,}) {final _that = this;
 switch (_that) {
 case _Initial():
 return initial();case _Loading():
@@ -898,7 +974,8 @@ return success();case _Failure():
 return failure(_that.message);case _ImagesUpdated():
 return imagesUpdated(_that.images);case _ImageRemoved():
 return imageRemoved(_that.images);case _Categories():
-return categories(_that.categories);case _:
+return categories(_that.categories);case _Loaded():
+return loaded(_that.categories,_that.selectedCategory);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -915,7 +992,7 @@ return categories(_that.categories);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function()?  success,TResult? Function( String message)?  failure,TResult? Function( List<Uint8List> images)?  imagesUpdated,TResult? Function( List<Uint8List> images)?  imageRemoved,TResult? Function( List<CategoryModel> categories)?  categories,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function()?  success,TResult? Function( String message)?  failure,TResult? Function( List<Uint8List> images)?  imagesUpdated,TResult? Function( List<Uint8List> images)?  imageRemoved,TResult? Function( List<CategoryModel> categories)?  categories,TResult? Function( List<CategoryModel> categories,  String? selectedCategory)?  loaded,}) {final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
 return initial();case _Loading() when loading != null:
@@ -924,7 +1001,8 @@ return success();case _Failure() when failure != null:
 return failure(_that.message);case _ImagesUpdated() when imagesUpdated != null:
 return imagesUpdated(_that.images);case _ImageRemoved() when imageRemoved != null:
 return imageRemoved(_that.images);case _Categories() when categories != null:
-return categories(_that.categories);case _:
+return categories(_that.categories);case _Loaded() when loaded != null:
+return loaded(_that.categories,_that.selectedCategory);case _:
   return null;
 
 }
@@ -1304,6 +1382,80 @@ class __$CategoriesCopyWithImpl<$Res>
   return _then(_Categories(
 null == categories ? _self._categories : categories // ignore: cast_nullable_to_non_nullable
 as List<CategoryModel>,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class _Loaded implements CategoryState {
+  const _Loaded({required final  List<CategoryModel> categories, this.selectedCategory}): _categories = categories;
+  
+
+ final  List<CategoryModel> _categories;
+ List<CategoryModel> get categories {
+  if (_categories is EqualUnmodifiableListView) return _categories;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_categories);
+}
+
+ final  String? selectedCategory;
+
+/// Create a copy of CategoryState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$LoadedCopyWith<_Loaded> get copyWith => __$LoadedCopyWithImpl<_Loaded>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Loaded&&const DeepCollectionEquality().equals(other._categories, _categories)&&(identical(other.selectedCategory, selectedCategory) || other.selectedCategory == selectedCategory));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_categories),selectedCategory);
+
+@override
+String toString() {
+  return 'CategoryState.loaded(categories: $categories, selectedCategory: $selectedCategory)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$LoadedCopyWith<$Res> implements $CategoryStateCopyWith<$Res> {
+  factory _$LoadedCopyWith(_Loaded value, $Res Function(_Loaded) _then) = __$LoadedCopyWithImpl;
+@useResult
+$Res call({
+ List<CategoryModel> categories, String? selectedCategory
+});
+
+
+
+
+}
+/// @nodoc
+class __$LoadedCopyWithImpl<$Res>
+    implements _$LoadedCopyWith<$Res> {
+  __$LoadedCopyWithImpl(this._self, this._then);
+
+  final _Loaded _self;
+  final $Res Function(_Loaded) _then;
+
+/// Create a copy of CategoryState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? categories = null,Object? selectedCategory = freezed,}) {
+  return _then(_Loaded(
+categories: null == categories ? _self._categories : categories // ignore: cast_nullable_to_non_nullable
+as List<CategoryModel>,selectedCategory: freezed == selectedCategory ? _self.selectedCategory : selectedCategory // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 

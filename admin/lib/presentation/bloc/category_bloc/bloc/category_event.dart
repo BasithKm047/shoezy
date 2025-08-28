@@ -20,4 +20,6 @@ class CategoryEvent with _$CategoryEvent {
       ImagesUpdated;
   const factory CategoryEvent.imageRemoved({required Uint8List removedImages}) =
       ImageRemoved;
+   const factory CategoryEvent.selectedCategory(String ? categoryName) = SelectedCategory;
+
 }

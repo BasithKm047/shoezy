@@ -55,7 +55,7 @@ extension BrandEventPatterns on BrandEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( AddBrand value)?  addBrand,TResult Function( UpdateBrand value)?  updateBrand,TResult Function( DeleteBrand value)?  deleteBrand,TResult Function( FetchBrands value)?  fetchBrands,TResult Function( ImageUploaded value)?  imageUploaded,TResult Function( ClearImage value)?  clearImage,TResult Function( RemovedImage value)?  removedImage,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( AddBrand value)?  addBrand,TResult Function( UpdateBrand value)?  updateBrand,TResult Function( DeleteBrand value)?  deleteBrand,TResult Function( FetchBrands value)?  fetchBrands,TResult Function( ImageUploaded value)?  imageUploaded,TResult Function( ClearImage value)?  clearImage,TResult Function( RemovedImage value)?  removedImage,TResult Function( SelectedBrand value)?  selectedBrand,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case AddBrand() when addBrand != null:
@@ -65,7 +65,8 @@ return deleteBrand(_that);case FetchBrands() when fetchBrands != null:
 return fetchBrands(_that);case ImageUploaded() when imageUploaded != null:
 return imageUploaded(_that);case ClearImage() when clearImage != null:
 return clearImage(_that);case RemovedImage() when removedImage != null:
-return removedImage(_that);case _:
+return removedImage(_that);case SelectedBrand() when selectedBrand != null:
+return selectedBrand(_that);case _:
   return orElse();
 
 }
@@ -83,7 +84,7 @@ return removedImage(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( AddBrand value)  addBrand,required TResult Function( UpdateBrand value)  updateBrand,required TResult Function( DeleteBrand value)  deleteBrand,required TResult Function( FetchBrands value)  fetchBrands,required TResult Function( ImageUploaded value)  imageUploaded,required TResult Function( ClearImage value)  clearImage,required TResult Function( RemovedImage value)  removedImage,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( AddBrand value)  addBrand,required TResult Function( UpdateBrand value)  updateBrand,required TResult Function( DeleteBrand value)  deleteBrand,required TResult Function( FetchBrands value)  fetchBrands,required TResult Function( ImageUploaded value)  imageUploaded,required TResult Function( ClearImage value)  clearImage,required TResult Function( RemovedImage value)  removedImage,required TResult Function( SelectedBrand value)  selectedBrand,}){
 final _that = this;
 switch (_that) {
 case AddBrand():
@@ -93,7 +94,8 @@ return deleteBrand(_that);case FetchBrands():
 return fetchBrands(_that);case ImageUploaded():
 return imageUploaded(_that);case ClearImage():
 return clearImage(_that);case RemovedImage():
-return removedImage(_that);}
+return removedImage(_that);case SelectedBrand():
+return selectedBrand(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -107,7 +109,7 @@ return removedImage(_that);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( AddBrand value)?  addBrand,TResult? Function( UpdateBrand value)?  updateBrand,TResult? Function( DeleteBrand value)?  deleteBrand,TResult? Function( FetchBrands value)?  fetchBrands,TResult? Function( ImageUploaded value)?  imageUploaded,TResult? Function( ClearImage value)?  clearImage,TResult? Function( RemovedImage value)?  removedImage,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( AddBrand value)?  addBrand,TResult? Function( UpdateBrand value)?  updateBrand,TResult? Function( DeleteBrand value)?  deleteBrand,TResult? Function( FetchBrands value)?  fetchBrands,TResult? Function( ImageUploaded value)?  imageUploaded,TResult? Function( ClearImage value)?  clearImage,TResult? Function( RemovedImage value)?  removedImage,TResult? Function( SelectedBrand value)?  selectedBrand,}){
 final _that = this;
 switch (_that) {
 case AddBrand() when addBrand != null:
@@ -117,7 +119,8 @@ return deleteBrand(_that);case FetchBrands() when fetchBrands != null:
 return fetchBrands(_that);case ImageUploaded() when imageUploaded != null:
 return imageUploaded(_that);case ClearImage() when clearImage != null:
 return clearImage(_that);case RemovedImage() when removedImage != null:
-return removedImage(_that);case _:
+return removedImage(_that);case SelectedBrand() when selectedBrand != null:
+return selectedBrand(_that);case _:
   return null;
 
 }
@@ -134,7 +137,7 @@ return removedImage(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( BrandModel brands)?  addBrand,TResult Function( BrandModel brands)?  updateBrand,TResult Function( String id)?  deleteBrand,TResult Function()?  fetchBrands,TResult Function( List<Uint8List> imageBytes)?  imageUploaded,TResult Function()?  clearImage,TResult Function( Uint8List removedImage)?  removedImage,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( BrandModel brands)?  addBrand,TResult Function( BrandModel brands)?  updateBrand,TResult Function( String id)?  deleteBrand,TResult Function()?  fetchBrands,TResult Function( List<Uint8List> imageBytes)?  imageUploaded,TResult Function()?  clearImage,TResult Function( Uint8List removedImage)?  removedImage,TResult Function( String? brandName)?  selectedBrand,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case AddBrand() when addBrand != null:
 return addBrand(_that.brands);case UpdateBrand() when updateBrand != null:
@@ -143,7 +146,8 @@ return deleteBrand(_that.id);case FetchBrands() when fetchBrands != null:
 return fetchBrands();case ImageUploaded() when imageUploaded != null:
 return imageUploaded(_that.imageBytes);case ClearImage() when clearImage != null:
 return clearImage();case RemovedImage() when removedImage != null:
-return removedImage(_that.removedImage);case _:
+return removedImage(_that.removedImage);case SelectedBrand() when selectedBrand != null:
+return selectedBrand(_that.brandName);case _:
   return orElse();
 
 }
@@ -161,7 +165,7 @@ return removedImage(_that.removedImage);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( BrandModel brands)  addBrand,required TResult Function( BrandModel brands)  updateBrand,required TResult Function( String id)  deleteBrand,required TResult Function()  fetchBrands,required TResult Function( List<Uint8List> imageBytes)  imageUploaded,required TResult Function()  clearImage,required TResult Function( Uint8List removedImage)  removedImage,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( BrandModel brands)  addBrand,required TResult Function( BrandModel brands)  updateBrand,required TResult Function( String id)  deleteBrand,required TResult Function()  fetchBrands,required TResult Function( List<Uint8List> imageBytes)  imageUploaded,required TResult Function()  clearImage,required TResult Function( Uint8List removedImage)  removedImage,required TResult Function( String? brandName)  selectedBrand,}) {final _that = this;
 switch (_that) {
 case AddBrand():
 return addBrand(_that.brands);case UpdateBrand():
@@ -170,7 +174,8 @@ return deleteBrand(_that.id);case FetchBrands():
 return fetchBrands();case ImageUploaded():
 return imageUploaded(_that.imageBytes);case ClearImage():
 return clearImage();case RemovedImage():
-return removedImage(_that.removedImage);}
+return removedImage(_that.removedImage);case SelectedBrand():
+return selectedBrand(_that.brandName);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -184,7 +189,7 @@ return removedImage(_that.removedImage);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( BrandModel brands)?  addBrand,TResult? Function( BrandModel brands)?  updateBrand,TResult? Function( String id)?  deleteBrand,TResult? Function()?  fetchBrands,TResult? Function( List<Uint8List> imageBytes)?  imageUploaded,TResult? Function()?  clearImage,TResult? Function( Uint8List removedImage)?  removedImage,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( BrandModel brands)?  addBrand,TResult? Function( BrandModel brands)?  updateBrand,TResult? Function( String id)?  deleteBrand,TResult? Function()?  fetchBrands,TResult? Function( List<Uint8List> imageBytes)?  imageUploaded,TResult? Function()?  clearImage,TResult? Function( Uint8List removedImage)?  removedImage,TResult? Function( String? brandName)?  selectedBrand,}) {final _that = this;
 switch (_that) {
 case AddBrand() when addBrand != null:
 return addBrand(_that.brands);case UpdateBrand() when updateBrand != null:
@@ -193,7 +198,8 @@ return deleteBrand(_that.id);case FetchBrands() when fetchBrands != null:
 return fetchBrands();case ImageUploaded() when imageUploaded != null:
 return imageUploaded(_that.imageBytes);case ClearImage() when clearImage != null:
 return clearImage();case RemovedImage() when removedImage != null:
-return removedImage(_that.removedImage);case _:
+return removedImage(_that.removedImage);case SelectedBrand() when selectedBrand != null:
+return selectedBrand(_that.brandName);case _:
   return null;
 
 }
@@ -620,6 +626,72 @@ as Uint8List,
 }
 
 /// @nodoc
+
+
+class SelectedBrand implements BrandEvent {
+  const SelectedBrand(this.brandName);
+  
+
+ final  String? brandName;
+
+/// Create a copy of BrandEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$SelectedBrandCopyWith<SelectedBrand> get copyWith => _$SelectedBrandCopyWithImpl<SelectedBrand>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SelectedBrand&&(identical(other.brandName, brandName) || other.brandName == brandName));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,brandName);
+
+@override
+String toString() {
+  return 'BrandEvent.selectedBrand(brandName: $brandName)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $SelectedBrandCopyWith<$Res> implements $BrandEventCopyWith<$Res> {
+  factory $SelectedBrandCopyWith(SelectedBrand value, $Res Function(SelectedBrand) _then) = _$SelectedBrandCopyWithImpl;
+@useResult
+$Res call({
+ String? brandName
+});
+
+
+
+
+}
+/// @nodoc
+class _$SelectedBrandCopyWithImpl<$Res>
+    implements $SelectedBrandCopyWith<$Res> {
+  _$SelectedBrandCopyWithImpl(this._self, this._then);
+
+  final SelectedBrand _self;
+  final $Res Function(SelectedBrand) _then;
+
+/// Create a copy of BrandEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? brandName = freezed,}) {
+  return _then(SelectedBrand(
+freezed == brandName ? _self.brandName : brandName // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
+
+}
+
+/// @nodoc
 mixin _$BrandState {
 
 
@@ -745,13 +817,13 @@ return removedImageState(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function()?  success,TResult Function( List<BrandModel> brands)?  loaded,TResult Function( String message)?  error,TResult Function( List<Uint8List> imageBytes)?  imagesUpdated,TResult Function()?  imageClearedState,TResult Function( List<Uint8List> removedImages)?  removedImageState,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function()?  success,TResult Function( List<BrandModel> brands,  String? selectedBrand)?  loaded,TResult Function( String message)?  error,TResult Function( List<Uint8List> imageBytes)?  imagesUpdated,TResult Function()?  imageClearedState,TResult Function( List<Uint8List> removedImages)?  removedImageState,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case BrandInitial() when initial != null:
 return initial();case BrandLoading() when loading != null:
 return loading();case BrandSuccess() when success != null:
 return success();case BrandLoaded() when loaded != null:
-return loaded(_that.brands);case BrandError() when error != null:
+return loaded(_that.brands,_that.selectedBrand);case BrandError() when error != null:
 return error(_that.message);case ImagesUpdatedState() when imagesUpdated != null:
 return imagesUpdated(_that.imageBytes);case ImageClearedState() when imageClearedState != null:
 return imageClearedState();case RemovedImageState() when removedImageState != null:
@@ -773,13 +845,13 @@ return removedImageState(_that.removedImages);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function()  success,required TResult Function( List<BrandModel> brands)  loaded,required TResult Function( String message)  error,required TResult Function( List<Uint8List> imageBytes)  imagesUpdated,required TResult Function()  imageClearedState,required TResult Function( List<Uint8List> removedImages)  removedImageState,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function()  success,required TResult Function( List<BrandModel> brands,  String? selectedBrand)  loaded,required TResult Function( String message)  error,required TResult Function( List<Uint8List> imageBytes)  imagesUpdated,required TResult Function()  imageClearedState,required TResult Function( List<Uint8List> removedImages)  removedImageState,}) {final _that = this;
 switch (_that) {
 case BrandInitial():
 return initial();case BrandLoading():
 return loading();case BrandSuccess():
 return success();case BrandLoaded():
-return loaded(_that.brands);case BrandError():
+return loaded(_that.brands,_that.selectedBrand);case BrandError():
 return error(_that.message);case ImagesUpdatedState():
 return imagesUpdated(_that.imageBytes);case ImageClearedState():
 return imageClearedState();case RemovedImageState():
@@ -797,13 +869,13 @@ return removedImageState(_that.removedImages);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function()?  success,TResult? Function( List<BrandModel> brands)?  loaded,TResult? Function( String message)?  error,TResult? Function( List<Uint8List> imageBytes)?  imagesUpdated,TResult? Function()?  imageClearedState,TResult? Function( List<Uint8List> removedImages)?  removedImageState,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function()?  success,TResult? Function( List<BrandModel> brands,  String? selectedBrand)?  loaded,TResult? Function( String message)?  error,TResult? Function( List<Uint8List> imageBytes)?  imagesUpdated,TResult? Function()?  imageClearedState,TResult? Function( List<Uint8List> removedImages)?  removedImageState,}) {final _that = this;
 switch (_that) {
 case BrandInitial() when initial != null:
 return initial();case BrandLoading() when loading != null:
 return loading();case BrandSuccess() when success != null:
 return success();case BrandLoaded() when loaded != null:
-return loaded(_that.brands);case BrandError() when error != null:
+return loaded(_that.brands,_that.selectedBrand);case BrandError() when error != null:
 return error(_that.message);case ImagesUpdatedState() when imagesUpdated != null:
 return imagesUpdated(_that.imageBytes);case ImageClearedState() when imageClearedState != null:
 return imageClearedState();case RemovedImageState() when removedImageState != null:
@@ -915,7 +987,7 @@ String toString() {
 
 
 class BrandLoaded implements BrandState {
-  const BrandLoaded(final  List<BrandModel> brands): _brands = brands;
+  const BrandLoaded({required final  List<BrandModel> brands, this.selectedBrand}): _brands = brands;
   
 
  final  List<BrandModel> _brands;
@@ -925,6 +997,7 @@ class BrandLoaded implements BrandState {
   return EqualUnmodifiableListView(_brands);
 }
 
+ final  String? selectedBrand;
 
 /// Create a copy of BrandState
 /// with the given fields replaced by the non-null parameter values.
@@ -936,16 +1009,16 @@ $BrandLoadedCopyWith<BrandLoaded> get copyWith => _$BrandLoadedCopyWithImpl<Bran
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is BrandLoaded&&const DeepCollectionEquality().equals(other._brands, _brands));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is BrandLoaded&&const DeepCollectionEquality().equals(other._brands, _brands)&&(identical(other.selectedBrand, selectedBrand) || other.selectedBrand == selectedBrand));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_brands));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_brands),selectedBrand);
 
 @override
 String toString() {
-  return 'BrandState.loaded(brands: $brands)';
+  return 'BrandState.loaded(brands: $brands, selectedBrand: $selectedBrand)';
 }
 
 
@@ -956,7 +1029,7 @@ abstract mixin class $BrandLoadedCopyWith<$Res> implements $BrandStateCopyWith<$
   factory $BrandLoadedCopyWith(BrandLoaded value, $Res Function(BrandLoaded) _then) = _$BrandLoadedCopyWithImpl;
 @useResult
 $Res call({
- List<BrandModel> brands
+ List<BrandModel> brands, String? selectedBrand
 });
 
 
@@ -973,10 +1046,11 @@ class _$BrandLoadedCopyWithImpl<$Res>
 
 /// Create a copy of BrandState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? brands = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? brands = null,Object? selectedBrand = freezed,}) {
   return _then(BrandLoaded(
-null == brands ? _self._brands : brands // ignore: cast_nullable_to_non_nullable
-as List<BrandModel>,
+brands: null == brands ? _self._brands : brands // ignore: cast_nullable_to_non_nullable
+as List<BrandModel>,selectedBrand: freezed == selectedBrand ? _self.selectedBrand : selectedBrand // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 

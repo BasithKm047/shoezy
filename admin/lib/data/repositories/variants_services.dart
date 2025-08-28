@@ -11,7 +11,6 @@ class VariantsServices {
     required String color,
     required List<String> images,
     required List<String> size,
-    required String stock,
   }) async {
     try {
       final variants = Variantsmodel(
@@ -19,7 +18,6 @@ class VariantsServices {
         color: color,
         images: images,
         size: size,
-        stock: stock,
       );
       await fireStore.add(variants.toJson());
     } catch (e) {

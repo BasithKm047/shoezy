@@ -157,7 +157,6 @@ class AddvariantScreen extends StatelessWidget {
                                   images: cloudImages,
                                       
                                   size: sizeController.text.split(','),
-                                  stock: stockController.text,
                                 );
 
                                 context.read<VariantsBloc>().add(

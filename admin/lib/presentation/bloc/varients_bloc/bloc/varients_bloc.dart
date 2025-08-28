@@ -43,7 +43,6 @@ class VariantsBloc extends Bloc<VariantsEvent, VariantsState> {
           color: event.varaints.color,
           images: event.varaints.images,
           size: event.varaints.size,
-          stock: event.varaints.stock,
         );
         log('variant added success');
         print('variant added sucess');

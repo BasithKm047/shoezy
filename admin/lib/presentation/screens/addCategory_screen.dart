@@ -159,20 +159,19 @@ class AddcategoryScreen extends StatelessWidget {
                                     .uploadMultipleImages(images);
                                 Commonfunction.validateAndSubmitForm(
                                   context: context,
-                                  formKey: _formKey,
+                                formKey: _formKey,
                                   // successMessage: 'Category added successfully',
                                   // errorMessage: 'Failed to add category',
                                   onSuccess: () {
                                     Logger().d(
                                       'Category added: ${_categoryNameController.text}',
                                     );
-                                    _categoryNameController.clear();
                                     // selectedCategory.value=null;
                                   },
                                 );
                                 Logger().d('Cloudinary Image: $cloudImage');
                                 final categories = CategoryModel(
-                                  name: _categoryNameController.text,
+                                  name: _categoryNameController.text.trim(),
                                   image: cloudImage,
                                 );
                                 context.read<CategoryBloc>().add(

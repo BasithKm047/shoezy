@@ -10,4 +10,5 @@ part of 'category_bloc.dart';
   const factory CategoryState.imagesUpdated(List<Uint8List> images) = _ImagesUpdated;
   const factory CategoryState.imageRemoved(List<Uint8List> images) = _ImageRemoved; 
   const factory CategoryState.categories(List<CategoryModel> categories) = _Categories;
+  const factory CategoryState.loaded({required List<CategoryModel> categories, String? selectedCategory}) = _Loaded;
 }

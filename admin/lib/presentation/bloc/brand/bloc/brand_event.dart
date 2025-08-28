@@ -9,6 +9,6 @@ sealed class BrandEvent with _$BrandEvent {
   const factory BrandEvent.imageUploaded(List<Uint8List> imageBytes) = ImageUploaded;
   const factory BrandEvent.clearImage() = ClearImage;
   const factory BrandEvent.removedImage(Uint8List removedImage) = RemovedImage;
-  
+  const factory BrandEvent.selectedBrand(String ? brandName) = SelectedBrand;
 
 }
