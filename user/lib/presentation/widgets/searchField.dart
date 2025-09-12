@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_font_icons/flutter_font_icons.dart';
-import 'package:icons_flutter/icons_flutter.dart'
-    hide AntDesign, FontAwesome, Entypo;
 import 'package:shoezy/utils/const/colors.dart';
 
 class Searchfield extends StatelessWidget {

@@ -12,6 +12,8 @@ part 'varients_state.dart';
 part 'varients_bloc.freezed.dart';
 
 class VariantsBloc extends Bloc<VariantsEvent, VariantsState> {
+        List<Variantsmodel> variants = [];
+
   final VariantsServices variantsServices;
   VariantsBloc(this.variantsServices) : super(VariantsState.inintial()) {
     on<_ImageUploadedEvent>((event, emit) {
@@ -39,11 +41,7 @@ class VariantsBloc extends Bloc<VariantsEvent, VariantsState> {
     on<_AddVaraints>((event, emit) async {
       emit(_Loading());
       try {
-        await variantsServices.addVariant(
-          color: event.varaints.color,
-          images: event.varaints.images,
-          size: event.varaints.size,
-        );
+        
         log('variant added success');
         print('variant added sucess');
         emit(VariantsState.success());
@@ -65,5 +63,41 @@ class VariantsBloc extends Bloc<VariantsEvent, VariantsState> {
     on<_ResetImage>((event, emit) {
       emit(_ImageAddedState([]));
     });
+     
+     on<_ShowFields>((event, emit) {
+        emit(_ShowFieldsState());
+     },);
+
+     on<_HideFields>((event, emit) {
+       emit(_HideFieldsState());
+     });
+     on<_ToggleFields>((event, emit) {
+        final currentState=state;
+        if(currentState is _ShowFieldsState){
+          emit(_HideFieldsState());
+        } else {
+          emit(_ShowFieldsState()); 
+        }
+     },);
+     on<_AddVaraints>((event, emit) async {
+      emit(_Loading());
+      try {
+        variants.addAll(event.varaints);
+        emit(VariantsState.success());
+      } catch (e) {
+        emit(_Failure(e.toString()));
+      }
+    });
+    on<_Getvariants>((event, emit) async {
+      emit(_Loading());
+      try {
+         variants=variants;
+        emit(VariantsState.variantsLoaded(variants));
+      } catch (e) {
+        emit(_Failure(e.toString()));
+      }
+    });
+
+
   }
 }

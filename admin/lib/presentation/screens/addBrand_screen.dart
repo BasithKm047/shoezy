@@ -83,14 +83,14 @@ class AddbrandScreen extends StatelessWidget {
                         images: state.maybeWhen(
                           orElse: () => [],
                           imagesUpdated: (images) => images,
-                          removedImageState: (removedImages) => removedImages,
+                          // removedImageState: (index) => index,
                         ),
 
                         onImagesChanged: (images) {
                           context.read<BrandBloc>().add(ImageUploaded(images));
                         },
-                        onImageRemoved: (image) {
-                          context.read<BrandBloc>().add(RemovedImage(image));
+                        onImageRemoved: (index) {
+                          context.read<BrandBloc>().add(RemovedImage(index));
                         },
                       ),
                       const SizedBox(height: 40),
@@ -103,8 +103,8 @@ class AddbrandScreen extends StatelessWidget {
                             final List<Uint8List> images = state.maybeWhen(
                               orElse: () => [],
                               imagesUpdated: (images) => images,
-                              removedImageState: (removedImages) =>
-                                  removedImages,
+                              removedImageState: (RemovedImage) =>
+                                  RemovedImage,
                             );
                             if (!Commonfunction.imageValidator(images, context)) {
                               return ;

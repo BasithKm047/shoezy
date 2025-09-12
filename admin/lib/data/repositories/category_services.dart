@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shoezy_admin/data/model/categoryModel/category_model.dart';
 import 'package:shoezy_admin/fetures/core/id.dart';
-import 'package:shoezy_admin/presentation/bloc/category_bloc/bloc/category_bloc.dart';
 
 class CategoryServices {
   final db = FirebaseFirestore.instance.collection('categories');

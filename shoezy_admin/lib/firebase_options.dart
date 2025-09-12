@@ -42,17 +42,17 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyDPidRUFZOwCDRtahrImDPOViBg4BqfdbI',
-    appId: '1:5296069020:web:ca22aa68ad277bb1815059',
+    appId: '1:5296069020:web:6c8b99f8b95552fd815059',
     messagingSenderId: '5296069020',
     projectId: 'shoezy-29a92',
     authDomain: 'shoezy-29a92.firebaseapp.com',
     storageBucket: 'shoezy-29a92.firebasestorage.app',
-    measurementId: 'G-GMFLWHK82Z',
+    measurementId: 'G-EF5N84NBR3',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyALACy2iDLSuGFEaCzzqEkVJle7-UTDmV0',
-    appId: '1:5296069020:android:5e18a68e20961969815059',
+    appId: '1:5296069020:android:0923b5ef9ba95b89815059',
     messagingSenderId: '5296069020',
     projectId: 'shoezy-29a92',
     storageBucket: 'shoezy-29a92.firebasestorage.app',
@@ -60,30 +60,33 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyBp8msAgZHc9Ue8YOdW5jghNdrewG4X9QY',
-    appId: '1:5296069020:ios:5fa3d1486eee5a14815059',
+    appId: '1:5296069020:ios:636f15f8d1ca5dd8815059',
     messagingSenderId: '5296069020',
     projectId: 'shoezy-29a92',
     storageBucket: 'shoezy-29a92.firebasestorage.app',
-    iosBundleId: 'com.example.shoezyAdmin',
+    androidClientId: '5296069020-nd3i5l2uns14ouud6h20mrpv4gecr6cd.apps.googleusercontent.com',
+    iosClientId: '5296069020-v417o4tqfd9v5980v2hb4p29g81f68al.apps.googleusercontent.com',
+    iosBundleId: 'com.example.loginpage',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyBp8msAgZHc9Ue8YOdW5jghNdrewG4X9QY',
-    appId: '1:5296069020:ios:5fa3d1486eee5a14815059',
+    appId: '1:5296069020:ios:636f15f8d1ca5dd8815059',
     messagingSenderId: '5296069020',
     projectId: 'shoezy-29a92',
     storageBucket: 'shoezy-29a92.firebasestorage.app',
-    iosBundleId: 'com.example.shoezyAdmin',
+    androidClientId: '5296069020-nd3i5l2uns14ouud6h20mrpv4gecr6cd.apps.googleusercontent.com',
+    iosClientId: '5296069020-v417o4tqfd9v5980v2hb4p29g81f68al.apps.googleusercontent.com',
+    iosBundleId: 'com.example.loginpage',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
     apiKey: 'AIzaSyDPidRUFZOwCDRtahrImDPOViBg4BqfdbI',
-    appId: '1:5296069020:web:024f45edeb1bad02815059',
+    appId: '1:5296069020:web:c6ecb1595d37efd9815059',
     messagingSenderId: '5296069020',
     projectId: 'shoezy-29a92',
     authDomain: 'shoezy-29a92.firebaseapp.com',
     storageBucket: 'shoezy-29a92.firebasestorage.app',
-    measurementId: 'G-1LDREP9G4G',
+    measurementId: 'G-CEQDNH0B0Q',
   );
-
 }

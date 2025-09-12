@@ -122,10 +122,10 @@ class AddcategoryScreen extends StatelessWidget {
                                 ),
                               );
                             },
-                            onImageRemoved: (removedImage) {
+                            onImageRemoved: (index) {
                               context.read<CategoryBloc>().add(
                                 CategoryEvent.imageRemoved(
-                                  removedImages: removedImage,
+                                   index: index,
                                 ),
                               );
                             },

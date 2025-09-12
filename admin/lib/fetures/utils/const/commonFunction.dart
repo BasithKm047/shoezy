@@ -1,18 +1,13 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:image_picker_web/image_picker_web.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shoezy_admin/fetures/utils/const/enums.dart';
 import 'package:shoezy_admin/fetures/utils/const/routes.dart';
 import 'package:shoezy_admin/widgets/costumWidget.dart';
 
 class Commonfunction {
-  static Future<Uint8List?> pickImageWeb() async {
-    final imageBytes = await ImagePickerWeb.getImageAsBytes();
-    return imageBytes;
-  }
-
+  
   static Future<void> logout(BuildContext context) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('isLoggedIn', false);

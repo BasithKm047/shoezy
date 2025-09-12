@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:bloc/bloc.dart';
+// ignore: unnecessary_import
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logger/logger.dart';
@@ -15,7 +16,6 @@ part 'product_bloc.freezed.dart';
 class ProductBloc extends Bloc<ProductEvent, ProductState> {
   ProductServices productServices;
   ProductBloc(this.productServices) : super(ProductState.inintial()) {
-    on<ProductEvent>((event, emit) {});
     on<_UploadImage>((event, emit) {
       emit(_Loading());
       try {
@@ -26,16 +26,21 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     });
 
     on<_RemoveImage>((event, emit) {
-      emit(_Loading());
       try {
-        final currentImage = state.maybeWhen(
+        final List<Uint8List> currentImage = state.maybeWhen(
           orElse: () => [],
           imagesUpdated: (images) => images,
           imageRemoved: (removedImage) => removedImage,
         );
-        final updatedImage = List<Uint8List>.from(currentImage)
-          ..remove(event.removedImage);
+        if(event.index>=0 && event.index<currentImage.length){
+    final updatedImage = List<Uint8List>.from(currentImage)
+          ..removeAt(event.index);
         emit(_ImagesUpdated(updatedImage));
+
+        }else{
+          emit(_ImagesUpdated( currentImage));
+        }
+    
       } catch (e) {
         emit(_Error(e.toString()));
       }

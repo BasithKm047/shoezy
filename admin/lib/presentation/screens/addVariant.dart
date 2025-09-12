@@ -153,15 +153,16 @@ class AddvariantScreen extends StatelessWidget {
                                 );
 
                                 final variants = Variantsmodel(
-                                  color: colorController.text.trim(),
+                                  color: colorController.text.split(','),
                                   images: cloudImages,
-                                      
+
+                                  stock: int.parse(stockController.text)          ,
                                   size: sizeController.text.split(','),
                                 );
 
-                                context.read<VariantsBloc>().add(
-                                  VariantsEvent.addVariants(variants),
-                                );
+                                // context.read<VariantsBloc>().add(
+                                //   // VariantsEvent.addVariants(variants),
+                                // );
                                 clearfield(context);
 
                                 // log('Varient added succesfully');

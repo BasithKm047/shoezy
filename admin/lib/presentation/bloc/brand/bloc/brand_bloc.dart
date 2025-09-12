@@ -22,16 +22,20 @@ class BrandBloc extends Bloc<BrandEvent, BrandState> {
       }
     });
     on<RemovedImage>((event, emit) {
-      emit(BrandState.loading());
       try {
-        final currentImages = state.maybeWhen(
+        final List<Uint8List>currentImages = state.maybeWhen(
           orElse: () => [],
           imagesUpdated: (images) => images,
           removedImageState: (image) => image,
         );
-        final updatedImages = List<Uint8List>.from(currentImages)
-          ..remove(event.removedImage);
-        emit(BrandState.removedImageState(updatedImages));
+        if(event.index>=0 && event.index<currentImages.length){
+    final updatedImage = List<Uint8List>.from(currentImages)
+          ..removeAt(event.index);
+        emit(BrandState.imagesUpdated(updatedImage));
+
+        }else{
+          emit(BrandState.imagesUpdated(currentImages));
+        }
       } catch (e) {
         emit(BrandState.error(e.toString()));
       }
@@ -50,26 +54,38 @@ class BrandBloc extends Bloc<BrandEvent, BrandState> {
       }
     });
     on<ClearImage>((event, emit) {
-     emit(BrandState.imagesUpdated([]));
+      emit(BrandState.imagesUpdated([]));
     });
     on<SelectedBrand>((event, emit) {
-     state.maybeWhen(orElse: (){},
-     loaded: (brands, selectedBrand){
-      emit(BrandState.loaded(brands: brands, selectedBrand: event.brandName));
-     });
+      state.maybeWhen(
+        orElse: () {},
+        loaded: (brands, selectedBrand) {
+          emit(
+            BrandState.loaded(brands: brands, selectedBrand: event.brandName),
+          );
+        },
+      );
     });
 
-    on<FetchBrands>((event, emit) async{
+    on<FetchBrands>((event, emit) async {
       emit(BrandState.loading());
       try {
-           await emit.forEach<List<BrandModel>>(
-              brandServices.getBrands(),
-              onData: (brands) => BrandState.loaded(brands: brands),
-              onError: (error, stackTrace) => BrandState.error(error.toString()),
-            );
+        await emit.forEach<List<BrandModel>>(
+          brandServices.getBrands(),
+          onData: (brands) => BrandState.loaded(brands: brands),
+          onError: (error, stackTrace) => BrandState.error(error.toString()),
+        );
       } catch (e) {
         emit(BrandState.error(e.toString()));
       }
+    });
+    on<ClearSelection>((event, emit) {
+      state.maybeWhen(
+        orElse: () {},
+        loaded: (brands, selectedBrand) {
+          emit(BrandState.loaded(brands: brands, selectedBrand: null));
+        },
+      );
     });
   }
 }

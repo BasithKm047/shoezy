@@ -42,20 +42,20 @@ class Userslist extends StatelessWidget {
                               },
                             ),
                             SizedBox(height: 10),
-                             SizedBox(
-                                width: screenWidth / 2,
-                                child: CostumWidget.costumElevatedIconButton(
-                                  fontsize: 15,
-                                  context: context,
-                                  text: 'Add User',
-                                  backgroundColor: Colors.blue,
-                                  borderRadius: 10,
-                                  foregroundColor: Colors.white,
-                                  ontap: () {
-                                    context.go(Routes.addUserScreen);
-                                  },
-                                ),
-                              ),
+                            //  SizedBox(
+                            //     width: screenWidth / 2,
+                            //     child: CostumWidget.costumElevatedIconButton(
+                            //       fontsize: 15,
+                            //       context: context,
+                            //       text: 'Add User',
+                            //       backgroundColor: Colors.blue,
+                            //       borderRadius: 10,
+                            //       foregroundColor: Colors.white,
+                            //       ontap: () {
+                            //         context.go(Routes.addUserScreen);
+                            //       },
+                            //     ),
+                            //   ),
                           ],
                         )
                       : SizedBox(
