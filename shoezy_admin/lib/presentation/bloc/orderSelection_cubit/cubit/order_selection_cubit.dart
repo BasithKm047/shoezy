@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
-import 'package:loginpage/data/model/orderSelection.dart';
 import 'package:meta/meta.dart';
+import 'package:shoezy_admin/data/model/orderSelection.dart';
 
 part 'order_selection_state.dart';
 

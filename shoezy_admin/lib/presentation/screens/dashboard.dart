@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:loginpage/widgets/costumWidget.dart';
-import 'package:loginpage/widgets/costumresponsiveAppbar.dart';
-import 'package:loginpage/widgets/drawer.dart';
-import 'package:loginpage/widgets/revenueChart.dart';
+import 'package:shoezy_admin/widgets/costumWidget.dart';
+import 'package:shoezy_admin/widgets/costumresponsiveAppbar.dart';
+import 'package:shoezy_admin/widgets/drawer.dart';
+import 'package:shoezy_admin/widgets/revenueChart.dart';
 
 
 // ignore: must_be_immutable

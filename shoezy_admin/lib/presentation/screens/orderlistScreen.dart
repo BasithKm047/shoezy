@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:loginpage/fetures/utils/const/routes.dart';
-import 'package:loginpage/presentation/bloc/orderSelection_cubit/cubit/order_selection_cubit.dart';
-import 'package:loginpage/widgets/costumWidget.dart';
-import 'package:loginpage/widgets/orderDetilsFilteration.dart';
+import 'package:shoezy_admin/fetures/utils/const/routes.dart';
+import 'package:shoezy_admin/presentation/bloc/orderSelection_cubit/cubit/order_selection_cubit.dart';
+import 'package:shoezy_admin/widgets/costumWidget.dart';
+import 'package:shoezy_admin/widgets/orderDetilsFilteration.dart';
 
 class OrderlistScreen extends StatefulWidget {
   const OrderlistScreen({super.key});

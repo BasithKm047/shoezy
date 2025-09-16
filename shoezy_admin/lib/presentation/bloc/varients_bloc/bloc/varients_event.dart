@@ -14,6 +14,9 @@ abstract class VariantsEvent with _$VariantsEvent {
   const factory VariantsEvent.showFields()=_ShowFields;
   const factory VariantsEvent.hideFields()=_HideFields;
   const factory VariantsEvent.toggleFields()=_ToggleFields;
+  const factory VariantsEvent.addSizeStock(SizeStockModel sizeStock)=_AddSizeStock;
+  const factory VariantsEvent.removeSizeStock(int index)=_RemoveSizeStock;
+  const factory VariantsEvent.clearVariants()=_ClearVariants;
 
 
  }

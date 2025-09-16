@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:loginpage/fetures/utils/theme/appbarTheme.dart';
-import 'package:loginpage/fetures/utils/theme/bottomsheetTheme.dart';
-import 'package:loginpage/fetures/utils/theme/elevated_button_theme.dart';
-import 'package:loginpage/fetures/utils/theme/text_theme.dart';
+
+import 'package:shoezy_admin/fetures/utils/theme/appbarTheme.dart';
+import 'package:shoezy_admin/fetures/utils/theme/bottomsheetTheme.dart';
+import 'package:shoezy_admin/fetures/utils/theme/elevated_button_theme.dart';
+import 'package:shoezy_admin/fetures/utils/theme/text_theme.dart';
 // import 'package:google_fonts/google_fonts.dart';
 
 class Apptheme {

@@ -2,7 +2,7 @@ import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
-import 'package:loginpage/fetures/core/cloudinar_details.dart';
+import 'package:shoezy_admin/fetures/core/cloudinar_details.dart';
 
 class CloudinaryServices {
   // final String cloudname;

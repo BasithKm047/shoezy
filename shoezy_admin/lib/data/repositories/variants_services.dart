@@ -1,8 +1,9 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:loginpage/data/model/vareintModel/varientsModel.dart';
-import 'package:loginpage/fetures/core/id.dart';
+import 'package:shoezy_admin/data/model/vareintModel/size_stock_model.dart/size_stock_model.dart';
+import 'package:shoezy_admin/data/model/vareintModel/varientsModel.dart';
+import 'package:shoezy_admin/fetures/core/id.dart';
 
 class VariantsServices {
   final fireStore = FirebaseFirestore.instance.collection('variants');
@@ -14,15 +15,13 @@ class VariantsServices {
     
   }) async {
     try {
-      final variants = Variantsmodel(
-        stock: 0,
-        color: [color],
-        id: createId(),
-      
-        size: size,
-        images: images,
-      );
-      await fireStore.add(variants.toJson());
+      // final variants = Variantsmodel(
+      //   color: [color],
+      //   // id: createId(),
+      //   // sizeStock: 
+      //   images: images,
+      // );
+      // await fireStore.add(variants.toJson());
     } catch (e) {
       log(e.toString());
     }

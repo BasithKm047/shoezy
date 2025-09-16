@@ -1,10 +1,10 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:loginpage/fetures/utils/const/enums.dart';
-import 'package:loginpage/fetures/utils/const/routes.dart';
-import 'package:loginpage/widgets/costumWidget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shoezy_admin/fetures/utils/const/enums.dart';
+import 'package:shoezy_admin/fetures/utils/const/routes.dart';
+import 'package:shoezy_admin/widgets/costumWidget.dart';
 
 class Commonfunction {
   

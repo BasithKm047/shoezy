@@ -1,8 +1,8 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:loginpage/fetures/utils/const/colors.dart';
-import 'package:loginpage/presentation/bloc/dashBoard_bloc/bloc/dashboard_bloc_bloc.dart';
+import 'package:shoezy_admin/fetures/utils/const/colors.dart';
+import 'package:shoezy_admin/presentation/bloc/dashBoard_bloc/bloc/dashboard_bloc_bloc.dart';
 // import 'package:shoezy_admin/fetures/utils/const/colors.dart';
 // import 'package:shoezy_admin/presentation/bloc/dashBoard_bloc/bloc/dashboard_bloc_bloc.dart';
 

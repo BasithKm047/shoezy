@@ -2,8 +2,8 @@ import 'dart:typed_data';
 
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:loginpage/data/model/brand/brand_model.dart';
-import 'package:loginpage/data/repositories/brand_services.dart';
+import 'package:shoezy_admin/data/model/brand/brand_model.dart';
+import 'package:shoezy_admin/data/repositories/brand_services.dart';
 
 part 'brand_event.dart';
 part 'brand_state.dart';

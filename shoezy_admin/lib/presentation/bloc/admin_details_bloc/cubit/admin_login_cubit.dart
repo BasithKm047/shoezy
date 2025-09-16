@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
-import 'package:loginpage/fetures/core/admindetails.dart';
 import 'package:meta/meta.dart';
+import 'package:shoezy_admin/fetures/core/admindetails.dart';
 
 part 'admin_login_state.dart';
 

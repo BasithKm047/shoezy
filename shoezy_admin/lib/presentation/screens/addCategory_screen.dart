@@ -3,13 +3,13 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/web.dart';
-import 'package:loginpage/data/model/categoryModel/category_model.dart';
-import 'package:loginpage/data/repositories/cloudinary_services.dart';
-import 'package:loginpage/fetures/utils/const/commonFunction.dart';
-import 'package:loginpage/fetures/utils/const/static_things.dart';
-import 'package:loginpage/presentation/bloc/category_bloc/bloc/category_bloc.dart';
-import 'package:loginpage/widgets/costumWidget.dart';
-import 'package:loginpage/widgets/imageUploader.dart';
+import 'package:shoezy_admin/data/model/categoryModel/category_model.dart';
+import 'package:shoezy_admin/data/repositories/cloudinary_services.dart';
+import 'package:shoezy_admin/fetures/utils/const/commonFunction.dart';
+import 'package:shoezy_admin/fetures/utils/const/static_things.dart';
+import 'package:shoezy_admin/presentation/bloc/category_bloc/bloc/category_bloc.dart';
+import 'package:shoezy_admin/widgets/costumWidget.dart';
+import 'package:shoezy_admin/widgets/imageUploader.dart';
 
 
 class AddcategoryScreen extends StatelessWidget {

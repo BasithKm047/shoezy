@@ -5,8 +5,9 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logger/logger.dart';
-import 'package:loginpage/data/model/product/product_model.dart';
-import 'package:loginpage/data/repositories/product_services.dart';
+import 'package:shoezy_admin/data/model/product/product_model.dart';
+import 'package:shoezy_admin/data/model/vareintModel/varientsModel.dart';
+import 'package:shoezy_admin/data/repositories/product_services.dart';
 
 part 'product_event.dart';
 part 'product_state.dart';
@@ -45,10 +46,12 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         emit(_Error(e.toString()));
       }
     });
-    on<_AddProduct>((event, emit) {
+    on<_AddProduct>((event, emit) async {
       emit(ProductState.loading());
       try {
-        productServices.addProduct(products: event.products);
+        final product = event.product;
+          
+         await productServices.addProduct(products: product);
         Logger().d('Product Added Successfully');
 
         emit(ProductState.success());

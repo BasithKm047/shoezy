@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:loginpage/presentation/screens/dashboard.dart';
-import 'package:loginpage/presentation/screens/loginscreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shoezy_admin/presentation/screens/dashboard.dart';
+import 'package:shoezy_admin/presentation/screens/loginscreen.dart';
 
 class Authcheckerscreen extends StatelessWidget {
   const Authcheckerscreen({super.key});

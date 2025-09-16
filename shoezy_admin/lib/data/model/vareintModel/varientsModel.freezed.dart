@@ -15,7 +15,8 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Variantsmodel {
 
- String? get id; List<String> get size; List<String> get color; int get stock; List<String> get images;
+// String ? id,
+ List<String> get color; List<String> get images; List<Map<String, dynamic>> get sizeStock;
 /// Create a copy of Variantsmodel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +29,16 @@ $VariantsmodelCopyWith<Variantsmodel> get copyWith => _$VariantsmodelCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Variantsmodel&&(identical(other.id, id) || other.id == id)&&const DeepCollectionEquality().equals(other.size, size)&&const DeepCollectionEquality().equals(other.color, color)&&(identical(other.stock, stock) || other.stock == stock)&&const DeepCollectionEquality().equals(other.images, images));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Variantsmodel&&const DeepCollectionEquality().equals(other.color, color)&&const DeepCollectionEquality().equals(other.images, images)&&const DeepCollectionEquality().equals(other.sizeStock, sizeStock));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,const DeepCollectionEquality().hash(size),const DeepCollectionEquality().hash(color),stock,const DeepCollectionEquality().hash(images));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(color),const DeepCollectionEquality().hash(images),const DeepCollectionEquality().hash(sizeStock));
 
 @override
 String toString() {
-  return 'Variantsmodel(id: $id, size: $size, color: $color, stock: $stock, images: $images)';
+  return 'Variantsmodel(color: $color, images: $images, sizeStock: $sizeStock)';
 }
 
 
@@ -48,7 +49,7 @@ abstract mixin class $VariantsmodelCopyWith<$Res>  {
   factory $VariantsmodelCopyWith(Variantsmodel value, $Res Function(Variantsmodel) _then) = _$VariantsmodelCopyWithImpl;
 @useResult
 $Res call({
- String? id, List<String> size, List<String> color, int stock, List<String> images
+ List<String> color, List<String> images, List<Map<String, dynamic>> sizeStock
 });
 
 
@@ -65,14 +66,12 @@ class _$VariantsmodelCopyWithImpl<$Res>
 
 /// Create a copy of Variantsmodel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? size = null,Object? color = null,Object? stock = null,Object? images = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? color = null,Object? images = null,Object? sizeStock = null,}) {
   return _then(_self.copyWith(
-id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String?,size: null == size ? _self.size : size // ignore: cast_nullable_to_non_nullable
-as List<String>,color: null == color ? _self.color : color // ignore: cast_nullable_to_non_nullable
-as List<String>,stock: null == stock ? _self.stock : stock // ignore: cast_nullable_to_non_nullable
-as int,images: null == images ? _self.images : images // ignore: cast_nullable_to_non_nullable
-as List<String>,
+color: null == color ? _self.color : color // ignore: cast_nullable_to_non_nullable
+as List<String>,images: null == images ? _self.images : images // ignore: cast_nullable_to_non_nullable
+as List<String>,sizeStock: null == sizeStock ? _self.sizeStock : sizeStock // ignore: cast_nullable_to_non_nullable
+as List<Map<String, dynamic>>,
   ));
 }
 
@@ -157,10 +156,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? id,  List<String> size,  List<String> color,  int stock,  List<String> images)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<String> color,  List<String> images,  List<Map<String, dynamic>> sizeStock)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Variantsmodel() when $default != null:
-return $default(_that.id,_that.size,_that.color,_that.stock,_that.images);case _:
+return $default(_that.color,_that.images,_that.sizeStock);case _:
   return orElse();
 
 }
@@ -178,10 +177,10 @@ return $default(_that.id,_that.size,_that.color,_that.stock,_that.images);case _
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? id,  List<String> size,  List<String> color,  int stock,  List<String> images)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<String> color,  List<String> images,  List<Map<String, dynamic>> sizeStock)  $default,) {final _that = this;
 switch (_that) {
 case _Variantsmodel():
-return $default(_that.id,_that.size,_that.color,_that.stock,_that.images);case _:
+return $default(_that.color,_that.images,_that.sizeStock);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -198,10 +197,10 @@ return $default(_that.id,_that.size,_that.color,_that.stock,_that.images);case _
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? id,  List<String> size,  List<String> color,  int stock,  List<String> images)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<String> color,  List<String> images,  List<Map<String, dynamic>> sizeStock)?  $default,) {final _that = this;
 switch (_that) {
 case _Variantsmodel() when $default != null:
-return $default(_that.id,_that.size,_that.color,_that.stock,_that.images);case _:
+return $default(_that.color,_that.images,_that.sizeStock);case _:
   return null;
 
 }
@@ -213,30 +212,30 @@ return $default(_that.id,_that.size,_that.color,_that.stock,_that.images);case _
 @JsonSerializable()
 
 class _Variantsmodel implements Variantsmodel {
-   _Variantsmodel({this.id, required final  List<String> size, required final  List<String> color, required this.stock, required final  List<String> images}): _size = size,_color = color,_images = images;
+   _Variantsmodel({required final  List<String> color, required final  List<String> images, required final  List<Map<String, dynamic>> sizeStock}): _color = color,_images = images,_sizeStock = sizeStock;
   factory _Variantsmodel.fromJson(Map<String, dynamic> json) => _$VariantsmodelFromJson(json);
 
-@override final  String? id;
- final  List<String> _size;
-@override List<String> get size {
-  if (_size is EqualUnmodifiableListView) return _size;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_size);
-}
-
+// String ? id,
  final  List<String> _color;
+// String ? id,
 @override List<String> get color {
   if (_color is EqualUnmodifiableListView) return _color;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_color);
 }
 
-@override final  int stock;
  final  List<String> _images;
 @override List<String> get images {
   if (_images is EqualUnmodifiableListView) return _images;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_images);
+}
+
+ final  List<Map<String, dynamic>> _sizeStock;
+@override List<Map<String, dynamic>> get sizeStock {
+  if (_sizeStock is EqualUnmodifiableListView) return _sizeStock;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_sizeStock);
 }
 
 
@@ -253,16 +252,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Variantsmodel&&(identical(other.id, id) || other.id == id)&&const DeepCollectionEquality().equals(other._size, _size)&&const DeepCollectionEquality().equals(other._color, _color)&&(identical(other.stock, stock) || other.stock == stock)&&const DeepCollectionEquality().equals(other._images, _images));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Variantsmodel&&const DeepCollectionEquality().equals(other._color, _color)&&const DeepCollectionEquality().equals(other._images, _images)&&const DeepCollectionEquality().equals(other._sizeStock, _sizeStock));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,const DeepCollectionEquality().hash(_size),const DeepCollectionEquality().hash(_color),stock,const DeepCollectionEquality().hash(_images));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_color),const DeepCollectionEquality().hash(_images),const DeepCollectionEquality().hash(_sizeStock));
 
 @override
 String toString() {
-  return 'Variantsmodel(id: $id, size: $size, color: $color, stock: $stock, images: $images)';
+  return 'Variantsmodel(color: $color, images: $images, sizeStock: $sizeStock)';
 }
 
 
@@ -273,7 +272,7 @@ abstract mixin class _$VariantsmodelCopyWith<$Res> implements $VariantsmodelCopy
   factory _$VariantsmodelCopyWith(_Variantsmodel value, $Res Function(_Variantsmodel) _then) = __$VariantsmodelCopyWithImpl;
 @override @useResult
 $Res call({
- String? id, List<String> size, List<String> color, int stock, List<String> images
+ List<String> color, List<String> images, List<Map<String, dynamic>> sizeStock
 });
 
 
@@ -290,14 +289,12 @@ class __$VariantsmodelCopyWithImpl<$Res>
 
 /// Create a copy of Variantsmodel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? size = null,Object? color = null,Object? stock = null,Object? images = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? color = null,Object? images = null,Object? sizeStock = null,}) {
   return _then(_Variantsmodel(
-id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String?,size: null == size ? _self._size : size // ignore: cast_nullable_to_non_nullable
-as List<String>,color: null == color ? _self._color : color // ignore: cast_nullable_to_non_nullable
-as List<String>,stock: null == stock ? _self.stock : stock // ignore: cast_nullable_to_non_nullable
-as int,images: null == images ? _self._images : images // ignore: cast_nullable_to_non_nullable
-as List<String>,
+color: null == color ? _self._color : color // ignore: cast_nullable_to_non_nullable
+as List<String>,images: null == images ? _self._images : images // ignore: cast_nullable_to_non_nullable
+as List<String>,sizeStock: null == sizeStock ? _self._sizeStock : sizeStock // ignore: cast_nullable_to_non_nullable
+as List<Map<String, dynamic>>,
   ));
 }
 

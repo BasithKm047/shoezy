@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:logger/logger.dart';
-import 'package:loginpage/data/model/brand/brand_model.dart';
-import 'package:loginpage/fetures/core/id.dart';
-
+import 'package:shoezy_admin/data/model/brand/brand_model.dart';
+import 'package:shoezy_admin/fetures/core/id.dart';
 class BrandServices {
-  final db = FirebaseFirestore.instance.collection('brands');
+
+   final db = FirebaseFirestore.instance.collection('brands');
   Future<void> addBrand({
     required String name,
     required List<String> image,
@@ -33,7 +33,7 @@ class BrandServices {
   Stream<List<BrandModel>> getBrands() {
     return db.snapshots().map((snapshot) {
       return snapshot.docs
-          .map((doc) => BrandModel.fromJson(doc.data()))
+          .map((doc) => BrandModel.fromJson(doc.data() as Map<String, dynamic>))
           .toList();
     });
   }

@@ -1,13 +1,16 @@
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:loginpage/data/model/vareintModel/varientsModel.dart';
-import 'package:loginpage/data/repositories/cloudinary_services.dart';
-import 'package:loginpage/fetures/utils/const/commonFunction.dart';
-import 'package:loginpage/presentation/bloc/varients_bloc/bloc/varients_bloc.dart';
-import 'package:loginpage/widgets/costumWidget.dart';
-import 'package:loginpage/widgets/imageUploader.dart';
+import 'package:shoezy_admin/data/model/vareintModel/size_stock_model.dart/size_stock_model.dart';
+import 'package:shoezy_admin/data/model/vareintModel/varientsModel.dart';
+import 'package:shoezy_admin/data/repositories/cloudinary_services.dart';
+import 'package:shoezy_admin/fetures/utils/const/commonFunction.dart';
+import 'package:shoezy_admin/presentation/bloc/varients_bloc/bloc/varients_bloc.dart';
+import 'package:shoezy_admin/widgets/costumWidget.dart';
+import 'package:shoezy_admin/widgets/imageUploader.dart';
+
 
 
 // ignore: must_be_immutable
@@ -20,6 +23,11 @@ class AddvariantScreen extends StatelessWidget {
   TextEditingController stockController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    if (Firebase.apps.isEmpty) {
+      return const Scaffold(
+        body: Center(child: Text('Firebase is not initialized')),
+      );
+    }
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
@@ -157,9 +165,16 @@ class AddvariantScreen extends StatelessWidget {
                                 final variants = Variantsmodel(
                                   color: colorController.text.split(','),
                                   images: cloudImages,
+                                  // stock: int.parse(stockController.text),
+                                  // size: sizeController.text.split(',') 
+                                  sizeStock:  sizeController.text.split(',').map((s) {
+                                    final stock = int.tryParse(stockController.text) ?? 0;
+                                    return {
+                                      'size': s,
+                                      'stock': stock,
+                                    };
+                                  }).toList(),
 
-                                  stock: int.parse(stockController.text)          ,
-                                  size: sizeController.text.split(','),
                                 );
 
                                 // context.read<VariantsBloc>().add(

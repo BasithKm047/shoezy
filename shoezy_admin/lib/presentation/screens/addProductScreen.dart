@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
-import 'package:loginpage/data/model/product/product_model.dart';
-import 'package:loginpage/data/repositories/cloudinary_services.dart';
-import 'package:loginpage/fetures/utils/const/commonFunction.dart';
-import 'package:loginpage/presentation/bloc/addProducts/bloc/product_bloc.dart';
-import 'package:loginpage/presentation/bloc/brand/bloc/brand_bloc.dart';
-import 'package:loginpage/presentation/bloc/category_bloc/bloc/category_bloc.dart';
-import 'package:loginpage/presentation/bloc/varients_bloc/bloc/varients_bloc.dart';
-import 'package:loginpage/widgets/costumWidget.dart';
-import 'package:loginpage/widgets/variant_field.dart';
-
+import 'package:shoezy_admin/data/model/product/product_model.dart';
+import 'package:shoezy_admin/data/model/vareintModel/varientsModel.dart';
+import 'package:shoezy_admin/data/repositories/cloudinary_services.dart';
+import 'package:shoezy_admin/fetures/utils/const/commonFunction.dart';
+import 'package:shoezy_admin/presentation/bloc/addProducts/bloc/product_bloc.dart';
+import 'package:shoezy_admin/presentation/bloc/brand/bloc/brand_bloc.dart';
+import 'package:shoezy_admin/presentation/bloc/category_bloc/bloc/category_bloc.dart';
+import 'package:shoezy_admin/presentation/bloc/varients_bloc/bloc/varients_bloc.dart';
+import 'package:shoezy_admin/widgets/costumWidget.dart';
+import 'package:shoezy_admin/widgets/variant_field.dart';
 
 class Addproductscreen extends StatelessWidget {
   const Addproductscreen({super.key});
@@ -19,7 +19,7 @@ class Addproductscreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    
+
     final formKey = GlobalKey<FormState>();
     final shoeNameController = TextEditingController();
     final shoeDescriptionController = TextEditingController();
@@ -32,6 +32,7 @@ class Addproductscreen extends StatelessWidget {
       shoeDescriptionController.clear();
       context.read<BrandBloc>().add(const BrandEvent.clearSelection());
       context.read<CategoryBloc>().add(const CategoryEvent.clearSelection());
+      context.read<VariantsBloc>().add(const VariantsEvent.clearVariants());
     }
 
     return Scaffold(
@@ -170,46 +171,9 @@ class Addproductscreen extends StatelessWidget {
                       ),
                       SizedBox(height: 10),
 
-                      BlocBuilder<VariantsBloc, VariantsState>(
-                        builder: (context, state) {
-                          final isExpanded = state.maybeWhen(
-                            orElse: () => false,
-                            showFieldsState: () => true,
-                          );
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  context.read<VariantsBloc>().add(
-                                    VariantsEvent.toggleFields(),
-                                  );
-                                },
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      'Variant',
-                                      style: Theme.of(
-                                        context,
-                                      ).textTheme.titleMedium,
-                                    ),
-                                    const SizedBox(width: 8),
-                                    Icon(
-                                      isExpanded
-                                          ? Icons.keyboard_arrow_up
-                                          : Icons.keyboard_arrow_down,
-                                      color: Colors.black,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              isExpanded ? VariantField() : Container(),
-                              // VariantField()
-                            ],
-                          );
-                        },
-                      ),
-
+                      CostumWidget.labelText(context, 'Add Variants'),
+                      SizedBox(height: 10),
+                      VariantField(),
                       SizedBox(height: 10),
 
                       SizedBox(height: 10),
@@ -241,7 +205,6 @@ class Addproductscreen extends StatelessWidget {
                           // }
                         },
                       ),
-                      
 
                       SizedBox(height: 10),
                       CostumWidget.labelText(context, 'Description'),
@@ -298,32 +261,35 @@ class Addproductscreen extends StatelessWidget {
                               );
                               return CostumWidget.costumElevatedButton(
                                 context: context,
-                                title: 'Add Product',
+                                title: state.maybeWhen(
+                                  orElse: () => 'Add Product',
+                                  loading: () => 'Adding Product...',
+                                ),
                                 backgroundColor: Colors.blue,
                                 foregroundColor: Colors.white,
                                 ontap: () async {
-                                  final List<Uint8List> images = state
-                                      .maybeWhen(
-                                        orElse: () => [],
-                                        imagesUpdated: (images) => images,
-                                        imageRemoved: (removedImage) =>
-                                            removedImage,
-                                      );
-                                  Logger().d('messages: ${images.length}');
-                                  if (!Commonfunction.imageValidator(
-                                    images,
-                                    context,
-                                  )) {
-                                    return;
-                                  }
-                                  CloudinaryServices cloudinaryServices =
-                                      CloudinaryServices();
-                                  final cloudImage = await cloudinaryServices
-                                      .uploadMultipleImages(images);
-                                  Commonfunction.validateAndSubmitForm(
-                                    context: context,
-                                    formKey: formKey,
-                                  );
+                                  // final List<Uint8List> images = state
+                                  //     .maybeWhen(
+                                  //       orElse: () => [],
+                                  //       imagesUpdated: (images) => images,
+                                  //       imageRemoved: (removedImage) =>
+                                  //           removedImage,
+                                  //     );
+                                  // Logger().d('messages: ${images.length}');
+                                  // if (!Commonfunction.imageValidator(
+                                  //   images,
+                                  //   context,
+                                  // )) {
+                                  //   return;
+                                  // }
+                                  // CloudinaryServices cloudinaryServices =
+                                  //     CloudinaryServices();
+                                  // final cloudImage = await cloudinaryServices
+                                  //     .uploadMultipleImages(images);
+                                  // Commonfunction.validateAndSubmitForm(
+                                  //   context: context,
+                                  //   formKey: formKey,
+                                  // );
 
                                   final selectedBrand = context
                                       .read<BrandBloc>()
@@ -353,22 +319,48 @@ class Addproductscreen extends StatelessWidget {
                                               orElse: () => categories.first,
                                             ),
                                       );
+                                  List<Variantsmodel> variants = context
+                                      .read<VariantsBloc>()
+                                      .state
+                                      .maybeWhen(
+                                        orElse: () => [],
+                                        data:
+                                            (
+                                              images,
+                                              sizeStock,
+                                              variants,
+                                              showFields,
+                                            ) => variants,
+                                      );
+                                  Logger().i(
+                                    'Current variants count: ${variants.length}',
+                                  );
+
+                                  if (variants.isEmpty) {
+                                    CostumWidget.showCustomSnackbar(
+                                      context: context,
+                                      message:
+                                          'Please add at least one variant',
+                                      backgroundColor: Colors.red,
+                                    );
+                                    return;
+                                  }
 
                                   final products = ProductModel(
-                                    colorCode: '',
-                                    colorName: '',
                                     productName: shoeNameController.text.trim(),
                                     brandName: selectedBrand!.name,
                                     categoryName: selectedCategory!.name,
                                     price: priceController.text,
                                     description: shoeDescriptionController.text
                                         .trim(),
-                                    variants: [],
-
-                                    images: cloudImage,
+                                    variants: variants
+                                        .map((v) => v.toJson())
+                                        .toList(),
+                                    createdAt: DateTime.now(),
                                   );
+                                  print(products);
                                   context.read<ProductBloc>().add(
-                                    ProductEvent.addProduct(products),
+                                    ProductEvent.addProduct(product: products),
                                   );
 
                                   clearField(context);
@@ -378,7 +370,7 @@ class Addproductscreen extends StatelessWidget {
                                 height: 40,
                                 // child:
                                 // state.isSubmitting
-                                //     ? CircularProgressIndicator()
+                                // ? CircularProgressIndicator()
                                 //     : Text(
                                 //         'Add Product',
                                 //         style: Theme.of(context)

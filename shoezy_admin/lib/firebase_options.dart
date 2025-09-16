@@ -82,11 +82,12 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions windows = FirebaseOptions(
     apiKey: 'AIzaSyDPidRUFZOwCDRtahrImDPOViBg4BqfdbI',
-    appId: '1:5296069020:web:c6ecb1595d37efd9815059',
+    appId: '1:5296069020:web:c1c722cded104055815059',
     messagingSenderId: '5296069020',
     projectId: 'shoezy-29a92',
     authDomain: 'shoezy-29a92.firebaseapp.com',
     storageBucket: 'shoezy-29a92.firebasestorage.app',
-    measurementId: 'G-CEQDNH0B0Q',
+    measurementId: 'G-ZLJXW3D7DS',
   );
+
 }

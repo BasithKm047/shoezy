@@ -4,8 +4,8 @@ import 'package:bloc/bloc.dart';
 // import 'package:flutter/rendering.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logger/logger.dart';
-import 'package:loginpage/data/model/categoryModel/category_model.dart';
-import 'package:loginpage/data/repositories/category_services.dart';
+import 'package:shoezy_admin/data/model/categoryModel/category_model.dart';
+import 'package:shoezy_admin/data/repositories/category_services.dart';
 // import 'package:meta/meta.dart';
 part 'category_bloc.freezed.dart';
 

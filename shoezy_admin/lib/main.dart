@@ -1,56 +1,58 @@
-
-
 import 'dart:developer';
+import 'package:flutter_web_plugins/url_strategy.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:loginpage/data/repositories/brand_services.dart';
-import 'package:loginpage/data/repositories/category_services.dart';
-import 'package:loginpage/data/repositories/product_services.dart';
-import 'package:loginpage/data/repositories/variants_services.dart';
-import 'package:loginpage/fetures/utils/const/routes.dart';
-import 'package:loginpage/fetures/utils/theme/theme.dart';
-import 'package:loginpage/presentation/bloc/addProducts/bloc/product_bloc.dart';
-import 'package:loginpage/presentation/bloc/adminProfile/bloc/admin_profile_bloc.dart';
-import 'package:loginpage/presentation/bloc/admin_details_bloc/cubit/admin_login_cubit.dart';
-import 'package:loginpage/presentation/bloc/brand/bloc/brand_bloc.dart';
-import 'package:loginpage/presentation/bloc/category_bloc/bloc/category_bloc.dart';
-import 'package:loginpage/presentation/bloc/dashBoard_bloc/bloc/dashboard_bloc_bloc.dart';
-import 'package:loginpage/presentation/bloc/orderSelection_cubit/cubit/order_selection_cubit.dart';
-import 'package:loginpage/presentation/bloc/varients_bloc/bloc/varients_bloc.dart';
-import 'package:loginpage/presentation/screens/addBrand_screen.dart';
-import 'package:loginpage/presentation/screens/addCategory_screen.dart';
-import 'package:loginpage/presentation/screens/addProductScreen.dart';
-import 'package:loginpage/presentation/screens/adduserScreen.dart';
-import 'package:loginpage/presentation/screens/brandScreen.dart';
-import 'package:loginpage/presentation/screens/catogeryScreen.dart';
-import 'package:loginpage/presentation/screens/dashboard.dart';
-import 'package:loginpage/presentation/screens/loginscreen.dart';
-import 'package:loginpage/presentation/screens/order_detail_screen.dart';
-import 'package:loginpage/presentation/screens/orderlistScreen.dart';
-import 'package:loginpage/presentation/screens/productScreen.dart';
-import 'package:loginpage/presentation/screens/settingsScreen.dart';
-import 'package:loginpage/presentation/screens/usersList.dart';
+import 'package:shoezy_admin/data/repositories/brand_services.dart';
+import 'package:shoezy_admin/data/repositories/category_services.dart';
+import 'package:shoezy_admin/data/repositories/product_services.dart';
+import 'package:shoezy_admin/data/repositories/variants_services.dart';
+import 'package:shoezy_admin/fetures/utils/const/routes.dart';
+import 'package:shoezy_admin/fetures/utils/theme/theme.dart';
+import 'package:shoezy_admin/firebase_options.dart';
+import 'package:shoezy_admin/presentation/bloc/addProducts/bloc/product_bloc.dart';
+import 'package:shoezy_admin/presentation/bloc/adminProfile/bloc/admin_profile_bloc.dart';
 
+import 'package:shoezy_admin/presentation/bloc/admin_details_bloc/cubit/admin_login_cubit.dart';
+import 'package:shoezy_admin/presentation/bloc/brand/bloc/brand_bloc.dart';
+import 'package:shoezy_admin/presentation/bloc/category_bloc/bloc/category_bloc.dart';
+import 'package:shoezy_admin/presentation/bloc/dashBoard_bloc/bloc/dashboard_bloc_bloc.dart';
+import 'package:shoezy_admin/presentation/bloc/orderSelection_cubit/cubit/order_selection_cubit.dart';
+import 'package:shoezy_admin/presentation/bloc/varients_bloc/bloc/varients_bloc.dart';
+import 'package:shoezy_admin/presentation/screens/addBrand_screen.dart';
+import 'package:shoezy_admin/presentation/screens/addCategory_screen.dart';
+import 'package:shoezy_admin/presentation/screens/addProductScreen.dart';
+import 'package:shoezy_admin/presentation/screens/adduserScreen.dart';
+import 'package:shoezy_admin/presentation/screens/brandScreen.dart';
+import 'package:shoezy_admin/presentation/screens/catogeryScreen.dart';
+import 'package:shoezy_admin/presentation/screens/dashboard.dart';
+import 'package:shoezy_admin/presentation/screens/loginscreen.dart';
+import 'package:shoezy_admin/presentation/screens/order_detail_screen.dart';
+import 'package:shoezy_admin/presentation/screens/orderlistScreen.dart';
+import 'package:shoezy_admin/presentation/screens/productScreen.dart';
+import 'package:shoezy_admin/presentation/screens/settingsScreen.dart';
+import 'package:shoezy_admin/presentation/screens/usersList.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // usePathUrlStrategy();
+  usePathUrlStrategy();
 
+  try {
+    log('Initializing Firebase...');
+    if (Firebase.apps.isEmpty) {
+       Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
+    }
 
- try{
-  log( 'Initializing Firebase...');
-    await Firebase.initializeApp(
-
-    );
     log('Firebase initialized successfully');
- }catch(e, stack){
+  } catch (e, stack) {
     print('Firebase initialization error: $e');
     print('Stack trace: $stack');
-  // Create bloc providers only after firebase init attempt (some repos may rely on Firebase)
- }
+    // Create bloc providers only after firebase init attempt (some repos may rely on Firebase)
+  }
   runApp(
     MultiBlocProvider(
       providers: [

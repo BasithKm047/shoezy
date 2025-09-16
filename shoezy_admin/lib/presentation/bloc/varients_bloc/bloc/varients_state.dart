@@ -2,6 +2,7 @@ part of 'varients_bloc.dart';
 
 @freezed
 abstract class VariantsState with _$VariantsState {
+   
   const factory VariantsState.inintial() = _Initail;
   const factory VariantsState.loading() = _Loading;
   const factory VariantsState.success()=_Success;
@@ -15,4 +16,14 @@ abstract class VariantsState with _$VariantsState {
   const factory VariantsState.variantSearched(List<Variantsmodel> variants)=_VariantSearched;
   const factory VariantsState.showFieldsState()=_ShowFieldsState;
   const factory VariantsState.hideFieldsState()=_HideFieldsState;
+  const factory VariantsState.addedSizeStockState(List<SizeStockModel> sizeStock)=_AddedSizeStockState;
+  const factory VariantsState.removedSizeStockState(List<SizeStockModel> sizeStock)=_RemovedSizeStockState;
+
+  const factory VariantsState.data({
+    required List<Uint8List> images,
+    required List<SizeStockModel> sizeStock,
+    required List<Variantsmodel> variants,
+    @Default(false) bool showFields,  // If you need to track show/hide fields too
+  }) = _Data;
+
 }

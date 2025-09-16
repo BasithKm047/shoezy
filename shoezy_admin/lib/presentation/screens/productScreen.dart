@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:loginpage/fetures/utils/const/colors.dart';
-import 'package:loginpage/fetures/utils/const/routes.dart';
-import 'package:loginpage/widgets/costumWidget.dart';
+import 'package:shoezy_admin/fetures/utils/const/colors.dart';
+import 'package:shoezy_admin/fetures/utils/const/routes.dart';
+import 'package:shoezy_admin/widgets/costumWidget.dart';
 
 class Productscreen extends StatelessWidget {
   const Productscreen({super.key});

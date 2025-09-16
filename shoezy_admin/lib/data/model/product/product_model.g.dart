@@ -15,13 +15,9 @@ _ProductModel _$ProductModelFromJson(Map<String, dynamic> json) =>
       price: json['price'] as String,
       description: json['description'] as String,
       variants: (json['variants'] as List<dynamic>)
-          .map((e) => Variantsmodel.fromJson(e as Map<String, dynamic>))
+          .map((e) => e as Map<String, dynamic>)
           .toList(),
-      images: (json['images'] as List<dynamic>)
-          .map((e) => e as String)
-          .toList(),
-      colorName: json['colorName'] as String,
-      colorCode: json['colorCode'] as String,
+      createdAt: DateTime.parse(json['createdAt'] as String),
     );
 
 Map<String, dynamic> _$ProductModelToJson(_ProductModel instance) =>
@@ -33,7 +29,5 @@ Map<String, dynamic> _$ProductModelToJson(_ProductModel instance) =>
       'price': instance.price,
       'description': instance.description,
       'variants': instance.variants,
-      'images': instance.images,
-      'colorName': instance.colorName,
-      'colorCode': instance.colorCode,
+      'createdAt': instance.createdAt.toIso8601String(),
     };

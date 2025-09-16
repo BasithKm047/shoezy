@@ -2,9 +2,10 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:loginpage/fetures/utils/const/commonFunction.dart';
-import 'package:loginpage/presentation/bloc/adminProfile/bloc/admin_profile_bloc.dart';
-import 'package:loginpage/widgets/costumWidget.dart';
+import 'package:shoezy_admin/fetures/utils/const/commonFunction.dart';
+import 'package:shoezy_admin/presentation/bloc/adminProfile/bloc/admin_profile_bloc.dart';
+import 'package:shoezy_admin/widgets/costumWidget.dart';
+
 
 class Settingsscreen extends StatelessWidget {
    Settingsscreen({super.key});
