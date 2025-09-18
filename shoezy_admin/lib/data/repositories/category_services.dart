@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:logger/logger.dart';
 
 import 'package:shoezy_admin/data/model/categoryModel/category_model.dart';
 import 'package:shoezy_admin/fetures/core/id.dart';
@@ -23,13 +24,14 @@ class CategoryServices {
   }
 
 
-
-  Stream<List<CategoryModel>> getCategories() {
-    return db.snapshots().map((snapshot) {
-      return snapshot.docs
-          .map((doc) => CategoryModel.fromJson(doc.data()))
-          .toList();
-    });
+Future<List<CategoryModel>> getCategories() async {
+    try {
+      final snapshot = await db.get();
+      return snapshot.docs.map((doc) => CategoryModel.fromJson(doc.data())).toList();
+    } catch (e) {
+      Logger().e('Error fetching categories: $e');
+      rethrow;
+    }
   }
 
   Future<void> getCategorybyid(String id) async {

@@ -167,11 +167,11 @@ return clearVariants(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( List<Uint8List> image)?  imageUpload,TResult Function( Uint8List removedImage)?  imageRemoved,TResult Function( List<Variantsmodel> varaints)?  addVariants,TResult Function()?  getVariants,TResult Function()?  resetImgae,TResult Function( Variantsmodel variants)?  removeVariants,TResult Function( Variantsmodel variants)?  updateVariants,TResult Function( String query)?  searchVariants,TResult Function( String id)?  deleteVariants,TResult Function()?  showFields,TResult Function()?  hideFields,TResult Function()?  toggleFields,TResult Function( SizeStockModel sizeStock)?  addSizeStock,TResult Function( int index)?  removeSizeStock,TResult Function()?  clearVariants,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( List<Uint8List> image)?  imageUpload,TResult Function( int index)?  imageRemoved,TResult Function( List<Variantsmodel> varaints)?  addVariants,TResult Function()?  getVariants,TResult Function()?  resetImgae,TResult Function( Variantsmodel variants)?  removeVariants,TResult Function( Variantsmodel variants)?  updateVariants,TResult Function( String query)?  searchVariants,TResult Function( String id)?  deleteVariants,TResult Function()?  showFields,TResult Function()?  hideFields,TResult Function()?  toggleFields,TResult Function( SizeStockModel sizeStock)?  addSizeStock,TResult Function( int index)?  removeSizeStock,TResult Function()?  clearVariants,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ImageUploadedEvent() when imageUpload != null:
 return imageUpload(_that.image);case _ImageRemoved() when imageRemoved != null:
-return imageRemoved(_that.removedImage);case _AddVaraints() when addVariants != null:
+return imageRemoved(_that.index);case _AddVaraints() when addVariants != null:
 return addVariants(_that.varaints);case _Getvariants() when getVariants != null:
 return getVariants();case _ResetImage() when resetImgae != null:
 return resetImgae();case _RemoveVariants() when removeVariants != null:
@@ -202,11 +202,11 @@ return clearVariants();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( List<Uint8List> image)  imageUpload,required TResult Function( Uint8List removedImage)  imageRemoved,required TResult Function( List<Variantsmodel> varaints)  addVariants,required TResult Function()  getVariants,required TResult Function()  resetImgae,required TResult Function( Variantsmodel variants)  removeVariants,required TResult Function( Variantsmodel variants)  updateVariants,required TResult Function( String query)  searchVariants,required TResult Function( String id)  deleteVariants,required TResult Function()  showFields,required TResult Function()  hideFields,required TResult Function()  toggleFields,required TResult Function( SizeStockModel sizeStock)  addSizeStock,required TResult Function( int index)  removeSizeStock,required TResult Function()  clearVariants,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( List<Uint8List> image)  imageUpload,required TResult Function( int index)  imageRemoved,required TResult Function( List<Variantsmodel> varaints)  addVariants,required TResult Function()  getVariants,required TResult Function()  resetImgae,required TResult Function( Variantsmodel variants)  removeVariants,required TResult Function( Variantsmodel variants)  updateVariants,required TResult Function( String query)  searchVariants,required TResult Function( String id)  deleteVariants,required TResult Function()  showFields,required TResult Function()  hideFields,required TResult Function()  toggleFields,required TResult Function( SizeStockModel sizeStock)  addSizeStock,required TResult Function( int index)  removeSizeStock,required TResult Function()  clearVariants,}) {final _that = this;
 switch (_that) {
 case _ImageUploadedEvent():
 return imageUpload(_that.image);case _ImageRemoved():
-return imageRemoved(_that.removedImage);case _AddVaraints():
+return imageRemoved(_that.index);case _AddVaraints():
 return addVariants(_that.varaints);case _Getvariants():
 return getVariants();case _ResetImage():
 return resetImgae();case _RemoveVariants():
@@ -236,11 +236,11 @@ return clearVariants();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( List<Uint8List> image)?  imageUpload,TResult? Function( Uint8List removedImage)?  imageRemoved,TResult? Function( List<Variantsmodel> varaints)?  addVariants,TResult? Function()?  getVariants,TResult? Function()?  resetImgae,TResult? Function( Variantsmodel variants)?  removeVariants,TResult? Function( Variantsmodel variants)?  updateVariants,TResult? Function( String query)?  searchVariants,TResult? Function( String id)?  deleteVariants,TResult? Function()?  showFields,TResult? Function()?  hideFields,TResult? Function()?  toggleFields,TResult? Function( SizeStockModel sizeStock)?  addSizeStock,TResult? Function( int index)?  removeSizeStock,TResult? Function()?  clearVariants,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( List<Uint8List> image)?  imageUpload,TResult? Function( int index)?  imageRemoved,TResult? Function( List<Variantsmodel> varaints)?  addVariants,TResult? Function()?  getVariants,TResult? Function()?  resetImgae,TResult? Function( Variantsmodel variants)?  removeVariants,TResult? Function( Variantsmodel variants)?  updateVariants,TResult? Function( String query)?  searchVariants,TResult? Function( String id)?  deleteVariants,TResult? Function()?  showFields,TResult? Function()?  hideFields,TResult? Function()?  toggleFields,TResult? Function( SizeStockModel sizeStock)?  addSizeStock,TResult? Function( int index)?  removeSizeStock,TResult? Function()?  clearVariants,}) {final _that = this;
 switch (_that) {
 case _ImageUploadedEvent() when imageUpload != null:
 return imageUpload(_that.image);case _ImageRemoved() when imageRemoved != null:
-return imageRemoved(_that.removedImage);case _AddVaraints() when addVariants != null:
+return imageRemoved(_that.index);case _AddVaraints() when addVariants != null:
 return addVariants(_that.varaints);case _Getvariants() when getVariants != null:
 return getVariants();case _ResetImage() when resetImgae != null:
 return resetImgae();case _RemoveVariants() when removeVariants != null:
@@ -343,10 +343,10 @@ as List<Uint8List>,
 
 
 class _ImageRemoved with DiagnosticableTreeMixin implements VariantsEvent {
-  const _ImageRemoved(this.removedImage);
+  const _ImageRemoved(this.index);
   
 
- final  Uint8List removedImage;
+ final  int index;
 
 /// Create a copy of VariantsEvent
 /// with the given fields replaced by the non-null parameter values.
@@ -359,21 +359,21 @@ _$ImageRemovedCopyWith<_ImageRemoved> get copyWith => __$ImageRemovedCopyWithImp
 void debugFillProperties(DiagnosticPropertiesBuilder properties) {
   properties
     ..add(DiagnosticsProperty('type', 'VariantsEvent.imageRemoved'))
-    ..add(DiagnosticsProperty('removedImage', removedImage));
+    ..add(DiagnosticsProperty('index', index));
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ImageRemoved&&const DeepCollectionEquality().equals(other.removedImage, removedImage));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ImageRemoved&&(identical(other.index, index) || other.index == index));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(removedImage));
+int get hashCode => Object.hash(runtimeType,index);
 
 @override
 String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
-  return 'VariantsEvent.imageRemoved(removedImage: $removedImage)';
+  return 'VariantsEvent.imageRemoved(index: $index)';
 }
 
 
@@ -384,7 +384,7 @@ abstract mixin class _$ImageRemovedCopyWith<$Res> implements $VariantsEventCopyW
   factory _$ImageRemovedCopyWith(_ImageRemoved value, $Res Function(_ImageRemoved) _then) = __$ImageRemovedCopyWithImpl;
 @useResult
 $Res call({
- Uint8List removedImage
+ int index
 });
 
 
@@ -401,10 +401,10 @@ class __$ImageRemovedCopyWithImpl<$Res>
 
 /// Create a copy of VariantsEvent
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? removedImage = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? index = null,}) {
   return _then(_ImageRemoved(
-null == removedImage ? _self.removedImage : removedImage // ignore: cast_nullable_to_non_nullable
-as Uint8List,
+null == index ? _self.index : index // ignore: cast_nullable_to_non_nullable
+as int,
   ));
 }
 

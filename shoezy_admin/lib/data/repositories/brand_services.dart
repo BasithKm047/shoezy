@@ -33,7 +33,7 @@ class BrandServices {
   Stream<List<BrandModel>> getBrands() {
     return db.snapshots().map((snapshot) {
       return snapshot.docs
-          .map((doc) => BrandModel.fromJson(doc.data() as Map<String, dynamic>))
+          .map((doc) => BrandModel.fromJson(doc.data() ))
           .toList();
     });
   }

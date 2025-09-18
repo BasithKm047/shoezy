@@ -15,81 +15,89 @@ part 'category_state.dart';
 class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
   CategoryServices categoryServices;
   CategoryBloc(this.categoryServices) : super(CategoryState.initial()) {
-    on<ImagesUpdated>((event, emit) {
-      emit(CategoryState.imagesUpdated(event.images));
-    });
-    on<ImageRemoved>((event, emit) {
-      try {
-        final List<Uint8List> currentImages = state.maybeWhen(
-          orElse: () => [],
-          imagesUpdated: (images) => images,
-          imageRemoved: (image) => image,
-        );
-        if (event.index >= 0 && event.index < currentImages.length) {
-          final updatedImage = List<Uint8List>.from(currentImages)
-            ..removeAt(event.index);
-          emit(CategoryState.imagesUpdated(updatedImage));
-        } else {
-          emit(CategoryState.imagesUpdated(currentImages));
-        }
-        Logger().d('Image Removed');
-
-      } catch (e) {
-        emit(CategoryState.failure(e.toString()));
-      }
-    });
-    on<AddCategory>((event, emit) {
-      emit(CategoryState.loading());
-      try {
-        categoryServices.addCategory(event.category.name, event.category.image);
-        emit(CategoryState.success());
-      } catch (e) {
-        emit(CategoryState.failure(e.toString()));
-      }
-    });
-    on<ResetImage>((event, emit) {
-      emit(CategoryState.imagesUpdated([]));
-    });
-
-    on<SelectedCategory>((event, emit) {
-      state.maybeWhen(
+    on<CategoryEvent>((event, emit) async {
+      await event.maybeWhen(
         orElse: () {},
-        loaded: (categories, selectedCategory) {
-          emit(
-            CategoryState.loaded(
-              categories: categories,
-              selectedCategory: event.categoryName,
-            ),
+        addCategory: (category) async {
+          emit(CategoryState.loading());
+          try {
+            await categoryServices.addCategory(category.name, category.image);
+            emit(CategoryState.success());
+          } catch (e) {
+            emit(CategoryState.failure(e.toString()));
+          }
+        },
+        deleteCategory: (id) {},
+        updateCategory: (id, name, images) {},
+        reset: () {},
+        resetImage: () {},
+        getCategories: () async {
+          emit(const CategoryState.loading());
+          try {
+            final categories = await categoryServices.getCategories();
+            emit(
+              CategoryState.loaded(
+                categories: categories,
+                selectedCategory: categories.isNotEmpty
+                    ? categories.first.name
+                    : null,
+              ),
+            );
+          } catch (e) {
+            emit(CategoryState.failure(e.toString()));
+          }
+        },
+        searchCategories: (categoryServices) {},
+        imagesUpdated: (images) {
+          emit(CategoryState.imagesUpdated(images));
+        },
+        imageRemoved: (index) {
+          try {
+            final List<Uint8List> currentImages = state.maybeWhen(
+              orElse: () => [],
+              imagesUpdated: (images) => images,
+              imageRemoved: (image) => image,
+            );
+            if (index >= 0 && index < currentImages.length) {
+              final updatedImage = List<Uint8List>.from(currentImages)
+                ..removeAt(index);
+              emit(CategoryState.imagesUpdated(updatedImage));
+            } else {
+              emit(CategoryState.imagesUpdated(currentImages));
+            }
+            Logger().d('Image Removed');
+          } catch (e) {
+            emit(CategoryState.failure(e.toString()));
+          }
+        },
+        selectedCategory: (categoryName) {
+          state.maybeWhen(
+            orElse: () {},
+            loaded: (categories, selectedCategory) {
+              emit(
+                CategoryState.loaded(
+                  categories: categories,
+                  selectedCategory: categoryName,
+                ),
+              );
+            },
           );
         },
-      );
-    });
-    on<ClearImage>((event, emit) {
-      emit(CategoryState.imagesUpdated([]));
-    });
-    on<GetCategories>((event, emit) async {
-      emit(CategoryState.loading());
-      try {
-        await emit.forEach<List<CategoryModel>>(
-          categoryServices.getCategories(),
-          onData: (categories) => CategoryState.loaded(categories: categories),
-          onError: (error, stackTrace) =>
-              CategoryState.failure(error.toString()),
-        );
-      } catch (e) {
-        emit(CategoryState.failure(e.toString()));
-      }
-    });
-    on<ClearSelection>((event, emit) {
-      state.maybeWhen(
-        orElse: () {},
-        loaded: (categories, selectedCategory) {
-          emit(
-            CategoryState.loaded(
-              categories: categories,
-              selectedCategory: null,
-            ),
+        clearSelection: () {
+          state.maybeWhen(
+            orElse: () {},
+            loaded: (categories, selectedCategory) {
+              emit(
+                CategoryState.loaded(
+                  categories: categories,
+                  selectedCategory: null,
+                ),
+              );
+            },
           );
+        },
+        clearImage: () {
+          emit(CategoryState.imagesUpdated([]));
         },
       );
     });

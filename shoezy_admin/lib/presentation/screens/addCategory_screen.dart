@@ -11,14 +11,12 @@ import 'package:shoezy_admin/presentation/bloc/category_bloc/bloc/category_bloc.
 import 'package:shoezy_admin/widgets/costumWidget.dart';
 import 'package:shoezy_admin/widgets/imageUploader.dart';
 
-
 class AddcategoryScreen extends StatelessWidget {
   AddcategoryScreen({super.key});
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final TextEditingController _categoryNameController = TextEditingController();
-  // final ValueNotifier<String?> selectedCategory = ValueNotifier(null);
   final categories = StaticThings.categoryTypes;
 
   @override
@@ -49,17 +47,17 @@ class AddcategoryScreen extends StatelessWidget {
               );
             },
             loading: () {
-              CircularProgressIndicator(color: Colors.blue);
+              Logger().d('Loading...');
             },
-            // imagesUpdated: (images) {
-            //   CostumWidget.showCustomSnackbar(context: context, message: 'Images updated successfully');
-            // },
-            // imageRemoved: (image) {
-            //   CostumWidget.showCustomSnackbar(context: context, message: 'Image removed successfully');
-            // },
           );
         },
         builder: (context, state) {
+          Logger().d('Current state: $state');
+          // ignore: unnecessary_type_check
+          if (state is CategoryState &&
+              state.maybeWhen(orElse: () => false, loading: () => true)) {
+            return Center(child: CircularProgressIndicator(color: Colors.blue,));
+          }
           return Center(
             child: SizedBox(
               width: screenWidth / 2,
@@ -71,32 +69,14 @@ class AddcategoryScreen extends StatelessWidget {
                     children: [
                       SizedBox(height: 20),
                       Row(
-                        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          // CostumWidget.labelText(context, 'Category Type'),
-                          // SizedBox(width: screenWidth / 4.3),
                           CostumWidget.labelText(context, 'Category Name'),
-                          // SizedBox(width: 20,),
                         ],
                       ),
                       SizedBox(height: 20),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          // ValueListenableBuilder<String?>(
-                          //   valueListenable: selectedCategory,
-                          //   builder: (context, value, child) {
-                          //     return CostumWidget.costumDropdown(
-                          //       items: categories,
-                          //       selectedValue: value,
-                          //       hintText: 'Category type',
-                          //       onChanged: (newValue) {
-                          //         selectedCategory.value = newValue;
-                          //       },
-                          //       width: screenWidth / 5,
-                          //     );
-                          //   },
-                          // ),
                           CostumWidget.costumTextformField(
                             controller: _categoryNameController,
                             keyboardType: TextInputType.text,
@@ -125,9 +105,7 @@ class AddcategoryScreen extends StatelessWidget {
                             },
                             onImageRemoved: (index) {
                               context.read<CategoryBloc>().add(
-                                CategoryEvent.imageRemoved(
-                                   index: index,
-                                ),
+                                CategoryEvent.imageRemoved(index: index),
                               );
                             },
                           ),
@@ -136,60 +114,7 @@ class AddcategoryScreen extends StatelessWidget {
                       SizedBox(height: 50),
                       SizedBox(
                         width: screenWidth / 2,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            // SizedBox(width: 10,),
-                            CostumWidget.costumElevatedButton(
-                              ontap: () async {
-                                final List<Uint8List> images = state.maybeWhen(
-                                  orElse: () => [],
-                                  imagesUpdated: (images) => images,
-                                  imageRemoved: (image) => image,
-                                );
-                                Logger().d('messages: ${images.length}');
-                                if (!Commonfunction.imageValidator(
-                                  images,
-                                  context,
-                                )) {
-                                  return;
-                                }
-                                CloudinaryServices cloudinaryServices =
-                                    CloudinaryServices();
-                                final cloudImage = await cloudinaryServices
-                                    .uploadMultipleImages(images);
-                                Commonfunction.validateAndSubmitForm(
-                                  context: context,
-                                formKey: _formKey,
-                                  // successMessage: 'Category added successfully',
-                                  // errorMessage: 'Failed to add category',
-                                  onSuccess: () {
-                                    Logger().d(
-                                      'Category added: ${_categoryNameController.text}',
-                                    );
-                                    // selectedCategory.value=null;
-                                  },
-                                );
-                                Logger().d('Cloudinary Image: $cloudImage');
-                                final categories = CategoryModel(
-                                  name: _categoryNameController.text.trim(),
-                                  image: cloudImage,
-                                );
-                                context.read<CategoryBloc>().add(
-                                  CategoryEvent.addCategory(
-                                    category: categories,
-                                  ),
-                                );
-                                clearfield(context);
-                              },
-                              context: context,
-                              title: 'Add Category',
-                              backgroundColor: Colors.blue,
-                              foregroundColor: Colors.white,
-                              width: screenWidth / 7,
-                            ),
-                          ],
-                        ),
+                        child: addCategoryButton(state, context, screenWidth),
                       ),
                       SizedBox(height: 20),
                     ],
@@ -200,6 +125,60 @@ class AddcategoryScreen extends StatelessWidget {
           );
         },
       ),
+    );
+  }
+
+
+
+  Row addCategoryButton(
+    CategoryState state,
+    BuildContext context,
+    double screenWidth,
+  ) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        CostumWidget.costumElevatedButton(
+          ontap: () async {
+            final List<Uint8List> images = state.maybeWhen(
+              orElse: () => [],
+              imagesUpdated: (images) => images,
+              imageRemoved: (image) => image,
+            );
+            Logger().d('messages: ${images.length}');
+            if (!Commonfunction.imageValidator(images, context)) {
+              return;
+            }
+            CloudinaryServices cloudinaryServices = CloudinaryServices();
+            final cloudImage = await cloudinaryServices.uploadMultipleImages(
+              images,
+            );
+            Commonfunction.validateAndSubmitForm(
+              context: context,
+              formKey: _formKey,
+
+              onSuccess: () {
+                Logger().d('Category added: ${_categoryNameController.text}');
+              },
+            );
+            Logger().d('Cloudinary Image: $cloudImage');
+            final categories = CategoryModel(
+              name: _categoryNameController.text.trim(),
+              image: cloudImage,
+            );
+            context.read<CategoryBloc>().add(
+              CategoryEvent.addCategory(category: categories),
+            );
+            
+            clearfield(context);
+          },
+          context: context,
+          title: 'Add Category',
+          backgroundColor: Colors.blue,
+          foregroundColor: Colors.white,
+          width: screenWidth / 7,
+        ),
+      ],
     );
   }
 

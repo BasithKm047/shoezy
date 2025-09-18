@@ -9,7 +9,6 @@ import 'package:shoezy_admin/presentation/bloc/brand/bloc/brand_bloc.dart';
 import 'package:shoezy_admin/widgets/costumWidget.dart';
 import 'package:shoezy_admin/widgets/imageUploader.dart';
 
-
 // ignore: must_be_immutable
 class AddbrandScreen extends StatelessWidget {
   AddbrandScreen({super.key});
@@ -52,9 +51,20 @@ class AddbrandScreen extends StatelessWidget {
                   backgroundColor: Colors.red,
                 );
               },
+              loading: () {
+                Logger().d('Loading...');
+              },
             );
           },
           builder: (context, state) {
+            Logger().d('Current state: $state');
+            // ignore: unnecessary_type_check
+            if (state is BrandState &&
+                state.maybeWhen(orElse: () => false, loading: () => true)) {
+              return Center(
+                child: CircularProgressIndicator(color: Colors.blue),
+              );
+            }
             return SizedBox(
               width: screenWidth / 2,
               child: Form(
@@ -95,42 +105,7 @@ class AddbrandScreen extends StatelessWidget {
                         },
                       ),
                       const SizedBox(height: 40),
-                      Center(
-                        child: CostumWidget.costumElevatedButton(
-                          width: screenWidth / 6,
-                          context: context,
-                          title: 'Add Brand',
-                          ontap: () async {
-                            final List<Uint8List> images = state.maybeWhen(
-                              orElse: () => [],
-                              imagesUpdated: (images) => images,
-                              removedImageState: (RemovedImage) =>
-                                  RemovedImage,
-                            );
-                            if (!Commonfunction.imageValidator(images, context)) {
-                              return ;
-                            }
-
-                            CloudinaryServices cloudinaryServices =
-                                CloudinaryServices();
-                            final cloudImage = await cloudinaryServices
-                                .uploadMultipleImages(images);
-                            Commonfunction.validateAndSubmitForm(
-                              context: context,
-                              formKey: _formKey,
-                              // successMessage: 'Brand added successfully',
-                              // errorMessage: 'Failed to add brand',
-                            );
-                            Logger().d('Cloudinary Image: $cloudImage');
-                            final brands = BrandModel(
-                              name: _brandNameController.text,
-                              imageUrl: cloudImage,
-                            );
-                            // ignore: use_build_context_synchronously
-                            context.read<BrandBloc>().add(AddBrand(brands));
-                          },
-                        ),
-                      ),
+                      addBrandButton(screenWidth, context, state),
                       SizedBox(height: 20),
                     ],
                   ),
@@ -142,7 +117,50 @@ class AddbrandScreen extends StatelessWidget {
       ),
     );
   }
-   clearfield(BuildContext context) {
+
+  Center addBrandButton(
+    double screenWidth,
+    BuildContext context,
+    BrandState state,
+  ) {
+    return Center(
+      child: CostumWidget.costumElevatedButton(
+        width: screenWidth / 6,
+        context: context,
+        title: 'Add Brand',
+        ontap: () async {
+          final List<Uint8List> images = state.maybeWhen(
+            orElse: () => [],
+            imagesUpdated: (images) => images,
+            removedImageState: (removedImage) => removedImage,
+          );
+          if (!Commonfunction.imageValidator(images, context)) {
+            return;
+          }
+
+          CloudinaryServices cloudinaryServices = CloudinaryServices();
+          final cloudImage = await cloudinaryServices.uploadMultipleImages(
+            images,
+          );
+          Commonfunction.validateAndSubmitForm(
+            context: context,
+            formKey: _formKey,
+            // successMessage: 'Brand added successfully',
+            // errorMessage: 'Failed to add brand',
+          );
+          Logger().d('Cloudinary Image: $cloudImage');
+          final brands = BrandModel(
+            name: _brandNameController.text,
+            imageUrl: cloudImage,
+          );
+          // ignore: use_build_context_synchronously
+          context.read<BrandBloc>().add(AddBrand(brands));
+        },
+      ),
+    );
+  }
+
+  clearfield(BuildContext context) {
     _brandNameController.clear();
 
     context.read<BrandBloc>().add(BrandEvent.clearImage());

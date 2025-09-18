@@ -29,7 +29,7 @@ class CostumImageUploader extends StatelessWidget {
         Uint8List bytes = await xfile.readAsBytes();
         newImages.add(bytes);
       }
-      print('Picked ${newImages.length} images'); // Debug print
+      print('Picked images'); // Debug print
       onImagesChanged([...images, ...newImages]);
         } catch (e) {
       print('Error picking images: $e');

@@ -21,7 +21,6 @@ class VariantsBloc extends Bloc<VariantsEvent, VariantsState> {
     on<_ImageUploadedEvent>((event, emit) {
       emit(_Loading());
       try {
-        // final updateImage = event.image;
         images = event.image;
         emit(
           VariantsState.data(
@@ -35,29 +34,41 @@ class VariantsBloc extends Bloc<VariantsEvent, VariantsState> {
       }
     });
     on<_ImageRemoved>((event, emit) {
-      // final currentImages = state.maybeWhen(
-      //   imageAddedState: (images) => images,
-      //   imageRemovedState: (image) => image,
-      //   orElse: () => [],
-      // );
-
-      // final updatedImages = List<Uint8List>.from(currentImages)
-      // ..remove(event.removedImage);
-      // ignore: collection_methods_unrelated_type
-      // images.remove(updatedImages);
-
-      // emit(VariantsState.imageRemovedState(updatedImages));
       try {
-        images.remove(event.removedImage);
-        emit(
-          VariantsState.data(
-            images: images,
-            sizeStock: sizeStock,
-            variants: variants,
-          ),
+        final List<Uint8List> currentImages = state.maybeWhen(
+          data: (images, sizeStock, variants, showFields) => images,
+          orElse: () => [],
+          imageAddedState: (images) => images,
+          imageRemovedState: (reimage) => reimage,
         );
+        Logger().d('Current images before removal: ');
+
+        if (event.index >= 0 && event.index < currentImages.length) {
+          images = List<Uint8List>.from(currentImages)..removeAt(event.index);
+          //  emit(VariantsState.imageRemovedState(images));
+          emit(
+            VariantsState.data(
+              images: images,
+              sizeStock: sizeStock,
+              variants: variants,
+            ),
+          );
+          Logger().d(
+            'Image removed successfully at index: ${event.index}, new count: ',
+          );
+        } else {
+          emit(
+            VariantsState.data(
+              images: currentImages,
+              sizeStock: sizeStock,
+              variants: variants,
+            ),
+          );
+          Logger().d('Invalid index for image removal: ${event.index}');
+        }
       } catch (e) {
         emit(_Failure(e.toString()));
+        Logger().e('Error removing image: $e');
       }
     });
 
@@ -65,11 +76,13 @@ class VariantsBloc extends Bloc<VariantsEvent, VariantsState> {
       try {
         sizeStock = List.from(sizeStock)..add(event.sizeStock);
         Logger().i('SizeStock Added: ${event.sizeStock}');
-        emit(VariantsState.data(
-          sizeStock: sizeStock,
-          images: images, 
-          variants: variants,
-        ));
+        emit(
+          VariantsState.data(
+            sizeStock: sizeStock,
+            images: images,
+            variants: variants,
+          ),
+        );
       } catch (e) {
         emit(_Failure(e.toString()));
       }
@@ -80,13 +93,14 @@ class VariantsBloc extends Bloc<VariantsEvent, VariantsState> {
         if (event.index >= 0 && event.index < sizeStock.length) {
           sizeStock = List.from(sizeStock)..removeAt(event.index);
           emit(VariantsState.removedSizeStockState(sizeStock));
-        } 
-          emit(VariantsState.data(
+        }
+        emit(
+          VariantsState.data(
             sizeStock: sizeStock,
             images: images,
             variants: variants,
-          ));
-        
+          ),
+        );
       } catch (e) {
         emit(_Failure(e.toString()));
       }
@@ -94,11 +108,13 @@ class VariantsBloc extends Bloc<VariantsEvent, VariantsState> {
 
     on<_ResetImage>((event, emit) {
       images = [];
-      emit(VariantsState.data(
-        sizeStock: sizeStock,
-        images: images,
-        variants: variants,
-      ));
+      emit(
+        VariantsState.data(
+          sizeStock: sizeStock,
+          images: images,
+          variants: variants,
+        ),
+      );
     });
 
     on<_ShowFields>((event, emit) {
@@ -116,18 +132,20 @@ class VariantsBloc extends Bloc<VariantsEvent, VariantsState> {
         emit(_ShowFieldsState());
       }
     });
-    on<_AddVaraints>((event, emit) async {
+    on<_AddVaraints>((event, emit)async {
       emit(_Loading());
       try {
+        await Future.delayed(Duration(microseconds: 300));
         variants.addAll(event.varaints);
         Logger().i('Variants Added: ${event.varaints}');
         sizeStock = [];
-        emit(VariantsState.data(
-
-          sizeStock: sizeStock,
-          images: images,
-          variants: variants,
-        )); 
+        emit(
+          VariantsState.data(
+            sizeStock: sizeStock,
+            images: images,
+            variants: variants,
+          ),
+        );
       } catch (e) {
         emit(_Failure(e.toString()));
       }
@@ -139,16 +157,18 @@ class VariantsBloc extends Bloc<VariantsEvent, VariantsState> {
         emit(_Failure(e.toString()));
       }
     });
-    on<_ClearVariants>((event, emit) async {  
+    on<_ClearVariants>((event, emit) async {
       try {
         variants = [];
         sizeStock = [];
         images = [];
-        emit(VariantsState.data(
-          sizeStock: sizeStock,
-          images: images,
-          variants: variants,
-        ));
+        emit(
+          VariantsState.data(
+            sizeStock: sizeStock,
+            images: images,
+            variants: variants,
+          ),
+        );
       } catch (e) {
         emit(_Failure(e.toString()));
       }
@@ -156,10 +176,10 @@ class VariantsBloc extends Bloc<VariantsEvent, VariantsState> {
     on<_RemoveVariants>((event, emit) async {
       try {
         variants.remove(event.variants);
-        emit(VariantsState.variantRemoved()); 
+        emit(VariantsState.variantRemoved());
       } catch (e) {
         emit(_Failure(e.toString()));
       }
-    });   
+    });
   }
 }
