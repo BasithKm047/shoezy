@@ -152,7 +152,7 @@ return clearImage(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( CategoryModel category)?  addCategory,TResult Function( String id)?  deleteCategory,TResult Function( String id,  String name,  List<Uint8List> image)?  updateCategory,TResult Function()?  reset,TResult Function()?  resetImage,TResult Function()?  getCategories,TResult Function( String query)?  searchCategories,TResult Function( List<Uint8List> images)?  imagesUpdated,TResult Function( int index)?  imageRemoved,TResult Function( String? categoryName)?  selectedCategory,TResult Function()?  clearSelection,TResult Function()?  clearImage,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( CategoryModel category)?  addCategory,TResult Function( String id)?  deleteCategory,TResult Function( String id,  String name,  Uint8List image)?  updateCategory,TResult Function()?  reset,TResult Function()?  resetImage,TResult Function()?  getCategories,TResult Function( String query)?  searchCategories,TResult Function( Uint8List images)?  imagesUpdated,TResult Function( int index)?  imageRemoved,TResult Function( String? categoryName)?  selectedCategory,TResult Function()?  clearSelection,TResult Function()?  clearImage,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case AddCategory() when addCategory != null:
 return addCategory(_that.category);case DeleteCategory() when deleteCategory != null:
@@ -184,7 +184,7 @@ return clearImage();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( CategoryModel category)  addCategory,required TResult Function( String id)  deleteCategory,required TResult Function( String id,  String name,  List<Uint8List> image)  updateCategory,required TResult Function()  reset,required TResult Function()  resetImage,required TResult Function()  getCategories,required TResult Function( String query)  searchCategories,required TResult Function( List<Uint8List> images)  imagesUpdated,required TResult Function( int index)  imageRemoved,required TResult Function( String? categoryName)  selectedCategory,required TResult Function()  clearSelection,required TResult Function()  clearImage,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( CategoryModel category)  addCategory,required TResult Function( String id)  deleteCategory,required TResult Function( String id,  String name,  Uint8List image)  updateCategory,required TResult Function()  reset,required TResult Function()  resetImage,required TResult Function()  getCategories,required TResult Function( String query)  searchCategories,required TResult Function( Uint8List images)  imagesUpdated,required TResult Function( int index)  imageRemoved,required TResult Function( String? categoryName)  selectedCategory,required TResult Function()  clearSelection,required TResult Function()  clearImage,}) {final _that = this;
 switch (_that) {
 case AddCategory():
 return addCategory(_that.category);case DeleteCategory():
@@ -215,7 +215,7 @@ return clearImage();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( CategoryModel category)?  addCategory,TResult? Function( String id)?  deleteCategory,TResult? Function( String id,  String name,  List<Uint8List> image)?  updateCategory,TResult? Function()?  reset,TResult? Function()?  resetImage,TResult? Function()?  getCategories,TResult? Function( String query)?  searchCategories,TResult? Function( List<Uint8List> images)?  imagesUpdated,TResult? Function( int index)?  imageRemoved,TResult? Function( String? categoryName)?  selectedCategory,TResult? Function()?  clearSelection,TResult? Function()?  clearImage,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( CategoryModel category)?  addCategory,TResult? Function( String id)?  deleteCategory,TResult? Function( String id,  String name,  Uint8List image)?  updateCategory,TResult? Function()?  reset,TResult? Function()?  resetImage,TResult? Function()?  getCategories,TResult? Function( String query)?  searchCategories,TResult? Function( Uint8List images)?  imagesUpdated,TResult? Function( int index)?  imageRemoved,TResult? Function( String? categoryName)?  selectedCategory,TResult? Function()?  clearSelection,TResult? Function()?  clearImage,}) {final _that = this;
 switch (_that) {
 case AddCategory() when addCategory != null:
 return addCategory(_that.category);case DeleteCategory() when deleteCategory != null:
@@ -382,18 +382,12 @@ as String,
 
 
 class UpdateCategory implements CategoryEvent {
-  const UpdateCategory({required this.id, required this.name, required final  List<Uint8List> image}): _image = image;
+  const UpdateCategory({required this.id, required this.name, required this.image});
   
 
  final  String id;
  final  String name;
- final  List<Uint8List> _image;
- List<Uint8List> get image {
-  if (_image is EqualUnmodifiableListView) return _image;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_image);
-}
-
+ final  Uint8List image;
 
 /// Create a copy of CategoryEvent
 /// with the given fields replaced by the non-null parameter values.
@@ -405,12 +399,12 @@ $UpdateCategoryCopyWith<UpdateCategory> get copyWith => _$UpdateCategoryCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is UpdateCategory&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&const DeepCollectionEquality().equals(other._image, _image));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UpdateCategory&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&const DeepCollectionEquality().equals(other.image, image));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,name,const DeepCollectionEquality().hash(_image));
+int get hashCode => Object.hash(runtimeType,id,name,const DeepCollectionEquality().hash(image));
 
 @override
 String toString() {
@@ -425,7 +419,7 @@ abstract mixin class $UpdateCategoryCopyWith<$Res> implements $CategoryEventCopy
   factory $UpdateCategoryCopyWith(UpdateCategory value, $Res Function(UpdateCategory) _then) = _$UpdateCategoryCopyWithImpl;
 @useResult
 $Res call({
- String id, String name, List<Uint8List> image
+ String id, String name, Uint8List image
 });
 
 
@@ -446,8 +440,8 @@ class _$UpdateCategoryCopyWithImpl<$Res>
   return _then(UpdateCategory(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String,image: null == image ? _self._image : image // ignore: cast_nullable_to_non_nullable
-as List<Uint8List>,
+as String,image: null == image ? _self.image : image // ignore: cast_nullable_to_non_nullable
+as Uint8List,
   ));
 }
 
@@ -620,16 +614,10 @@ as String,
 
 
 class ImagesUpdated implements CategoryEvent {
-  const ImagesUpdated({required final  List<Uint8List> images}): _images = images;
+  const ImagesUpdated({required this.images});
   
 
- final  List<Uint8List> _images;
- List<Uint8List> get images {
-  if (_images is EqualUnmodifiableListView) return _images;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_images);
-}
-
+ final  Uint8List images;
 
 /// Create a copy of CategoryEvent
 /// with the given fields replaced by the non-null parameter values.
@@ -641,12 +629,12 @@ $ImagesUpdatedCopyWith<ImagesUpdated> get copyWith => _$ImagesUpdatedCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ImagesUpdated&&const DeepCollectionEquality().equals(other._images, _images));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ImagesUpdated&&const DeepCollectionEquality().equals(other.images, images));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_images));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(images));
 
 @override
 String toString() {
@@ -661,7 +649,7 @@ abstract mixin class $ImagesUpdatedCopyWith<$Res> implements $CategoryEventCopyW
   factory $ImagesUpdatedCopyWith(ImagesUpdated value, $Res Function(ImagesUpdated) _then) = _$ImagesUpdatedCopyWithImpl;
 @useResult
 $Res call({
- List<Uint8List> images
+ Uint8List images
 });
 
 
@@ -680,8 +668,8 @@ class _$ImagesUpdatedCopyWithImpl<$Res>
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') $Res call({Object? images = null,}) {
   return _then(ImagesUpdated(
-images: null == images ? _self._images : images // ignore: cast_nullable_to_non_nullable
-as List<Uint8List>,
+images: null == images ? _self.images : images // ignore: cast_nullable_to_non_nullable
+as Uint8List,
   ));
 }
 
@@ -1013,7 +1001,7 @@ return loaded(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function()?  success,TResult Function( String message)?  failure,TResult Function( List<Uint8List> images)?  imagesUpdated,TResult Function( List<Uint8List> images)?  imageRemoved,TResult Function( List<CategoryModel> categories)?  getcategories,TResult Function( List<CategoryModel> categories,  String? selectedCategory)?  loaded,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function()?  success,TResult Function( String message)?  failure,TResult Function( Uint8List? images)?  imagesUpdated,TResult Function()?  imageRemoved,TResult Function( List<CategoryModel> categories)?  getcategories,TResult Function( List<CategoryModel> categories,  String? selectedCategory)?  loaded,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
 return initial();case _Loading() when loading != null:
@@ -1021,7 +1009,7 @@ return loading();case _Success() when success != null:
 return success();case _Failure() when failure != null:
 return failure(_that.message);case _ImagesUpdated() when imagesUpdated != null:
 return imagesUpdated(_that.images);case _ImageRemoved() when imageRemoved != null:
-return imageRemoved(_that.images);case _GetCategories() when getcategories != null:
+return imageRemoved();case _GetCategories() when getcategories != null:
 return getcategories(_that.categories);case _Loaded() when loaded != null:
 return loaded(_that.categories,_that.selectedCategory);case _:
   return orElse();
@@ -1041,7 +1029,7 @@ return loaded(_that.categories,_that.selectedCategory);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function()  success,required TResult Function( String message)  failure,required TResult Function( List<Uint8List> images)  imagesUpdated,required TResult Function( List<Uint8List> images)  imageRemoved,required TResult Function( List<CategoryModel> categories)  getcategories,required TResult Function( List<CategoryModel> categories,  String? selectedCategory)  loaded,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function()  success,required TResult Function( String message)  failure,required TResult Function( Uint8List? images)  imagesUpdated,required TResult Function()  imageRemoved,required TResult Function( List<CategoryModel> categories)  getcategories,required TResult Function( List<CategoryModel> categories,  String? selectedCategory)  loaded,}) {final _that = this;
 switch (_that) {
 case _Initial():
 return initial();case _Loading():
@@ -1049,7 +1037,7 @@ return loading();case _Success():
 return success();case _Failure():
 return failure(_that.message);case _ImagesUpdated():
 return imagesUpdated(_that.images);case _ImageRemoved():
-return imageRemoved(_that.images);case _GetCategories():
+return imageRemoved();case _GetCategories():
 return getcategories(_that.categories);case _Loaded():
 return loaded(_that.categories,_that.selectedCategory);case _:
   throw StateError('Unexpected subclass');
@@ -1068,7 +1056,7 @@ return loaded(_that.categories,_that.selectedCategory);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function()?  success,TResult? Function( String message)?  failure,TResult? Function( List<Uint8List> images)?  imagesUpdated,TResult? Function( List<Uint8List> images)?  imageRemoved,TResult? Function( List<CategoryModel> categories)?  getcategories,TResult? Function( List<CategoryModel> categories,  String? selectedCategory)?  loaded,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function()?  success,TResult? Function( String message)?  failure,TResult? Function( Uint8List? images)?  imagesUpdated,TResult? Function()?  imageRemoved,TResult? Function( List<CategoryModel> categories)?  getcategories,TResult? Function( List<CategoryModel> categories,  String? selectedCategory)?  loaded,}) {final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
 return initial();case _Loading() when loading != null:
@@ -1076,7 +1064,7 @@ return loading();case _Success() when success != null:
 return success();case _Failure() when failure != null:
 return failure(_that.message);case _ImagesUpdated() when imagesUpdated != null:
 return imagesUpdated(_that.images);case _ImageRemoved() when imageRemoved != null:
-return imageRemoved(_that.images);case _GetCategories() when getcategories != null:
+return imageRemoved();case _GetCategories() when getcategories != null:
 return getcategories(_that.categories);case _Loaded() when loaded != null:
 return loaded(_that.categories,_that.selectedCategory);case _:
   return null;
@@ -1252,16 +1240,10 @@ as String,
 
 
 class _ImagesUpdated implements CategoryState {
-  const _ImagesUpdated(final  List<Uint8List> images): _images = images;
+  const _ImagesUpdated(this.images);
   
 
- final  List<Uint8List> _images;
- List<Uint8List> get images {
-  if (_images is EqualUnmodifiableListView) return _images;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_images);
-}
-
+ final  Uint8List? images;
 
 /// Create a copy of CategoryState
 /// with the given fields replaced by the non-null parameter values.
@@ -1273,12 +1255,12 @@ _$ImagesUpdatedCopyWith<_ImagesUpdated> get copyWith => __$ImagesUpdatedCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ImagesUpdated&&const DeepCollectionEquality().equals(other._images, _images));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ImagesUpdated&&const DeepCollectionEquality().equals(other.images, images));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_images));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(images));
 
 @override
 String toString() {
@@ -1293,7 +1275,7 @@ abstract mixin class _$ImagesUpdatedCopyWith<$Res> implements $CategoryStateCopy
   factory _$ImagesUpdatedCopyWith(_ImagesUpdated value, $Res Function(_ImagesUpdated) _then) = __$ImagesUpdatedCopyWithImpl;
 @useResult
 $Res call({
- List<Uint8List> images
+ Uint8List? images
 });
 
 
@@ -1310,10 +1292,10 @@ class __$ImagesUpdatedCopyWithImpl<$Res>
 
 /// Create a copy of CategoryState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? images = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? images = freezed,}) {
   return _then(_ImagesUpdated(
-null == images ? _self._images : images // ignore: cast_nullable_to_non_nullable
-as List<Uint8List>,
+freezed == images ? _self.images : images // ignore: cast_nullable_to_non_nullable
+as Uint8List?,
   ));
 }
 
@@ -1324,73 +1306,33 @@ as List<Uint8List>,
 
 
 class _ImageRemoved implements CategoryState {
-  const _ImageRemoved(final  List<Uint8List> images): _images = images;
+  const _ImageRemoved();
   
 
- final  List<Uint8List> _images;
- List<Uint8List> get images {
-  if (_images is EqualUnmodifiableListView) return _images;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_images);
-}
 
 
-/// Create a copy of CategoryState
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-_$ImageRemovedCopyWith<_ImageRemoved> get copyWith => __$ImageRemovedCopyWithImpl<_ImageRemoved>(this, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ImageRemoved&&const DeepCollectionEquality().equals(other._images, _images));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ImageRemoved);
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_images));
+int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'CategoryState.imageRemoved(images: $images)';
+  return 'CategoryState.imageRemoved()';
 }
 
 
 }
 
-/// @nodoc
-abstract mixin class _$ImageRemovedCopyWith<$Res> implements $CategoryStateCopyWith<$Res> {
-  factory _$ImageRemovedCopyWith(_ImageRemoved value, $Res Function(_ImageRemoved) _then) = __$ImageRemovedCopyWithImpl;
-@useResult
-$Res call({
- List<Uint8List> images
-});
 
 
-
-
-}
-/// @nodoc
-class __$ImageRemovedCopyWithImpl<$Res>
-    implements _$ImageRemovedCopyWith<$Res> {
-  __$ImageRemovedCopyWithImpl(this._self, this._then);
-
-  final _ImageRemoved _self;
-  final $Res Function(_ImageRemoved) _then;
-
-/// Create a copy of CategoryState
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? images = null,}) {
-  return _then(_ImageRemoved(
-null == images ? _self._images : images // ignore: cast_nullable_to_non_nullable
-as List<Uint8List>,
-  ));
-}
-
-
-}
 
 /// @nodoc
 

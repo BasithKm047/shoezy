@@ -1,7 +1,6 @@
 
 
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:shoezy_admin/data/model/vareintModel/size_stock_model.dart/size_stock_model.dart';
 part 'varientsModel.freezed.dart';
 part 'varientsModel.g.dart';
 

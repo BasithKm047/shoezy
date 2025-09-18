@@ -8,7 +8,7 @@ abstract class BrandModel with _$BrandModel {
   const factory BrandModel({
     String? id,
     required String name,
-    required List<String> imageUrl,
+    required String imageUrl,
   }) = _BrandModel;
   factory BrandModel.fromJson(Map<String, dynamic> json) =>
       _$BrandModelFromJson(json);

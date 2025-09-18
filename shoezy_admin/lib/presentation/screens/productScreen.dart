@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shoezy_admin/data/model/product/product_model.dart';
 import 'package:shoezy_admin/fetures/utils/const/colors.dart';
 import 'package:shoezy_admin/fetures/utils/const/routes.dart';
+import 'package:shoezy_admin/presentation/bloc/addProducts/bloc/product_bloc.dart';
 import 'package:shoezy_admin/widgets/costumWidget.dart';
+import 'package:shoezy_admin/widgets/loading_overlay.dart';
 
 class Productscreen extends StatelessWidget {
   const Productscreen({super.key});
@@ -11,25 +15,51 @@ class Productscreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+    context.read<ProductBloc>().add(ProductEvent.getProduct());
 
-    return Scaffold(
-      appBar: CostumWidget.appBar(
-        title: 'Products',
-        context: context,
-        centerTitle: true,
-      ),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              const SizedBox(height: 16),
-              _buildTopBar(context, screenWidth),
-              const SizedBox(height: 20),
-              _buildProductTable(context, screenWidth, screenHeight),
-            ],
+    return BlocConsumer<ProductBloc, ProductState>(
+      listener: (context, state) {
+        state.maybeWhen(
+          orElse: () {},
+          loading: () {
+            LoadingOverlay.show(context, '');
+          },
+          loaded: (s) {
+            LoadingOverlay.hide();
+          },
+        );
+      },
+      builder: (context, state) {
+        final List<ProductModel> products = state.maybeWhen(
+          orElse: () => [],
+          loaded: (products) => products,
+        );
+
+        return Scaffold(
+          appBar: CostumWidget.appBar(
+            title: 'Products',
+            context: context,
+            centerTitle: true,
           ),
-        ),
-      ),
+          body: Center(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  const SizedBox(height: 16),
+                  _buildTopBar(context, screenWidth),
+                  const SizedBox(height: 20),
+                  _buildProductTable(
+                    context,
+                    screenWidth,
+                    screenHeight,
+                    products,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -101,6 +131,7 @@ class Productscreen extends StatelessWidget {
     BuildContext context,
     double screenWidth,
     double screenHeight,
+    List<ProductModel> products,
   ) {
     final isSmallScreen = screenWidth < 700;
 
@@ -113,28 +144,25 @@ class Productscreen extends StatelessWidget {
       widget: Column(
         children: [
           _buildTableHeader(context, isSmallScreen),
-          SizedBox(
-            height: 10,
-          ),
-        
-            
-            Expanded(
-              child: ListView.builder(
-                itemCount: 5,                itemBuilder: (context, index) {
-                  return _buildProductRow(
-                    context,
-                    index: index+1,
-                    name: 'Nike Shoe',
-                    category: 'Men',
-                    brand: 'Nike',
-                    stock: 100,
-                    price: 1999,
-                    isSmall: isSmallScreen,
-                  );
-                },
-              ),
+          SizedBox(height: 10),
+
+          Expanded(
+            child: ListView.builder(
+              itemCount: products.length,
+              itemBuilder: (context, index) {
+                return _buildProductRow(
+                  context,
+                  index: index + 1,
+                  name: products[index].productName,
+                  category: products[index].categoryName,
+                  brand: products[index].brandName,
+                  stock: '1',
+                  price: products[index].price,
+                  isSmall: isSmallScreen,
+                );
+              },
             ),
-          
+          ),
         ],
       ),
     );
@@ -170,8 +198,8 @@ class Productscreen extends StatelessWidget {
     required String name,
     required String category,
     required String brand,
-    required int stock,
-    required int price,
+    required String stock,
+    required String price,
     required bool isSmall,
   }) {
     return Padding(
@@ -182,7 +210,7 @@ class Productscreen extends StatelessWidget {
           Expanded(flex: 5, child: Text(name)),
           Expanded(flex: 4, child: Text(category)),
           Expanded(flex: 4, child: Text(brand)),
-          Expanded(flex: 4, child: Text('$stock')),
+          Expanded(flex: 4, child: Text(stock)),
           Expanded(flex: 4, child: Text('₹$price')),
           Expanded(
             flex: isSmall ? 6 : 4,

@@ -8,6 +8,7 @@ import 'package:shoezy_admin/presentation/bloc/brand/bloc/brand_bloc.dart';
 import 'package:shoezy_admin/presentation/bloc/category_bloc/bloc/category_bloc.dart';
 import 'package:shoezy_admin/presentation/bloc/varients_bloc/bloc/varients_bloc.dart';
 import 'package:shoezy_admin/widgets/costumWidget.dart';
+import 'package:shoezy_admin/widgets/loading_overlay.dart';
 
 class AddProductFields {
   static Widget descriptionFeild(
@@ -127,10 +128,11 @@ class AddProductFields {
       builder: (context, state) {
         return state.maybeWhen(
           loaded: (brands, selectedBrand) {
+            final items = brands.map((b) => b.name.toString()).toList();
             return CostumWidget.costumDropdown(
-              items: brands.map((b) => b.name).toList(),
+              items: items,
               validator: (value) {
-                if (value == null || value.toString().isEmpty) {
+                if (value == null || value.trim().isEmpty) {
                   return 'Please select a brand';
                 }
                 return null;
@@ -268,8 +270,10 @@ class AddProductFields {
                 context.read<ProductBloc>().add(
                   ProductEvent.addProduct(product: products),
                 );
-
                 clearField(context);
+                LoadingOverlay.show(context,'Product');
+                await Future.delayed(Duration(seconds: 1));
+                LoadingOverlay.hide();
               },
 
               width: screenWidth / 7,

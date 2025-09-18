@@ -40,7 +40,9 @@ class _OrderlistScreenState extends State<OrderlistScreen> {
                     onPrimary: Colors.white,
                     onSurface: Colors.black,
                   ),
-                  dialogBackgroundColor: Colors.transparent,
+                  dialogTheme: DialogThemeData(
+                    backgroundColor: Colors.transparent,
+                  ),
                 ),
                 child: child!,
               ),

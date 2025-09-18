@@ -6,7 +6,7 @@ import 'package:shoezy_admin/fetures/core/id.dart';
 
 class CategoryServices {
   final db = FirebaseFirestore.instance.collection('categories');
-  Future<void> addCategory(String name, List<String> image) async {
+  Future<void> addCategory(String name, String image) async {
     final category = CategoryModel(id: createId(), name: name, image: image);
     await db.add(category.toJson());
   }
@@ -17,7 +17,7 @@ class CategoryServices {
 
   Future<void> updateCategory(
     String name,
-    List<String> image,
+    String image,
     String id,
   ) async {
     await db.doc(id).update({'name': name, 'image': image});

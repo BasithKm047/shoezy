@@ -13,32 +13,38 @@ class CloudinaryServices {
   // CloudinaryServices({required this.cloudname, required this.uploadPreset});
   String get uploadUrl=>'https://api.cloudinary.com/v1_1/$cloudname/image/upload' ;
 
-  Future<String>uploadUin8List(Uint8List bytes,{required String fileName})async{
-    final Dio dio=Dio();
-    late MultipartFile multipartFile;
-multipartFile=MultipartFile.fromBytes(
-  bytes,
-  filename: fileName,
-  contentType: DioMediaType('image','jpeg'),  
-);
-final formData=FormData.fromMap({
- 'file':multipartFile,
- 'upload_preset':uploadPreset,
+ Future<String> uploadSingleImage(Uint8List image) async {
+  final Dio dio = Dio();
+  try {
+    final formData = FormData.fromMap({
+      'file': MultipartFile.fromBytes(
+        image,
+        filename: 'image_${DateTime.now().millisecondsSinceEpoch}.jpg',
+      ),
+      'upload_preset': uploadPreset,
+    });
 
-});
+    final response = await dio.post(
+      uploadUrl,
+      data: formData,
+      options: Options(headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+      }),
+    );
 
-final response=await dio.post(uploadUrl, data: formData,options: Options(headers: {
-  'X-Requested-With':'XMLHttpRequest'
-}));
-
-if(response.statusCode==200 || response.statusCode==201){
-  return response.data['secure_url'] as String;
-
-}else{
-  throw Exception('Failed to upload image: ${response.statusCode} - ${response.statusMessage}');
-}
-
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return response.data['secure_url'] as String;
+    } else {
+      throw Exception(
+        'Failed to upload image: ${response.statusCode} - ${response.statusMessage}',
+      );
+    }
+  } on DioException catch (e) {
+    log('Cloudinary status: ${e.response?.statusCode}');
+    log('Cloudinary body  : ${e.response?.data}');
+    rethrow;
   }
+}
 
   Future<List<String>>uploadMultipleImages(List<Uint8List> images)async{
     final Dio dio=Dio();

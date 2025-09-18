@@ -15,11 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ProductModel {
 
- String? get id; String get productName; String get brandName; String get categoryName; String get price; String get description; List<Map<String, dynamic>> get variants;// required List<String> images,
-//  @Default('') String colorCode, // Optional field
-//   @Default('') String colorName, // Optional field
-//   @JsonKey(fromJson: _dateTimeFromJson, toJson: _dateTimeToJson)
- DateTime get createdAt;
+ String? get id; String get productName; String get brandName; String get categoryName; String get price; String get description; List<Map<String, dynamic>> get variants; DateTime get createdAt;
 /// Create a copy of ProductModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -236,10 +232,6 @@ class _ProductModel implements ProductModel {
   return EqualUnmodifiableListView(_variants);
 }
 
-// required List<String> images,
-//  @Default('') String colorCode, // Optional field
-//   @Default('') String colorName, // Optional field
-//   @JsonKey(fromJson: _dateTimeFromJson, toJson: _dateTimeToJson)
 @override final  DateTime createdAt;
 
 /// Create a copy of ProductModel

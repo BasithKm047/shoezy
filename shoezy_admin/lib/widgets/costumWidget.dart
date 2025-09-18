@@ -596,6 +596,19 @@ static Widget costumDropdown<T>({
   );
 }
 
+static Widget imageField({required String image}){
+  return SizedBox(
+    height: 100,
+    width: 100,
+    child: ClipRRect(
+      borderRadius: BorderRadiusGeometry.circular(20),
+      child: Image.network(
+        fit: BoxFit.contain,
+       image
+      ),
+    ),
+  );
+}
   
 }
 

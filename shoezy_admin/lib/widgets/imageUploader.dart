@@ -1,37 +1,53 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-// import 'package:image_picker/image_picker.dart';
 
 class CostumImageUploader extends StatelessWidget {
-  final List<Uint8List> images;
-  final Function(List<Uint8List>) onImagesChanged;
-  final Function onImageRemoved;
+  // MULTIPLE image mode
+  final List<Uint8List>? images;
+  final Function(List<Uint8List>)? onImagesChanged;
+  final Function(int index)? onImageRemoved;
 
-   CostumImageUploader({
+  // SINGLE image mode
+  final Uint8List? image;
+  final Function(Uint8List)? onImageSelected;
+  final VoidCallback? onSingleImageRemoved;
+
+  final bool singleMode; // true → single image, false → multiple images
+
+  CostumImageUploader({
     super.key,
-    required this.images,
-    required this.onImagesChanged,
-    required  this.onImageRemoved
+    this.images,
+    this.onImagesChanged,
+    this.onImageRemoved,
+    this.image,
+    this.onImageSelected,
+    this.onSingleImageRemoved,
+    this.singleMode = false, // default = multiple images
   });
 
   final ImagePicker _picker = ImagePicker();
 
   Future<void> _pickImages() async {
     try {
-      final List<XFile> pickedFiles = await _picker.pickMultiImage(
-        // maxWidth: 800,
-        // maxHeight: 800,
-        // imageQuality: 80,
-      );
-      final List<Uint8List> newImages = [];
-      for (XFile xfile in pickedFiles) {
-        Uint8List bytes = await xfile.readAsBytes();
-        newImages.add(bytes);
+      if (singleMode) {
+        // Pick single image
+        final XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+        if (pickedFile != null) {
+          Uint8List bytes = await pickedFile.readAsBytes();
+          onImageSelected?.call(bytes);
+        }
+      } else {
+        // Pick multiple images
+        final List<XFile> pickedFiles = await _picker.pickMultiImage();
+        final List<Uint8List> newImages = [];
+        for (XFile xfile in pickedFiles) {
+          Uint8List bytes = await xfile.readAsBytes();
+          newImages.add(bytes);
+        }
+        onImagesChanged?.call([...images ?? [], ...newImages]);
       }
-      print('Picked images'); // Debug print
-      onImagesChanged([...images, ...newImages]);
-        } catch (e) {
+    } catch (e) {
       print('Error picking images: $e');
     }
   }
@@ -44,53 +60,89 @@ class CostumImageUploader extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Example Images',
-          style: Theme.of(
-            context,
-          ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+          singleMode ? 'Example Image' : 'Example Images',
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
         ),
         const SizedBox(height: 12),
-        images.isEmpty
-            ? Text('No images selected')
-        :SizedBox(
-          height: 250,
-          child: ListView.separated(
-            scrollDirection: Axis.horizontal,
-            itemCount:  images.length,
-            separatorBuilder: (_, __) => const SizedBox(width: 10),
-            itemBuilder: (context, index) {
-              return ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: Container(
-                  // width: screenWidth /7,
-                  height: 200,
-                  color: Colors.grey[200],
-                  child: Stack(
-                    children: [
-                      Image.memory(
-                        images[index],
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Text('Error Loading Image');
-                        },
-                      ),
-                      Positioned(
-                top: 5,
-                right: 5,
-                child: IconButton(
-                  icon: const Icon(Icons.remove_circle, color: Colors.red),
-                  onPressed: () {
-                    onImageRemoved(index);
-                  },
-                ),
-              ),
-                    ],
+
+        // --- SINGLE MODE ---
+        if (singleMode)
+          image == null
+              ? const Text('No image selected')
+              : SizedBox(
+                  height: 250,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Stack(
+                      children: [
+                        Image.memory(
+                          image!,
+                          fit: BoxFit.contain,
+                          width: double.infinity,
+                          errorBuilder: (context, error, stackTrace) {
+                            return const Text('Error Loading Image');
+                          },
+                        ),
+                        Positioned(
+                          top: 5,
+                          right: 5,
+                          child: IconButton(
+                            icon: const Icon(Icons.remove_circle,
+                                color: Colors.red),
+                            onPressed: onSingleImageRemoved,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              );
-            },
-          ),
-        ),
+
+        // --- MULTIPLE MODE ---
+        if (!singleMode)
+          images == null || images!.isEmpty
+              ? const Text('No images selected')
+              : SizedBox(
+                  height: 250,
+                  child: ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: images!.length,
+                    separatorBuilder: (_, __) => const SizedBox(width: 10),
+                    itemBuilder: (context, index) {
+                      return ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: Container(
+                          height: 200,
+                          color: Colors.grey[200],
+                          child: Stack(
+                            children: [
+                              Image.memory(
+                                images![index],
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return const Text('Error Loading Image');
+                                },
+                              ),
+                              Positioned(
+                                top: 5,
+                                right: 5,
+                                child: IconButton(
+                                  icon: const Icon(Icons.remove_circle,
+                                      color: Colors.red),
+                                  onPressed: () {
+                                    onImageRemoved?.call(index);
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+
         const SizedBox(height: 20),
         Container(
           width: screenWidth,
@@ -106,16 +158,19 @@ class CostumImageUploader extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.upload_file, size: 30, color: Colors.black),
+                const Icon(Icons.upload_file, size: 30, color: Colors.black),
                 const SizedBox(height: 10),
-                const Text(
-                  'Upload Images',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                Text(
+                  singleMode ? 'Upload Image' : 'Upload Images',
+                  style: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 5),
                 Text(
-                  'Drag and drop images here, or click to browse',
-                  style: TextStyle(color: Colors.black),
+                  singleMode
+                      ? 'Click to select an image'
+                      : 'Drag and drop images here, or click to browse',
+                  style: const TextStyle(color: Colors.black),
                   textAlign: TextAlign.center,
                 ),
               ],

@@ -140,7 +140,7 @@ return clearSelection(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( BrandModel brands)?  addBrand,TResult Function( BrandModel brands)?  updateBrand,TResult Function( String id)?  deleteBrand,TResult Function()?  fetchBrands,TResult Function( List<Uint8List> imageBytes)?  imageUploaded,TResult Function()?  clearImage,TResult Function( int index)?  removedImage,TResult Function( String? brandName)?  selectedBrand,TResult Function()?  clearSelection,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( BrandModel brands)?  addBrand,TResult Function( BrandModel brands)?  updateBrand,TResult Function( String id)?  deleteBrand,TResult Function()?  fetchBrands,TResult Function( Uint8List imageBytes)?  imageUploaded,TResult Function()?  clearImage,TResult Function()?  removedImage,TResult Function( String? brandName)?  selectedBrand,TResult Function()?  clearSelection,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case AddBrand() when addBrand != null:
 return addBrand(_that.brands);case UpdateBrand() when updateBrand != null:
@@ -149,7 +149,7 @@ return deleteBrand(_that.id);case FetchBrands() when fetchBrands != null:
 return fetchBrands();case ImageUploaded() when imageUploaded != null:
 return imageUploaded(_that.imageBytes);case ClearImage() when clearImage != null:
 return clearImage();case RemovedImage() when removedImage != null:
-return removedImage(_that.index);case SelectedBrand() when selectedBrand != null:
+return removedImage();case SelectedBrand() when selectedBrand != null:
 return selectedBrand(_that.brandName);case ClearSelection() when clearSelection != null:
 return clearSelection();case _:
   return orElse();
@@ -169,7 +169,7 @@ return clearSelection();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( BrandModel brands)  addBrand,required TResult Function( BrandModel brands)  updateBrand,required TResult Function( String id)  deleteBrand,required TResult Function()  fetchBrands,required TResult Function( List<Uint8List> imageBytes)  imageUploaded,required TResult Function()  clearImage,required TResult Function( int index)  removedImage,required TResult Function( String? brandName)  selectedBrand,required TResult Function()  clearSelection,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( BrandModel brands)  addBrand,required TResult Function( BrandModel brands)  updateBrand,required TResult Function( String id)  deleteBrand,required TResult Function()  fetchBrands,required TResult Function( Uint8List imageBytes)  imageUploaded,required TResult Function()  clearImage,required TResult Function()  removedImage,required TResult Function( String? brandName)  selectedBrand,required TResult Function()  clearSelection,}) {final _that = this;
 switch (_that) {
 case AddBrand():
 return addBrand(_that.brands);case UpdateBrand():
@@ -178,7 +178,7 @@ return deleteBrand(_that.id);case FetchBrands():
 return fetchBrands();case ImageUploaded():
 return imageUploaded(_that.imageBytes);case ClearImage():
 return clearImage();case RemovedImage():
-return removedImage(_that.index);case SelectedBrand():
+return removedImage();case SelectedBrand():
 return selectedBrand(_that.brandName);case ClearSelection():
 return clearSelection();}
 }
@@ -194,7 +194,7 @@ return clearSelection();}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( BrandModel brands)?  addBrand,TResult? Function( BrandModel brands)?  updateBrand,TResult? Function( String id)?  deleteBrand,TResult? Function()?  fetchBrands,TResult? Function( List<Uint8List> imageBytes)?  imageUploaded,TResult? Function()?  clearImage,TResult? Function( int index)?  removedImage,TResult? Function( String? brandName)?  selectedBrand,TResult? Function()?  clearSelection,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( BrandModel brands)?  addBrand,TResult? Function( BrandModel brands)?  updateBrand,TResult? Function( String id)?  deleteBrand,TResult? Function()?  fetchBrands,TResult? Function( Uint8List imageBytes)?  imageUploaded,TResult? Function()?  clearImage,TResult? Function()?  removedImage,TResult? Function( String? brandName)?  selectedBrand,TResult? Function()?  clearSelection,}) {final _that = this;
 switch (_that) {
 case AddBrand() when addBrand != null:
 return addBrand(_that.brands);case UpdateBrand() when updateBrand != null:
@@ -203,7 +203,7 @@ return deleteBrand(_that.id);case FetchBrands() when fetchBrands != null:
 return fetchBrands();case ImageUploaded() when imageUploaded != null:
 return imageUploaded(_that.imageBytes);case ClearImage() when clearImage != null:
 return clearImage();case RemovedImage() when removedImage != null:
-return removedImage(_that.index);case SelectedBrand() when selectedBrand != null:
+return removedImage();case SelectedBrand() when selectedBrand != null:
 return selectedBrand(_that.brandName);case ClearSelection() when clearSelection != null:
 return clearSelection();case _:
   return null;
@@ -465,16 +465,10 @@ String toString() {
 
 
 class ImageUploaded implements BrandEvent {
-  const ImageUploaded(final  List<Uint8List> imageBytes): _imageBytes = imageBytes;
+  const ImageUploaded(this.imageBytes);
   
 
- final  List<Uint8List> _imageBytes;
- List<Uint8List> get imageBytes {
-  if (_imageBytes is EqualUnmodifiableListView) return _imageBytes;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_imageBytes);
-}
-
+ final  Uint8List imageBytes;
 
 /// Create a copy of BrandEvent
 /// with the given fields replaced by the non-null parameter values.
@@ -486,12 +480,12 @@ $ImageUploadedCopyWith<ImageUploaded> get copyWith => _$ImageUploadedCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ImageUploaded&&const DeepCollectionEquality().equals(other._imageBytes, _imageBytes));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ImageUploaded&&const DeepCollectionEquality().equals(other.imageBytes, imageBytes));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_imageBytes));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(imageBytes));
 
 @override
 String toString() {
@@ -506,7 +500,7 @@ abstract mixin class $ImageUploadedCopyWith<$Res> implements $BrandEventCopyWith
   factory $ImageUploadedCopyWith(ImageUploaded value, $Res Function(ImageUploaded) _then) = _$ImageUploadedCopyWithImpl;
 @useResult
 $Res call({
- List<Uint8List> imageBytes
+ Uint8List imageBytes
 });
 
 
@@ -525,8 +519,8 @@ class _$ImageUploadedCopyWithImpl<$Res>
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') $Res call({Object? imageBytes = null,}) {
   return _then(ImageUploaded(
-null == imageBytes ? _self._imageBytes : imageBytes // ignore: cast_nullable_to_non_nullable
-as List<Uint8List>,
+null == imageBytes ? _self.imageBytes : imageBytes // ignore: cast_nullable_to_non_nullable
+as Uint8List,
   ));
 }
 
@@ -569,67 +563,33 @@ String toString() {
 
 
 class RemovedImage implements BrandEvent {
-  const RemovedImage(this.index);
+  const RemovedImage();
   
 
- final  int index;
 
-/// Create a copy of BrandEvent
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$RemovedImageCopyWith<RemovedImage> get copyWith => _$RemovedImageCopyWithImpl<RemovedImage>(this, _$identity);
+
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is RemovedImage&&(identical(other.index, index) || other.index == index));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is RemovedImage);
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,index);
+int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'BrandEvent.removedImage(index: $index)';
+  return 'BrandEvent.removedImage()';
 }
 
 
 }
 
-/// @nodoc
-abstract mixin class $RemovedImageCopyWith<$Res> implements $BrandEventCopyWith<$Res> {
-  factory $RemovedImageCopyWith(RemovedImage value, $Res Function(RemovedImage) _then) = _$RemovedImageCopyWithImpl;
-@useResult
-$Res call({
- int index
-});
 
 
-
-
-}
-/// @nodoc
-class _$RemovedImageCopyWithImpl<$Res>
-    implements $RemovedImageCopyWith<$Res> {
-  _$RemovedImageCopyWithImpl(this._self, this._then);
-
-  final RemovedImage _self;
-  final $Res Function(RemovedImage) _then;
-
-/// Create a copy of BrandEvent
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? index = null,}) {
-  return _then(RemovedImage(
-null == index ? _self.index : index // ignore: cast_nullable_to_non_nullable
-as int,
-  ));
-}
-
-
-}
 
 /// @nodoc
 
@@ -855,7 +815,7 @@ return removedImageState(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function()?  success,TResult Function( List<BrandModel> brands,  String? selectedBrand)?  loaded,TResult Function( String message)?  error,TResult Function( List<Uint8List> imageBytes)?  imagesUpdated,TResult Function()?  imageClearedState,TResult Function( List<Uint8List> removedImages)?  removedImageState,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function()?  success,TResult Function( List<BrandModel> brands,  String? selectedBrand)?  loaded,TResult Function( String message)?  error,TResult Function( Uint8List? imageBytes)?  imagesUpdated,TResult Function()?  imageClearedState,TResult Function()?  removedImageState,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case BrandInitial() when initial != null:
 return initial();case BrandLoading() when loading != null:
@@ -865,7 +825,7 @@ return loaded(_that.brands,_that.selectedBrand);case BrandError() when error != 
 return error(_that.message);case ImagesUpdatedState() when imagesUpdated != null:
 return imagesUpdated(_that.imageBytes);case ImageClearedState() when imageClearedState != null:
 return imageClearedState();case RemovedImageState() when removedImageState != null:
-return removedImageState(_that.removedImages);case _:
+return removedImageState();case _:
   return orElse();
 
 }
@@ -883,7 +843,7 @@ return removedImageState(_that.removedImages);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function()  success,required TResult Function( List<BrandModel> brands,  String? selectedBrand)  loaded,required TResult Function( String message)  error,required TResult Function( List<Uint8List> imageBytes)  imagesUpdated,required TResult Function()  imageClearedState,required TResult Function( List<Uint8List> removedImages)  removedImageState,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function()  success,required TResult Function( List<BrandModel> brands,  String? selectedBrand)  loaded,required TResult Function( String message)  error,required TResult Function( Uint8List? imageBytes)  imagesUpdated,required TResult Function()  imageClearedState,required TResult Function()  removedImageState,}) {final _that = this;
 switch (_that) {
 case BrandInitial():
 return initial();case BrandLoading():
@@ -893,7 +853,7 @@ return loaded(_that.brands,_that.selectedBrand);case BrandError():
 return error(_that.message);case ImagesUpdatedState():
 return imagesUpdated(_that.imageBytes);case ImageClearedState():
 return imageClearedState();case RemovedImageState():
-return removedImageState(_that.removedImages);}
+return removedImageState();}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -907,7 +867,7 @@ return removedImageState(_that.removedImages);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function()?  success,TResult? Function( List<BrandModel> brands,  String? selectedBrand)?  loaded,TResult? Function( String message)?  error,TResult? Function( List<Uint8List> imageBytes)?  imagesUpdated,TResult? Function()?  imageClearedState,TResult? Function( List<Uint8List> removedImages)?  removedImageState,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function()?  success,TResult? Function( List<BrandModel> brands,  String? selectedBrand)?  loaded,TResult? Function( String message)?  error,TResult? Function( Uint8List? imageBytes)?  imagesUpdated,TResult? Function()?  imageClearedState,TResult? Function()?  removedImageState,}) {final _that = this;
 switch (_that) {
 case BrandInitial() when initial != null:
 return initial();case BrandLoading() when loading != null:
@@ -917,7 +877,7 @@ return loaded(_that.brands,_that.selectedBrand);case BrandError() when error != 
 return error(_that.message);case ImagesUpdatedState() when imagesUpdated != null:
 return imagesUpdated(_that.imageBytes);case ImageClearedState() when imageClearedState != null:
 return imageClearedState();case RemovedImageState() when removedImageState != null:
-return removedImageState(_that.removedImages);case _:
+return removedImageState();case _:
   return null;
 
 }
@@ -1165,16 +1125,10 @@ as String,
 
 
 class ImagesUpdatedState implements BrandState {
-  const ImagesUpdatedState(final  List<Uint8List> imageBytes): _imageBytes = imageBytes;
+  const ImagesUpdatedState(this.imageBytes);
   
 
- final  List<Uint8List> _imageBytes;
- List<Uint8List> get imageBytes {
-  if (_imageBytes is EqualUnmodifiableListView) return _imageBytes;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_imageBytes);
-}
-
+ final  Uint8List? imageBytes;
 
 /// Create a copy of BrandState
 /// with the given fields replaced by the non-null parameter values.
@@ -1186,12 +1140,12 @@ $ImagesUpdatedStateCopyWith<ImagesUpdatedState> get copyWith => _$ImagesUpdatedS
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ImagesUpdatedState&&const DeepCollectionEquality().equals(other._imageBytes, _imageBytes));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ImagesUpdatedState&&const DeepCollectionEquality().equals(other.imageBytes, imageBytes));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_imageBytes));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(imageBytes));
 
 @override
 String toString() {
@@ -1206,7 +1160,7 @@ abstract mixin class $ImagesUpdatedStateCopyWith<$Res> implements $BrandStateCop
   factory $ImagesUpdatedStateCopyWith(ImagesUpdatedState value, $Res Function(ImagesUpdatedState) _then) = _$ImagesUpdatedStateCopyWithImpl;
 @useResult
 $Res call({
- List<Uint8List> imageBytes
+ Uint8List? imageBytes
 });
 
 
@@ -1223,10 +1177,10 @@ class _$ImagesUpdatedStateCopyWithImpl<$Res>
 
 /// Create a copy of BrandState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? imageBytes = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? imageBytes = freezed,}) {
   return _then(ImagesUpdatedState(
-null == imageBytes ? _self._imageBytes : imageBytes // ignore: cast_nullable_to_non_nullable
-as List<Uint8List>,
+freezed == imageBytes ? _self.imageBytes : imageBytes // ignore: cast_nullable_to_non_nullable
+as Uint8List?,
   ));
 }
 
@@ -1269,72 +1223,32 @@ String toString() {
 
 
 class RemovedImageState implements BrandState {
-  const RemovedImageState(final  List<Uint8List> removedImages): _removedImages = removedImages;
+  const RemovedImageState();
   
 
- final  List<Uint8List> _removedImages;
- List<Uint8List> get removedImages {
-  if (_removedImages is EqualUnmodifiableListView) return _removedImages;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_removedImages);
-}
 
 
-/// Create a copy of BrandState
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$RemovedImageStateCopyWith<RemovedImageState> get copyWith => _$RemovedImageStateCopyWithImpl<RemovedImageState>(this, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is RemovedImageState&&const DeepCollectionEquality().equals(other._removedImages, _removedImages));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is RemovedImageState);
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_removedImages));
+int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'BrandState.removedImageState(removedImages: $removedImages)';
+  return 'BrandState.removedImageState()';
 }
 
 
 }
 
-/// @nodoc
-abstract mixin class $RemovedImageStateCopyWith<$Res> implements $BrandStateCopyWith<$Res> {
-  factory $RemovedImageStateCopyWith(RemovedImageState value, $Res Function(RemovedImageState) _then) = _$RemovedImageStateCopyWithImpl;
-@useResult
-$Res call({
- List<Uint8List> removedImages
-});
 
 
-
-
-}
-/// @nodoc
-class _$RemovedImageStateCopyWithImpl<$Res>
-    implements $RemovedImageStateCopyWith<$Res> {
-  _$RemovedImageStateCopyWithImpl(this._self, this._then);
-
-  final RemovedImageState _self;
-  final $Res Function(RemovedImageState) _then;
-
-/// Create a copy of BrandState
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? removedImages = null,}) {
-  return _then(RemovedImageState(
-null == removedImages ? _self._removedImages : removedImages // ignore: cast_nullable_to_non_nullable
-as List<Uint8List>,
-  ));
-}
-
-
-}
 
 // dart format on

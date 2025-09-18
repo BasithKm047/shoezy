@@ -250,6 +250,19 @@ static bool imageValidator(List<Uint8List> images, BuildContext context) {
   }
   return true;
 }
+static bool singleImageValidator(Uint8List? image, BuildContext context) {
+  if (image == null || image.isEmpty) {
+    CostumWidget.showCustomSnackbar(
+      context: context,
+      message: 'Please add an image',
+      backgroundColor: Colors.red,
+      borderColor: Colors.white,
+    );
+    return false;
+  }
+  return true;
+}
+
 
   static String ? commonValidator(String? value,String fieldName,{int minLength=2,bool onlyLetters=false, bool onlyNumbers=false} ){
     if(value==null || value.trim().isEmpty){

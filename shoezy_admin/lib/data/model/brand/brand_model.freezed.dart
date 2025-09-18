@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$BrandModel {
 
- String? get id; String get name; List<String> get imageUrl;
+ String? get id; String get name; String get imageUrl;
 /// Create a copy of BrandModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,12 +28,12 @@ $BrandModelCopyWith<BrandModel> get copyWith => _$BrandModelCopyWithImpl<BrandMo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is BrandModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&const DeepCollectionEquality().equals(other.imageUrl, imageUrl));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is BrandModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,const DeepCollectionEquality().hash(imageUrl));
+int get hashCode => Object.hash(runtimeType,id,name,imageUrl);
 
 @override
 String toString() {
@@ -48,7 +48,7 @@ abstract mixin class $BrandModelCopyWith<$Res>  {
   factory $BrandModelCopyWith(BrandModel value, $Res Function(BrandModel) _then) = _$BrandModelCopyWithImpl;
 @useResult
 $Res call({
- String? id, String name, List<String> imageUrl
+ String? id, String name, String imageUrl
 });
 
 
@@ -70,7 +70,7 @@ class _$BrandModelCopyWithImpl<$Res>
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String?,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,imageUrl: null == imageUrl ? _self.imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
-as List<String>,
+as String,
   ));
 }
 
@@ -155,7 +155,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? id,  String name,  List<String> imageUrl)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? id,  String name,  String imageUrl)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _BrandModel() when $default != null:
 return $default(_that.id,_that.name,_that.imageUrl);case _:
@@ -176,7 +176,7 @@ return $default(_that.id,_that.name,_that.imageUrl);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? id,  String name,  List<String> imageUrl)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? id,  String name,  String imageUrl)  $default,) {final _that = this;
 switch (_that) {
 case _BrandModel():
 return $default(_that.id,_that.name,_that.imageUrl);case _:
@@ -196,7 +196,7 @@ return $default(_that.id,_that.name,_that.imageUrl);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? id,  String name,  List<String> imageUrl)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? id,  String name,  String imageUrl)?  $default,) {final _that = this;
 switch (_that) {
 case _BrandModel() when $default != null:
 return $default(_that.id,_that.name,_that.imageUrl);case _:
@@ -211,18 +211,12 @@ return $default(_that.id,_that.name,_that.imageUrl);case _:
 @JsonSerializable()
 
 class _BrandModel implements BrandModel {
-  const _BrandModel({this.id, required this.name, required final  List<String> imageUrl}): _imageUrl = imageUrl;
+  const _BrandModel({this.id, required this.name, required this.imageUrl});
   factory _BrandModel.fromJson(Map<String, dynamic> json) => _$BrandModelFromJson(json);
 
 @override final  String? id;
 @override final  String name;
- final  List<String> _imageUrl;
-@override List<String> get imageUrl {
-  if (_imageUrl is EqualUnmodifiableListView) return _imageUrl;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_imageUrl);
-}
-
+@override final  String imageUrl;
 
 /// Create a copy of BrandModel
 /// with the given fields replaced by the non-null parameter values.
@@ -237,12 +231,12 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BrandModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&const DeepCollectionEquality().equals(other._imageUrl, _imageUrl));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BrandModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,const DeepCollectionEquality().hash(_imageUrl));
+int get hashCode => Object.hash(runtimeType,id,name,imageUrl);
 
 @override
 String toString() {
@@ -257,7 +251,7 @@ abstract mixin class _$BrandModelCopyWith<$Res> implements $BrandModelCopyWith<$
   factory _$BrandModelCopyWith(_BrandModel value, $Res Function(_BrandModel) _then) = __$BrandModelCopyWithImpl;
 @override @useResult
 $Res call({
- String? id, String name, List<String> imageUrl
+ String? id, String name, String imageUrl
 });
 
 
@@ -278,8 +272,8 @@ class __$BrandModelCopyWithImpl<$Res>
   return _then(_BrandModel(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String?,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String,imageUrl: null == imageUrl ? _self._imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
-as List<String>,
+as String,imageUrl: null == imageUrl ? _self.imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
 

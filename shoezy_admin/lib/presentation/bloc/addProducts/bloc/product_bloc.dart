@@ -1,12 +1,12 @@
 import 'dart:typed_data';
 
+// ignore: depend_on_referenced_packages
 import 'package:bloc/bloc.dart';
 // ignore: unnecessary_import
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logger/logger.dart';
 import 'package:shoezy_admin/data/model/product/product_model.dart';
-import 'package:shoezy_admin/data/model/vareintModel/varientsModel.dart';
 import 'package:shoezy_admin/data/repositories/product_services.dart';
 
 part 'product_event.dart';
@@ -59,5 +59,15 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         emit(ProductState.error(e.toString()));
       }
     });
+    on<_GetProduct>((event, emit) async{
+      emit(_Loading());
+      try{
+        final products=await productServices.getProduct();
+        emit(ProductState.loaded(products: products));
+      }catch(e){
+        emit(ProductState.error(e.toString()));
+      }
+    },);
+
   }
 }

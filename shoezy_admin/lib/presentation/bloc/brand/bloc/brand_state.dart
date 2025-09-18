@@ -7,7 +7,7 @@ sealed class BrandState with _$BrandState {
   const factory BrandState.success() = BrandSuccess;
   const factory BrandState.loaded({required List<BrandModel> brands, String? selectedBrand}) = BrandLoaded;
   const factory BrandState.error(String message) = BrandError;
-  const factory BrandState.imagesUpdated(List<Uint8List> imageBytes) = ImagesUpdatedState;
+  const factory BrandState.imagesUpdated(Uint8List? imageBytes) = ImagesUpdatedState;
   const factory BrandState.imageClearedState() = ImageClearedState;
-  const factory BrandState.removedImageState(List<Uint8List> removedImages) = RemovedImageState;
+  const factory BrandState.removedImageState() = RemovedImageState;
 }

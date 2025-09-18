@@ -1,9 +1,10 @@
-
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shoezy_admin/data/model/categoryModel/category_model.dart';
 import 'package:shoezy_admin/fetures/utils/const/routes.dart';
+import 'package:shoezy_admin/presentation/bloc/category_bloc/bloc/category_bloc.dart';
 import 'package:shoezy_admin/widgets/costumWidget.dart';
-
 
 class Catogeryscreen extends StatelessWidget {
   const Catogeryscreen({super.key});
@@ -11,100 +12,109 @@ class Catogeryscreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    context.read<CategoryBloc>().add(CategoryEvent.getCategories());
     return Padding(
       padding: const EdgeInsets.only(left: 50.0, top: 50),
-      child: Scaffold(
-        appBar: CostumWidget.appBar(
-          title: 'Category',
-          context: context,
-          centerTitle: true,
-        ),
-        body: Column(
-          children: [
-            SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-                
-              child: SizedBox(
-                width: screenWidth/1.1,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    SizedBox(width: 15),
-                    CostumWidget.costumElevatedButton(
-                      ontap: () {
-                        context.go(Routes.addCategoryScreen);
-                      },
-                      width: screenWidth / 7,
-                      context: context,
-                      title: 'Add Category',
-                      backgroundColor: Colors.blue,
-                      foregroundColor: Colors.white,
-                    ),
-                  ],
-                ),
-              ),
+      child: BlocConsumer<CategoryBloc, CategoryState>(
+        listener: (context, state) {
+          state.maybeWhen(orElse: () {});
+        },
+        builder: (context, state) {
+          final List<CategoryModel> categories = state.maybeWhen(
+            orElse: () => [],
+            loaded: (categories, selectedCategory) => categories,
+          );
+
+          return Scaffold(
+            appBar: CostumWidget.appBar(
+              title: 'Category',
+              context: context,
+              centerTitle: true,
             ),
+            body: Column(
+              children: [
+                SizedBox(height: 20),
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
 
-            CostumWidget.costumCard(
-              elevetion: 4,
-              height: 500,
-              width: screenWidth / 1.1,
-              borderRaduis: 10,
-              widget: Column(
-                children: [
-                  
-                  CostumWidget.costumHeader(height: 40, width: screenWidth/1.1,
-                  child: header(context: context),
-                  ),
-
-                  Expanded(
-                    child: ListView.separated(
-                      itemBuilder: (context, index) {
-                        final listofCategory = ['Sneakers', 'Casual', 'Sports'];
-                        final products=[10,20,50];
-                        return _widget(
+                  child: SizedBox(
+                    width: screenWidth / 1.1,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        SizedBox(width: 15),
+                        CostumWidget.costumElevatedButton(
+                          ontap: () {
+                            context.go(Routes.addCategoryScreen);
+                          },
+                          width: screenWidth / 7,
                           context: context,
-                          image: 'image',
-                          name: listofCategory[index],
-                          product: products[index],
-                        );
-                      },
-                      separatorBuilder: (context, index) => Divider(),
-                      itemCount: 3,
+                          title: 'Add Category',
+                          backgroundColor: Colors.blue,
+                          foregroundColor: Colors.white,
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
+                ),
+
+                CostumWidget.costumCard(
+                  elevetion: 4,
+                  height: 500,
+                  width: screenWidth / 1.1,
+                  borderRaduis: 10,
+                  widget: Column(
+                    children: [
+                      CostumWidget.costumHeader(
+                        height: 40,
+                        width: screenWidth / 1.1,
+                        child: header(context: context),
+                      ),
+
+                      Expanded(
+                        child: ListView.separated(
+                          itemBuilder: (context, index) {
+                            return _widget(
+                              context: context,
+                              image: categories[index].image,
+                              name: categories[index].name,
+                            );
+                          },
+                          separatorBuilder: (context, index) => Divider(),
+                          itemCount: categories.length,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
 }
+
 Widget _widget({
   required BuildContext context,
   required String name,
   required String image,
-  required int product,
+  // required int product,
   // bool? isFeild,
 }) {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
     child: Row(
       children: [
-          Expanded(
-          flex: 3,
-          child: CostumWidget.labelText(
-            context,
-           image ,
-            fontSize: 15,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
+        Expanded(flex: 3, child: SizedBox(
+          width: 50,
+          child: Row(
+            children: [
+              CostumWidget.imageField(image: image),
+            ],
+          ))),
 
-        
         Expanded(
           flex: 2,
           child: CostumWidget.labelText(
@@ -114,18 +124,6 @@ Widget _widget({
             fontWeight: FontWeight.w500,
           ),
         ),
-
-        // Expanded(
-        //   flex: 2,
-        //   child: Center(
-        //     child: CostumWidget.labelText(
-        //       context,
-        //       product.toString(),
-        //       fontSize: 15,
-        //       fontWeight: FontWeight.w500,
-        //     ),
-        //   ),
-        // ),
 
         Expanded(
           flex: 2,
@@ -153,7 +151,7 @@ Widget header({required BuildContext context}) {
     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
     child: Row(
       children: [
-          Expanded(
+        Expanded(
           flex: 3,
           child: CostumWidget.labelText(
             context,
@@ -172,18 +170,7 @@ Widget header({required BuildContext context}) {
           ),
         ),
 
-        // Expanded(
-        //   flex: 2,
-        //   child: Center(
-        //     child: CostumWidget.labelText(
-        //       context,
-        //       'Products',
-        //       fontSize: 15,
-        //       fontWeight: FontWeight.bold,
-        //     ),
-        //   ),
-        // ),
-
+     
         Expanded(
           flex: 2,
           child: Align(

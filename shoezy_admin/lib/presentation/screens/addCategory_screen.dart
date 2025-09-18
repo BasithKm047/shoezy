@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,6 +9,7 @@ import 'package:shoezy_admin/fetures/utils/const/static_things.dart';
 import 'package:shoezy_admin/presentation/bloc/category_bloc/bloc/category_bloc.dart';
 import 'package:shoezy_admin/widgets/costumWidget.dart';
 import 'package:shoezy_admin/widgets/imageUploader.dart';
+import 'package:shoezy_admin/widgets/loading_overlay.dart';
 
 class AddcategoryScreen extends StatelessWidget {
   AddcategoryScreen({super.key});
@@ -56,7 +56,7 @@ class AddcategoryScreen extends StatelessWidget {
           // ignore: unnecessary_type_check
           if (state is CategoryState &&
               state.maybeWhen(orElse: () => false, loading: () => true)) {
-            return Center(child: CircularProgressIndicator(color: Colors.blue,));
+            return Center(child: CircularProgressIndicator(color: Colors.blue));
           }
           return Center(
             child: SizedBox(
@@ -65,52 +65,15 @@ class AddcategoryScreen extends StatelessWidget {
                 key: _formKey,
                 child: SingleChildScrollView(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(height: 20),
-                      Row(
-                        children: [
-                          CostumWidget.labelText(context, 'Category Name'),
-                        ],
-                      ),
+                      CostumWidget.labelText(context, 'Category Name'),
                       SizedBox(height: 20),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          CostumWidget.costumTextformField(
-                            controller: _categoryNameController,
-                            keyboardType: TextInputType.text,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter a category name';
-                              }
-                              return null;
-                            },
-                            hintText: 'Name',
-                            width: screenWidth / 2,
-                          ),
+                      categoryNamingField(screenWidth),
+                      SizedBox(height: 10),
 
-                          CostumImageUploader(
-                            images: state.maybeWhen(
-                              orElse: () => [],
-                              imagesUpdated: (images) => images,
-                              imageRemoved: (image) => image,
-                            ),
-                            onImagesChanged: (changedImages) {
-                              context.read<CategoryBloc>().add(
-                                CategoryEvent.imagesUpdated(
-                                  images: changedImages,
-                                ),
-                              );
-                            },
-                            onImageRemoved: (index) {
-                              context.read<CategoryBloc>().add(
-                                CategoryEvent.imageRemoved(index: index),
-                              );
-                            },
-                          ),
-                        ],
-                      ),
+                      imageField(state, context),
                       SizedBox(height: 50),
                       SizedBox(
                         width: screenWidth / 2,
@@ -128,7 +91,41 @@ class AddcategoryScreen extends StatelessWidget {
     );
   }
 
+  Widget categoryNamingField(double screenWidth) {
+    return CostumWidget.costumTextformField(
+      controller: _categoryNameController,
+      keyboardType: TextInputType.text,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter a category name';
+        }
+        return null;
+      },
+      hintText: 'Name',
+      width: screenWidth / 2,
+    );
+  }
 
+  CostumImageUploader imageField(CategoryState state, BuildContext context) {
+    return CostumImageUploader(
+      singleMode: true,
+      image: state.maybeWhen(
+        orElse: () => null,
+        imagesUpdated: (images) => images,
+        // imageRemoved: (image) => image,
+      ),
+      onImageSelected: (changedImages) {
+        context.read<CategoryBloc>().add(
+          CategoryEvent.imagesUpdated(images: changedImages),
+        );
+      },
+      onSingleImageRemoved: () {
+        context.read<CategoryBloc>().add(
+          CategoryEvent.clearImage(),
+        );
+      },
+    );
+  }
 
   Row addCategoryButton(
     CategoryState state,
@@ -140,18 +137,17 @@ class AddcategoryScreen extends StatelessWidget {
       children: [
         CostumWidget.costumElevatedButton(
           ontap: () async {
-            final List<Uint8List> images = state.maybeWhen(
-              orElse: () => [],
+            final image = state.maybeWhen(
+              orElse: () => null,
               imagesUpdated: (images) => images,
-              imageRemoved: (image) => image,
             );
-            Logger().d('messages: ${images.length}');
-            if (!Commonfunction.imageValidator(images, context)) {
+            // Logger().d('messages: ${image.length}');
+            if (!Commonfunction.singleImageValidator(image, context)) {
               return;
             }
             CloudinaryServices cloudinaryServices = CloudinaryServices();
-            final cloudImage = await cloudinaryServices.uploadMultipleImages(
-              images,
+            final cloudImage = await cloudinaryServices.uploadSingleImage(
+              image!,
             );
             Commonfunction.validateAndSubmitForm(
               context: context,
@@ -169,8 +165,12 @@ class AddcategoryScreen extends StatelessWidget {
             context.read<CategoryBloc>().add(
               CategoryEvent.addCategory(category: categories),
             );
-            
             clearfield(context);
+
+            LoadingOverlay.show(context, 'Category');
+
+            await Future.delayed(Duration(seconds: 1));
+            LoadingOverlay.hide();
           },
           context: context,
           title: 'Add Category',

@@ -451,7 +451,7 @@ class VariantAddingFeilds {
                         context: context,
                         formKey: formKey,
                       );
-                      LoadingOverlay.show(context);
+                      LoadingOverlay.show(context,'Variant');
                       final cloudImages = await CloudinaryServices()
                           .uploadMultipleImages(images);
                       final variants = [

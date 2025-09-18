@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 class LoadingOverlay {
   static OverlayEntry? _entry;
 
-  static void show(BuildContext context) {
+
+  static void show(BuildContext context,String title) {
     hide();
 
     _entry = OverlayEntry(
@@ -24,7 +25,7 @@ class LoadingOverlay {
                   CircularProgressIndicator(color: Colors.blue),
                   SizedBox(height: 16),
                   Text(
-                    'Adding Variant...',
+                    'Adding ..$title.',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                 ],

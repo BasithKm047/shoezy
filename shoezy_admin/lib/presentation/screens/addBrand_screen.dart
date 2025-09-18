@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
@@ -8,6 +7,7 @@ import 'package:shoezy_admin/fetures/utils/const/commonFunction.dart';
 import 'package:shoezy_admin/presentation/bloc/brand/bloc/brand_bloc.dart';
 import 'package:shoezy_admin/widgets/costumWidget.dart';
 import 'package:shoezy_admin/widgets/imageUploader.dart';
+import 'package:shoezy_admin/widgets/loading_overlay.dart';
 
 // ignore: must_be_immutable
 class AddbrandScreen extends StatelessWidget {
@@ -76,34 +76,11 @@ class AddbrandScreen extends StatelessWidget {
                       const SizedBox(height: 20),
                       CostumWidget.labelText(context, 'Brand Name'),
                       const SizedBox(height: 10),
-                      CostumWidget.costumTextformField(
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter a brand name';
-                          }
-                          return null;
-                        },
-                        controller: _brandNameController,
-                        hintText: 'Enter brand name',
-                        width: screenWidth / 2,
-                      ),
+                      brandNamingField(screenWidth),
                       const SizedBox(height: 30),
                       CostumWidget.labelText(context, 'Logo'),
                       const SizedBox(height: 10),
-                      CostumImageUploader(
-                        images: state.maybeWhen(
-                          orElse: () => [],
-                          imagesUpdated: (images) => images,
-                          // removedImageState: (index) => index,
-                        ),
-
-                        onImagesChanged: (images) {
-                          context.read<BrandBloc>().add(ImageUploaded(images));
-                        },
-                        onImageRemoved: (index) {
-                          context.read<BrandBloc>().add(RemovedImage(index));
-                        },
-                      ),
+                      imageField(state, context),
                       const SizedBox(height: 40),
                       addBrandButton(screenWidth, context, state),
                       SizedBox(height: 20),
@@ -118,6 +95,41 @@ class AddbrandScreen extends StatelessWidget {
     );
   }
 
+
+
+  Widget brandNamingField(double screenWidth) {
+    return CostumWidget.costumTextformField(
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter a brand name';
+        }
+        return null;
+      },
+      controller: _brandNameController,
+      hintText: 'Enter brand name',
+      width: screenWidth / 2,
+    );
+  }
+
+  CostumImageUploader imageField(BrandState state, BuildContext context) {
+    return CostumImageUploader(
+      singleMode: true,
+      image: state.maybeWhen(
+        
+        orElse: () => null,
+        imagesUpdated: (images) => images,
+        // removedImageState: (index) => index,
+      ),
+
+      onImageSelected: (image) {
+        context.read<BrandBloc>().add(ImageUploaded(image));
+      },
+      onSingleImageRemoved: () {
+        context.read<BrandBloc>().add(RemovedImage());
+      },
+    );
+  }
+
   Center addBrandButton(
     double screenWidth,
     BuildContext context,
@@ -129,18 +141,18 @@ class AddbrandScreen extends StatelessWidget {
         context: context,
         title: 'Add Brand',
         ontap: () async {
-          final List<Uint8List> images = state.maybeWhen(
-            orElse: () => [],
+          final   images = state.maybeWhen(
+            orElse: () => null,
             imagesUpdated: (images) => images,
-            removedImageState: (removedImage) => removedImage,
+            // removedImageState: (removedImage) => removedImage,
           );
-          if (!Commonfunction.imageValidator(images, context)) {
+          if (!Commonfunction.singleImageValidator(images, context)) {
             return;
           }
 
           CloudinaryServices cloudinaryServices = CloudinaryServices();
-          final cloudImage = await cloudinaryServices.uploadMultipleImages(
-            images,
+          final cloudImage = await cloudinaryServices.uploadSingleImage(
+            images!,
           );
           Commonfunction.validateAndSubmitForm(
             context: context,
@@ -155,6 +167,11 @@ class AddbrandScreen extends StatelessWidget {
           );
           // ignore: use_build_context_synchronously
           context.read<BrandBloc>().add(AddBrand(brands));
+          clearfield(context);
+          LoadingOverlay.show(context,'Brand');
+
+          await Future.delayed(Duration(seconds: 1));
+          LoadingOverlay.hide();
         },
       ),
     );

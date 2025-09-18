@@ -55,7 +55,7 @@ extension ProductEventPatterns on ProductEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _AddProduct value)?  addProduct,TResult Function( _RemoveProduct value)?  removeProduct,TResult Function( _UpdateProduct value)?  updateProduct,TResult Function( _UploadImage value)?  uploadImage,TResult Function( _RemoveImage value)?  removeImage,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _AddProduct value)?  addProduct,TResult Function( _RemoveProduct value)?  removeProduct,TResult Function( _UpdateProduct value)?  updateProduct,TResult Function( _UploadImage value)?  uploadImage,TResult Function( _RemoveImage value)?  removeImage,TResult Function( _GetProduct value)?  getProduct,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _AddProduct() when addProduct != null:
@@ -63,7 +63,8 @@ return addProduct(_that);case _RemoveProduct() when removeProduct != null:
 return removeProduct(_that);case _UpdateProduct() when updateProduct != null:
 return updateProduct(_that);case _UploadImage() when uploadImage != null:
 return uploadImage(_that);case _RemoveImage() when removeImage != null:
-return removeImage(_that);case _:
+return removeImage(_that);case _GetProduct() when getProduct != null:
+return getProduct(_that);case _:
   return orElse();
 
 }
@@ -81,7 +82,7 @@ return removeImage(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _AddProduct value)  addProduct,required TResult Function( _RemoveProduct value)  removeProduct,required TResult Function( _UpdateProduct value)  updateProduct,required TResult Function( _UploadImage value)  uploadImage,required TResult Function( _RemoveImage value)  removeImage,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _AddProduct value)  addProduct,required TResult Function( _RemoveProduct value)  removeProduct,required TResult Function( _UpdateProduct value)  updateProduct,required TResult Function( _UploadImage value)  uploadImage,required TResult Function( _RemoveImage value)  removeImage,required TResult Function( _GetProduct value)  getProduct,}){
 final _that = this;
 switch (_that) {
 case _AddProduct():
@@ -89,7 +90,8 @@ return addProduct(_that);case _RemoveProduct():
 return removeProduct(_that);case _UpdateProduct():
 return updateProduct(_that);case _UploadImage():
 return uploadImage(_that);case _RemoveImage():
-return removeImage(_that);case _:
+return removeImage(_that);case _GetProduct():
+return getProduct(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -106,7 +108,7 @@ return removeImage(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _AddProduct value)?  addProduct,TResult? Function( _RemoveProduct value)?  removeProduct,TResult? Function( _UpdateProduct value)?  updateProduct,TResult? Function( _UploadImage value)?  uploadImage,TResult? Function( _RemoveImage value)?  removeImage,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _AddProduct value)?  addProduct,TResult? Function( _RemoveProduct value)?  removeProduct,TResult? Function( _UpdateProduct value)?  updateProduct,TResult? Function( _UploadImage value)?  uploadImage,TResult? Function( _RemoveImage value)?  removeImage,TResult? Function( _GetProduct value)?  getProduct,}){
 final _that = this;
 switch (_that) {
 case _AddProduct() when addProduct != null:
@@ -114,7 +116,8 @@ return addProduct(_that);case _RemoveProduct() when removeProduct != null:
 return removeProduct(_that);case _UpdateProduct() when updateProduct != null:
 return updateProduct(_that);case _UploadImage() when uploadImage != null:
 return uploadImage(_that);case _RemoveImage() when removeImage != null:
-return removeImage(_that);case _:
+return removeImage(_that);case _GetProduct() when getProduct != null:
+return getProduct(_that);case _:
   return null;
 
 }
@@ -131,14 +134,15 @@ return removeImage(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( ProductModel product)?  addProduct,TResult Function()?  removeProduct,TResult Function()?  updateProduct,TResult Function( List<Uint8List> images)?  uploadImage,TResult Function( int index)?  removeImage,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( ProductModel product)?  addProduct,TResult Function()?  removeProduct,TResult Function()?  updateProduct,TResult Function( List<Uint8List> images)?  uploadImage,TResult Function( int index)?  removeImage,TResult Function()?  getProduct,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AddProduct() when addProduct != null:
 return addProduct(_that.product);case _RemoveProduct() when removeProduct != null:
 return removeProduct();case _UpdateProduct() when updateProduct != null:
 return updateProduct();case _UploadImage() when uploadImage != null:
 return uploadImage(_that.images);case _RemoveImage() when removeImage != null:
-return removeImage(_that.index);case _:
+return removeImage(_that.index);case _GetProduct() when getProduct != null:
+return getProduct();case _:
   return orElse();
 
 }
@@ -156,14 +160,15 @@ return removeImage(_that.index);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( ProductModel product)  addProduct,required TResult Function()  removeProduct,required TResult Function()  updateProduct,required TResult Function( List<Uint8List> images)  uploadImage,required TResult Function( int index)  removeImage,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( ProductModel product)  addProduct,required TResult Function()  removeProduct,required TResult Function()  updateProduct,required TResult Function( List<Uint8List> images)  uploadImage,required TResult Function( int index)  removeImage,required TResult Function()  getProduct,}) {final _that = this;
 switch (_that) {
 case _AddProduct():
 return addProduct(_that.product);case _RemoveProduct():
 return removeProduct();case _UpdateProduct():
 return updateProduct();case _UploadImage():
 return uploadImage(_that.images);case _RemoveImage():
-return removeImage(_that.index);case _:
+return removeImage(_that.index);case _GetProduct():
+return getProduct();case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -180,14 +185,15 @@ return removeImage(_that.index);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( ProductModel product)?  addProduct,TResult? Function()?  removeProduct,TResult? Function()?  updateProduct,TResult? Function( List<Uint8List> images)?  uploadImage,TResult? Function( int index)?  removeImage,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( ProductModel product)?  addProduct,TResult? Function()?  removeProduct,TResult? Function()?  updateProduct,TResult? Function( List<Uint8List> images)?  uploadImage,TResult? Function( int index)?  removeImage,TResult? Function()?  getProduct,}) {final _that = this;
 switch (_that) {
 case _AddProduct() when addProduct != null:
 return addProduct(_that.product);case _RemoveProduct() when removeProduct != null:
 return removeProduct();case _UpdateProduct() when updateProduct != null:
 return updateProduct();case _UploadImage() when uploadImage != null:
 return uploadImage(_that.images);case _RemoveImage() when removeImage != null:
-return removeImage(_that.index);case _:
+return removeImage(_that.index);case _GetProduct() when getProduct != null:
+return getProduct();case _:
   return null;
 
 }
@@ -471,6 +477,38 @@ as int,
 
 
 }
+
+/// @nodoc
+
+
+class _GetProduct implements ProductEvent {
+  const _GetProduct();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _GetProduct);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'ProductEvent.getProduct()';
+}
+
+
+}
+
+
+
 
 /// @nodoc
 mixin _$ProductState {

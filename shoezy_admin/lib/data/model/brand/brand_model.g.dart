@@ -9,9 +9,7 @@ part of 'brand_model.dart';
 _BrandModel _$BrandModelFromJson(Map<String, dynamic> json) => _BrandModel(
   id: json['id'] as String?,
   name: json['name'] as String,
-  imageUrl: (json['imageUrl'] as List<dynamic>)
-      .map((e) => e as String)
-      .toList(),
+  imageUrl: json['imageUrl'] as String,
 );
 
 Map<String, dynamic> _$BrandModelToJson(_BrandModel instance) =>

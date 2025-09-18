@@ -8,7 +8,7 @@ abstract class CategoryModel with _$CategoryModel {
   factory CategoryModel({
      String ?id,
     required String name,
-     required List<String> image,
+     required String image,
 
   }) = _CategoryModel;
   factory CategoryModel.fromJson(Map<String, dynamic> json) =>

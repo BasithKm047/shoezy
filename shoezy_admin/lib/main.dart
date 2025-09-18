@@ -1,4 +1,5 @@
 import 'dart:developer';
+// ignore: depend_on_referenced_packages
 import 'package:flutter_web_plugins/url_strategy.dart';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -24,7 +25,6 @@ import 'package:shoezy_admin/presentation/bloc/varients_bloc/bloc/varients_bloc.
 import 'package:shoezy_admin/presentation/screens/addBrand_screen.dart';
 import 'package:shoezy_admin/presentation/screens/addCategory_screen.dart';
 import 'package:shoezy_admin/presentation/screens/addProductScreen.dart';
-import 'package:shoezy_admin/presentation/screens/adduserScreen.dart';
 import 'package:shoezy_admin/presentation/screens/brandScreen.dart';
 import 'package:shoezy_admin/presentation/screens/catogeryScreen.dart';
 import 'package:shoezy_admin/presentation/screens/dashboard.dart';
@@ -42,9 +42,7 @@ void main() async {
   try {
     log('Initializing Firebase...');
     if (Firebase.apps.isEmpty) {
-       Firebase.initializeApp(
-        options: DefaultFirebaseOptions.currentPlatform,
-      );
+      Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
     }
 
     log('Firebase initialized successfully');
@@ -98,10 +96,7 @@ class MyApp extends StatelessWidget {
           path: Routes.setting,
           builder: (context, state) => Settingsscreen(),
         ),
-        GoRoute(
-          path: Routes.addUserScreen,
-          builder: (context, state) => Adduserscreen(),
-        ),
+
         GoRoute(
           path: Routes.products,
           builder: (context, state) => Productscreen(),

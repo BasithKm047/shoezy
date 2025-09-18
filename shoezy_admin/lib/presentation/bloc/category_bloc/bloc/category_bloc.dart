@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+// ignore: depend_on_referenced_packages
 import 'package:bloc/bloc.dart';
 // import 'package:flutter/rendering.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -22,6 +23,8 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
           emit(CategoryState.loading());
           try {
             await categoryServices.addCategory(category.name, category.image);
+        Logger().d('Category Added Successfully');
+
             emit(CategoryState.success());
           } catch (e) {
             emit(CategoryState.failure(e.toString()));
@@ -38,9 +41,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
             emit(
               CategoryState.loaded(
                 categories: categories,
-                selectedCategory: categories.isNotEmpty
-                    ? categories.first.name
-                    : null,
+                selectedCategory: null,
               ),
             );
           } catch (e) {
@@ -51,25 +52,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
         imagesUpdated: (images) {
           emit(CategoryState.imagesUpdated(images));
         },
-        imageRemoved: (index) {
-          try {
-            final List<Uint8List> currentImages = state.maybeWhen(
-              orElse: () => [],
-              imagesUpdated: (images) => images,
-              imageRemoved: (image) => image,
-            );
-            if (index >= 0 && index < currentImages.length) {
-              final updatedImage = List<Uint8List>.from(currentImages)
-                ..removeAt(index);
-              emit(CategoryState.imagesUpdated(updatedImage));
-            } else {
-              emit(CategoryState.imagesUpdated(currentImages));
-            }
-            Logger().d('Image Removed');
-          } catch (e) {
-            emit(CategoryState.failure(e.toString()));
-          }
-        },
+       
         selectedCategory: (categoryName) {
           state.maybeWhen(
             orElse: () {},
@@ -96,9 +79,11 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
             },
           );
         },
-        clearImage: () {
-          emit(CategoryState.imagesUpdated([]));
-        },
+      clearImage: () {
+  emit(CategoryState.imagesUpdated(null));
+  Logger().d("All images cleared");
+},
+
       );
     });
   }

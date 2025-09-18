@@ -18,21 +18,18 @@ class ProductServices {
       Logger().e("Error adding product: $e");
     }
 
-    // ignore: unused_element
-    Future<List<ProductModel>> getProduct() async {
-      try {
-        final snapshot = await firestoreCollection.get();
+  }
 
-        return snapshot.docs
-            .map(
-              (doc) =>
-                  ProductModel.fromJson(doc.data()),
-            )
-            .toList();
-      } catch (e) {
-        Logger().e("Error fetching products: $e");
-        rethrow;
-      }
+  Future<List<ProductModel>> getProduct() async {
+    try {
+      final snapshot = await firestoreCollection.get();
+
+      return snapshot.docs
+          .map((doc) => ProductModel.fromJson(doc.data()))
+          .toList();
+    } catch (e) {
+      Logger().e("Error fetching products: $e");
+      rethrow;
     }
   }
 }
