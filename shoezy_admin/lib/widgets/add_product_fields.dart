@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
 import 'package:shoezy_admin/data/model/product/product_model.dart';
+import 'package:shoezy_admin/data/model/size_stock_model.dart/size_stock_model.dart';
 import 'package:shoezy_admin/data/model/vareintModel/varientsModel.dart';
 import 'package:shoezy_admin/presentation/bloc/addProducts/bloc/product_bloc.dart';
 import 'package:shoezy_admin/presentation/bloc/brand/bloc/brand_bloc.dart';
 import 'package:shoezy_admin/presentation/bloc/category_bloc/bloc/category_bloc.dart';
+import 'package:shoezy_admin/presentation/bloc/size_stock/bloc/size_stock_bloc.dart';
 import 'package:shoezy_admin/presentation/bloc/varients_bloc/bloc/varients_bloc.dart';
 import 'package:shoezy_admin/widgets/costumWidget.dart';
 import 'package:shoezy_admin/widgets/loading_overlay.dart';
@@ -243,7 +245,7 @@ class AddProductFields {
                     .state
                     .maybeWhen(
                       orElse: () => [],
-                      data: (images, sizeStock, variants, showFields) =>
+                      data: (images, variants, showFields) =>
                           variants,
                     );
                 Logger().i('Current variants count: ${variants.length}');
@@ -257,13 +259,30 @@ class AddProductFields {
                   return;
                 }
 
+                List<SizeStockModel>sizeStock=context.read<SizeStockBloc>().state.maybeWhen(orElse: () => [],
+                loaded: (sizeStock) => sizeStock,
+                );
+
+                Logger().i('Current SizeStock count: ${sizeStock.length}');
+
+                  if (sizeStock.isEmpty) {
+                  CostumWidget.showCustomSnackbar(
+                    context: context,
+                    message: 'Please add at least one size and stock',
+                    backgroundColor: Colors.red,
+                  );
+                  return;
+                }
+
+
                 final products = ProductModel(
                   productName: shoeNameController.text.trim(),
                   brandName: selectedBrand.name,
                   categoryName: selectedCategory.name,
                   price: priceController.text,
                   description: shoeDescriptionController.text.trim(),
-                  variants: variants.map((v) => v.toJson()).toList(),
+                  variants: variants  ,
+                  sizeStock: sizeStock    ,
                   createdAt: DateTime.now(),
                 );
                 print(products);

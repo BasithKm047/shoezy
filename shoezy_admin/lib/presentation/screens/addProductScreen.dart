@@ -3,9 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoezy_admin/presentation/bloc/brand/bloc/brand_bloc.dart';
 import 'package:shoezy_admin/presentation/bloc/category_bloc/bloc/category_bloc.dart';
 import 'package:shoezy_admin/presentation/bloc/varients_bloc/bloc/varients_bloc.dart';
+import 'package:shoezy_admin/presentation/screens/stock_size_field.dart';
 import 'package:shoezy_admin/widgets/add_product_fields.dart';
 import 'package:shoezy_admin/widgets/costumWidget.dart';
 import 'package:shoezy_admin/presentation/screens/variant_field.dart';
+import 'package:shoezy_admin/widgets/add_size_stock_field.dart';
 
 class Addproductscreen extends StatelessWidget {
   const Addproductscreen({super.key});
@@ -15,6 +17,7 @@ class Addproductscreen extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
 
     final formKey = GlobalKey<FormState>();
+
     final shoeNameController = TextEditingController();
     final shoeDescriptionController = TextEditingController();
     final priceController = TextEditingController();
@@ -70,6 +73,8 @@ class Addproductscreen extends StatelessWidget {
                       CostumWidget.labelText(context, 'Add Variants'),
                       SizedBox(height: 10),
                       VariantField(),
+                      SizedBox(height: 10),
+                      SizeStockFieldWidget(),
                       SizedBox(height: 10),
 
                       SizedBox(height: 10),

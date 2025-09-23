@@ -3,6 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'size_stock_model.freezed.dart';
 part 'size_stock_model.g.dart';
 @freezed
+// @JsonSerializable(explicitToJson: true)
  abstract class SizeStockModel with _$SizeStockModel{
   factory SizeStockModel({
     required String size,

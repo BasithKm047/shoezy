@@ -13,7 +13,7 @@ class ProductServices {
 
       await firestoreCollection.doc(productId).set(nwProduct.toJson());
       Logger().d("Product added successfully");
-      Logger().d("Product data: ${products.toJson()}");
+      Logger().d("Product data: ${nwProduct.toJson()}");
     } catch (e) {
       Logger().e("Error adding product: $e");
     }
@@ -27,6 +27,8 @@ class ProductServices {
       return snapshot.docs
           .map((doc) => ProductModel.fromJson(doc.data()))
           .toList();
+     
+
     } catch (e) {
       Logger().e("Error fetching products: $e");
       rethrow;

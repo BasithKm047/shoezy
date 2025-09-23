@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:logger/logger.dart';
 import 'package:shoezy_admin/data/model/product/product_model.dart';
 import 'package:shoezy_admin/fetures/utils/const/colors.dart';
 import 'package:shoezy_admin/fetures/utils/const/routes.dart';
@@ -150,13 +151,19 @@ class Productscreen extends StatelessWidget {
             child: ListView.builder(
               itemCount: products.length,
               itemBuilder: (context, index) {
+                // inside your itemBuilder:
+              
+
+                Logger().d("🔎 Variants for ${products[index].variants}");
                 return _buildProductRow(
                   context,
                   index: index + 1,
                   name: products[index].productName,
                   category: products[index].categoryName,
                   brand: products[index].brandName,
-                  stock: '1',
+
+                  stock: products[index].sizeStock.map((e) => e.stock).join(', '),
+
                   price: products[index].price,
                   isSmall: isSmallScreen,
                 );

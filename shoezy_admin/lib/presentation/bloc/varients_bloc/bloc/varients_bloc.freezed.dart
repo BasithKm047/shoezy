@@ -1335,7 +1335,7 @@ return data(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  inintial,TResult Function()?  loading,TResult Function()?  success,TResult Function( List<Uint8List> images)?  imageAddedState,TResult Function( String error)?  failure,TResult Function( List<Uint8List> image)?  imageRemovedState,TResult Function( List<Variantsmodel> variants)?  variantsLoaded,TResult Function()?  variantAdded,TResult Function()?  variantRemoved,TResult Function()?  variantUpdated,TResult Function( List<Variantsmodel> variants)?  variantSearched,TResult Function()?  showFieldsState,TResult Function()?  hideFieldsState,TResult Function( List<SizeStockModel> sizeStock)?  addedSizeStockState,TResult Function( List<SizeStockModel> sizeStock)?  removedSizeStockState,TResult Function( List<Uint8List> images,  List<SizeStockModel> sizeStock,  List<Variantsmodel> variants,  bool showFields)?  data,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  inintial,TResult Function()?  loading,TResult Function()?  success,TResult Function( List<Uint8List> images)?  imageAddedState,TResult Function( String error)?  failure,TResult Function( List<Uint8List> image)?  imageRemovedState,TResult Function( List<Variantsmodel> variants)?  variantsLoaded,TResult Function()?  variantAdded,TResult Function()?  variantRemoved,TResult Function()?  variantUpdated,TResult Function( List<Variantsmodel> variants)?  variantSearched,TResult Function()?  showFieldsState,TResult Function()?  hideFieldsState,TResult Function( List<SizeStockModel> sizeStock)?  addedSizeStockState,TResult Function( List<SizeStockModel> sizeStock)?  removedSizeStockState,TResult Function( List<Uint8List> images,  List<Variantsmodel> variants,  bool showFields)?  data,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Initail() when inintial != null:
 return inintial();case _Loading() when loading != null:
@@ -1353,7 +1353,7 @@ return showFieldsState();case _HideFieldsState() when hideFieldsState != null:
 return hideFieldsState();case _AddedSizeStockState() when addedSizeStockState != null:
 return addedSizeStockState(_that.sizeStock);case _RemovedSizeStockState() when removedSizeStockState != null:
 return removedSizeStockState(_that.sizeStock);case _Data() when data != null:
-return data(_that.images,_that.sizeStock,_that.variants,_that.showFields);case _:
+return data(_that.images,_that.variants,_that.showFields);case _:
   return orElse();
 
 }
@@ -1371,7 +1371,7 @@ return data(_that.images,_that.sizeStock,_that.variants,_that.showFields);case _
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  inintial,required TResult Function()  loading,required TResult Function()  success,required TResult Function( List<Uint8List> images)  imageAddedState,required TResult Function( String error)  failure,required TResult Function( List<Uint8List> image)  imageRemovedState,required TResult Function( List<Variantsmodel> variants)  variantsLoaded,required TResult Function()  variantAdded,required TResult Function()  variantRemoved,required TResult Function()  variantUpdated,required TResult Function( List<Variantsmodel> variants)  variantSearched,required TResult Function()  showFieldsState,required TResult Function()  hideFieldsState,required TResult Function( List<SizeStockModel> sizeStock)  addedSizeStockState,required TResult Function( List<SizeStockModel> sizeStock)  removedSizeStockState,required TResult Function( List<Uint8List> images,  List<SizeStockModel> sizeStock,  List<Variantsmodel> variants,  bool showFields)  data,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  inintial,required TResult Function()  loading,required TResult Function()  success,required TResult Function( List<Uint8List> images)  imageAddedState,required TResult Function( String error)  failure,required TResult Function( List<Uint8List> image)  imageRemovedState,required TResult Function( List<Variantsmodel> variants)  variantsLoaded,required TResult Function()  variantAdded,required TResult Function()  variantRemoved,required TResult Function()  variantUpdated,required TResult Function( List<Variantsmodel> variants)  variantSearched,required TResult Function()  showFieldsState,required TResult Function()  hideFieldsState,required TResult Function( List<SizeStockModel> sizeStock)  addedSizeStockState,required TResult Function( List<SizeStockModel> sizeStock)  removedSizeStockState,required TResult Function( List<Uint8List> images,  List<Variantsmodel> variants,  bool showFields)  data,}) {final _that = this;
 switch (_that) {
 case _Initail():
 return inintial();case _Loading():
@@ -1389,7 +1389,7 @@ return showFieldsState();case _HideFieldsState():
 return hideFieldsState();case _AddedSizeStockState():
 return addedSizeStockState(_that.sizeStock);case _RemovedSizeStockState():
 return removedSizeStockState(_that.sizeStock);case _Data():
-return data(_that.images,_that.sizeStock,_that.variants,_that.showFields);case _:
+return data(_that.images,_that.variants,_that.showFields);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -1406,7 +1406,7 @@ return data(_that.images,_that.sizeStock,_that.variants,_that.showFields);case _
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  inintial,TResult? Function()?  loading,TResult? Function()?  success,TResult? Function( List<Uint8List> images)?  imageAddedState,TResult? Function( String error)?  failure,TResult? Function( List<Uint8List> image)?  imageRemovedState,TResult? Function( List<Variantsmodel> variants)?  variantsLoaded,TResult? Function()?  variantAdded,TResult? Function()?  variantRemoved,TResult? Function()?  variantUpdated,TResult? Function( List<Variantsmodel> variants)?  variantSearched,TResult? Function()?  showFieldsState,TResult? Function()?  hideFieldsState,TResult? Function( List<SizeStockModel> sizeStock)?  addedSizeStockState,TResult? Function( List<SizeStockModel> sizeStock)?  removedSizeStockState,TResult? Function( List<Uint8List> images,  List<SizeStockModel> sizeStock,  List<Variantsmodel> variants,  bool showFields)?  data,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  inintial,TResult? Function()?  loading,TResult? Function()?  success,TResult? Function( List<Uint8List> images)?  imageAddedState,TResult? Function( String error)?  failure,TResult? Function( List<Uint8List> image)?  imageRemovedState,TResult? Function( List<Variantsmodel> variants)?  variantsLoaded,TResult? Function()?  variantAdded,TResult? Function()?  variantRemoved,TResult? Function()?  variantUpdated,TResult? Function( List<Variantsmodel> variants)?  variantSearched,TResult? Function()?  showFieldsState,TResult? Function()?  hideFieldsState,TResult? Function( List<SizeStockModel> sizeStock)?  addedSizeStockState,TResult? Function( List<SizeStockModel> sizeStock)?  removedSizeStockState,TResult? Function( List<Uint8List> images,  List<Variantsmodel> variants,  bool showFields)?  data,}) {final _that = this;
 switch (_that) {
 case _Initail() when inintial != null:
 return inintial();case _Loading() when loading != null:
@@ -1424,7 +1424,7 @@ return showFieldsState();case _HideFieldsState() when hideFieldsState != null:
 return hideFieldsState();case _AddedSizeStockState() when addedSizeStockState != null:
 return addedSizeStockState(_that.sizeStock);case _RemovedSizeStockState() when removedSizeStockState != null:
 return removedSizeStockState(_that.sizeStock);case _Data() when data != null:
-return data(_that.images,_that.sizeStock,_that.variants,_that.showFields);case _:
+return data(_that.images,_that.variants,_that.showFields);case _:
   return null;
 
 }
@@ -2280,7 +2280,7 @@ as List<SizeStockModel>,
 
 
 class _Data with DiagnosticableTreeMixin implements VariantsState {
-  const _Data({required final  List<Uint8List> images, required final  List<SizeStockModel> sizeStock, required final  List<Variantsmodel> variants, this.showFields = false}): _images = images,_sizeStock = sizeStock,_variants = variants;
+  const _Data({required final  List<Uint8List> images, required final  List<Variantsmodel> variants, this.showFields = false}): _images = images,_variants = variants;
   
 
  final  List<Uint8List> _images;
@@ -2288,13 +2288,6 @@ class _Data with DiagnosticableTreeMixin implements VariantsState {
   if (_images is EqualUnmodifiableListView) return _images;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_images);
-}
-
- final  List<SizeStockModel> _sizeStock;
- List<SizeStockModel> get sizeStock {
-  if (_sizeStock is EqualUnmodifiableListView) return _sizeStock;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_sizeStock);
 }
 
  final  List<Variantsmodel> _variants;
@@ -2317,21 +2310,21 @@ _$DataCopyWith<_Data> get copyWith => __$DataCopyWithImpl<_Data>(this, _$identit
 void debugFillProperties(DiagnosticPropertiesBuilder properties) {
   properties
     ..add(DiagnosticsProperty('type', 'VariantsState.data'))
-    ..add(DiagnosticsProperty('images', images))..add(DiagnosticsProperty('sizeStock', sizeStock))..add(DiagnosticsProperty('variants', variants))..add(DiagnosticsProperty('showFields', showFields));
+    ..add(DiagnosticsProperty('images', images))..add(DiagnosticsProperty('variants', variants))..add(DiagnosticsProperty('showFields', showFields));
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Data&&const DeepCollectionEquality().equals(other._images, _images)&&const DeepCollectionEquality().equals(other._sizeStock, _sizeStock)&&const DeepCollectionEquality().equals(other._variants, _variants)&&(identical(other.showFields, showFields) || other.showFields == showFields));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Data&&const DeepCollectionEquality().equals(other._images, _images)&&const DeepCollectionEquality().equals(other._variants, _variants)&&(identical(other.showFields, showFields) || other.showFields == showFields));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_images),const DeepCollectionEquality().hash(_sizeStock),const DeepCollectionEquality().hash(_variants),showFields);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_images),const DeepCollectionEquality().hash(_variants),showFields);
 
 @override
 String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
-  return 'VariantsState.data(images: $images, sizeStock: $sizeStock, variants: $variants, showFields: $showFields)';
+  return 'VariantsState.data(images: $images, variants: $variants, showFields: $showFields)';
 }
 
 
@@ -2342,7 +2335,7 @@ abstract mixin class _$DataCopyWith<$Res> implements $VariantsStateCopyWith<$Res
   factory _$DataCopyWith(_Data value, $Res Function(_Data) _then) = __$DataCopyWithImpl;
 @useResult
 $Res call({
- List<Uint8List> images, List<SizeStockModel> sizeStock, List<Variantsmodel> variants, bool showFields
+ List<Uint8List> images, List<Variantsmodel> variants, bool showFields
 });
 
 
@@ -2359,11 +2352,10 @@ class __$DataCopyWithImpl<$Res>
 
 /// Create a copy of VariantsState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? images = null,Object? sizeStock = null,Object? variants = null,Object? showFields = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? images = null,Object? variants = null,Object? showFields = null,}) {
   return _then(_Data(
 images: null == images ? _self._images : images // ignore: cast_nullable_to_non_nullable
-as List<Uint8List>,sizeStock: null == sizeStock ? _self._sizeStock : sizeStock // ignore: cast_nullable_to_non_nullable
-as List<SizeStockModel>,variants: null == variants ? _self._variants : variants // ignore: cast_nullable_to_non_nullable
+as List<Uint8List>,variants: null == variants ? _self._variants : variants // ignore: cast_nullable_to_non_nullable
 as List<Variantsmodel>,showFields: null == showFields ? _self.showFields : showFields // ignore: cast_nullable_to_non_nullable
 as bool,
   ));

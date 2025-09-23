@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shoezy_admin/presentation/bloc/varients_bloc/bloc/varients_bloc.dart';
 
 import 'package:shoezy_admin/widgets/costumWidget.dart';
-import 'package:shoezy_admin/widgets/loading_overlay.dart';
 import 'package:shoezy_admin/widgets/variant_adding_feilds.dart';
 
 // ignore: must_be_immutable
@@ -38,16 +35,7 @@ class VariantField extends StatelessWidget {
                     colorController: colorController,
                   ),
                   SizedBox(height: 20),
-                  CostumWidget.labelText(context, 'Sizes and Stocks'),
-                  SizedBox(height: 10),
-                  VariantAddingFeilds.varaint_sizeStockAddingField(
-                    context: context,
-                    formKey: formKey,
-                    sizeController: sizeController,
-                    stockController: stockController,
-                  ),
-                  SizedBox(height: 10),
-                  VariantAddingFeilds.varaint_sizestock_listview(),
+
                   SizedBox(height: 10),
 
                   VariantAddingFeilds.varaintImageField(),
@@ -61,20 +49,7 @@ class VariantField extends StatelessWidget {
                     stockController: stockController,
                   ),
                   SizedBox(height: 20),
-                  BlocListener<VariantsBloc, VariantsState>(
-                    listener: (context, state) {
-                      state.maybeWhen(
-                        data: (images, sizeStock, variants, showFields) {
-                          LoadingOverlay.hide();
-                        },
-                        failure: (_) {
-                          LoadingOverlay.hide();
-                        },
-                        orElse: () {},
-                      );
-                    },
-                    child: VariantAddingFeilds.varaintListView(),
-                  ),
+                  VariantAddingFeilds.varaintListView(),
 
                   SizedBox(height: 20),
                 ],

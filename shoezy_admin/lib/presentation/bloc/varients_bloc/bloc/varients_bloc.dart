@@ -3,7 +3,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logger/logger.dart';
-import 'package:shoezy_admin/data/model/vareintModel/size_stock_model.dart/size_stock_model.dart';
+import 'package:shoezy_admin/data/model/size_stock_model.dart/size_stock_model.dart';
 import 'package:shoezy_admin/data/model/vareintModel/varientsModel.dart';
 import 'package:shoezy_admin/data/repositories/variants_services.dart';
 
@@ -14,11 +14,9 @@ part 'varients_bloc.freezed.dart';
 
 class VariantsBloc extends Bloc<VariantsEvent, VariantsState> {
   List<Variantsmodel> variants = [];
-  List<SizeStockModel> sizeStock = [];
   List<Uint8List> images = [];
 
-  final VariantsServices variantsServices;
-  VariantsBloc(this.variantsServices) : super(VariantsState.inintial()) {
+  VariantsBloc() : super(VariantsState.inintial()) {
     on<_ImageUploadedEvent>((event, emit) {
       emit(_Loading());
       try {
@@ -26,7 +24,6 @@ class VariantsBloc extends Bloc<VariantsEvent, VariantsState> {
         emit(
           VariantsState.data(
             images: images,
-            sizeStock: sizeStock,
             variants: variants,
           ),
         );
@@ -37,7 +34,7 @@ class VariantsBloc extends Bloc<VariantsEvent, VariantsState> {
     on<_ImageRemoved>((event, emit) {
       try {
         final List<Uint8List> currentImages = state.maybeWhen(
-          data: (images, sizeStock, variants, showFields) => images,
+          data: (images, variants, showFields) => images,
           orElse: () => [],
           imageAddedState: (images) => images,
           imageRemovedState: (reimage) => reimage,
@@ -50,7 +47,6 @@ class VariantsBloc extends Bloc<VariantsEvent, VariantsState> {
           emit(
             VariantsState.data(
               images: images,
-              sizeStock: sizeStock,
               variants: variants,
             ),
           );
@@ -61,7 +57,6 @@ class VariantsBloc extends Bloc<VariantsEvent, VariantsState> {
           emit(
             VariantsState.data(
               images: currentImages,
-              sizeStock: sizeStock,
               variants: variants,
             ),
           );
@@ -73,45 +68,13 @@ class VariantsBloc extends Bloc<VariantsEvent, VariantsState> {
       }
     });
 
-    on<_AddSizeStock>((event, emit) async {
-      try {
-        sizeStock = List.from(sizeStock)..add(event.sizeStock);
-        Logger().i('SizeStock Added: ${event.sizeStock}');
-        emit(
-          VariantsState.data(
-            sizeStock: sizeStock,
-            images: images,
-            variants: variants,
-          ),
-        );
-      } catch (e) {
-        emit(_Failure(e.toString()));
-      }
-    });
-
-    on<_RemoveSizeStock>((event, emit) async {
-      try {
-        if (event.index >= 0 && event.index < sizeStock.length) {
-          sizeStock = List.from(sizeStock)..removeAt(event.index);
-          emit(VariantsState.removedSizeStockState(sizeStock));
-        }
-        emit(
-          VariantsState.data(
-            sizeStock: sizeStock,
-            images: images,
-            variants: variants,
-          ),
-        );
-      } catch (e) {
-        emit(_Failure(e.toString()));
-      }
-    });
+ 
 
     on<_ResetImage>((event, emit) {
+      Logger().i('Resetting images, preserving variants: $variants');
       images = [];
       emit(
         VariantsState.data(
-          sizeStock: sizeStock,
           images: images,
           variants: variants,
         ),
@@ -133,25 +96,24 @@ class VariantsBloc extends Bloc<VariantsEvent, VariantsState> {
         emit(_ShowFieldsState());
       }
     });
-    on<_AddVaraints>((event, emit)async {
+    on<_AddVaraints>((event, emit){
       emit(_Loading());
       try {
-        await Future.delayed(Duration(microseconds: 300));
-        variants.addAll(event.varaints);
-        Logger().i('Variants Added: ${event.varaints}');
-        sizeStock = [];
+       variants = List.from(variants)..addAll(event.varaints);
+        Logger().i('Variants Added: $variants');
         emit(
           VariantsState.data(
-            sizeStock: sizeStock,
-            images: images,
-            variants: variants,
+            images:List.from(images),
+           variants: List.from(variants),
           ),
         );
       } catch (e) {
+        Logger().e('Error adding variants: $e');
         emit(_Failure(e.toString()));
       }
     });
     on<_Getvariants>((event, emit) async {
+      emit(_Loading());
       try {
         emit(VariantsState.variantsLoaded(variants));
       } catch (e) {
@@ -160,12 +122,11 @@ class VariantsBloc extends Bloc<VariantsEvent, VariantsState> {
     });
     on<_ClearVariants>((event, emit) async {
       try {
+        Logger().i('Clearing all variants and images');
         variants = [];
-        sizeStock = [];
         images = [];
         emit(
           VariantsState.data(
-            sizeStock: sizeStock,
             images: images,
             variants: variants,
           ),
@@ -174,10 +135,17 @@ class VariantsBloc extends Bloc<VariantsEvent, VariantsState> {
         emit(_Failure(e.toString()));
       }
     });
-    on<_RemoveVariants>((event, emit) async {
+  on<_RemoveVariants>((event, emit) async {
       try {
-        variants.remove(event.variants);
-        emit(VariantsState.variantRemoved());
+        Logger().i('Before removing variant: $variants');
+        variants = variants.where((v) => v.id != event.variants.id).toList();
+        Logger().i('After removing variant: $variants');
+        emit(
+          VariantsState.data(
+            images: List.from(images),
+            variants: List.from(variants),
+          ),
+        );
       } catch (e) {
         emit(_Failure(e.toString()));
       }

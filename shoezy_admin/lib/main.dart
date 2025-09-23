@@ -9,7 +9,6 @@ import 'package:go_router/go_router.dart';
 import 'package:shoezy_admin/data/repositories/brand_services.dart';
 import 'package:shoezy_admin/data/repositories/category_services.dart';
 import 'package:shoezy_admin/data/repositories/product_services.dart';
-import 'package:shoezy_admin/data/repositories/variants_services.dart';
 import 'package:shoezy_admin/fetures/utils/const/routes.dart';
 import 'package:shoezy_admin/fetures/utils/theme/theme.dart';
 import 'package:shoezy_admin/firebase_options.dart';
@@ -21,6 +20,7 @@ import 'package:shoezy_admin/presentation/bloc/brand/bloc/brand_bloc.dart';
 import 'package:shoezy_admin/presentation/bloc/category_bloc/bloc/category_bloc.dart';
 import 'package:shoezy_admin/presentation/bloc/dashBoard_bloc/bloc/dashboard_bloc_bloc.dart';
 import 'package:shoezy_admin/presentation/bloc/orderSelection_cubit/cubit/order_selection_cubit.dart';
+import 'package:shoezy_admin/presentation/bloc/size_stock/bloc/size_stock_bloc.dart';
 import 'package:shoezy_admin/presentation/bloc/varients_bloc/bloc/varients_bloc.dart';
 import 'package:shoezy_admin/presentation/screens/addBrand_screen.dart';
 import 'package:shoezy_admin/presentation/screens/addCategory_screen.dart';
@@ -59,9 +59,10 @@ void main() async {
         BlocProvider(create: (_) => BrandBloc(BrandServices())),
         BlocProvider(create: (_) => AdminProfileBloc()),
         BlocProvider(create: (_) => OrderSelectionCubit()),
-        BlocProvider(create: (_) => VariantsBloc(VariantsServices())),
+        BlocProvider(create: (_) => VariantsBloc()),
         BlocProvider(create: (_) => CategoryBloc(CategoryServices())),
         BlocProvider(create: (_) => ProductBloc(ProductServices())),
+        BlocProvider(create: (_)=>SizeStockBloc())
       ],
       child: MyApp(),
     ),

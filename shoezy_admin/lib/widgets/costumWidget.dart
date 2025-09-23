@@ -383,24 +383,25 @@ static Widget costumTextformField({
 
   static Widget costumElevatedIconButton({
     required BuildContext context,
-    required String text,
+     String ? text,
     VoidCallback? ontap,
     Color? backgroundColor,
     Color? foregroundColor,
     double? borderRadius,
     double? fontsize,
+    IconData? icon,
   }) {
     return SizedBox(
       child: ElevatedButton.icon(
         onPressed: ontap,
         icon: Padding(
           padding: const EdgeInsets.only(left: 10.0),
-          child: const Icon(Icons.add),
+          child: Icon(icon ?? Icons.add),
         ),
         label: Padding(
           padding: const EdgeInsets.only(right: 12, bottom: 2, left: 5),
           child: Text(
-            text,
+            text ?? '',
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
               fontSize: fontsize,
               color: Colors.white,
