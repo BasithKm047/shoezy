@@ -7,7 +7,6 @@ import 'package:shoezy_admin/presentation/screens/stock_size_field.dart';
 import 'package:shoezy_admin/widgets/add_product_fields.dart';
 import 'package:shoezy_admin/widgets/costumWidget.dart';
 import 'package:shoezy_admin/presentation/screens/variant_field.dart';
-import 'package:shoezy_admin/widgets/add_size_stock_field.dart';
 
 class Addproductscreen extends StatelessWidget {
   const Addproductscreen({super.key});

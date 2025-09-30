@@ -1,19 +1,22 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
 class CostumImageUploader extends StatelessWidget {
   // MULTIPLE image mode
-  final List<Uint8List>? images;
-  final Function(List<Uint8List>)? onImagesChanged;
+  final List<dynamic>? images; // 🔹 CHANGE: dynamic so it can hold Uint8List OR String
+  final Function(List<dynamic>)? onImagesChanged; // 🔹 CHANGE
   final Function(int index)? onImageRemoved;
 
   // SINGLE image mode
-  final Uint8List? image;
+  final dynamic image; // 🔹 CHANGE: dynamic for Uint8List OR String
   final Function(Uint8List)? onImageSelected;
   final VoidCallback? onSingleImageRemoved;
 
-  final bool singleMode; // true → single image, false → multiple images
+  final bool singleMode;
+   bool updateimage;
+  final Bloc? blocofImage;
 
   CostumImageUploader({
     super.key,
@@ -23,33 +26,51 @@ class CostumImageUploader extends StatelessWidget {
     this.image,
     this.onImageSelected,
     this.onSingleImageRemoved,
-    this.singleMode = false, // default = multiple images
+    this.singleMode = false,
+    this.updateimage = false,
+    this.blocofImage,
   });
 
   final ImagePicker _picker = ImagePicker();
 
   Future<void> _pickImages() async {
+    updateimage=false;
     try {
       if (singleMode) {
-        // Pick single image
         final XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
         if (pickedFile != null) {
           Uint8List bytes = await pickedFile.readAsBytes();
           onImageSelected?.call(bytes);
         }
       } else {
-        // Pick multiple images
         final List<XFile> pickedFiles = await _picker.pickMultiImage();
         final List<Uint8List> newImages = [];
         for (XFile xfile in pickedFiles) {
           Uint8List bytes = await xfile.readAsBytes();
           newImages.add(bytes);
         }
-        onImagesChanged?.call([...images ?? [], ...newImages]);
+        onImagesChanged?.call([...images ?? [], ...newImages]); // 🔹 CHANGE
       }
     } catch (e) {
       print('Error picking images: $e');
     }
+  }
+
+  Widget _buildImage(dynamic img) {
+    if (img is Uint8List) {
+      return Image.memory(
+        img,
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) => const Text('Error Loading Image'),
+      );
+    } else if (img is String) {
+      return Image.network(
+        img,
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) => const Text('Error Loading Image'),
+      );
+    }
+    return const Text('Unsupported image type');
   }
 
   @override
@@ -61,9 +82,7 @@ class CostumImageUploader extends StatelessWidget {
       children: [
         Text(
           singleMode ? 'Example Image' : 'Example Images',
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 12),
 
@@ -77,20 +96,12 @@ class CostumImageUploader extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                     child: Stack(
                       children: [
-                        Image.memory(
-                          image!,
-                          fit: BoxFit.contain,
-                          width: double.infinity,
-                          errorBuilder: (context, error, stackTrace) {
-                            return const Text('Error Loading Image');
-                          },
-                        ),
+                        _buildImage(image), // 🔹 CHANGE
                         Positioned(
                           top: 5,
                           right: 5,
                           child: IconButton(
-                            icon: const Icon(Icons.remove_circle,
-                                color: Colors.red),
+                            icon: const Icon(Icons.remove_circle, color: Colors.red),
                             onPressed: onSingleImageRemoved,
                           ),
                         ),
@@ -117,19 +128,12 @@ class CostumImageUploader extends StatelessWidget {
                           color: Colors.grey[200],
                           child: Stack(
                             children: [
-                              Image.memory(
-                                images![index],
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) {
-                                  return const Text('Error Loading Image');
-                                },
-                              ),
+                              _buildImage(images![index]), // 🔹 CHANGE
                               Positioned(
                                 top: 5,
                                 right: 5,
                                 child: IconButton(
-                                  icon: const Icon(Icons.remove_circle,
-                                      color: Colors.red),
+                                  icon: const Icon(Icons.remove_circle, color: Colors.red),
                                   onPressed: () {
                                     onImageRemoved?.call(index);
                                   },
@@ -162,8 +166,7 @@ class CostumImageUploader extends StatelessWidget {
                 const SizedBox(height: 10),
                 Text(
                   singleMode ? 'Upload Image' : 'Upload Images',
-                  style: const TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 5),
                 Text(

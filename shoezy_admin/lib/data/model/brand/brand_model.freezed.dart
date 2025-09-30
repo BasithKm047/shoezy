@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$BrandModel {
 
- String? get id; String get name; String get imageUrl;
+ String? get id; String get name; String? get imageUrl;
 /// Create a copy of BrandModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $BrandModelCopyWith<$Res>  {
   factory $BrandModelCopyWith(BrandModel value, $Res Function(BrandModel) _then) = _$BrandModelCopyWithImpl;
 @useResult
 $Res call({
- String? id, String name, String imageUrl
+ String? id, String name, String? imageUrl
 });
 
 
@@ -65,12 +65,12 @@ class _$BrandModelCopyWithImpl<$Res>
 
 /// Create a copy of BrandModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? name = null,Object? imageUrl = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? name = null,Object? imageUrl = freezed,}) {
   return _then(_self.copyWith(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String?,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String,imageUrl: null == imageUrl ? _self.imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
-as String,
+as String,imageUrl: freezed == imageUrl ? _self.imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -155,7 +155,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? id,  String name,  String imageUrl)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? id,  String name,  String? imageUrl)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _BrandModel() when $default != null:
 return $default(_that.id,_that.name,_that.imageUrl);case _:
@@ -176,7 +176,7 @@ return $default(_that.id,_that.name,_that.imageUrl);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? id,  String name,  String imageUrl)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? id,  String name,  String? imageUrl)  $default,) {final _that = this;
 switch (_that) {
 case _BrandModel():
 return $default(_that.id,_that.name,_that.imageUrl);case _:
@@ -196,7 +196,7 @@ return $default(_that.id,_that.name,_that.imageUrl);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? id,  String name,  String imageUrl)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? id,  String name,  String? imageUrl)?  $default,) {final _that = this;
 switch (_that) {
 case _BrandModel() when $default != null:
 return $default(_that.id,_that.name,_that.imageUrl);case _:
@@ -216,7 +216,7 @@ class _BrandModel implements BrandModel {
 
 @override final  String? id;
 @override final  String name;
-@override final  String imageUrl;
+@override final  String? imageUrl;
 
 /// Create a copy of BrandModel
 /// with the given fields replaced by the non-null parameter values.
@@ -251,7 +251,7 @@ abstract mixin class _$BrandModelCopyWith<$Res> implements $BrandModelCopyWith<$
   factory _$BrandModelCopyWith(_BrandModel value, $Res Function(_BrandModel) _then) = __$BrandModelCopyWithImpl;
 @override @useResult
 $Res call({
- String? id, String name, String imageUrl
+ String? id, String name, String? imageUrl
 });
 
 
@@ -268,12 +268,12 @@ class __$BrandModelCopyWithImpl<$Res>
 
 /// Create a copy of BrandModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? name = null,Object? imageUrl = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? name = null,Object? imageUrl = freezed,}) {
   return _then(_BrandModel(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String?,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String,imageUrl: null == imageUrl ? _self.imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
-as String,
+as String,imageUrl: freezed == imageUrl ? _self.imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 

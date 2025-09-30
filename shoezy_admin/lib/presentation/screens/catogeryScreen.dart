@@ -5,6 +5,8 @@ import 'package:shoezy_admin/data/model/categoryModel/category_model.dart';
 import 'package:shoezy_admin/fetures/utils/const/routes.dart';
 import 'package:shoezy_admin/presentation/bloc/category_bloc/bloc/category_bloc.dart';
 import 'package:shoezy_admin/widgets/costumWidget.dart';
+import 'package:shoezy_admin/presentation/screens/edit_category_screen.dart';
+import 'package:shoezy_admin/widgets/loading_overlay.dart';
 
 class Catogeryscreen extends StatelessWidget {
   const Catogeryscreen({super.key});
@@ -17,7 +19,14 @@ class Catogeryscreen extends StatelessWidget {
       padding: const EdgeInsets.only(left: 50.0, top: 50),
       child: BlocConsumer<CategoryBloc, CategoryState>(
         listener: (context, state) {
-          state.maybeWhen(orElse: () {});
+          state.maybeWhen(orElse: () {},
+          loaded: (categories, selectedCategory) {
+            LoadingOverlay.hide();
+          },
+          loading: () {
+            LoadingOverlay.show(context, 'Loading...');
+          }
+          );
         },
         builder: (context, state) {
           final List<CategoryModel> categories = state.maybeWhen(
@@ -74,10 +83,10 @@ class Catogeryscreen extends StatelessWidget {
                       Expanded(
                         child: ListView.separated(
                           itemBuilder: (context, index) {
+                            final category = categories[index];
                             return _widget(
                               context: context,
-                              image: categories[index].image,
-                              name: categories[index].name,
+                              category: category,
                             );
                           },
                           separatorBuilder: (context, index) => Divider(),
@@ -98,10 +107,7 @@ class Catogeryscreen extends StatelessWidget {
 
 Widget _widget({
   required BuildContext context,
-  required String name,
-  required String image,
-  // required int product,
-  // bool? isFeild,
+  required CategoryModel category,
 }) {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
@@ -111,7 +117,7 @@ Widget _widget({
           width: 50,
           child: Row(
             children: [
-              CostumWidget.imageField(image: image),
+              CostumWidget.imageField(image: category.image!),
             ],
           ))),
 
@@ -119,7 +125,7 @@ Widget _widget({
           flex: 2,
           child: CostumWidget.labelText(
             context,
-            name,
+            category.name,
             fontSize: 15,
             fontWeight: FontWeight.w500,
           ),
@@ -131,7 +137,15 @@ Widget _widget({
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => EditCategoryScreen(
+                        category: category,
+                      ),
+                    ),
+                  );
+                },
                 icon: Icon(Icons.edit, color: Colors.blue),
               ),
               IconButton(

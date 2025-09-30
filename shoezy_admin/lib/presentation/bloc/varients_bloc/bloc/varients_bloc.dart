@@ -5,7 +5,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logger/logger.dart';
 import 'package:shoezy_admin/data/model/size_stock_model.dart/size_stock_model.dart';
 import 'package:shoezy_admin/data/model/vareintModel/varientsModel.dart';
-import 'package:shoezy_admin/data/repositories/variants_services.dart';
 
 part 'varients_event.dart';
 part 'varients_state.dart';

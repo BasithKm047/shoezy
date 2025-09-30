@@ -22,7 +22,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
         addCategory: (category) async {
           emit(CategoryState.loading());
           try {
-            await categoryServices.addCategory(category.name, category.image);
+            await categoryServices.addCategory(category.name, category.image!);
         Logger().d('Category Added Successfully');
 
             emit(CategoryState.success());
@@ -31,7 +31,16 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
           }
         },
         deleteCategory: (id) {},
-        updateCategory: (id, name, images) {},
+        updateCategory: (category) async{
+          emit(CategoryState.loading());
+          try{
+            await categoryServices.updateCategory(category);
+            emit(CategoryState.success());
+          }catch(e){
+            Logger().d('Error: ${e.toString()}');
+            emit(CategoryState.failure(e.toString()));
+          }
+        },
         reset: () {},
         resetImage: () {},
         getCategories: () async {

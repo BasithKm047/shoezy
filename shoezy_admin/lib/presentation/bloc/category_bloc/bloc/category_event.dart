@@ -7,9 +7,7 @@ class CategoryEvent with _$CategoryEvent {
   const factory CategoryEvent.deleteCategory({required String id}) =
       DeleteCategory;
   const factory CategoryEvent.updateCategory({
-    required String id,
-    required String name,
-    required Uint8List image,
+    required CategoryModel category,
   }) = UpdateCategory;
   const factory CategoryEvent.reset() = Reset;
   const factory CategoryEvent.resetImage() = ResetImage;
@@ -23,5 +21,6 @@ class CategoryEvent with _$CategoryEvent {
    const factory CategoryEvent.selectedCategory(String ? categoryName) = SelectedCategory;
    const factory CategoryEvent.clearSelection() = ClearSelection;
    const factory CategoryEvent.clearImage() = ClearImage;
+    const factory CategoryEvent.removeCategoryImage({required CategoryModel category}) = _RemoveCategoryImage; 
 
 }

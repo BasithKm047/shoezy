@@ -157,7 +157,7 @@ class AddcategoryScreen extends StatelessWidget {
                 Logger().d('Category added: ${_categoryNameController.text}');
               },
             );
-            Logger().d('Cloudinary Image: $cloudImage');
+            // Logger().d('Cloudinary Image: $cloudImage');
             final categories = CategoryModel(
               name: _categoryNameController.text.trim(),
               image: cloudImage,
@@ -167,7 +167,7 @@ class AddcategoryScreen extends StatelessWidget {
             );
             clearfield(context);
 
-            LoadingOverlay.show(context, 'Category');
+            LoadingOverlay.show(context,  'Adding Category ...');
 
             await Future.delayed(Duration(seconds: 1));
             LoadingOverlay.hide();

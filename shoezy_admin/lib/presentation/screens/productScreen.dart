@@ -162,7 +162,7 @@ class Productscreen extends StatelessWidget {
                   category: products[index].categoryName,
                   brand: products[index].brandName,
 
-                  stock: products[index].sizeStock.map((e) => e.stock).join(', '),
+                  stock: products[index].sizeStock.map((e) => e.stock).reduce((a, b) => a + b).toString(),
 
                   price: products[index].price,
                   isSmall: isSmallScreen,

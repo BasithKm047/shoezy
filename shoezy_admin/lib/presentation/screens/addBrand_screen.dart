@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
 import 'package:shoezy_admin/data/model/brand/brand_model.dart';
 import 'package:shoezy_admin/data/repositories/cloudinary_services.dart';
+import 'package:shoezy_admin/fetures/core/id.dart';
 import 'package:shoezy_admin/fetures/utils/const/commonFunction.dart';
 import 'package:shoezy_admin/presentation/bloc/brand/bloc/brand_bloc.dart';
 import 'package:shoezy_admin/widgets/costumWidget.dart';
@@ -161,14 +162,16 @@ class AddbrandScreen extends StatelessWidget {
             // errorMessage: 'Failed to add brand',
           );
           Logger().d('Cloudinary Image: $cloudImage');
+          String? brandId = createId();
           final brands = BrandModel(
+            id: brandId,
             name: _brandNameController.text,
             imageUrl: cloudImage,
           );
           // ignore: use_build_context_synchronously
           context.read<BrandBloc>().add(AddBrand(brands));
           clearfield(context);
-          LoadingOverlay.show(context,'Brand');
+          LoadingOverlay.show(context,'Adding Brand...');
 
           await Future.delayed(Duration(seconds: 1));
           LoadingOverlay.hide();

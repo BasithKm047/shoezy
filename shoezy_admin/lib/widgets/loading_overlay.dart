@@ -25,7 +25,7 @@ class LoadingOverlay {
                   CircularProgressIndicator(color: Colors.blue),
                   SizedBox(height: 16),
                   Text(
-                    'Adding ..$title.',
+                    '$title.',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                 ],

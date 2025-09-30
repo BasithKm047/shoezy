@@ -55,7 +55,7 @@ extension CategoryEventPatterns on CategoryEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( AddCategory value)?  addCategory,TResult Function( DeleteCategory value)?  deleteCategory,TResult Function( UpdateCategory value)?  updateCategory,TResult Function( Reset value)?  reset,TResult Function( ResetImage value)?  resetImage,TResult Function( GetCategories value)?  getCategories,TResult Function( SearchCategories value)?  searchCategories,TResult Function( ImagesUpdated value)?  imagesUpdated,TResult Function( ImageRemoved value)?  imageRemoved,TResult Function( SelectedCategory value)?  selectedCategory,TResult Function( ClearSelection value)?  clearSelection,TResult Function( ClearImage value)?  clearImage,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( AddCategory value)?  addCategory,TResult Function( DeleteCategory value)?  deleteCategory,TResult Function( UpdateCategory value)?  updateCategory,TResult Function( Reset value)?  reset,TResult Function( ResetImage value)?  resetImage,TResult Function( GetCategories value)?  getCategories,TResult Function( SearchCategories value)?  searchCategories,TResult Function( ImagesUpdated value)?  imagesUpdated,TResult Function( ImageRemoved value)?  imageRemoved,TResult Function( SelectedCategory value)?  selectedCategory,TResult Function( ClearSelection value)?  clearSelection,TResult Function( ClearImage value)?  clearImage,TResult Function( _RemoveCategoryImage value)?  removeCategoryImage,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case AddCategory() when addCategory != null:
@@ -70,7 +70,8 @@ return imagesUpdated(_that);case ImageRemoved() when imageRemoved != null:
 return imageRemoved(_that);case SelectedCategory() when selectedCategory != null:
 return selectedCategory(_that);case ClearSelection() when clearSelection != null:
 return clearSelection(_that);case ClearImage() when clearImage != null:
-return clearImage(_that);case _:
+return clearImage(_that);case _RemoveCategoryImage() when removeCategoryImage != null:
+return removeCategoryImage(_that);case _:
   return orElse();
 
 }
@@ -88,7 +89,7 @@ return clearImage(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( AddCategory value)  addCategory,required TResult Function( DeleteCategory value)  deleteCategory,required TResult Function( UpdateCategory value)  updateCategory,required TResult Function( Reset value)  reset,required TResult Function( ResetImage value)  resetImage,required TResult Function( GetCategories value)  getCategories,required TResult Function( SearchCategories value)  searchCategories,required TResult Function( ImagesUpdated value)  imagesUpdated,required TResult Function( ImageRemoved value)  imageRemoved,required TResult Function( SelectedCategory value)  selectedCategory,required TResult Function( ClearSelection value)  clearSelection,required TResult Function( ClearImage value)  clearImage,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( AddCategory value)  addCategory,required TResult Function( DeleteCategory value)  deleteCategory,required TResult Function( UpdateCategory value)  updateCategory,required TResult Function( Reset value)  reset,required TResult Function( ResetImage value)  resetImage,required TResult Function( GetCategories value)  getCategories,required TResult Function( SearchCategories value)  searchCategories,required TResult Function( ImagesUpdated value)  imagesUpdated,required TResult Function( ImageRemoved value)  imageRemoved,required TResult Function( SelectedCategory value)  selectedCategory,required TResult Function( ClearSelection value)  clearSelection,required TResult Function( ClearImage value)  clearImage,required TResult Function( _RemoveCategoryImage value)  removeCategoryImage,}){
 final _that = this;
 switch (_that) {
 case AddCategory():
@@ -103,7 +104,8 @@ return imagesUpdated(_that);case ImageRemoved():
 return imageRemoved(_that);case SelectedCategory():
 return selectedCategory(_that);case ClearSelection():
 return clearSelection(_that);case ClearImage():
-return clearImage(_that);case _:
+return clearImage(_that);case _RemoveCategoryImage():
+return removeCategoryImage(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -120,7 +122,7 @@ return clearImage(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( AddCategory value)?  addCategory,TResult? Function( DeleteCategory value)?  deleteCategory,TResult? Function( UpdateCategory value)?  updateCategory,TResult? Function( Reset value)?  reset,TResult? Function( ResetImage value)?  resetImage,TResult? Function( GetCategories value)?  getCategories,TResult? Function( SearchCategories value)?  searchCategories,TResult? Function( ImagesUpdated value)?  imagesUpdated,TResult? Function( ImageRemoved value)?  imageRemoved,TResult? Function( SelectedCategory value)?  selectedCategory,TResult? Function( ClearSelection value)?  clearSelection,TResult? Function( ClearImage value)?  clearImage,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( AddCategory value)?  addCategory,TResult? Function( DeleteCategory value)?  deleteCategory,TResult? Function( UpdateCategory value)?  updateCategory,TResult? Function( Reset value)?  reset,TResult? Function( ResetImage value)?  resetImage,TResult? Function( GetCategories value)?  getCategories,TResult? Function( SearchCategories value)?  searchCategories,TResult? Function( ImagesUpdated value)?  imagesUpdated,TResult? Function( ImageRemoved value)?  imageRemoved,TResult? Function( SelectedCategory value)?  selectedCategory,TResult? Function( ClearSelection value)?  clearSelection,TResult? Function( ClearImage value)?  clearImage,TResult? Function( _RemoveCategoryImage value)?  removeCategoryImage,}){
 final _that = this;
 switch (_that) {
 case AddCategory() when addCategory != null:
@@ -135,7 +137,8 @@ return imagesUpdated(_that);case ImageRemoved() when imageRemoved != null:
 return imageRemoved(_that);case SelectedCategory() when selectedCategory != null:
 return selectedCategory(_that);case ClearSelection() when clearSelection != null:
 return clearSelection(_that);case ClearImage() when clearImage != null:
-return clearImage(_that);case _:
+return clearImage(_that);case _RemoveCategoryImage() when removeCategoryImage != null:
+return removeCategoryImage(_that);case _:
   return null;
 
 }
@@ -152,12 +155,12 @@ return clearImage(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( CategoryModel category)?  addCategory,TResult Function( String id)?  deleteCategory,TResult Function( String id,  String name,  Uint8List image)?  updateCategory,TResult Function()?  reset,TResult Function()?  resetImage,TResult Function()?  getCategories,TResult Function( String query)?  searchCategories,TResult Function( Uint8List images)?  imagesUpdated,TResult Function( int index)?  imageRemoved,TResult Function( String? categoryName)?  selectedCategory,TResult Function()?  clearSelection,TResult Function()?  clearImage,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( CategoryModel category)?  addCategory,TResult Function( String id)?  deleteCategory,TResult Function( CategoryModel category)?  updateCategory,TResult Function()?  reset,TResult Function()?  resetImage,TResult Function()?  getCategories,TResult Function( String query)?  searchCategories,TResult Function( Uint8List images)?  imagesUpdated,TResult Function( int index)?  imageRemoved,TResult Function( String? categoryName)?  selectedCategory,TResult Function()?  clearSelection,TResult Function()?  clearImage,TResult Function( CategoryModel category)?  removeCategoryImage,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case AddCategory() when addCategory != null:
 return addCategory(_that.category);case DeleteCategory() when deleteCategory != null:
 return deleteCategory(_that.id);case UpdateCategory() when updateCategory != null:
-return updateCategory(_that.id,_that.name,_that.image);case Reset() when reset != null:
+return updateCategory(_that.category);case Reset() when reset != null:
 return reset();case ResetImage() when resetImage != null:
 return resetImage();case GetCategories() when getCategories != null:
 return getCategories();case SearchCategories() when searchCategories != null:
@@ -166,7 +169,8 @@ return imagesUpdated(_that.images);case ImageRemoved() when imageRemoved != null
 return imageRemoved(_that.index);case SelectedCategory() when selectedCategory != null:
 return selectedCategory(_that.categoryName);case ClearSelection() when clearSelection != null:
 return clearSelection();case ClearImage() when clearImage != null:
-return clearImage();case _:
+return clearImage();case _RemoveCategoryImage() when removeCategoryImage != null:
+return removeCategoryImage(_that.category);case _:
   return orElse();
 
 }
@@ -184,12 +188,12 @@ return clearImage();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( CategoryModel category)  addCategory,required TResult Function( String id)  deleteCategory,required TResult Function( String id,  String name,  Uint8List image)  updateCategory,required TResult Function()  reset,required TResult Function()  resetImage,required TResult Function()  getCategories,required TResult Function( String query)  searchCategories,required TResult Function( Uint8List images)  imagesUpdated,required TResult Function( int index)  imageRemoved,required TResult Function( String? categoryName)  selectedCategory,required TResult Function()  clearSelection,required TResult Function()  clearImage,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( CategoryModel category)  addCategory,required TResult Function( String id)  deleteCategory,required TResult Function( CategoryModel category)  updateCategory,required TResult Function()  reset,required TResult Function()  resetImage,required TResult Function()  getCategories,required TResult Function( String query)  searchCategories,required TResult Function( Uint8List images)  imagesUpdated,required TResult Function( int index)  imageRemoved,required TResult Function( String? categoryName)  selectedCategory,required TResult Function()  clearSelection,required TResult Function()  clearImage,required TResult Function( CategoryModel category)  removeCategoryImage,}) {final _that = this;
 switch (_that) {
 case AddCategory():
 return addCategory(_that.category);case DeleteCategory():
 return deleteCategory(_that.id);case UpdateCategory():
-return updateCategory(_that.id,_that.name,_that.image);case Reset():
+return updateCategory(_that.category);case Reset():
 return reset();case ResetImage():
 return resetImage();case GetCategories():
 return getCategories();case SearchCategories():
@@ -198,7 +202,8 @@ return imagesUpdated(_that.images);case ImageRemoved():
 return imageRemoved(_that.index);case SelectedCategory():
 return selectedCategory(_that.categoryName);case ClearSelection():
 return clearSelection();case ClearImage():
-return clearImage();case _:
+return clearImage();case _RemoveCategoryImage():
+return removeCategoryImage(_that.category);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -215,12 +220,12 @@ return clearImage();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( CategoryModel category)?  addCategory,TResult? Function( String id)?  deleteCategory,TResult? Function( String id,  String name,  Uint8List image)?  updateCategory,TResult? Function()?  reset,TResult? Function()?  resetImage,TResult? Function()?  getCategories,TResult? Function( String query)?  searchCategories,TResult? Function( Uint8List images)?  imagesUpdated,TResult? Function( int index)?  imageRemoved,TResult? Function( String? categoryName)?  selectedCategory,TResult? Function()?  clearSelection,TResult? Function()?  clearImage,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( CategoryModel category)?  addCategory,TResult? Function( String id)?  deleteCategory,TResult? Function( CategoryModel category)?  updateCategory,TResult? Function()?  reset,TResult? Function()?  resetImage,TResult? Function()?  getCategories,TResult? Function( String query)?  searchCategories,TResult? Function( Uint8List images)?  imagesUpdated,TResult? Function( int index)?  imageRemoved,TResult? Function( String? categoryName)?  selectedCategory,TResult? Function()?  clearSelection,TResult? Function()?  clearImage,TResult? Function( CategoryModel category)?  removeCategoryImage,}) {final _that = this;
 switch (_that) {
 case AddCategory() when addCategory != null:
 return addCategory(_that.category);case DeleteCategory() when deleteCategory != null:
 return deleteCategory(_that.id);case UpdateCategory() when updateCategory != null:
-return updateCategory(_that.id,_that.name,_that.image);case Reset() when reset != null:
+return updateCategory(_that.category);case Reset() when reset != null:
 return reset();case ResetImage() when resetImage != null:
 return resetImage();case GetCategories() when getCategories != null:
 return getCategories();case SearchCategories() when searchCategories != null:
@@ -229,7 +234,8 @@ return imagesUpdated(_that.images);case ImageRemoved() when imageRemoved != null
 return imageRemoved(_that.index);case SelectedCategory() when selectedCategory != null:
 return selectedCategory(_that.categoryName);case ClearSelection() when clearSelection != null:
 return clearSelection();case ClearImage() when clearImage != null:
-return clearImage();case _:
+return clearImage();case _RemoveCategoryImage() when removeCategoryImage != null:
+return removeCategoryImage(_that.category);case _:
   return null;
 
 }
@@ -382,12 +388,10 @@ as String,
 
 
 class UpdateCategory implements CategoryEvent {
-  const UpdateCategory({required this.id, required this.name, required this.image});
+  const UpdateCategory({required this.category});
   
 
- final  String id;
- final  String name;
- final  Uint8List image;
+ final  CategoryModel category;
 
 /// Create a copy of CategoryEvent
 /// with the given fields replaced by the non-null parameter values.
@@ -399,16 +403,16 @@ $UpdateCategoryCopyWith<UpdateCategory> get copyWith => _$UpdateCategoryCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is UpdateCategory&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&const DeepCollectionEquality().equals(other.image, image));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UpdateCategory&&(identical(other.category, category) || other.category == category));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,name,const DeepCollectionEquality().hash(image));
+int get hashCode => Object.hash(runtimeType,category);
 
 @override
 String toString() {
-  return 'CategoryEvent.updateCategory(id: $id, name: $name, image: $image)';
+  return 'CategoryEvent.updateCategory(category: $category)';
 }
 
 
@@ -419,11 +423,11 @@ abstract mixin class $UpdateCategoryCopyWith<$Res> implements $CategoryEventCopy
   factory $UpdateCategoryCopyWith(UpdateCategory value, $Res Function(UpdateCategory) _then) = _$UpdateCategoryCopyWithImpl;
 @useResult
 $Res call({
- String id, String name, Uint8List image
+ CategoryModel category
 });
 
 
-
+$CategoryModelCopyWith<$Res> get category;
 
 }
 /// @nodoc
@@ -436,16 +440,23 @@ class _$UpdateCategoryCopyWithImpl<$Res>
 
 /// Create a copy of CategoryEvent
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? image = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? category = null,}) {
   return _then(UpdateCategory(
-id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String,image: null == image ? _self.image : image // ignore: cast_nullable_to_non_nullable
-as Uint8List,
+category: null == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
+as CategoryModel,
   ));
 }
 
-
+/// Create a copy of CategoryEvent
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$CategoryModelCopyWith<$Res> get category {
+  
+  return $CategoryModelCopyWith<$Res>(_self.category, (value) {
+    return _then(_self.copyWith(category: value));
+  });
+}
 }
 
 /// @nodoc
@@ -871,6 +882,81 @@ String toString() {
 
 
 
+
+/// @nodoc
+
+
+class _RemoveCategoryImage implements CategoryEvent {
+  const _RemoveCategoryImage({required this.category});
+  
+
+ final  CategoryModel category;
+
+/// Create a copy of CategoryEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$RemoveCategoryImageCopyWith<_RemoveCategoryImage> get copyWith => __$RemoveCategoryImageCopyWithImpl<_RemoveCategoryImage>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RemoveCategoryImage&&(identical(other.category, category) || other.category == category));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,category);
+
+@override
+String toString() {
+  return 'CategoryEvent.removeCategoryImage(category: $category)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$RemoveCategoryImageCopyWith<$Res> implements $CategoryEventCopyWith<$Res> {
+  factory _$RemoveCategoryImageCopyWith(_RemoveCategoryImage value, $Res Function(_RemoveCategoryImage) _then) = __$RemoveCategoryImageCopyWithImpl;
+@useResult
+$Res call({
+ CategoryModel category
+});
+
+
+$CategoryModelCopyWith<$Res> get category;
+
+}
+/// @nodoc
+class __$RemoveCategoryImageCopyWithImpl<$Res>
+    implements _$RemoveCategoryImageCopyWith<$Res> {
+  __$RemoveCategoryImageCopyWithImpl(this._self, this._then);
+
+  final _RemoveCategoryImage _self;
+  final $Res Function(_RemoveCategoryImage) _then;
+
+/// Create a copy of CategoryEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? category = null,}) {
+  return _then(_RemoveCategoryImage(
+category: null == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
+as CategoryModel,
+  ));
+}
+
+/// Create a copy of CategoryEvent
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$CategoryModelCopyWith<$Res> get category {
+  
+  return $CategoryModelCopyWith<$Res>(_self.category, (value) {
+    return _then(_self.copyWith(category: value));
+  });
+}
+}
 
 /// @nodoc
 mixin _$CategoryState {

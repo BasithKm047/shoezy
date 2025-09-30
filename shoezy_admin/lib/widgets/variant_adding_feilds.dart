@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:logger/logger.dart';
-import 'package:shoezy_admin/data/model/size_stock_model.dart/size_stock_model.dart';
 import 'package:shoezy_admin/data/model/vareintModel/varientsModel.dart';
 import 'package:shoezy_admin/data/repositories/cloudinary_services.dart';
 import 'package:shoezy_admin/fetures/utils/const/commonFunction.dart';
@@ -57,7 +56,7 @@ class VariantAddingFeilds {
           images: currentImages,
           onImagesChanged: (changedImages) {
             context.read<VariantsBloc>().add(
-              VariantsEvent.imageUpload(changedImages),
+              VariantsEvent.imageUpload(changedImages as List<Uint8List>),
             );
             Logger().i('Images updated:  images selected');
           },

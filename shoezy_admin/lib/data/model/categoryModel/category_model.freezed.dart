@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$CategoryModel {
 
- String? get id; String get name; String get image;
+ String? get id; String get name; String? get image;
 /// Create a copy of CategoryModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $CategoryModelCopyWith<$Res>  {
   factory $CategoryModelCopyWith(CategoryModel value, $Res Function(CategoryModel) _then) = _$CategoryModelCopyWithImpl;
 @useResult
 $Res call({
- String? id, String name, String image
+ String? id, String name, String? image
 });
 
 
@@ -65,12 +65,12 @@ class _$CategoryModelCopyWithImpl<$Res>
 
 /// Create a copy of CategoryModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? name = null,Object? image = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? name = null,Object? image = freezed,}) {
   return _then(_self.copyWith(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String?,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String,image: null == image ? _self.image : image // ignore: cast_nullable_to_non_nullable
-as String,
+as String,image: freezed == image ? _self.image : image // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -155,7 +155,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? id,  String name,  String image)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? id,  String name,  String? image)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CategoryModel() when $default != null:
 return $default(_that.id,_that.name,_that.image);case _:
@@ -176,7 +176,7 @@ return $default(_that.id,_that.name,_that.image);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? id,  String name,  String image)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? id,  String name,  String? image)  $default,) {final _that = this;
 switch (_that) {
 case _CategoryModel():
 return $default(_that.id,_that.name,_that.image);case _:
@@ -196,7 +196,7 @@ return $default(_that.id,_that.name,_that.image);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? id,  String name,  String image)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? id,  String name,  String? image)?  $default,) {final _that = this;
 switch (_that) {
 case _CategoryModel() when $default != null:
 return $default(_that.id,_that.name,_that.image);case _:
@@ -216,7 +216,7 @@ class _CategoryModel implements CategoryModel {
 
 @override final  String? id;
 @override final  String name;
-@override final  String image;
+@override final  String? image;
 
 /// Create a copy of CategoryModel
 /// with the given fields replaced by the non-null parameter values.
@@ -251,7 +251,7 @@ abstract mixin class _$CategoryModelCopyWith<$Res> implements $CategoryModelCopy
   factory _$CategoryModelCopyWith(_CategoryModel value, $Res Function(_CategoryModel) _then) = __$CategoryModelCopyWithImpl;
 @override @useResult
 $Res call({
- String? id, String name, String image
+ String? id, String name, String? image
 });
 
 
@@ -268,12 +268,12 @@ class __$CategoryModelCopyWithImpl<$Res>
 
 /// Create a copy of CategoryModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? name = null,Object? image = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? name = null,Object? image = freezed,}) {
   return _then(_CategoryModel(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String?,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String,image: null == image ? _self.image : image // ignore: cast_nullable_to_non_nullable
-as String,
+as String,image: freezed == image ? _self.image : image // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 

@@ -15,19 +15,17 @@ class CategoryServices {
     await db.doc(id).delete();
   }
 
-  Future<void> updateCategory(
-    String name,
-    String image,
-    String id,
-  ) async {
-    await db.doc(id).update({'name': name, 'image': image});
+  Future<void> updateCategory(CategoryModel category) async {
+    await db.doc(category.id).update(category.toJson());
   }
 
-
-Future<List<CategoryModel>> getCategories() async {
+  Future<List<CategoryModel>> getCategories() async {
     try {
       final snapshot = await db.get();
-      return snapshot.docs.map((doc) => CategoryModel.fromJson(doc.data())).toList();
+      return snapshot.docs.map((doc) {
+        final data = doc.data();
+        return CategoryModel.fromJson(data).copyWith(id: doc.id);
+      }).toList();
     } catch (e) {
       Logger().e('Error fetching categories: $e');
       rethrow;

@@ -26,19 +26,17 @@ class BrandBloc extends Bloc<BrandEvent, BrandState> {
           }
         },
         removedImage: () {
-           emit(BrandState.imagesUpdated(null));
-          },
+          emit(BrandState.imagesUpdated(null));
+        },
 
-           
         addBrand: (brands) async {
           emit(BrandState.loading());
           try {
             await brandServices.addBrand(
               name: brands.name,
-              image: brands.imageUrl,
+              image: brands.imageUrl!,
             );
-        Logger().d('Brand Added Successfully');
-
+            Logger().d('Brand Added Successfully');
 
             emit(BrandState.success());
           } catch (e) {
@@ -60,7 +58,7 @@ class BrandBloc extends Bloc<BrandEvent, BrandState> {
         fetchBrands: () async {
           emit(BrandState.loading());
           try {
-            final brands=await brandServices.getBrands();
+            final brands = await brandServices.getBrands();
             emit(BrandState.loaded(brands: brands));
           } catch (e) {
             emit(BrandState.error(e.toString()));
@@ -73,6 +71,25 @@ class BrandBloc extends Bloc<BrandEvent, BrandState> {
               emit(BrandState.loaded(brands: brands, selectedBrand: null));
             },
           );
+        },
+        updateBrand: (brands) async {
+          emit(BrandState.loading());
+          try {
+            await brandServices.updateBrand(brand: brands);
+            emit(BrandState.success());
+          } catch (e) {
+            Logger().d('Error: ${e.toString()}');
+            emit(BrandState.error(e.toString()));
+          }
+        },
+        deleteBrand: (id) async {
+          emit(BrandState.loading());
+          try {
+            await brandServices.deleteBrand(id);
+            emit(BrandState.success());
+          } catch (e) {
+            emit(BrandState.error(e.toString()));
+          }
         },
         orElse: () {},
       );

@@ -290,7 +290,7 @@ class AddProductFields {
                   ProductEvent.addProduct(product: products),
                 );
                 clearField(context);
-                LoadingOverlay.show(context,'Product');
+                LoadingOverlay.show(context,'Adding Product ...');
                 await Future.delayed(Duration(seconds: 1));
                 LoadingOverlay.hide();
               },

@@ -6,6 +6,8 @@ import 'package:shoezy_admin/fetures/utils/const/routes.dart';
 import 'package:shoezy_admin/presentation/bloc/brand/bloc/brand_bloc.dart';
 
 import 'package:shoezy_admin/widgets/costumWidget.dart';
+import 'package:shoezy_admin/presentation/screens/edit_brand_screen.dart';
+import 'package:shoezy_admin/widgets/loading_overlay.dart';
 
 class Brandscreen extends StatelessWidget {
   const Brandscreen({super.key});
@@ -15,7 +17,19 @@ class Brandscreen extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     context.read<BrandBloc>().add(BrandEvent.fetchBrands());
     return BlocConsumer<BrandBloc, BrandState>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        state.maybeWhen(orElse: () {
+          
+        },
+       
+        loaded: (brands, selectedBrand) {
+          LoadingOverlay.hide();
+        },
+        loading: () {
+          LoadingOverlay.show(context, 'Loading...');
+        },
+        );
+      },
       builder: (context, state) {
         final List<BrandModel> brands = state.maybeWhen(
           orElse: () => [],
@@ -70,10 +84,10 @@ class Brandscreen extends StatelessWidget {
                     Expanded(
                       child: ListView.separated(
                         itemBuilder: (context, index) {
+                          final brand = brands[index];
                           return _widget(
                             context: context,
-                            title: brands[index].name,
-                            image: brands[index].imageUrl,
+                            brand: brand,
                           );
                         },
                         separatorBuilder: (context, index) => Divider(),
@@ -93,8 +107,7 @@ class Brandscreen extends StatelessWidget {
 
 Widget _widget({
   required BuildContext context,
-  required String title,
-  required String image,
+  required BrandModel brand,
   // bool? isFeild,
 }) {
   return Padding(
@@ -104,7 +117,7 @@ Widget _widget({
         Expanded(
           flex: 3,
           child: SizedBox(
-            child: Row(children: [CostumWidget.imageField(image: image)]),
+            child: Row(children: [CostumWidget.imageField(image: brand.imageUrl!)]),
           ),
         ),
 
@@ -115,7 +128,7 @@ Widget _widget({
               SizedBox(width: 10,),
               CostumWidget.labelText(
                 context,
-                title,
+                brand.name,
                 fontSize: 15,
                 fontWeight: FontWeight.w500,
               ),
@@ -129,7 +142,15 @@ Widget _widget({
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => EditBrandScreen(
+                        brand: brand,
+                      ),
+                    ),
+                  );
+                },
                 icon: Icon(Icons.edit, color: Colors.blue),
               ),
               IconButton(
