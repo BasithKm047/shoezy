@@ -12,7 +12,12 @@ class CategoryServices {
   }
 
   Future<void> deleteCategory(String id) async {
-    await db.doc(id).delete();
+    try{
+      await db.doc(id).delete();
+    } catch (e) {
+      Logger().e('Error deleting category: $e');
+      rethrow;
+    }
   }
 
   Future<void> updateCategory(CategoryModel category) async {

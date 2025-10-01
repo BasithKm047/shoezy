@@ -19,13 +19,14 @@ class Catogeryscreen extends StatelessWidget {
       padding: const EdgeInsets.only(left: 50.0, top: 50),
       child: BlocConsumer<CategoryBloc, CategoryState>(
         listener: (context, state) {
-          state.maybeWhen(orElse: () {},
-          loaded: (categories, selectedCategory) {
-            LoadingOverlay.hide();
-          },
-          loading: () {
-            LoadingOverlay.show(context, 'Loading...');
-          }
+          state.maybeWhen(
+            orElse: () {},
+            loaded: (categories, selectedCategory) {
+              LoadingOverlay.hide();
+            },
+            loading: () {
+              LoadingOverlay.show(context, 'Loading...');
+            },
           );
         },
         builder: (context, state) {
@@ -79,7 +80,10 @@ class Catogeryscreen extends StatelessWidget {
                         width: screenWidth / 1.1,
                         child: header(context: context),
                       ),
-
+                      if (categories.isEmpty)
+                        Expanded(
+                          child: Center(child: Text('No Categories Available')),
+                        ),
                       Expanded(
                         child: ListView.separated(
                           itemBuilder: (context, index) {
@@ -113,13 +117,15 @@ Widget _widget({
     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
     child: Row(
       children: [
-        Expanded(flex: 3, child: SizedBox(
-          width: 50,
-          child: Row(
-            children: [
-              CostumWidget.imageField(image: category.image!),
-            ],
-          ))),
+        Expanded(
+          flex: 3,
+          child: SizedBox(
+            width: 50,
+            child: Row(
+              children: [CostumWidget.imageField(image: category.image!)],
+            ),
+          ),
+        ),
 
         Expanded(
           flex: 2,
@@ -140,16 +146,28 @@ Widget _widget({
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (_) => EditCategoryScreen(
-                        category: category,
-                      ),
+                      builder: (_) => EditCategoryScreen(category: category),
                     ),
                   );
                 },
                 icon: Icon(Icons.edit, color: Colors.blue),
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  CostumWidget.showCustomAlertDialog(
+                    context: context,
+                    title: 'Delete Category',
+                    content: 'Are you sure you want to delete this category?',
+                    confirmButtonText: 'Delete',
+                    confirmButtonColor: Colors.red,
+                    onConfirm: () {
+                      context.read<CategoryBloc>().add(
+                        CategoryEvent.deleteCategory(id: category.id!),
+                      );
+                      context.read<CategoryBloc>().add(const CategoryEvent.getCategories());
+                    },
+                  );
+                },
                 icon: Icon(Icons.delete, color: Colors.red),
               ),
             ],
@@ -184,7 +202,6 @@ Widget header({required BuildContext context}) {
           ),
         ),
 
-     
         Expanded(
           flex: 2,
           child: Align(

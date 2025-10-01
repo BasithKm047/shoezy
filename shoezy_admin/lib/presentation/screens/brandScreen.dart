@@ -18,16 +18,15 @@ class Brandscreen extends StatelessWidget {
     context.read<BrandBloc>().add(BrandEvent.fetchBrands());
     return BlocConsumer<BrandBloc, BrandState>(
       listener: (context, state) {
-        state.maybeWhen(orElse: () {
-          
-        },
-       
-        loaded: (brands, selectedBrand) {
-          LoadingOverlay.hide();
-        },
-        loading: () {
-          LoadingOverlay.show(context, 'Loading...');
-        },
+        state.maybeWhen(
+          orElse: () {},
+
+          loaded: (brands, selectedBrand) {
+            LoadingOverlay.hide();
+          },
+          loading: () {
+            LoadingOverlay.show(context, 'Loading...');
+          },
         );
       },
       builder: (context, state) {
@@ -80,15 +79,15 @@ class Brandscreen extends StatelessWidget {
                       width: screenWidth / 1.1,
                       child: header(context: context),
                     ),
-
+                    if (brands.isEmpty)
+                      Expanded(
+                        child: Center(child: Text('No Brands Available')),
+                      ),
                     Expanded(
                       child: ListView.separated(
                         itemBuilder: (context, index) {
                           final brand = brands[index];
-                          return _widget(
-                            context: context,
-                            brand: brand,
-                          );
+                          return _widget(context: context, brand: brand);
                         },
                         separatorBuilder: (context, index) => Divider(),
                         itemCount: brands.length,
@@ -117,7 +116,9 @@ Widget _widget({
         Expanded(
           flex: 3,
           child: SizedBox(
-            child: Row(children: [CostumWidget.imageField(image: brand.imageUrl!)]),
+            child: Row(
+              children: [CostumWidget.imageField(image: brand.imageUrl!)],
+            ),
           ),
         ),
 
@@ -125,7 +126,7 @@ Widget _widget({
           flex: 1,
           child: Row(
             children: [
-              SizedBox(width: 10,),
+              SizedBox(width: 10),
               CostumWidget.labelText(
                 context,
                 brand.name,
@@ -145,16 +146,31 @@ Widget _widget({
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (_) => EditBrandScreen(
-                        brand: brand,
-                      ),
+                      builder: (_) => EditBrandScreen(brand: brand),
                     ),
                   );
                 },
                 icon: Icon(Icons.edit, color: Colors.blue),
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  CostumWidget.showCustomAlertDialog(
+                    confirmButtonColor: Colors.red,
+                    confirmButtonText: 'Delete',
+                    context: context,
+                    title: 'Delete Brand',
+                    content:
+                        'Are you sure you want to delete the brand "${brand.name}"?',
+                    onConfirm: () {
+                      context.read<BrandBloc>().add(
+                        BrandEvent.deleteBrand(brand.id!),
+                      );
+                      context.read<BrandBloc>().add(
+                        const BrandEvent.fetchBrands(),
+                      );
+                    },
+                  );
+                },
                 icon: Icon(Icons.delete, color: Colors.red),
               ),
             ],

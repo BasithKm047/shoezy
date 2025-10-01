@@ -30,7 +30,16 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
             emit(CategoryState.failure(e.toString()));
           }
         },
-        deleteCategory: (id) {},
+        deleteCategory: (id)async {
+          emit(CategoryState.loading());
+          try{
+            await categoryServices.deleteCategory(id);
+            emit(CategoryState.success());
+          }catch(e){
+            Logger().d('Error: ${e.toString()}');
+            emit(CategoryState.failure(e.toString()));
+          }
+        },
         updateCategory: (category) async{
           emit(CategoryState.loading());
           try{
