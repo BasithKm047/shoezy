@@ -244,7 +244,7 @@ Widget widgets(
       Expanded(
         flex: 3,
         child: Text(
-          users.name ?? 'name not found',
+          users.userName ?? 'name not found',
           style: Theme.of(context).textTheme.titleSmall?.copyWith(fontSize: 15),
         ),
       ),

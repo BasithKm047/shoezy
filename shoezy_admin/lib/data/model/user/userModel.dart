@@ -7,7 +7,7 @@ part 'userModel.g.dart';
 abstract class Usermodel with _$Usermodel {
   factory Usermodel({
     String? id,
-    String? name,
+    String? userName,
     String? email,
     String? phone,
     String? address,

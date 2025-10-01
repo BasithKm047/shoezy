@@ -25,5 +25,15 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
       }
     });
+    on<SearchUsers>((event, emit) async {
+      try {
+        final users = await userServices.searchUsers(event.query);
+        emit(UserLoaded(users));
+        Logger().d('Users searched successfully');
+      } catch (e) {
+        Logger().e('Error searching users: $e');
+        emit(UserError(e.toString()));
+      }
+    });
   }
 }

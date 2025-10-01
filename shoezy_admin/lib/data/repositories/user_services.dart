@@ -24,7 +24,7 @@ class UserServices {
       if (snapshot.exists) {
         return Usermodel.fromJson(snapshot.data()!).copyWith(id: snapshot.id);
       }
-      return Usermodel(id: '', name: '', email: '', phone: '', address: '', profileImage: '', isAdmin: false, createdAt: DateTime.now());
+      return Usermodel(id: '', userName: '', email: '', phone: '', address: '', profileImage: '', isAdmin: false, createdAt: DateTime.now());
     } catch (e) {
       rethrow;
     }
@@ -36,8 +36,8 @@ class UserServices {
   Future<List<Usermodel>> searchUsers(String query) async {
     try {
       final snapshot = await users
-          .where('name', isGreaterThanOrEqualTo: query)
-          .where('name', isLessThanOrEqualTo: '$query\uf8ff')
+          .where('userName', isGreaterThanOrEqualTo: query)
+          .where('userName', isLessThanOrEqualTo: '$query\uf8ff')
           .get();
 
       return snapshot.docs.map((doc) {
