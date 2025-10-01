@@ -11,5 +11,6 @@ sealed class BrandEvent with _$BrandEvent {
   const factory BrandEvent.removedImage() = RemovedImage;
   const factory BrandEvent.selectedBrand(String ? brandName) = SelectedBrand;
   const factory BrandEvent.clearSelection() = ClearSelection;
+  const factory BrandEvent.searchBrands(String query)= SearchBrands;
 
 }

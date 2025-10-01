@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -8,13 +10,47 @@ import 'package:shoezy_admin/widgets/costumWidget.dart';
 import 'package:shoezy_admin/presentation/screens/edit_category_screen.dart';
 import 'package:shoezy_admin/widgets/loading_overlay.dart';
 
-class Catogeryscreen extends StatelessWidget {
+class Catogeryscreen extends StatefulWidget {
   const Catogeryscreen({super.key});
+
+  @override
+  State<Catogeryscreen> createState() => _CatogeryscreenState();
+}
+
+class _CatogeryscreenState extends State<Catogeryscreen> {
+  Timer? _debounce;
+  final TextEditingController searchController = TextEditingController();
+  @override
+  initState() {
+    super.initState();
+    context.read<CategoryBloc>().add(CategoryEvent.getCategories());
+  }
+
+  @override
+  dispose() {
+    super.dispose();
+    searchController.dispose();
+    _debounce?.cancel();
+  }
+
+  void onSearchChanged(String query) {
+    if (_debounce?.isActive ?? false) _debounce?.cancel();
+
+    _debounce = Timer(const Duration(microseconds: 500), () {
+      if (query.isEmpty) {
+        context.read<CategoryBloc>().add(const CategoryEvent.getCategories());
+      } else {
+        context.read<CategoryBloc>().add(
+          CategoryEvent.searchCategories(query: query),
+        );
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    context.read<CategoryBloc>().add(CategoryEvent.getCategories());
+
     return Padding(
       padding: const EdgeInsets.only(left: 50.0, top: 50),
       child: BlocConsumer<CategoryBloc, CategoryState>(
@@ -50,8 +86,15 @@ class Catogeryscreen extends StatelessWidget {
                   child: SizedBox(
                     width: screenWidth / 1.1,
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        CostumWidget.costumSearchBar(
+                          hintText: 'Search Category',
+                          width: screenWidth / 3,
+                          onChanged: onSearchChanged,
+                          borderRadius: 10,
+                          icon: Icons.search,
+                        ),
                         SizedBox(width: 15),
                         CostumWidget.costumElevatedButton(
                           ontap: () {
@@ -82,7 +125,17 @@ class Catogeryscreen extends StatelessWidget {
                       ),
                       if (categories.isEmpty)
                         Expanded(
-                          child: Center(child: Text('No Categories Available')),
+                          child: Center(
+                            child: Text(
+                              searchController.text.isNotEmpty
+                                  ? "No Categories Found"
+                                  : "No Categories Available",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
                         ),
                       Expanded(
                         child: ListView.separated(
@@ -164,7 +217,9 @@ Widget _widget({
                       context.read<CategoryBloc>().add(
                         CategoryEvent.deleteCategory(id: category.id!),
                       );
-                      context.read<CategoryBloc>().add(const CategoryEvent.getCategories());
+                      context.read<CategoryBloc>().add(
+                        const CategoryEvent.getCategories(),
+                      );
                     },
                   );
                 },

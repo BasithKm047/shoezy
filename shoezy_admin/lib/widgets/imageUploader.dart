@@ -3,14 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
+// ignore: must_be_immutable
 class CostumImageUploader extends StatelessWidget {
-  // MULTIPLE image mode
-  final List<dynamic>? images; // 🔹 CHANGE: dynamic so it can hold Uint8List OR String
-  final Function(List<dynamic>)? onImagesChanged; // 🔹 CHANGE
+  final List<dynamic>? images; 
+  final Function(List<dynamic>)? onImagesChanged; 
   final Function(int index)? onImageRemoved;
 
-  // SINGLE image mode
-  final dynamic image; // 🔹 CHANGE: dynamic for Uint8List OR String
+  final dynamic image;
   final Function(Uint8List)? onImageSelected;
   final VoidCallback? onSingleImageRemoved;
 

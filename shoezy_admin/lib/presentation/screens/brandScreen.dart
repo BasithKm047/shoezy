@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -9,13 +11,46 @@ import 'package:shoezy_admin/widgets/costumWidget.dart';
 import 'package:shoezy_admin/presentation/screens/edit_brand_screen.dart';
 import 'package:shoezy_admin/widgets/loading_overlay.dart';
 
-class Brandscreen extends StatelessWidget {
+class Brandscreen extends StatefulWidget {
   const Brandscreen({super.key});
+
+  @override
+  State<Brandscreen> createState() => _BrandscreenState();
+}
+
+class _BrandscreenState extends State<Brandscreen> {
+  TextEditingController searchController = TextEditingController();
+
+  Timer? _debounce;
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<BrandBloc>().add(const BrandEvent.fetchBrands());
+  }
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    _debounce?.cancel();
+    super.dispose();
+  }
+
+  void onSearchChanged(String query) {
+    if (_debounce?.isActive ?? false) _debounce?.cancel();
+    _debounce = Timer(const Duration(microseconds: 500), () {
+      if (query.isEmpty) {
+        context.read<BrandBloc>().add(const BrandEvent.fetchBrands());
+      } else {
+        context.read<BrandBloc>().add(BrandEvent.searchBrands(query));
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    context.read<BrandBloc>().add(BrandEvent.fetchBrands());
+
     return BlocConsumer<BrandBloc, BrandState>(
       listener: (context, state) {
         state.maybeWhen(
@@ -49,8 +84,16 @@ class Brandscreen extends StatelessWidget {
                 child: SizedBox(
                   width: screenWidth / 1.1,
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      CostumWidget.costumSearchBar(
+                        controller: searchController,
+                        hintText: 'Search Brand',
+                        width: screenWidth / 3,
+                        onChanged: onSearchChanged,
+                        borderRadius: 10,
+                        icon: Icons.search,
+                      ),
                       SizedBox(width: 15),
                       CostumWidget.costumElevatedButton(
                         ontap: () {
@@ -79,10 +122,21 @@ class Brandscreen extends StatelessWidget {
                       width: screenWidth / 1.1,
                       child: header(context: context),
                     ),
+                    SizedBox(height: 10),
                     if (brands.isEmpty)
-                      Expanded(
-                        child: Center(child: Text('No Brands Available')),
-                      ),
+                       Expanded(
+                          child: Center(
+                            child: Text(
+                              searchController.text.isNotEmpty
+                                  ? "No Brands Found"
+                                  : "No Brands Available",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ),
                     Expanded(
                       child: ListView.separated(
                         itemBuilder: (context, index) {

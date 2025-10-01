@@ -40,4 +40,20 @@ class CategoryServices {
   Future<void> getCategorybyid(String id) async {
     await db.doc(id).get();
   }
+  Future<List<CategoryModel>> searchCategories(String query) async {
+    try {
+      final snapshot = await db
+          .where('name', isGreaterThanOrEqualTo: query)
+          .where('name', isLessThanOrEqualTo: '$query\uf8ff')
+          .get();
+
+      return snapshot.docs.map((doc) {
+        final data = doc.data();
+        return CategoryModel.fromJson(data).copyWith(id: doc.id);
+      }).toList();
+    } catch (e) {
+      Logger().e('Error searching categories: $e');
+      rethrow;
+    }
+  }
 }

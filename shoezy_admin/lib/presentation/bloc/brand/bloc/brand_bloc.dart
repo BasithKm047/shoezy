@@ -92,6 +92,20 @@ class BrandBloc extends Bloc<BrandEvent, BrandState> {
           }
         },
         orElse: () {},
+        searchBrands: (query) async {
+          // emit(const BrandState.loading());
+          try {
+            final brands = await brandServices.searchBrands(query);
+            emit(
+              BrandState.loaded(
+                brands: brands,
+                selectedBrand: null,
+              ),
+            );
+          } catch (e) {
+            emit(BrandState.error(e.toString()));
+          }
+        },
       );
     });
   }

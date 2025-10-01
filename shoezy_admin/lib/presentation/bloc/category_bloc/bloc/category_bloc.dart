@@ -66,7 +66,21 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
             emit(CategoryState.failure(e.toString()));
           }
         },
-        searchCategories: (categoryServices) {},
+        searchCategories: (query) async{
+          // emit(const CategoryState.loading());
+          try {
+            final categories = await categoryServices.searchCategories(query);
+            emit(
+              CategoryState.loaded(
+                categories: categories ,
+                selectedCategory: null,
+              ),
+            );
+          } catch (e) {
+            emit(CategoryState.failure(e.toString()));
+          }
+
+        },
         imagesUpdated: (images) {
           emit(CategoryState.imagesUpdated(images));
         },

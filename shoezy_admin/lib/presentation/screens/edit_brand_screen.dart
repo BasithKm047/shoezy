@@ -62,17 +62,6 @@ class EditBrandScreen extends StatelessWidget {
             imagesUpdated: (imageBytes) => imageBytes,
           );
 
-          final bool isLoading = state.maybeWhen(
-            orElse: () => false,
-            loading: () => true,
-          );
-
-          // if (isLoading) {
-          //   return const Center(
-          //     child: CircularProgressIndicator(color: Colors.blue),
-          //   );
-          // }
-
           return Center(
             child: SizedBox(
               width: screenWidth / 2,
@@ -98,16 +87,6 @@ class EditBrandScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 20),
 
-                      // CostumWidget.labelText(context, 'Current Logo'),
-                      // const SizedBox(height: 10),
-                      // CostumWidget.imageField(image: brand.imageUrl),
-                      // const SizedBox(height: 20),
-
-                      // CostumWidget.labelText(
-                      //   context,
-                      //   'Replace Logo (optional)',
-                      // ),
-                      // const SizedBox(height: 10),
                       CostumImageUploader(
                         updateimage: updatBrand,
                         singleMode: true,

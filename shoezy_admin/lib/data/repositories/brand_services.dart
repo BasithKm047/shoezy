@@ -62,4 +62,20 @@ class BrandServices {
       rethrow;
     }
   }
+  Future<List<BrandModel>> searchBrands(String query) async {
+    try {
+      final snapshot = await db
+          .where('name', isGreaterThanOrEqualTo: query)
+          .where('name', isLessThanOrEqualTo: '$query\uf8ff')
+          .get();
+
+      return snapshot.docs.map((doc) {
+        final data = doc.data();
+        return BrandModel.fromJson(data).copyWith(id: doc.id);
+      }).toList();
+    } catch (e) {
+      Logger().e("Error searching brands: $e");
+      rethrow;
+    }
+  }
 }

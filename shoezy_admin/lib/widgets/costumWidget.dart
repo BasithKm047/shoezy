@@ -359,11 +359,13 @@ static Widget costumTextformField({
     TextEditingController? controller,
     VoidCallback? ontap,
     required String hintText,
+    ValueChanged<String>? onChanged,
   }) {
     return SizedBox(
       width: width,
 
       child: TextFormField(
+        onChanged: onChanged,
         decoration: InputDecoration(
           hintText: hintText,
           prefixIcon: Icon(icon),
