@@ -7,4 +7,5 @@ sealed class UserEvent with _$UserEvent {
   const factory UserEvent.deleteUser(String id) = DeleteUser;
   const factory UserEvent.fetchUsers() = FetchUsers;
   const factory UserEvent.searchUsers(String query) = SearchUsers;
+   const factory UserEvent.blockUnblockUser(Usermodel user) = BlockUnblockUser;
 }

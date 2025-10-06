@@ -265,11 +265,32 @@ Widget widgets(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadiusGeometry.circular(10),
               ),
-              backgroundColor: Colors.blue,
+              backgroundColor: users.isBlocked == true
+                  ? Colors.red
+                  : Colors.blue,
             ),
-            onPressed: () {},
+            onPressed: () {
+              final updatedUser = users.copyWith(
+                isBlocked: !(users.isBlocked ?? false),
+              );
+
+              CostumWidget.showCustomAlertDialog(
+                context: context,
+                title: 'Confirm Action',
+                content:
+                    'Are you sure you want to ${users.isBlocked == true ? 'unblock' : 'block'} this user?',
+                confirmButtonText: 'Yes',
+                confirmButtonColor: Colors.red,
+                onConfirm: () {
+                  context.read<UserBloc>().add(
+                    UserEvent.blockUnblockUser(updatedUser),
+                  );
+                },
+                cancelButtonText: 'No',
+              );
+            },
             child: Text(
-              'Block',
+              users.isBlocked == true ? 'Unblock' : 'Block',
               style: Theme.of(context).textTheme.titleSmall?.copyWith(
                 fontSize: 13,
                 color: Colors.white,

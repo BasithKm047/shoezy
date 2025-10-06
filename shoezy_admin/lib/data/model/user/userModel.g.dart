@@ -14,6 +14,7 @@ _Usermodel _$UsermodelFromJson(Map<String, dynamic> json) => _Usermodel(
   address: json['address'] as String?,
   profileImage: json['profileImage'] as String?,
   isAdmin: json['isAdmin'] as bool?,
+  isBlocked: json['isBlocked'] as bool?,
   createdAt: json['createdAt'] == null
       ? null
       : DateTime.parse(json['createdAt'] as String),
@@ -28,5 +29,6 @@ Map<String, dynamic> _$UsermodelToJson(_Usermodel instance) =>
       'address': instance.address,
       'profileImage': instance.profileImage,
       'isAdmin': instance.isAdmin,
+      'isBlocked': instance.isBlocked,
       'createdAt': instance.createdAt?.toIso8601String(),
     };

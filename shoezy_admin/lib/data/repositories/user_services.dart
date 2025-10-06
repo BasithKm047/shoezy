@@ -48,6 +48,14 @@ class UserServices {
       rethrow;
     }
   }
+ Future<void> updateUserBlocked(Usermodel user) async {
+    try {
+      await users.doc(user.id).update({'isBlocked': user.isBlocked});
+    } catch (e) {
+      rethrow;
+    }
+  }
+
 
 // delete user
   Future<void> deleteUser(String id) async {

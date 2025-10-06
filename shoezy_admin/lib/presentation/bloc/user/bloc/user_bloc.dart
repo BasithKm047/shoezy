@@ -35,5 +35,27 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         emit(UserError(e.toString()));
       }
     });
+    on<BlockUnblockUser>((event, emit) async {
+      try {
+        await userServices.updateUserBlocked(event.user);
+        Logger().d('User block/unblock status updated successfully');
+        final users = await userServices.fetchUsers();
+        emit(UserLoaded(users));
+      } catch (e) {
+        Logger().e('Error updating user block/unblock status: $e');
+        emit(UserError(e.toString()));
+      }
+    });
+    on<DeleteUser>((event, emit) async {
+      try {
+        await userServices.deleteUser(event.id);
+        Logger().d('User deleted successfully');
+        final users = await userServices.fetchUsers();
+        emit(UserLoaded(users));
+      } catch (e) {
+        Logger().e('Error deleting user: $e');
+        emit(UserError(e.toString()));
+      }
+    });
   }
 }

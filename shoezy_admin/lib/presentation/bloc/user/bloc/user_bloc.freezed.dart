@@ -55,7 +55,7 @@ extension UserEventPatterns on UserEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( AddUser value)?  addUser,TResult Function( UpdateUser value)?  updateUser,TResult Function( DeleteUser value)?  deleteUser,TResult Function( FetchUsers value)?  fetchUsers,TResult Function( SearchUsers value)?  searchUsers,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( AddUser value)?  addUser,TResult Function( UpdateUser value)?  updateUser,TResult Function( DeleteUser value)?  deleteUser,TResult Function( FetchUsers value)?  fetchUsers,TResult Function( SearchUsers value)?  searchUsers,TResult Function( BlockUnblockUser value)?  blockUnblockUser,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case AddUser() when addUser != null:
@@ -63,7 +63,8 @@ return addUser(_that);case UpdateUser() when updateUser != null:
 return updateUser(_that);case DeleteUser() when deleteUser != null:
 return deleteUser(_that);case FetchUsers() when fetchUsers != null:
 return fetchUsers(_that);case SearchUsers() when searchUsers != null:
-return searchUsers(_that);case _:
+return searchUsers(_that);case BlockUnblockUser() when blockUnblockUser != null:
+return blockUnblockUser(_that);case _:
   return orElse();
 
 }
@@ -81,7 +82,7 @@ return searchUsers(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( AddUser value)  addUser,required TResult Function( UpdateUser value)  updateUser,required TResult Function( DeleteUser value)  deleteUser,required TResult Function( FetchUsers value)  fetchUsers,required TResult Function( SearchUsers value)  searchUsers,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( AddUser value)  addUser,required TResult Function( UpdateUser value)  updateUser,required TResult Function( DeleteUser value)  deleteUser,required TResult Function( FetchUsers value)  fetchUsers,required TResult Function( SearchUsers value)  searchUsers,required TResult Function( BlockUnblockUser value)  blockUnblockUser,}){
 final _that = this;
 switch (_that) {
 case AddUser():
@@ -89,7 +90,8 @@ return addUser(_that);case UpdateUser():
 return updateUser(_that);case DeleteUser():
 return deleteUser(_that);case FetchUsers():
 return fetchUsers(_that);case SearchUsers():
-return searchUsers(_that);}
+return searchUsers(_that);case BlockUnblockUser():
+return blockUnblockUser(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -103,7 +105,7 @@ return searchUsers(_that);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( AddUser value)?  addUser,TResult? Function( UpdateUser value)?  updateUser,TResult? Function( DeleteUser value)?  deleteUser,TResult? Function( FetchUsers value)?  fetchUsers,TResult? Function( SearchUsers value)?  searchUsers,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( AddUser value)?  addUser,TResult? Function( UpdateUser value)?  updateUser,TResult? Function( DeleteUser value)?  deleteUser,TResult? Function( FetchUsers value)?  fetchUsers,TResult? Function( SearchUsers value)?  searchUsers,TResult? Function( BlockUnblockUser value)?  blockUnblockUser,}){
 final _that = this;
 switch (_that) {
 case AddUser() when addUser != null:
@@ -111,7 +113,8 @@ return addUser(_that);case UpdateUser() when updateUser != null:
 return updateUser(_that);case DeleteUser() when deleteUser != null:
 return deleteUser(_that);case FetchUsers() when fetchUsers != null:
 return fetchUsers(_that);case SearchUsers() when searchUsers != null:
-return searchUsers(_that);case _:
+return searchUsers(_that);case BlockUnblockUser() when blockUnblockUser != null:
+return blockUnblockUser(_that);case _:
   return null;
 
 }
@@ -128,14 +131,15 @@ return searchUsers(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( Usermodel user)?  addUser,TResult Function( Usermodel user)?  updateUser,TResult Function( String id)?  deleteUser,TResult Function()?  fetchUsers,TResult Function( String query)?  searchUsers,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( Usermodel user)?  addUser,TResult Function( Usermodel user)?  updateUser,TResult Function( String id)?  deleteUser,TResult Function()?  fetchUsers,TResult Function( String query)?  searchUsers,TResult Function( Usermodel user)?  blockUnblockUser,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case AddUser() when addUser != null:
 return addUser(_that.user);case UpdateUser() when updateUser != null:
 return updateUser(_that.user);case DeleteUser() when deleteUser != null:
 return deleteUser(_that.id);case FetchUsers() when fetchUsers != null:
 return fetchUsers();case SearchUsers() when searchUsers != null:
-return searchUsers(_that.query);case _:
+return searchUsers(_that.query);case BlockUnblockUser() when blockUnblockUser != null:
+return blockUnblockUser(_that.user);case _:
   return orElse();
 
 }
@@ -153,14 +157,15 @@ return searchUsers(_that.query);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( Usermodel user)  addUser,required TResult Function( Usermodel user)  updateUser,required TResult Function( String id)  deleteUser,required TResult Function()  fetchUsers,required TResult Function( String query)  searchUsers,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( Usermodel user)  addUser,required TResult Function( Usermodel user)  updateUser,required TResult Function( String id)  deleteUser,required TResult Function()  fetchUsers,required TResult Function( String query)  searchUsers,required TResult Function( Usermodel user)  blockUnblockUser,}) {final _that = this;
 switch (_that) {
 case AddUser():
 return addUser(_that.user);case UpdateUser():
 return updateUser(_that.user);case DeleteUser():
 return deleteUser(_that.id);case FetchUsers():
 return fetchUsers();case SearchUsers():
-return searchUsers(_that.query);}
+return searchUsers(_that.query);case BlockUnblockUser():
+return blockUnblockUser(_that.user);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -174,14 +179,15 @@ return searchUsers(_that.query);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( Usermodel user)?  addUser,TResult? Function( Usermodel user)?  updateUser,TResult? Function( String id)?  deleteUser,TResult? Function()?  fetchUsers,TResult? Function( String query)?  searchUsers,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( Usermodel user)?  addUser,TResult? Function( Usermodel user)?  updateUser,TResult? Function( String id)?  deleteUser,TResult? Function()?  fetchUsers,TResult? Function( String query)?  searchUsers,TResult? Function( Usermodel user)?  blockUnblockUser,}) {final _that = this;
 switch (_that) {
 case AddUser() when addUser != null:
 return addUser(_that.user);case UpdateUser() when updateUser != null:
 return updateUser(_that.user);case DeleteUser() when deleteUser != null:
 return deleteUser(_that.id);case FetchUsers() when fetchUsers != null:
 return fetchUsers();case SearchUsers() when searchUsers != null:
-return searchUsers(_that.query);case _:
+return searchUsers(_that.query);case BlockUnblockUser() when blockUnblockUser != null:
+return blockUnblockUser(_that.user);case _:
   return null;
 
 }
@@ -501,6 +507,81 @@ as String,
 }
 
 
+}
+
+/// @nodoc
+
+
+class BlockUnblockUser implements UserEvent {
+  const BlockUnblockUser(this.user);
+  
+
+ final  Usermodel user;
+
+/// Create a copy of UserEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$BlockUnblockUserCopyWith<BlockUnblockUser> get copyWith => _$BlockUnblockUserCopyWithImpl<BlockUnblockUser>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is BlockUnblockUser&&(identical(other.user, user) || other.user == user));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,user);
+
+@override
+String toString() {
+  return 'UserEvent.blockUnblockUser(user: $user)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $BlockUnblockUserCopyWith<$Res> implements $UserEventCopyWith<$Res> {
+  factory $BlockUnblockUserCopyWith(BlockUnblockUser value, $Res Function(BlockUnblockUser) _then) = _$BlockUnblockUserCopyWithImpl;
+@useResult
+$Res call({
+ Usermodel user
+});
+
+
+$UsermodelCopyWith<$Res> get user;
+
+}
+/// @nodoc
+class _$BlockUnblockUserCopyWithImpl<$Res>
+    implements $BlockUnblockUserCopyWith<$Res> {
+  _$BlockUnblockUserCopyWithImpl(this._self, this._then);
+
+  final BlockUnblockUser _self;
+  final $Res Function(BlockUnblockUser) _then;
+
+/// Create a copy of UserEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? user = null,}) {
+  return _then(BlockUnblockUser(
+null == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
+as Usermodel,
+  ));
+}
+
+/// Create a copy of UserEvent
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$UsermodelCopyWith<$Res> get user {
+  
+  return $UsermodelCopyWith<$Res>(_self.user, (value) {
+    return _then(_self.copyWith(user: value));
+  });
+}
 }
 
 /// @nodoc

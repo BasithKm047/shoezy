@@ -13,9 +13,11 @@ abstract class Usermodel with _$Usermodel {
     String? address,
     String? profileImage,
     bool? isAdmin,
+    bool ? isBlocked,
     DateTime? createdAt,
   }) = _Usermodel;
 
   factory Usermodel.fromJson(Map<String, dynamic> json) =>
       _$UsermodelFromJson(json);
 }
+
