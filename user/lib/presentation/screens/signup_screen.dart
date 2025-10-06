@@ -263,6 +263,8 @@ class SignupScreen extends StatelessWidget {
         phoneNumber: '',
         email: emailController.text.trim(),
         imagePath: '',
+        isAdmin: false,
+        isBlocked: false,
       );
       context.read<AuthBloc>().add(
         SignUpEvent(user: user, password: passwordConttoller.text.trim()),

@@ -4,13 +4,17 @@ class UserModel {
   final String email;
   final String phoneNumber;
   final String imagePath;
+  final bool isAdmin;
+  final bool? isBlocked;
 
   UserModel({
     this.id,
     required this.userName,
     required this.phoneNumber,
     required this.email,
+    this.isAdmin = false,
     required this.imagePath,
+    this.isBlocked = false,
   });
 
   UserModel copyWith({
@@ -26,6 +30,8 @@ class UserModel {
       email: email ?? this.email,
       imagePath: imagePath ?? this.imagePath,
       id:  id,
+      isAdmin: isAdmin,
+      isBlocked: isBlocked ?? isBlocked,
     );
   }
 
@@ -36,6 +42,8 @@ class UserModel {
       'email': email,
       'phoneNumber': phoneNumber,
       'imagePath': imagePath,
+      'isAdmin': isAdmin,
+      'isBlocked': isBlocked,
     };
   }
 
@@ -46,11 +54,13 @@ class UserModel {
       phoneNumber: map['phoneNumber'],
       email: map['email'],
       imagePath: map['imagePath'],
+      isAdmin: map['isAdmin'] ?? false,
+      isBlocked: map['isBlocked'] ?? false,
     );
   }
 
   @override
   String toString(){
-    return 'UserModel(id:$id userName: $userName, phoneNumber: $phoneNumber, email: $email, imagePath: $imagePath, )';
+    return 'UserModel(id:$id userName: $userName, phoneNumber: $phoneNumber, email: $email, imagePath: $imagePath, isAdmin: $isAdmin, isBlocked: $isBlocked)';
   }
 }

@@ -28,7 +28,7 @@ class AuthServices {
     } on FirebaseAuthException catch (e) {
       throw _firebaseErrorMessage(e);
     } catch (e) {
-      throw e.toString(); 
+      throw e.toString();
     }
   }
 
@@ -37,6 +37,15 @@ class AuthServices {
     required String password,
   }) async {
     try {
+      final snapshot = await firestore.where('email', isEqualTo: email).get();
+      if (snapshot.docs.isEmpty) {
+        throw 'No account found with this email';
+      }
+      final userData = snapshot.docs.first.data();
+      final userModel = UserModel.fromMap(userData);
+      if (userModel.isBlocked == true) {
+        return throw 'Your account is blocked by Admin.';
+      }
       return await firebaseAuth.signInWithEmailAndPassword(
         email: email,
         password: password,
@@ -75,40 +84,53 @@ class AuthServices {
 
   Future<void> signInWithGoogle({required bool isNewUser}) async {
     try {
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-      if (googleUser == null) {
-        throw "Google sign-in aborted by user.";
-      }
+      final existingUser = await firestore
+          .where('email', isEqualTo: firebaseAuth.currentUser?.email)
+          .get();
 
-      final GoogleSignInAuthentication auth = await googleUser.authentication;
-
-      final credential = GoogleAuthProvider.credential(
-        accessToken: auth.accessToken,
-        idToken: auth.idToken,
-      );
-
-      final userCredential = await firebaseAuth.signInWithCredential(credential);
-      final firebaseUser = userCredential.user;
-
-      if (firebaseUser != null) {
-        final existingUser = await firestore
-            .where('email', isEqualTo: firebaseUser.email)
-            .get();
-
-        bool isNewUser = existingUser.docs.isEmpty;
-        if (isNewUser) {
-          final newUser = UserModel(
-            id: createId(),
-            userName: firebaseUser.displayName ?? '',
-            email: firebaseUser.email ?? '',
-            phoneNumber: firebaseUser.phoneNumber ?? '',
-            imagePath: '',
-          );
-
-          await firestore.doc(newUser.id).set(newUser.toMap());
-        }
+      if (existingUser.docs.isNotEmpty &&
+          existingUser.docs.first['isBlocked'] == true) {
+        throw 'Your account has been blocked by admin';
       } else {
-        throw "Google sign-in failed";
+        final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+        if (googleUser == null) {
+          throw "Google sign-in aborted by user.";
+        }
+
+        final GoogleSignInAuthentication auth = await googleUser.authentication;
+
+        final credential = GoogleAuthProvider.credential(
+          accessToken: auth.accessToken,
+          idToken: auth.idToken,
+        );
+
+        final userCredential = await firebaseAuth.signInWithCredential(
+          credential,
+        );
+        final firebaseUser = userCredential.user;
+
+        if (firebaseUser != null) {
+          final existingUser = await firestore
+              .where('email', isEqualTo: firebaseUser.email)
+              .get();
+
+          bool isNewUser = existingUser.docs.isEmpty;
+          if (isNewUser) {
+            final newUser = UserModel(
+              id: createId(),
+              userName: firebaseUser.displayName ?? '',
+              email: firebaseUser.email ?? '',
+              phoneNumber: firebaseUser.phoneNumber ?? '',
+              imagePath: '',
+              isAdmin: false,
+              isBlocked: false,
+            );
+
+            await firestore.doc(newUser.id).set(newUser.toMap());
+          }
+        } else {
+          throw "Google sign-in failed";
+        }
       }
     } catch (e) {
       log("Google Sign-In Error: $e");
@@ -133,4 +155,3 @@ class AuthServices {
     }
   }
 }
-
