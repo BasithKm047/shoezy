@@ -421,6 +421,7 @@ static Widget costumTextformField({
       ),
     );
   }
+  
 static Widget costumDropdown<T>({
   required List<T> items,
   required T? selectedValue,
@@ -451,14 +452,14 @@ static Widget costumDropdown<T>({
             padding: const EdgeInsets.symmetric(horizontal: 16),
             decoration: BoxDecoration(
               border: Border.all(
-                color: hasError ? Colors.red : Colors.grey, // Red if error
-                // width: 1.5,
+                color: hasError ? Colors.red : Colors.grey, 
               ),
               borderRadius: BorderRadius.circular(borderRaduis ?? 10),
               color: backgroundColor ?? Colors.white,
             ),
             child: DropdownButtonHideUnderline(
               child: DropdownButton<T>(
+                
                 isExpanded: true,
                 iconEnabledColor: iconColor ?? Colors.black,
                 iconSize: 30,

@@ -55,7 +55,7 @@ extension ProductEventPatterns on ProductEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _AddProduct value)?  addProduct,TResult Function( _RemoveProduct value)?  removeProduct,TResult Function( _UpdateProduct value)?  updateProduct,TResult Function( _UploadImage value)?  uploadImage,TResult Function( _RemoveImage value)?  removeImage,TResult Function( _GetProduct value)?  getProduct,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _AddProduct value)?  addProduct,TResult Function( _RemoveProduct value)?  removeProduct,TResult Function( _UpdateProduct value)?  updateProduct,TResult Function( _UploadImage value)?  uploadImage,TResult Function( _RemoveImage value)?  removeImage,TResult Function( _GetProduct value)?  getProduct,TResult Function( _ProductLoaded value)?  productLoaded,TResult Function( _DeleteProduct value)?  deleteProduct,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _AddProduct() when addProduct != null:
@@ -64,7 +64,9 @@ return removeProduct(_that);case _UpdateProduct() when updateProduct != null:
 return updateProduct(_that);case _UploadImage() when uploadImage != null:
 return uploadImage(_that);case _RemoveImage() when removeImage != null:
 return removeImage(_that);case _GetProduct() when getProduct != null:
-return getProduct(_that);case _:
+return getProduct(_that);case _ProductLoaded() when productLoaded != null:
+return productLoaded(_that);case _DeleteProduct() when deleteProduct != null:
+return deleteProduct(_that);case _:
   return orElse();
 
 }
@@ -82,7 +84,7 @@ return getProduct(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _AddProduct value)  addProduct,required TResult Function( _RemoveProduct value)  removeProduct,required TResult Function( _UpdateProduct value)  updateProduct,required TResult Function( _UploadImage value)  uploadImage,required TResult Function( _RemoveImage value)  removeImage,required TResult Function( _GetProduct value)  getProduct,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _AddProduct value)  addProduct,required TResult Function( _RemoveProduct value)  removeProduct,required TResult Function( _UpdateProduct value)  updateProduct,required TResult Function( _UploadImage value)  uploadImage,required TResult Function( _RemoveImage value)  removeImage,required TResult Function( _GetProduct value)  getProduct,required TResult Function( _ProductLoaded value)  productLoaded,required TResult Function( _DeleteProduct value)  deleteProduct,}){
 final _that = this;
 switch (_that) {
 case _AddProduct():
@@ -91,7 +93,9 @@ return removeProduct(_that);case _UpdateProduct():
 return updateProduct(_that);case _UploadImage():
 return uploadImage(_that);case _RemoveImage():
 return removeImage(_that);case _GetProduct():
-return getProduct(_that);case _:
+return getProduct(_that);case _ProductLoaded():
+return productLoaded(_that);case _DeleteProduct():
+return deleteProduct(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -108,7 +112,7 @@ return getProduct(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _AddProduct value)?  addProduct,TResult? Function( _RemoveProduct value)?  removeProduct,TResult? Function( _UpdateProduct value)?  updateProduct,TResult? Function( _UploadImage value)?  uploadImage,TResult? Function( _RemoveImage value)?  removeImage,TResult? Function( _GetProduct value)?  getProduct,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _AddProduct value)?  addProduct,TResult? Function( _RemoveProduct value)?  removeProduct,TResult? Function( _UpdateProduct value)?  updateProduct,TResult? Function( _UploadImage value)?  uploadImage,TResult? Function( _RemoveImage value)?  removeImage,TResult? Function( _GetProduct value)?  getProduct,TResult? Function( _ProductLoaded value)?  productLoaded,TResult? Function( _DeleteProduct value)?  deleteProduct,}){
 final _that = this;
 switch (_that) {
 case _AddProduct() when addProduct != null:
@@ -117,7 +121,9 @@ return removeProduct(_that);case _UpdateProduct() when updateProduct != null:
 return updateProduct(_that);case _UploadImage() when uploadImage != null:
 return uploadImage(_that);case _RemoveImage() when removeImage != null:
 return removeImage(_that);case _GetProduct() when getProduct != null:
-return getProduct(_that);case _:
+return getProduct(_that);case _ProductLoaded() when productLoaded != null:
+return productLoaded(_that);case _DeleteProduct() when deleteProduct != null:
+return deleteProduct(_that);case _:
   return null;
 
 }
@@ -134,15 +140,17 @@ return getProduct(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( ProductModel product)?  addProduct,TResult Function()?  removeProduct,TResult Function()?  updateProduct,TResult Function( List<Uint8List> images)?  uploadImage,TResult Function( int index)?  removeImage,TResult Function()?  getProduct,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( ProductModel product)?  addProduct,TResult Function()?  removeProduct,TResult Function( ProductModel product)?  updateProduct,TResult Function( List<Uint8List> images)?  uploadImage,TResult Function( int index)?  removeImage,TResult Function()?  getProduct,TResult Function( List<ProductModel> products)?  productLoaded,TResult Function( String id)?  deleteProduct,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AddProduct() when addProduct != null:
 return addProduct(_that.product);case _RemoveProduct() when removeProduct != null:
 return removeProduct();case _UpdateProduct() when updateProduct != null:
-return updateProduct();case _UploadImage() when uploadImage != null:
+return updateProduct(_that.product);case _UploadImage() when uploadImage != null:
 return uploadImage(_that.images);case _RemoveImage() when removeImage != null:
 return removeImage(_that.index);case _GetProduct() when getProduct != null:
-return getProduct();case _:
+return getProduct();case _ProductLoaded() when productLoaded != null:
+return productLoaded(_that.products);case _DeleteProduct() when deleteProduct != null:
+return deleteProduct(_that.id);case _:
   return orElse();
 
 }
@@ -160,15 +168,17 @@ return getProduct();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( ProductModel product)  addProduct,required TResult Function()  removeProduct,required TResult Function()  updateProduct,required TResult Function( List<Uint8List> images)  uploadImage,required TResult Function( int index)  removeImage,required TResult Function()  getProduct,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( ProductModel product)  addProduct,required TResult Function()  removeProduct,required TResult Function( ProductModel product)  updateProduct,required TResult Function( List<Uint8List> images)  uploadImage,required TResult Function( int index)  removeImage,required TResult Function()  getProduct,required TResult Function( List<ProductModel> products)  productLoaded,required TResult Function( String id)  deleteProduct,}) {final _that = this;
 switch (_that) {
 case _AddProduct():
 return addProduct(_that.product);case _RemoveProduct():
 return removeProduct();case _UpdateProduct():
-return updateProduct();case _UploadImage():
+return updateProduct(_that.product);case _UploadImage():
 return uploadImage(_that.images);case _RemoveImage():
 return removeImage(_that.index);case _GetProduct():
-return getProduct();case _:
+return getProduct();case _ProductLoaded():
+return productLoaded(_that.products);case _DeleteProduct():
+return deleteProduct(_that.id);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -185,15 +195,17 @@ return getProduct();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( ProductModel product)?  addProduct,TResult? Function()?  removeProduct,TResult? Function()?  updateProduct,TResult? Function( List<Uint8List> images)?  uploadImage,TResult? Function( int index)?  removeImage,TResult? Function()?  getProduct,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( ProductModel product)?  addProduct,TResult? Function()?  removeProduct,TResult? Function( ProductModel product)?  updateProduct,TResult? Function( List<Uint8List> images)?  uploadImage,TResult? Function( int index)?  removeImage,TResult? Function()?  getProduct,TResult? Function( List<ProductModel> products)?  productLoaded,TResult? Function( String id)?  deleteProduct,}) {final _that = this;
 switch (_that) {
 case _AddProduct() when addProduct != null:
 return addProduct(_that.product);case _RemoveProduct() when removeProduct != null:
 return removeProduct();case _UpdateProduct() when updateProduct != null:
-return updateProduct();case _UploadImage() when uploadImage != null:
+return updateProduct(_that.product);case _UploadImage() when uploadImage != null:
 return uploadImage(_that.images);case _RemoveImage() when removeImage != null:
 return removeImage(_that.index);case _GetProduct() when getProduct != null:
-return getProduct();case _:
+return getProduct();case _ProductLoaded() when productLoaded != null:
+return productLoaded(_that.products);case _DeleteProduct() when deleteProduct != null:
+return deleteProduct(_that.id);case _:
   return null;
 
 }
@@ -312,33 +324,76 @@ String toString() {
 
 
 class _UpdateProduct implements ProductEvent {
-  const _UpdateProduct();
+  const _UpdateProduct(this.product);
   
 
+ final  ProductModel product;
 
-
+/// Create a copy of ProductEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$UpdateProductCopyWith<_UpdateProduct> get copyWith => __$UpdateProductCopyWithImpl<_UpdateProduct>(this, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UpdateProduct);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UpdateProduct&&(identical(other.product, product) || other.product == product));
 }
 
 
 @override
-int get hashCode => runtimeType.hashCode;
+int get hashCode => Object.hash(runtimeType,product);
 
 @override
 String toString() {
-  return 'ProductEvent.updateProduct()';
+  return 'ProductEvent.updateProduct(product: $product)';
 }
 
 
 }
 
+/// @nodoc
+abstract mixin class _$UpdateProductCopyWith<$Res> implements $ProductEventCopyWith<$Res> {
+  factory _$UpdateProductCopyWith(_UpdateProduct value, $Res Function(_UpdateProduct) _then) = __$UpdateProductCopyWithImpl;
+@useResult
+$Res call({
+ ProductModel product
+});
 
 
+$ProductModelCopyWith<$Res> get product;
+
+}
+/// @nodoc
+class __$UpdateProductCopyWithImpl<$Res>
+    implements _$UpdateProductCopyWith<$Res> {
+  __$UpdateProductCopyWithImpl(this._self, this._then);
+
+  final _UpdateProduct _self;
+  final $Res Function(_UpdateProduct) _then;
+
+/// Create a copy of ProductEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? product = null,}) {
+  return _then(_UpdateProduct(
+null == product ? _self.product : product // ignore: cast_nullable_to_non_nullable
+as ProductModel,
+  ));
+}
+
+/// Create a copy of ProductEvent
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$ProductModelCopyWith<$Res> get product {
+  
+  return $ProductModelCopyWith<$Res>(_self.product, (value) {
+    return _then(_self.copyWith(product: value));
+  });
+}
+}
 
 /// @nodoc
 
@@ -509,6 +564,144 @@ String toString() {
 
 
 
+
+/// @nodoc
+
+
+class _ProductLoaded implements ProductEvent {
+  const _ProductLoaded(final  List<ProductModel> products): _products = products;
+  
+
+ final  List<ProductModel> _products;
+ List<ProductModel> get products {
+  if (_products is EqualUnmodifiableListView) return _products;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_products);
+}
+
+
+/// Create a copy of ProductEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$ProductLoadedCopyWith<_ProductLoaded> get copyWith => __$ProductLoadedCopyWithImpl<_ProductLoaded>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProductLoaded&&const DeepCollectionEquality().equals(other._products, _products));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_products));
+
+@override
+String toString() {
+  return 'ProductEvent.productLoaded(products: $products)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$ProductLoadedCopyWith<$Res> implements $ProductEventCopyWith<$Res> {
+  factory _$ProductLoadedCopyWith(_ProductLoaded value, $Res Function(_ProductLoaded) _then) = __$ProductLoadedCopyWithImpl;
+@useResult
+$Res call({
+ List<ProductModel> products
+});
+
+
+
+
+}
+/// @nodoc
+class __$ProductLoadedCopyWithImpl<$Res>
+    implements _$ProductLoadedCopyWith<$Res> {
+  __$ProductLoadedCopyWithImpl(this._self, this._then);
+
+  final _ProductLoaded _self;
+  final $Res Function(_ProductLoaded) _then;
+
+/// Create a copy of ProductEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? products = null,}) {
+  return _then(_ProductLoaded(
+null == products ? _self._products : products // ignore: cast_nullable_to_non_nullable
+as List<ProductModel>,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class _DeleteProduct implements ProductEvent {
+  const _DeleteProduct(this.id);
+  
+
+ final  String id;
+
+/// Create a copy of ProductEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$DeleteProductCopyWith<_DeleteProduct> get copyWith => __$DeleteProductCopyWithImpl<_DeleteProduct>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DeleteProduct&&(identical(other.id, id) || other.id == id));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,id);
+
+@override
+String toString() {
+  return 'ProductEvent.deleteProduct(id: $id)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$DeleteProductCopyWith<$Res> implements $ProductEventCopyWith<$Res> {
+  factory _$DeleteProductCopyWith(_DeleteProduct value, $Res Function(_DeleteProduct) _then) = __$DeleteProductCopyWithImpl;
+@useResult
+$Res call({
+ String id
+});
+
+
+
+
+}
+/// @nodoc
+class __$DeleteProductCopyWithImpl<$Res>
+    implements _$DeleteProductCopyWith<$Res> {
+  __$DeleteProductCopyWithImpl(this._self, this._then);
+
+  final _DeleteProduct _self;
+  final $Res Function(_DeleteProduct) _then;
+
+/// Create a copy of ProductEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? id = null,}) {
+  return _then(_DeleteProduct(
+null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
 
 /// @nodoc
 mixin _$ProductState {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoezy_admin/presentation/bloc/brand/bloc/brand_bloc.dart';
 import 'package:shoezy_admin/presentation/bloc/category_bloc/bloc/category_bloc.dart';
+import 'package:shoezy_admin/presentation/bloc/size_stock/bloc/size_stock_bloc.dart';
 import 'package:shoezy_admin/presentation/bloc/varients_bloc/bloc/varients_bloc.dart';
 import 'package:shoezy_admin/presentation/screens/stock_size_field.dart';
 import 'package:shoezy_admin/widgets/add_product_fields.dart';
@@ -29,6 +30,7 @@ class Addproductscreen extends StatelessWidget {
       context.read<BrandBloc>().add(const BrandEvent.clearSelection());
       context.read<CategoryBloc>().add(const CategoryEvent.clearSelection());
       context.read<VariantsBloc>().add(const VariantsEvent.clearVariants());
+      context.read<SizeStockBloc>().add(const SizeStockEvent.clearSizeStock());
     }
 
     return Scaffold(
@@ -66,7 +68,7 @@ class Addproductscreen extends StatelessWidget {
                       CostumWidget.labelText(context, 'Select Category'),
                       SizedBox(height: 10),
 
-                      AddProductFields.categorySelectField(screenWidth),
+                      AddProductFields.categorySelectField( screenWidth: screenWidth),
                       SizedBox(height: 10),
 
                       CostumWidget.labelText(context, 'Add Variants'),

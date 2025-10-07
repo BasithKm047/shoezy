@@ -6,6 +6,7 @@ import 'package:shoezy_admin/data/model/product/product_model.dart';
 import 'package:shoezy_admin/fetures/utils/const/colors.dart';
 import 'package:shoezy_admin/fetures/utils/const/routes.dart';
 import 'package:shoezy_admin/presentation/bloc/addProducts/bloc/product_bloc.dart';
+import 'package:shoezy_admin/presentation/screens/edit_product_screen.dart';
 import 'package:shoezy_admin/widgets/costumWidget.dart';
 import 'package:shoezy_admin/widgets/loading_overlay.dart';
 
@@ -151,20 +152,22 @@ class Productscreen extends StatelessWidget {
             child: ListView.builder(
               itemCount: products.length,
               itemBuilder: (context, index) {
+                final product = products[index];
                 // inside your itemBuilder:
-              
 
                 Logger().d("🔎 Variants for ${products[index].variants}");
                 return _buildProductRow(
                   context,
+                  product: product,
                   index: index + 1,
-                  name: products[index].productName,
-                  category: products[index].categoryName,
-                  brand: products[index].brandName,
-
-                  stock: products[index].sizeStock.map((e) => e.stock).reduce((a, b) => a + b).toString(),
-
-                  price: products[index].price,
+                  name: product.productName,
+                  category: product.categoryName,
+                  brand: product.brandName,
+                  stock: product.sizeStock
+                      .map((e) => e.stock)
+                      .reduce((a, b) => a + b)
+                      .toString(),
+                  price: product.price,
                   isSmall: isSmallScreen,
                 );
               },
@@ -208,6 +211,7 @@ class Productscreen extends StatelessWidget {
     required String stock,
     required String price,
     required bool isSmall,
+    required ProductModel product,
   }) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
@@ -225,11 +229,36 @@ class Productscreen extends StatelessWidget {
               children: [
                 IconButton(
                   icon: const Icon(Icons.edit, color: Colors.blue),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            EditProductScreen(product: product),
+                      ),
+                    );
+                    Logger().d('Edit product: $product');
+
+                  },
                 ),
                 IconButton(
                   icon: const Icon(Icons.delete, color: Colors.red),
-                  onPressed: () {},
+                  onPressed: () {
+                    CostumWidget.showCustomAlertDialog(
+                      context: context,
+                      title: 'Delete Product',
+                      content: 'Are you sure you want to delete this product?',
+                      cancelButtonText: 'Cancel',
+                      confirmButtonText: 'Delete',
+                      confirmButtonColor: Colors.red,
+                      onConfirm: () {
+                        // Handle delete action
+                        context.read<ProductBloc>().add(
+                          ProductEvent.deleteProduct(product.id!),
+                        );
+                      },
+                    );
+                  },
                 ),
               ],
             ),

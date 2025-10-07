@@ -99,8 +99,12 @@ class EditCategoryScreen extends StatelessWidget {
                         controller: _categoryNameController,
                         keyboardType: TextInputType.text,
                         validator: (value) {
-                          if (value == null || value.isEmpty) {
+                          if (value == null || value.isEmpty || category.name.isEmpty) {
                             return 'Please enter a category name';
+                          } else if (value.length < 2) {
+                            return 'Category name must be at least 2 characters long';
+                          } else if (value.length > 50) {
+                            return 'Category name must be less than 50 characters long';
                           }
                           return null;
                         },

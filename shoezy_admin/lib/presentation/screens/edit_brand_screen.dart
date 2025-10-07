@@ -79,8 +79,14 @@ class EditBrandScreen extends StatelessWidget {
                         hintText: 'Enter brand name',
                         width: screenWidth / 2,
                         validator: (value) {
-                          if (value == null || value.isEmpty) {
+                          if (value == null ||
+                              value.isEmpty ||
+                              brand.name.isEmpty) {
                             return 'Please enter a brand name';
+                          } else if (value.length < 2) {
+                            return 'Brand name must be at least 2 characters long';
+                          } else if (value.length > 50) {
+                            return 'Brand name must be less than 50 characters long';
                           }
                           return null;
                         },
@@ -115,15 +121,6 @@ class EditBrandScreen extends StatelessWidget {
                           context: context,
                           title: 'Update Brand',
                           ontap: () async {
-                            if (brand.id == null || brand.id!.isEmpty) {
-                              CostumWidget.showCustomSnackbar(
-                                context: context,
-                                message:
-                                    'Invalid brand ID. Cannot update brand.',
-                                backgroundColor: Colors.red,
-                              );
-                              return;
-                            }
                             final finalImageUrl = state.maybeWhen(
                               orElse: () => null,
                               imagesUpdated: (imageBytes) => imageBytes,

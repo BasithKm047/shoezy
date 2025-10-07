@@ -68,6 +68,29 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         emit(ProductState.error(e.toString()));
       }
     },);
+    on<_DeleteProduct>((event, emit) async {
+      emit(ProductState.loading());
+      try {
+        await productServices.deleteProduct(id: event.id);
+        Logger().d('Product deleted successfully');
+        final products = await productServices.getProduct();
+        emit(ProductState.loaded(products: products));
+      } catch (e) {
+        emit(ProductState.error(e.toString()));
+      }
+    });
+    on<_UpdateProduct>((event, emit) async {
+      emit(ProductState.loading());
+      try {
+        final product = event.product;
+        await productServices.updateProduct(product: product);
+        Logger().d('Product updated successfully');
+        emit(ProductState.success());
+      } catch (e) {
+        Logger().e('Error updating product: $e');
+        emit(ProductState.error(e.toString()));
+      }
+    });
 
   }
 }

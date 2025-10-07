@@ -61,14 +61,15 @@ extension VariantsEventPatterns on VariantsEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _ImageUploadedEvent value)?  imageUpload,TResult Function( _ImageRemoved value)?  imageRemoved,TResult Function( _AddVaraints value)?  addVariants,TResult Function( _Getvariants value)?  getVariants,TResult Function( _ResetImage value)?  resetImgae,TResult Function( _RemoveVariants value)?  removeVariants,TResult Function( _UpdateVariants value)?  updateVariants,TResult Function( _SearchVariants value)?  searchVariants,TResult Function( _DeleteVariants value)?  deleteVariants,TResult Function( _ShowFields value)?  showFields,TResult Function( _HideFields value)?  hideFields,TResult Function( _ToggleFields value)?  toggleFields,TResult Function( _AddSizeStock value)?  addSizeStock,TResult Function( _RemoveSizeStock value)?  removeSizeStock,TResult Function( _ClearVariants value)?  clearVariants,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _ImageUploadedEvent value)?  imageUpload,TResult Function( _ImageRemoved value)?  imageRemoved,TResult Function( _AddVaraints value)?  addVariants,TResult Function( _Getvariants value)?  getVariants,TResult Function( _VariantsLoaded value)?  VariantsLoaded,TResult Function( _ResetImage value)?  resetImgae,TResult Function( _RemoveVariants value)?  removeVariants,TResult Function( _UpdateVariants value)?  updateVariants,TResult Function( _SearchVariants value)?  searchVariants,TResult Function( _DeleteVariants value)?  deleteVariants,TResult Function( _ShowFields value)?  showFields,TResult Function( _HideFields value)?  hideFields,TResult Function( _ToggleFields value)?  toggleFields,TResult Function( _AddSizeStock value)?  addSizeStock,TResult Function( _RemoveSizeStock value)?  removeSizeStock,TResult Function( _ClearVariants value)?  clearVariants,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _ImageUploadedEvent() when imageUpload != null:
 return imageUpload(_that);case _ImageRemoved() when imageRemoved != null:
 return imageRemoved(_that);case _AddVaraints() when addVariants != null:
 return addVariants(_that);case _Getvariants() when getVariants != null:
-return getVariants(_that);case _ResetImage() when resetImgae != null:
+return getVariants(_that);case _VariantsLoaded() when VariantsLoaded != null:
+return VariantsLoaded(_that);case _ResetImage() when resetImgae != null:
 return resetImgae(_that);case _RemoveVariants() when removeVariants != null:
 return removeVariants(_that);case _UpdateVariants() when updateVariants != null:
 return updateVariants(_that);case _SearchVariants() when searchVariants != null:
@@ -97,14 +98,15 @@ return clearVariants(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _ImageUploadedEvent value)  imageUpload,required TResult Function( _ImageRemoved value)  imageRemoved,required TResult Function( _AddVaraints value)  addVariants,required TResult Function( _Getvariants value)  getVariants,required TResult Function( _ResetImage value)  resetImgae,required TResult Function( _RemoveVariants value)  removeVariants,required TResult Function( _UpdateVariants value)  updateVariants,required TResult Function( _SearchVariants value)  searchVariants,required TResult Function( _DeleteVariants value)  deleteVariants,required TResult Function( _ShowFields value)  showFields,required TResult Function( _HideFields value)  hideFields,required TResult Function( _ToggleFields value)  toggleFields,required TResult Function( _AddSizeStock value)  addSizeStock,required TResult Function( _RemoveSizeStock value)  removeSizeStock,required TResult Function( _ClearVariants value)  clearVariants,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _ImageUploadedEvent value)  imageUpload,required TResult Function( _ImageRemoved value)  imageRemoved,required TResult Function( _AddVaraints value)  addVariants,required TResult Function( _Getvariants value)  getVariants,required TResult Function( _VariantsLoaded value)  VariantsLoaded,required TResult Function( _ResetImage value)  resetImgae,required TResult Function( _RemoveVariants value)  removeVariants,required TResult Function( _UpdateVariants value)  updateVariants,required TResult Function( _SearchVariants value)  searchVariants,required TResult Function( _DeleteVariants value)  deleteVariants,required TResult Function( _ShowFields value)  showFields,required TResult Function( _HideFields value)  hideFields,required TResult Function( _ToggleFields value)  toggleFields,required TResult Function( _AddSizeStock value)  addSizeStock,required TResult Function( _RemoveSizeStock value)  removeSizeStock,required TResult Function( _ClearVariants value)  clearVariants,}){
 final _that = this;
 switch (_that) {
 case _ImageUploadedEvent():
 return imageUpload(_that);case _ImageRemoved():
 return imageRemoved(_that);case _AddVaraints():
 return addVariants(_that);case _Getvariants():
-return getVariants(_that);case _ResetImage():
+return getVariants(_that);case _VariantsLoaded():
+return VariantsLoaded(_that);case _ResetImage():
 return resetImgae(_that);case _RemoveVariants():
 return removeVariants(_that);case _UpdateVariants():
 return updateVariants(_that);case _SearchVariants():
@@ -132,14 +134,15 @@ return clearVariants(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _ImageUploadedEvent value)?  imageUpload,TResult? Function( _ImageRemoved value)?  imageRemoved,TResult? Function( _AddVaraints value)?  addVariants,TResult? Function( _Getvariants value)?  getVariants,TResult? Function( _ResetImage value)?  resetImgae,TResult? Function( _RemoveVariants value)?  removeVariants,TResult? Function( _UpdateVariants value)?  updateVariants,TResult? Function( _SearchVariants value)?  searchVariants,TResult? Function( _DeleteVariants value)?  deleteVariants,TResult? Function( _ShowFields value)?  showFields,TResult? Function( _HideFields value)?  hideFields,TResult? Function( _ToggleFields value)?  toggleFields,TResult? Function( _AddSizeStock value)?  addSizeStock,TResult? Function( _RemoveSizeStock value)?  removeSizeStock,TResult? Function( _ClearVariants value)?  clearVariants,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _ImageUploadedEvent value)?  imageUpload,TResult? Function( _ImageRemoved value)?  imageRemoved,TResult? Function( _AddVaraints value)?  addVariants,TResult? Function( _Getvariants value)?  getVariants,TResult? Function( _VariantsLoaded value)?  VariantsLoaded,TResult? Function( _ResetImage value)?  resetImgae,TResult? Function( _RemoveVariants value)?  removeVariants,TResult? Function( _UpdateVariants value)?  updateVariants,TResult? Function( _SearchVariants value)?  searchVariants,TResult? Function( _DeleteVariants value)?  deleteVariants,TResult? Function( _ShowFields value)?  showFields,TResult? Function( _HideFields value)?  hideFields,TResult? Function( _ToggleFields value)?  toggleFields,TResult? Function( _AddSizeStock value)?  addSizeStock,TResult? Function( _RemoveSizeStock value)?  removeSizeStock,TResult? Function( _ClearVariants value)?  clearVariants,}){
 final _that = this;
 switch (_that) {
 case _ImageUploadedEvent() when imageUpload != null:
 return imageUpload(_that);case _ImageRemoved() when imageRemoved != null:
 return imageRemoved(_that);case _AddVaraints() when addVariants != null:
 return addVariants(_that);case _Getvariants() when getVariants != null:
-return getVariants(_that);case _ResetImage() when resetImgae != null:
+return getVariants(_that);case _VariantsLoaded() when VariantsLoaded != null:
+return VariantsLoaded(_that);case _ResetImage() when resetImgae != null:
 return resetImgae(_that);case _RemoveVariants() when removeVariants != null:
 return removeVariants(_that);case _UpdateVariants() when updateVariants != null:
 return updateVariants(_that);case _SearchVariants() when searchVariants != null:
@@ -167,13 +170,14 @@ return clearVariants(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( List<Uint8List> image)?  imageUpload,TResult Function( int index)?  imageRemoved,TResult Function( List<Variantsmodel> varaints)?  addVariants,TResult Function()?  getVariants,TResult Function()?  resetImgae,TResult Function( Variantsmodel variants)?  removeVariants,TResult Function( Variantsmodel variants)?  updateVariants,TResult Function( String query)?  searchVariants,TResult Function( String id)?  deleteVariants,TResult Function()?  showFields,TResult Function()?  hideFields,TResult Function()?  toggleFields,TResult Function( SizeStockModel sizeStock)?  addSizeStock,TResult Function( int index)?  removeSizeStock,TResult Function()?  clearVariants,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( List<Uint8List> image)?  imageUpload,TResult Function( int index)?  imageRemoved,TResult Function( List<Variantsmodel> varaints)?  addVariants,TResult Function()?  getVariants,TResult Function( List<Variantsmodel> variants)?  VariantsLoaded,TResult Function()?  resetImgae,TResult Function( Variantsmodel variants)?  removeVariants,TResult Function( Variantsmodel variants)?  updateVariants,TResult Function( String query)?  searchVariants,TResult Function( String id)?  deleteVariants,TResult Function()?  showFields,TResult Function()?  hideFields,TResult Function()?  toggleFields,TResult Function( SizeStockModel sizeStock)?  addSizeStock,TResult Function( int index)?  removeSizeStock,TResult Function()?  clearVariants,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ImageUploadedEvent() when imageUpload != null:
 return imageUpload(_that.image);case _ImageRemoved() when imageRemoved != null:
 return imageRemoved(_that.index);case _AddVaraints() when addVariants != null:
 return addVariants(_that.varaints);case _Getvariants() when getVariants != null:
-return getVariants();case _ResetImage() when resetImgae != null:
+return getVariants();case _VariantsLoaded() when VariantsLoaded != null:
+return VariantsLoaded(_that.variants);case _ResetImage() when resetImgae != null:
 return resetImgae();case _RemoveVariants() when removeVariants != null:
 return removeVariants(_that.variants);case _UpdateVariants() when updateVariants != null:
 return updateVariants(_that.variants);case _SearchVariants() when searchVariants != null:
@@ -202,13 +206,14 @@ return clearVariants();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( List<Uint8List> image)  imageUpload,required TResult Function( int index)  imageRemoved,required TResult Function( List<Variantsmodel> varaints)  addVariants,required TResult Function()  getVariants,required TResult Function()  resetImgae,required TResult Function( Variantsmodel variants)  removeVariants,required TResult Function( Variantsmodel variants)  updateVariants,required TResult Function( String query)  searchVariants,required TResult Function( String id)  deleteVariants,required TResult Function()  showFields,required TResult Function()  hideFields,required TResult Function()  toggleFields,required TResult Function( SizeStockModel sizeStock)  addSizeStock,required TResult Function( int index)  removeSizeStock,required TResult Function()  clearVariants,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( List<Uint8List> image)  imageUpload,required TResult Function( int index)  imageRemoved,required TResult Function( List<Variantsmodel> varaints)  addVariants,required TResult Function()  getVariants,required TResult Function( List<Variantsmodel> variants)  VariantsLoaded,required TResult Function()  resetImgae,required TResult Function( Variantsmodel variants)  removeVariants,required TResult Function( Variantsmodel variants)  updateVariants,required TResult Function( String query)  searchVariants,required TResult Function( String id)  deleteVariants,required TResult Function()  showFields,required TResult Function()  hideFields,required TResult Function()  toggleFields,required TResult Function( SizeStockModel sizeStock)  addSizeStock,required TResult Function( int index)  removeSizeStock,required TResult Function()  clearVariants,}) {final _that = this;
 switch (_that) {
 case _ImageUploadedEvent():
 return imageUpload(_that.image);case _ImageRemoved():
 return imageRemoved(_that.index);case _AddVaraints():
 return addVariants(_that.varaints);case _Getvariants():
-return getVariants();case _ResetImage():
+return getVariants();case _VariantsLoaded():
+return VariantsLoaded(_that.variants);case _ResetImage():
 return resetImgae();case _RemoveVariants():
 return removeVariants(_that.variants);case _UpdateVariants():
 return updateVariants(_that.variants);case _SearchVariants():
@@ -236,13 +241,14 @@ return clearVariants();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( List<Uint8List> image)?  imageUpload,TResult? Function( int index)?  imageRemoved,TResult? Function( List<Variantsmodel> varaints)?  addVariants,TResult? Function()?  getVariants,TResult? Function()?  resetImgae,TResult? Function( Variantsmodel variants)?  removeVariants,TResult? Function( Variantsmodel variants)?  updateVariants,TResult? Function( String query)?  searchVariants,TResult? Function( String id)?  deleteVariants,TResult? Function()?  showFields,TResult? Function()?  hideFields,TResult? Function()?  toggleFields,TResult? Function( SizeStockModel sizeStock)?  addSizeStock,TResult? Function( int index)?  removeSizeStock,TResult? Function()?  clearVariants,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( List<Uint8List> image)?  imageUpload,TResult? Function( int index)?  imageRemoved,TResult? Function( List<Variantsmodel> varaints)?  addVariants,TResult? Function()?  getVariants,TResult? Function( List<Variantsmodel> variants)?  VariantsLoaded,TResult? Function()?  resetImgae,TResult? Function( Variantsmodel variants)?  removeVariants,TResult? Function( Variantsmodel variants)?  updateVariants,TResult? Function( String query)?  searchVariants,TResult? Function( String id)?  deleteVariants,TResult? Function()?  showFields,TResult? Function()?  hideFields,TResult? Function()?  toggleFields,TResult? Function( SizeStockModel sizeStock)?  addSizeStock,TResult? Function( int index)?  removeSizeStock,TResult? Function()?  clearVariants,}) {final _that = this;
 switch (_that) {
 case _ImageUploadedEvent() when imageUpload != null:
 return imageUpload(_that.image);case _ImageRemoved() when imageRemoved != null:
 return imageRemoved(_that.index);case _AddVaraints() when addVariants != null:
 return addVariants(_that.varaints);case _Getvariants() when getVariants != null:
-return getVariants();case _ResetImage() when resetImgae != null:
+return getVariants();case _VariantsLoaded() when VariantsLoaded != null:
+return VariantsLoaded(_that.variants);case _ResetImage() when resetImgae != null:
 return resetImgae();case _RemoveVariants() when removeVariants != null:
 return removeVariants(_that.variants);case _UpdateVariants() when updateVariants != null:
 return updateVariants(_that.variants);case _SearchVariants() when searchVariants != null:
@@ -526,6 +532,84 @@ String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
 
 
 
+
+/// @nodoc
+
+
+class _VariantsLoaded with DiagnosticableTreeMixin implements VariantsEvent {
+  const _VariantsLoaded(final  List<Variantsmodel> variants): _variants = variants;
+  
+
+ final  List<Variantsmodel> _variants;
+ List<Variantsmodel> get variants {
+  if (_variants is EqualUnmodifiableListView) return _variants;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_variants);
+}
+
+
+/// Create a copy of VariantsEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$VariantsLoadedCopyWith<_VariantsLoaded> get copyWith => __$VariantsLoadedCopyWithImpl<_VariantsLoaded>(this, _$identity);
+
+
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'VariantsEvent.VariantsLoaded'))
+    ..add(DiagnosticsProperty('variants', variants));
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _VariantsLoaded&&const DeepCollectionEquality().equals(other._variants, _variants));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_variants));
+
+@override
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+  return 'VariantsEvent.VariantsLoaded(variants: $variants)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$VariantsLoadedCopyWith<$Res> implements $VariantsEventCopyWith<$Res> {
+  factory _$VariantsLoadedCopyWith(_VariantsLoaded value, $Res Function(_VariantsLoaded) _then) = __$VariantsLoadedCopyWithImpl;
+@useResult
+$Res call({
+ List<Variantsmodel> variants
+});
+
+
+
+
+}
+/// @nodoc
+class __$VariantsLoadedCopyWithImpl<$Res>
+    implements _$VariantsLoadedCopyWith<$Res> {
+  __$VariantsLoadedCopyWithImpl(this._self, this._then);
+
+  final _VariantsLoaded _self;
+  final $Res Function(_VariantsLoaded) _then;
+
+/// Create a copy of VariantsEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? variants = null,}) {
+  return _then(_VariantsLoaded(
+null == variants ? _self._variants : variants // ignore: cast_nullable_to_non_nullable
+as List<Variantsmodel>,
+  ));
+}
+
+
+}
 
 /// @nodoc
 
@@ -1226,7 +1310,7 @@ extension VariantsStatePatterns on VariantsState {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Initail value)?  inintial,TResult Function( _Loading value)?  loading,TResult Function( _Success value)?  success,TResult Function( _ImageAddedState value)?  imageAddedState,TResult Function( _Failure value)?  failure,TResult Function( _ImageRemovedState value)?  imageRemovedState,TResult Function( _VariantsLoaded value)?  variantsLoaded,TResult Function( _VariantAdded value)?  variantAdded,TResult Function( _VariantRemoved value)?  variantRemoved,TResult Function( _VariantUpdated value)?  variantUpdated,TResult Function( _VariantSearched value)?  variantSearched,TResult Function( _ShowFieldsState value)?  showFieldsState,TResult Function( _HideFieldsState value)?  hideFieldsState,TResult Function( _AddedSizeStockState value)?  addedSizeStockState,TResult Function( _RemovedSizeStockState value)?  removedSizeStockState,TResult Function( _Data value)?  data,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Initail value)?  inintial,TResult Function( _Loading value)?  loading,TResult Function( _Success value)?  success,TResult Function( _ImageAddedState value)?  imageAddedState,TResult Function( _Failure value)?  failure,TResult Function( _ImageRemovedState value)?  imageRemovedState,TResult Function( _Loaded value)?  loaded,TResult Function( _VariantAdded value)?  variantAdded,TResult Function( _VariantRemoved value)?  variantRemoved,TResult Function( _VariantUpdated value)?  variantUpdated,TResult Function( _VariantSearched value)?  variantSearched,TResult Function( _ShowFieldsState value)?  showFieldsState,TResult Function( _HideFieldsState value)?  hideFieldsState,TResult Function( _AddedSizeStockState value)?  addedSizeStockState,TResult Function( _RemovedSizeStockState value)?  removedSizeStockState,TResult Function( _Data value)?  data,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _Initail() when inintial != null:
@@ -1235,8 +1319,8 @@ return loading(_that);case _Success() when success != null:
 return success(_that);case _ImageAddedState() when imageAddedState != null:
 return imageAddedState(_that);case _Failure() when failure != null:
 return failure(_that);case _ImageRemovedState() when imageRemovedState != null:
-return imageRemovedState(_that);case _VariantsLoaded() when variantsLoaded != null:
-return variantsLoaded(_that);case _VariantAdded() when variantAdded != null:
+return imageRemovedState(_that);case _Loaded() when loaded != null:
+return loaded(_that);case _VariantAdded() when variantAdded != null:
 return variantAdded(_that);case _VariantRemoved() when variantRemoved != null:
 return variantRemoved(_that);case _VariantUpdated() when variantUpdated != null:
 return variantUpdated(_that);case _VariantSearched() when variantSearched != null:
@@ -1263,7 +1347,7 @@ return data(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Initail value)  inintial,required TResult Function( _Loading value)  loading,required TResult Function( _Success value)  success,required TResult Function( _ImageAddedState value)  imageAddedState,required TResult Function( _Failure value)  failure,required TResult Function( _ImageRemovedState value)  imageRemovedState,required TResult Function( _VariantsLoaded value)  variantsLoaded,required TResult Function( _VariantAdded value)  variantAdded,required TResult Function( _VariantRemoved value)  variantRemoved,required TResult Function( _VariantUpdated value)  variantUpdated,required TResult Function( _VariantSearched value)  variantSearched,required TResult Function( _ShowFieldsState value)  showFieldsState,required TResult Function( _HideFieldsState value)  hideFieldsState,required TResult Function( _AddedSizeStockState value)  addedSizeStockState,required TResult Function( _RemovedSizeStockState value)  removedSizeStockState,required TResult Function( _Data value)  data,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Initail value)  inintial,required TResult Function( _Loading value)  loading,required TResult Function( _Success value)  success,required TResult Function( _ImageAddedState value)  imageAddedState,required TResult Function( _Failure value)  failure,required TResult Function( _ImageRemovedState value)  imageRemovedState,required TResult Function( _Loaded value)  loaded,required TResult Function( _VariantAdded value)  variantAdded,required TResult Function( _VariantRemoved value)  variantRemoved,required TResult Function( _VariantUpdated value)  variantUpdated,required TResult Function( _VariantSearched value)  variantSearched,required TResult Function( _ShowFieldsState value)  showFieldsState,required TResult Function( _HideFieldsState value)  hideFieldsState,required TResult Function( _AddedSizeStockState value)  addedSizeStockState,required TResult Function( _RemovedSizeStockState value)  removedSizeStockState,required TResult Function( _Data value)  data,}){
 final _that = this;
 switch (_that) {
 case _Initail():
@@ -1272,8 +1356,8 @@ return loading(_that);case _Success():
 return success(_that);case _ImageAddedState():
 return imageAddedState(_that);case _Failure():
 return failure(_that);case _ImageRemovedState():
-return imageRemovedState(_that);case _VariantsLoaded():
-return variantsLoaded(_that);case _VariantAdded():
+return imageRemovedState(_that);case _Loaded():
+return loaded(_that);case _VariantAdded():
 return variantAdded(_that);case _VariantRemoved():
 return variantRemoved(_that);case _VariantUpdated():
 return variantUpdated(_that);case _VariantSearched():
@@ -1299,7 +1383,7 @@ return data(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Initail value)?  inintial,TResult? Function( _Loading value)?  loading,TResult? Function( _Success value)?  success,TResult? Function( _ImageAddedState value)?  imageAddedState,TResult? Function( _Failure value)?  failure,TResult? Function( _ImageRemovedState value)?  imageRemovedState,TResult? Function( _VariantsLoaded value)?  variantsLoaded,TResult? Function( _VariantAdded value)?  variantAdded,TResult? Function( _VariantRemoved value)?  variantRemoved,TResult? Function( _VariantUpdated value)?  variantUpdated,TResult? Function( _VariantSearched value)?  variantSearched,TResult? Function( _ShowFieldsState value)?  showFieldsState,TResult? Function( _HideFieldsState value)?  hideFieldsState,TResult? Function( _AddedSizeStockState value)?  addedSizeStockState,TResult? Function( _RemovedSizeStockState value)?  removedSizeStockState,TResult? Function( _Data value)?  data,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Initail value)?  inintial,TResult? Function( _Loading value)?  loading,TResult? Function( _Success value)?  success,TResult? Function( _ImageAddedState value)?  imageAddedState,TResult? Function( _Failure value)?  failure,TResult? Function( _ImageRemovedState value)?  imageRemovedState,TResult? Function( _Loaded value)?  loaded,TResult? Function( _VariantAdded value)?  variantAdded,TResult? Function( _VariantRemoved value)?  variantRemoved,TResult? Function( _VariantUpdated value)?  variantUpdated,TResult? Function( _VariantSearched value)?  variantSearched,TResult? Function( _ShowFieldsState value)?  showFieldsState,TResult? Function( _HideFieldsState value)?  hideFieldsState,TResult? Function( _AddedSizeStockState value)?  addedSizeStockState,TResult? Function( _RemovedSizeStockState value)?  removedSizeStockState,TResult? Function( _Data value)?  data,}){
 final _that = this;
 switch (_that) {
 case _Initail() when inintial != null:
@@ -1308,8 +1392,8 @@ return loading(_that);case _Success() when success != null:
 return success(_that);case _ImageAddedState() when imageAddedState != null:
 return imageAddedState(_that);case _Failure() when failure != null:
 return failure(_that);case _ImageRemovedState() when imageRemovedState != null:
-return imageRemovedState(_that);case _VariantsLoaded() when variantsLoaded != null:
-return variantsLoaded(_that);case _VariantAdded() when variantAdded != null:
+return imageRemovedState(_that);case _Loaded() when loaded != null:
+return loaded(_that);case _VariantAdded() when variantAdded != null:
 return variantAdded(_that);case _VariantRemoved() when variantRemoved != null:
 return variantRemoved(_that);case _VariantUpdated() when variantUpdated != null:
 return variantUpdated(_that);case _VariantSearched() when variantSearched != null:
@@ -1335,7 +1419,7 @@ return data(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  inintial,TResult Function()?  loading,TResult Function()?  success,TResult Function( List<Uint8List> images)?  imageAddedState,TResult Function( String error)?  failure,TResult Function( List<Uint8List> image)?  imageRemovedState,TResult Function( List<Variantsmodel> variants)?  variantsLoaded,TResult Function()?  variantAdded,TResult Function()?  variantRemoved,TResult Function()?  variantUpdated,TResult Function( List<Variantsmodel> variants)?  variantSearched,TResult Function()?  showFieldsState,TResult Function()?  hideFieldsState,TResult Function( List<SizeStockModel> sizeStock)?  addedSizeStockState,TResult Function( List<SizeStockModel> sizeStock)?  removedSizeStockState,TResult Function( List<Uint8List> images,  List<Variantsmodel> variants,  bool showFields)?  data,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  inintial,TResult Function()?  loading,TResult Function()?  success,TResult Function( List<Uint8List> images)?  imageAddedState,TResult Function( String error)?  failure,TResult Function( List<Uint8List> image)?  imageRemovedState,TResult Function( List<Variantsmodel> variants)?  loaded,TResult Function()?  variantAdded,TResult Function()?  variantRemoved,TResult Function()?  variantUpdated,TResult Function( List<Variantsmodel> variants)?  variantSearched,TResult Function()?  showFieldsState,TResult Function()?  hideFieldsState,TResult Function( List<SizeStockModel> sizeStock)?  addedSizeStockState,TResult Function( List<SizeStockModel> sizeStock)?  removedSizeStockState,TResult Function( List<Uint8List> images,  List<Variantsmodel> variants,  bool showFields)?  data,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Initail() when inintial != null:
 return inintial();case _Loading() when loading != null:
@@ -1343,8 +1427,8 @@ return loading();case _Success() when success != null:
 return success();case _ImageAddedState() when imageAddedState != null:
 return imageAddedState(_that.images);case _Failure() when failure != null:
 return failure(_that.error);case _ImageRemovedState() when imageRemovedState != null:
-return imageRemovedState(_that.image);case _VariantsLoaded() when variantsLoaded != null:
-return variantsLoaded(_that.variants);case _VariantAdded() when variantAdded != null:
+return imageRemovedState(_that.image);case _Loaded() when loaded != null:
+return loaded(_that.variants);case _VariantAdded() when variantAdded != null:
 return variantAdded();case _VariantRemoved() when variantRemoved != null:
 return variantRemoved();case _VariantUpdated() when variantUpdated != null:
 return variantUpdated();case _VariantSearched() when variantSearched != null:
@@ -1371,7 +1455,7 @@ return data(_that.images,_that.variants,_that.showFields);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  inintial,required TResult Function()  loading,required TResult Function()  success,required TResult Function( List<Uint8List> images)  imageAddedState,required TResult Function( String error)  failure,required TResult Function( List<Uint8List> image)  imageRemovedState,required TResult Function( List<Variantsmodel> variants)  variantsLoaded,required TResult Function()  variantAdded,required TResult Function()  variantRemoved,required TResult Function()  variantUpdated,required TResult Function( List<Variantsmodel> variants)  variantSearched,required TResult Function()  showFieldsState,required TResult Function()  hideFieldsState,required TResult Function( List<SizeStockModel> sizeStock)  addedSizeStockState,required TResult Function( List<SizeStockModel> sizeStock)  removedSizeStockState,required TResult Function( List<Uint8List> images,  List<Variantsmodel> variants,  bool showFields)  data,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  inintial,required TResult Function()  loading,required TResult Function()  success,required TResult Function( List<Uint8List> images)  imageAddedState,required TResult Function( String error)  failure,required TResult Function( List<Uint8List> image)  imageRemovedState,required TResult Function( List<Variantsmodel> variants)  loaded,required TResult Function()  variantAdded,required TResult Function()  variantRemoved,required TResult Function()  variantUpdated,required TResult Function( List<Variantsmodel> variants)  variantSearched,required TResult Function()  showFieldsState,required TResult Function()  hideFieldsState,required TResult Function( List<SizeStockModel> sizeStock)  addedSizeStockState,required TResult Function( List<SizeStockModel> sizeStock)  removedSizeStockState,required TResult Function( List<Uint8List> images,  List<Variantsmodel> variants,  bool showFields)  data,}) {final _that = this;
 switch (_that) {
 case _Initail():
 return inintial();case _Loading():
@@ -1379,8 +1463,8 @@ return loading();case _Success():
 return success();case _ImageAddedState():
 return imageAddedState(_that.images);case _Failure():
 return failure(_that.error);case _ImageRemovedState():
-return imageRemovedState(_that.image);case _VariantsLoaded():
-return variantsLoaded(_that.variants);case _VariantAdded():
+return imageRemovedState(_that.image);case _Loaded():
+return loaded(_that.variants);case _VariantAdded():
 return variantAdded();case _VariantRemoved():
 return variantRemoved();case _VariantUpdated():
 return variantUpdated();case _VariantSearched():
@@ -1406,7 +1490,7 @@ return data(_that.images,_that.variants,_that.showFields);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  inintial,TResult? Function()?  loading,TResult? Function()?  success,TResult? Function( List<Uint8List> images)?  imageAddedState,TResult? Function( String error)?  failure,TResult? Function( List<Uint8List> image)?  imageRemovedState,TResult? Function( List<Variantsmodel> variants)?  variantsLoaded,TResult? Function()?  variantAdded,TResult? Function()?  variantRemoved,TResult? Function()?  variantUpdated,TResult? Function( List<Variantsmodel> variants)?  variantSearched,TResult? Function()?  showFieldsState,TResult? Function()?  hideFieldsState,TResult? Function( List<SizeStockModel> sizeStock)?  addedSizeStockState,TResult? Function( List<SizeStockModel> sizeStock)?  removedSizeStockState,TResult? Function( List<Uint8List> images,  List<Variantsmodel> variants,  bool showFields)?  data,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  inintial,TResult? Function()?  loading,TResult? Function()?  success,TResult? Function( List<Uint8List> images)?  imageAddedState,TResult? Function( String error)?  failure,TResult? Function( List<Uint8List> image)?  imageRemovedState,TResult? Function( List<Variantsmodel> variants)?  loaded,TResult? Function()?  variantAdded,TResult? Function()?  variantRemoved,TResult? Function()?  variantUpdated,TResult? Function( List<Variantsmodel> variants)?  variantSearched,TResult? Function()?  showFieldsState,TResult? Function()?  hideFieldsState,TResult? Function( List<SizeStockModel> sizeStock)?  addedSizeStockState,TResult? Function( List<SizeStockModel> sizeStock)?  removedSizeStockState,TResult? Function( List<Uint8List> images,  List<Variantsmodel> variants,  bool showFields)?  data,}) {final _that = this;
 switch (_that) {
 case _Initail() when inintial != null:
 return inintial();case _Loading() when loading != null:
@@ -1414,8 +1498,8 @@ return loading();case _Success() when success != null:
 return success();case _ImageAddedState() when imageAddedState != null:
 return imageAddedState(_that.images);case _Failure() when failure != null:
 return failure(_that.error);case _ImageRemovedState() when imageRemovedState != null:
-return imageRemovedState(_that.image);case _VariantsLoaded() when variantsLoaded != null:
-return variantsLoaded(_that.variants);case _VariantAdded() when variantAdded != null:
+return imageRemovedState(_that.image);case _Loaded() when loaded != null:
+return loaded(_that.variants);case _VariantAdded() when variantAdded != null:
 return variantAdded();case _VariantRemoved() when variantRemoved != null:
 return variantRemoved();case _VariantUpdated() when variantUpdated != null:
 return variantUpdated();case _VariantSearched() when variantSearched != null:
@@ -1777,8 +1861,8 @@ as List<Uint8List>,
 /// @nodoc
 
 
-class _VariantsLoaded with DiagnosticableTreeMixin implements VariantsState {
-  const _VariantsLoaded(final  List<Variantsmodel> variants): _variants = variants;
+class _Loaded with DiagnosticableTreeMixin implements VariantsState {
+  const _Loaded(final  List<Variantsmodel> variants): _variants = variants;
   
 
  final  List<Variantsmodel> _variants;
@@ -1793,19 +1877,19 @@ class _VariantsLoaded with DiagnosticableTreeMixin implements VariantsState {
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-_$VariantsLoadedCopyWith<_VariantsLoaded> get copyWith => __$VariantsLoadedCopyWithImpl<_VariantsLoaded>(this, _$identity);
+_$LoadedCopyWith<_Loaded> get copyWith => __$LoadedCopyWithImpl<_Loaded>(this, _$identity);
 
 
 @override
 void debugFillProperties(DiagnosticPropertiesBuilder properties) {
   properties
-    ..add(DiagnosticsProperty('type', 'VariantsState.variantsLoaded'))
+    ..add(DiagnosticsProperty('type', 'VariantsState.loaded'))
     ..add(DiagnosticsProperty('variants', variants));
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _VariantsLoaded&&const DeepCollectionEquality().equals(other._variants, _variants));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Loaded&&const DeepCollectionEquality().equals(other._variants, _variants));
 }
 
 
@@ -1814,15 +1898,15 @@ int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(
 
 @override
 String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
-  return 'VariantsState.variantsLoaded(variants: $variants)';
+  return 'VariantsState.loaded(variants: $variants)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class _$VariantsLoadedCopyWith<$Res> implements $VariantsStateCopyWith<$Res> {
-  factory _$VariantsLoadedCopyWith(_VariantsLoaded value, $Res Function(_VariantsLoaded) _then) = __$VariantsLoadedCopyWithImpl;
+abstract mixin class _$LoadedCopyWith<$Res> implements $VariantsStateCopyWith<$Res> {
+  factory _$LoadedCopyWith(_Loaded value, $Res Function(_Loaded) _then) = __$LoadedCopyWithImpl;
 @useResult
 $Res call({
  List<Variantsmodel> variants
@@ -1833,17 +1917,17 @@ $Res call({
 
 }
 /// @nodoc
-class __$VariantsLoadedCopyWithImpl<$Res>
-    implements _$VariantsLoadedCopyWith<$Res> {
-  __$VariantsLoadedCopyWithImpl(this._self, this._then);
+class __$LoadedCopyWithImpl<$Res>
+    implements _$LoadedCopyWith<$Res> {
+  __$LoadedCopyWithImpl(this._self, this._then);
 
-  final _VariantsLoaded _self;
-  final $Res Function(_VariantsLoaded) _then;
+  final _Loaded _self;
+  final $Res Function(_Loaded) _then;
 
 /// Create a copy of VariantsState
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') $Res call({Object? variants = null,}) {
-  return _then(_VariantsLoaded(
+  return _then(_Loaded(
 null == variants ? _self._variants : variants // ignore: cast_nullable_to_non_nullable
 as List<Variantsmodel>,
   ));

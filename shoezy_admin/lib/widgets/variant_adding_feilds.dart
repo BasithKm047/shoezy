@@ -56,7 +56,7 @@ class VariantAddingFeilds {
           images: currentImages,
           onImagesChanged: (changedImages) {
             context.read<VariantsBloc>().add(
-              VariantsEvent.imageUpload(changedImages as List<Uint8List>),
+              VariantsEvent.imageUpload(changedImages ),
             );
             Logger().i('Images updated:  images selected');
           },
@@ -333,7 +333,7 @@ class VariantAddingFeilds {
                         imageAddedState: (images) => images,
                         imageRemovedState: (image) => image,
                       );
-                      Logger().i('Images to validate: $images');
+                      // Logger().i('Images to validate: $images');
                       if (!Commonfunction.imageValidator(images! , context)) {
                       Logger().i('Image validation failed');
                       LoadingOverlay.hide();

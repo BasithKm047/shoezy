@@ -20,6 +20,16 @@ class ProductServices {
 
   }
 
+  Future<void> updateProduct({required ProductModel product}) async {
+    try {
+      await firestoreCollection.doc(product.id).update(product.toJson());
+      Logger().d("Product updated successfully");
+    } catch (e) {
+      Logger().e("Error updating product: $e");
+      rethrow;
+    }
+  }
+
   Future<List<ProductModel>> getProduct() async {
     try {
       final snapshot = await firestoreCollection.get();
@@ -31,6 +41,15 @@ class ProductServices {
 
     } catch (e) {
       Logger().e("Error fetching products: $e");
+      rethrow;
+    }
+  }
+  Future<void> deleteProduct({required String id}) async {
+    try {
+      await firestoreCollection.doc(id).delete();
+      Logger().d("Product deleted successfully");
+    } catch (e) {
+      Logger().e("Error deleting product: $e");
       rethrow;
     }
   }

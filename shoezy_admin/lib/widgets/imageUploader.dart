@@ -5,8 +5,8 @@ import 'package:image_picker/image_picker.dart';
 
 // ignore: must_be_immutable
 class CostumImageUploader extends StatelessWidget {
-  final List<dynamic>? images; 
-  final Function(List<dynamic>)? onImagesChanged; 
+  final List<Uint8List>? images; 
+  final Function(List<Uint8List>)? onImagesChanged; 
   final Function(int index)? onImageRemoved;
 
   final dynamic image;

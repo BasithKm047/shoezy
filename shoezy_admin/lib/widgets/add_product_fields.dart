@@ -81,14 +81,21 @@ class AddProductFields {
     );
   }
 
-  static BlocBuilder<CategoryBloc, CategoryState> categorySelectField(
-    double screenWidth,
-  ) {
+  static BlocBuilder<CategoryBloc, CategoryState> categorySelectField({
+    String? categoryName,
+    bool isUpdating = false,
+    required double screenWidth,
+  }) {
     return BlocBuilder<CategoryBloc, CategoryState>(
       builder: (context, state) {
         return state.maybeWhen(
           loaded: (categories, selectedCategory) {
             final items = categories.map((c) => c.name).toSet().toList();
+            final currentSelectedCategory =isUpdating
+                ? (selectedCategory?.isNotEmpty == true
+                    ? selectedCategory
+                    : categoryName)
+                : selectedCategory;
             return CostumWidget.costumDropdown(
               validator: (value) {
                 if (value == null || value.trim().isEmpty) {
@@ -97,7 +104,7 @@ class AddProductFields {
                 return null;
               },
               items: items,
-              selectedValue: selectedCategory,
+              selectedValue: currentSelectedCategory,
               hintText: 'Category',
               onChanged: (value) {
                 context.read<CategoryBloc>().add(
@@ -124,13 +131,20 @@ class AddProductFields {
   }
 
   static BlocBuilder<BrandBloc, BrandState> brandSelectField(
-    double screenWidth,
-  ) {
+    double screenWidth, {
+    String? brandName,
+    bool isUpdating = false,
+  }) {
     return BlocBuilder<BrandBloc, BrandState>(
       builder: (context, state) {
         return state.maybeWhen(
           loaded: (brands, selectedBrand) {
             final items = brands.map((b) => b.name.toString()).toList();
+            final currentSelectedBrand = isUpdating
+                ? (brandName?.isNotEmpty == true
+                      ? selectedBrand
+                      : brandName)
+                : selectedBrand;
             return CostumWidget.costumDropdown(
               items: items,
               validator: (value) {
@@ -139,7 +153,9 @@ class AddProductFields {
                 }
                 return null;
               },
-              selectedValue: selectedBrand,
+
+              selectedValue: currentSelectedBrand,
+
               hintText: 'Brands',
               onChanged: (value) {
                 context.read<BrandBloc>().add(
@@ -245,8 +261,7 @@ class AddProductFields {
                     .state
                     .maybeWhen(
                       orElse: () => [],
-                      data: (images, variants, showFields) =>
-                          variants,
+                      data: (images, variants, showFields) => variants,
                     );
                 Logger().i('Current variants count: ${variants.length}');
 
@@ -259,13 +274,17 @@ class AddProductFields {
                   return;
                 }
 
-                List<SizeStockModel>sizeStock=context.read<SizeStockBloc>().state.maybeWhen(orElse: () => [],
-                loaded: (sizeStock) => sizeStock,
-                );
+                List<SizeStockModel> sizeStock = context
+                    .read<SizeStockBloc>()
+                    .state
+                    .maybeWhen(
+                      orElse: () => [],
+                      loaded: (sizeStock) => sizeStock,
+                    );
 
                 Logger().i('Current SizeStock count: ${sizeStock.length}');
 
-                  if (sizeStock.isEmpty) {
+                if (sizeStock.isEmpty) {
                   CostumWidget.showCustomSnackbar(
                     context: context,
                     message: 'Please add at least one size and stock',
@@ -274,15 +293,14 @@ class AddProductFields {
                   return;
                 }
 
-
                 final products = ProductModel(
                   productName: shoeNameController.text.trim(),
                   brandName: selectedBrand.name,
                   categoryName: selectedCategory.name,
                   price: priceController.text,
                   description: shoeDescriptionController.text.trim(),
-                  variants: variants  ,
-                  sizeStock: sizeStock    ,
+                  variants: variants,
+                  sizeStock: sizeStock,
                   createdAt: DateTime.now(),
                 );
                 print(products);
@@ -290,7 +308,7 @@ class AddProductFields {
                   ProductEvent.addProduct(product: products),
                 );
                 clearField(context);
-                LoadingOverlay.show(context,'Adding Product ...');
+                LoadingOverlay.show(context, 'Adding Product ...');
                 await Future.delayed(Duration(seconds: 1));
                 LoadingOverlay.hide();
               },

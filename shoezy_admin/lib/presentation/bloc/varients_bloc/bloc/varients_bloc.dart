@@ -114,7 +114,7 @@ class VariantsBloc extends Bloc<VariantsEvent, VariantsState> {
     on<_Getvariants>((event, emit) async {
       emit(_Loading());
       try {
-        emit(VariantsState.variantsLoaded(variants));
+        emit(VariantsState.loaded(variants));
       } catch (e) {
         emit(_Failure(e.toString()));
       }

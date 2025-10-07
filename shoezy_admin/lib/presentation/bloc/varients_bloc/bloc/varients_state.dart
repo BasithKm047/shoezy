@@ -9,7 +9,7 @@ abstract class VariantsState with _$VariantsState {
    const factory VariantsState.imageAddedState( List<Uint8List> images) =_ImageAddedState;  
   const factory VariantsState.failure(String error) = _Failure;
   const factory VariantsState.imageRemovedState(List<Uint8List> image)=_ImageRemovedState;
-  const factory VariantsState.variantsLoaded(List<Variantsmodel>variants)=_VariantsLoaded;
+  const factory VariantsState.loaded(List<Variantsmodel>variants)=_Loaded;
   const factory VariantsState.variantAdded()=_VariantAdded;
   const factory VariantsState.variantRemoved()=_VariantRemoved;
   const factory VariantsState.variantUpdated()=_VariantUpdated;

@@ -6,6 +6,7 @@ abstract class VariantsEvent with _$VariantsEvent {
   const factory VariantsEvent.imageRemoved(int index)=_ImageRemoved;
   const factory VariantsEvent.addVariants(List<Variantsmodel> varaints)=_AddVaraints;
   const factory VariantsEvent.getVariants()=_Getvariants;
+  const factory VariantsEvent.VariantsLoaded(List<Variantsmodel> variants)=_VariantsLoaded;
   const factory VariantsEvent.resetImgae()=_ResetImage;
   const factory VariantsEvent.removeVariants(Variantsmodel variants)=_RemoveVariants;
   const factory VariantsEvent.updateVariants(Variantsmodel variants)=_UpdateVariants;

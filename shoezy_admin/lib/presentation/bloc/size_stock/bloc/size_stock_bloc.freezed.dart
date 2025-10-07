@@ -55,13 +55,15 @@ extension SizeStockEventPatterns on SizeStockEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _AddedSizeStock value)?  addedSizeStock,TResult Function( _RemovedSizeStock value)?  removedSizeStock,TResult Function( _GetSizeStock value)?  getSizeStock,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _AddedSizeStock value)?  addedSizeStock,TResult Function( _RemovedSizeStock value)?  removedSizeStock,TResult Function( _GetSizeStock value)?  getSizeStock,TResult Function( _SearchSizeStock value)?  searchSizeStock,TResult Function( _ClearSizeStock value)?  clearSizeStock,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _AddedSizeStock() when addedSizeStock != null:
 return addedSizeStock(_that);case _RemovedSizeStock() when removedSizeStock != null:
 return removedSizeStock(_that);case _GetSizeStock() when getSizeStock != null:
-return getSizeStock(_that);case _:
+return getSizeStock(_that);case _SearchSizeStock() when searchSizeStock != null:
+return searchSizeStock(_that);case _ClearSizeStock() when clearSizeStock != null:
+return clearSizeStock(_that);case _:
   return orElse();
 
 }
@@ -79,13 +81,15 @@ return getSizeStock(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _AddedSizeStock value)  addedSizeStock,required TResult Function( _RemovedSizeStock value)  removedSizeStock,required TResult Function( _GetSizeStock value)  getSizeStock,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _AddedSizeStock value)  addedSizeStock,required TResult Function( _RemovedSizeStock value)  removedSizeStock,required TResult Function( _GetSizeStock value)  getSizeStock,required TResult Function( _SearchSizeStock value)  searchSizeStock,required TResult Function( _ClearSizeStock value)  clearSizeStock,}){
 final _that = this;
 switch (_that) {
 case _AddedSizeStock():
 return addedSizeStock(_that);case _RemovedSizeStock():
 return removedSizeStock(_that);case _GetSizeStock():
-return getSizeStock(_that);case _:
+return getSizeStock(_that);case _SearchSizeStock():
+return searchSizeStock(_that);case _ClearSizeStock():
+return clearSizeStock(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -102,13 +106,15 @@ return getSizeStock(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _AddedSizeStock value)?  addedSizeStock,TResult? Function( _RemovedSizeStock value)?  removedSizeStock,TResult? Function( _GetSizeStock value)?  getSizeStock,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _AddedSizeStock value)?  addedSizeStock,TResult? Function( _RemovedSizeStock value)?  removedSizeStock,TResult? Function( _GetSizeStock value)?  getSizeStock,TResult? Function( _SearchSizeStock value)?  searchSizeStock,TResult? Function( _ClearSizeStock value)?  clearSizeStock,}){
 final _that = this;
 switch (_that) {
 case _AddedSizeStock() when addedSizeStock != null:
 return addedSizeStock(_that);case _RemovedSizeStock() when removedSizeStock != null:
 return removedSizeStock(_that);case _GetSizeStock() when getSizeStock != null:
-return getSizeStock(_that);case _:
+return getSizeStock(_that);case _SearchSizeStock() when searchSizeStock != null:
+return searchSizeStock(_that);case _ClearSizeStock() when clearSizeStock != null:
+return clearSizeStock(_that);case _:
   return null;
 
 }
@@ -125,12 +131,14 @@ return getSizeStock(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( List<SizeStockModel> sizeStock)?  addedSizeStock,TResult Function( SizeStockModel sizestock)?  removedSizeStock,TResult Function()?  getSizeStock,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( List<SizeStockModel> sizeStock)?  addedSizeStock,TResult Function( SizeStockModel sizestock)?  removedSizeStock,TResult Function()?  getSizeStock,TResult Function( String query)?  searchSizeStock,TResult Function()?  clearSizeStock,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AddedSizeStock() when addedSizeStock != null:
 return addedSizeStock(_that.sizeStock);case _RemovedSizeStock() when removedSizeStock != null:
 return removedSizeStock(_that.sizestock);case _GetSizeStock() when getSizeStock != null:
-return getSizeStock();case _:
+return getSizeStock();case _SearchSizeStock() when searchSizeStock != null:
+return searchSizeStock(_that.query);case _ClearSizeStock() when clearSizeStock != null:
+return clearSizeStock();case _:
   return orElse();
 
 }
@@ -148,12 +156,14 @@ return getSizeStock();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( List<SizeStockModel> sizeStock)  addedSizeStock,required TResult Function( SizeStockModel sizestock)  removedSizeStock,required TResult Function()  getSizeStock,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( List<SizeStockModel> sizeStock)  addedSizeStock,required TResult Function( SizeStockModel sizestock)  removedSizeStock,required TResult Function()  getSizeStock,required TResult Function( String query)  searchSizeStock,required TResult Function()  clearSizeStock,}) {final _that = this;
 switch (_that) {
 case _AddedSizeStock():
 return addedSizeStock(_that.sizeStock);case _RemovedSizeStock():
 return removedSizeStock(_that.sizestock);case _GetSizeStock():
-return getSizeStock();case _:
+return getSizeStock();case _SearchSizeStock():
+return searchSizeStock(_that.query);case _ClearSizeStock():
+return clearSizeStock();case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -170,12 +180,14 @@ return getSizeStock();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( List<SizeStockModel> sizeStock)?  addedSizeStock,TResult? Function( SizeStockModel sizestock)?  removedSizeStock,TResult? Function()?  getSizeStock,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( List<SizeStockModel> sizeStock)?  addedSizeStock,TResult? Function( SizeStockModel sizestock)?  removedSizeStock,TResult? Function()?  getSizeStock,TResult? Function( String query)?  searchSizeStock,TResult? Function()?  clearSizeStock,}) {final _that = this;
 switch (_that) {
 case _AddedSizeStock() when addedSizeStock != null:
 return addedSizeStock(_that.sizeStock);case _RemovedSizeStock() when removedSizeStock != null:
 return removedSizeStock(_that.sizestock);case _GetSizeStock() when getSizeStock != null:
-return getSizeStock();case _:
+return getSizeStock();case _SearchSizeStock() when searchSizeStock != null:
+return searchSizeStock(_that.query);case _ClearSizeStock() when clearSizeStock != null:
+return clearSizeStock();case _:
   return null;
 
 }
@@ -354,6 +366,104 @@ int get hashCode => runtimeType.hashCode;
 @override
 String toString() {
   return 'SizeStockEvent.getSizeStock()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class _SearchSizeStock implements SizeStockEvent {
+  const _SearchSizeStock(this.query);
+  
+
+ final  String query;
+
+/// Create a copy of SizeStockEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$SearchSizeStockCopyWith<_SearchSizeStock> get copyWith => __$SearchSizeStockCopyWithImpl<_SearchSizeStock>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SearchSizeStock&&(identical(other.query, query) || other.query == query));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,query);
+
+@override
+String toString() {
+  return 'SizeStockEvent.searchSizeStock(query: $query)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$SearchSizeStockCopyWith<$Res> implements $SizeStockEventCopyWith<$Res> {
+  factory _$SearchSizeStockCopyWith(_SearchSizeStock value, $Res Function(_SearchSizeStock) _then) = __$SearchSizeStockCopyWithImpl;
+@useResult
+$Res call({
+ String query
+});
+
+
+
+
+}
+/// @nodoc
+class __$SearchSizeStockCopyWithImpl<$Res>
+    implements _$SearchSizeStockCopyWith<$Res> {
+  __$SearchSizeStockCopyWithImpl(this._self, this._then);
+
+  final _SearchSizeStock _self;
+  final $Res Function(_SearchSizeStock) _then;
+
+/// Create a copy of SizeStockEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? query = null,}) {
+  return _then(_SearchSizeStock(
+null == query ? _self.query : query // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class _ClearSizeStock implements SizeStockEvent {
+  const _ClearSizeStock();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ClearSizeStock);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'SizeStockEvent.clearSizeStock()';
 }
 
 
