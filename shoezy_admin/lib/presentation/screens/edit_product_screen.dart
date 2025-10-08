@@ -56,13 +56,12 @@ class _EditProductScreenState extends State<EditProductScreen> {
     );
     _priceController = TextEditingController(text: _originalPrice);
 
-    context.read<ProductBloc>().add(ProductEvent.getProduct());
-    context.read<BrandBloc>().add(const FetchBrands());
+    context.read<BrandBloc>().add( FetchBrands(brandName:_originalBrand));
     context.read<CategoryBloc>().add(const GetCategories());
-    context.read<VariantsBloc>().add(const VariantsEvent.getVariants());
-    context.read<SizeStockBloc>().add(const SizeStockEvent.getSizeStock());
+    // context.read<VariantsBloc>().add(const VariantsEvent.getVariants());
+    // context.read<SizeStockBloc>().add(const SizeStockEvent.getSizeStock());
 
-    Future.delayed(const Duration(milliseconds: 500), () {
+    Future.delayed(const Duration(milliseconds: 100), () {
       print('its running');
       context.read<CategoryBloc>().add(
         CategoryEvent.selectedCategory(_originalCategory),
@@ -90,7 +89,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
     super.dispose();
   }
 
-  bool _hasChanges({
+  bool hasChanges({
     required String currentBrand,
     required String currentCategory,
     required List<Variantsmodel> currentVariants,
@@ -226,7 +225,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
     );
   }
 
-  Widget _buildUpdateButton(BuildContext context, double screenWidth) {
+   Widget _buildUpdateButton(BuildContext context, double screenWidth) {
     // Watch bloc states (automatically rebuilds on state change)
     final brandState = context.watch<BrandBloc>().state;
     final categoryState = context.watch<CategoryBloc>().state;
@@ -263,58 +262,27 @@ class _EditProductScreenState extends State<EditProductScreen> {
       loaded: (sizeStock) => sizeStock,
     );
 
-    // Check if data are valid and changed
+    // ✅ Remove change detection — now it updates regardless
     final hasBrandAndCategory =
         selectedBrand != null && selectedCategory != null;
     final hasVariants = currentVariants.isNotEmpty;
     final hasSizeStocks = currentSizeStocks.isNotEmpty;
 
-    final hasChanges = _hasChanges(
-      currentBrand: selectedBrand?.name ?? '',
-      currentCategory: selectedCategory?.name ?? '',
-      currentVariants: currentVariants,
-      currentSizeStocks: currentSizeStocks,
-    );
-
-    final canUpdate =
-        hasBrandAndCategory && hasVariants && hasSizeStocks && hasChanges;
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {});
+    // ✅ Update allowed if all fields have valid data (no need to check for changes)
+    final canUpdate = hasBrandAndCategory && hasVariants && hasSizeStocks;
 
     return BlocListener<ProductBloc, ProductState>(
-      listener: (context, state) {
-        state.maybeWhen(
-          success: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('✅ Product updated successfully!'),
-                backgroundColor: Colors.green,
-              ),
-            );
-            Navigator.pop(context);
-          },
-          error: (message) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('❌ Update failed: $message'),
-                backgroundColor: Colors.red,
-              ),
-            );
-          },
-          orElse: () {},
-        );
-      },
+      listener: (context, state) {},
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           CostumWidget.costumElevatedButton(
             context: context,
-            title: canUpdate ? 'Update Product' : 'No changes made',
+            title: 'Update Product', // Always show this now
             backgroundColor: canUpdate ? Colors.blue : Colors.grey,
             foregroundColor: Colors.white,
             ontap: canUpdate
                 ? () async {
-                    // ✅ Validate safely (not during build)
                     if (!_formKey.currentState!.validate()) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
@@ -334,14 +302,13 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       description: _shoeDescriptionController.text.trim(),
                       variants: currentVariants,
                       sizeStock: currentSizeStocks,
-                      createdAt:
-                          widget.product.createdAt, // keep original timestamp
+                      createdAt: widget.product.createdAt,
                     );
 
-                    // ✅ Trigger Bloc event only after build
-                    context.read<ProductBloc>().add(
-                      ProductEvent.updateProduct(updatedProduct),
-                    );
+                    // ✅ Always update Firebase — even if unchanged
+                    context
+                        .read<ProductBloc>()
+                        .add(ProductEvent.updateProduct(updatedProduct));
                   }
                 : null,
             width: screenWidth / 7,
@@ -351,4 +318,5 @@ class _EditProductScreenState extends State<EditProductScreen> {
       ),
     );
   }
+
 }

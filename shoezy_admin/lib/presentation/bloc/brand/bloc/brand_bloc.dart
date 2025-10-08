@@ -55,11 +55,11 @@ class BrandBloc extends Bloc<BrandEvent, BrandState> {
           );
         },
 
-        fetchBrands: () async {
+        fetchBrands: (brandName) async {
           emit(BrandState.loading());
           try {
             final brands = await brandServices.getBrands();
-            emit(BrandState.loaded(brands: brands));
+            emit(BrandState.loaded(brands: brands, selectedBrand: brandName));
           } catch (e) {
             emit(BrandState.error(e.toString()));
           }

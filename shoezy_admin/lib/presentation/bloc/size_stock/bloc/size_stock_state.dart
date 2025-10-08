@@ -7,6 +7,7 @@ abstract class SizeStockState with _$SizeStockState{
   const factory SizeStockState.loading()=_Loading;
   const factory SizeStockState.loaded(List<SizeStockModel>sizeStock)=_Loaded;
   const factory SizeStockState.failure(String message)=_Failure;
+  const factory SizeStockState.editing(List<SizeStockModel>sizeStock)=_Editing;
 
 
 

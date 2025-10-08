@@ -55,6 +55,16 @@ class SizeStockBloc extends Bloc<SizeStockEvent, SizeStockState> {
         emit(SizeStockState.failure(e.toString()));
       }
     });
+    on<_GetAllForEditing>((event, emit) {
+      emit(const SizeStockState.loading());
+      try {
+        emit(
+          SizeStockState.editing(List.from(sizeStock)),
+        ); // always give fresh list
+      } catch (e) {
+        emit(SizeStockState.failure(e.toString()));
+      }
+    });
       
   }
 }

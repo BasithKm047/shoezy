@@ -20,8 +20,13 @@ class AddProductFields {
     return CostumWidget.costumTextformField(
       controller: shoeDescriptionController,
       validator: (value) {
-        if (value == null || value.trim().isEmpty) {
+        final text=value?.trim()?? shoeDescriptionController.text.trim();
+        if (text.isEmpty) {
           return 'Please enter a description';
+        } else if (text.length < 10) {
+          return 'Description must be at least 10 characters long';
+        } else if (!RegExp(r'^[a-zA-Z0-9\s]+$').hasMatch(text)) {
+          return 'Description can only contain letters, numbers, and spaces';
         }
         return null;
       },
@@ -38,11 +43,12 @@ class AddProductFields {
     return CostumWidget.costumTextformField(
       controller: nameController,
       validator: (value) {
-        if (value == null || value.trim().isEmpty) {
+        final text=value?.trim()?? nameController.text.trim();
+        if (text.isEmpty) {
           return 'Please enter the shoe name';
-        } else if (value.length < 3) {
+        } else if (text.length < 3) {
           return 'Shoe name must be at least 3 characters long';
-        } else if (!RegExp(r'^[a-zA-Z0-9\s]+$').hasMatch(value)) {
+        } else if (!RegExp(r'^[a-zA-Z0-9\s]+$').hasMatch(text)) {
           return 'Shoe name can only contain letters, numbers, and spaces';
         }
         return null;
@@ -68,9 +74,10 @@ class AddProductFields {
       controller: priceController,
       keyboardType: TextInputType.number,
       validator: (value) {
-        if (value == null || value.isEmpty) {
+        final text=value?.trim()?? priceController.text.trim();
+        if (text .isEmpty) {
           return 'Price is required';
-        } else if (!RegExp(r'^\d+(\.\d{1,2})?$').hasMatch(value)) {
+        } else if (!RegExp(r'^\d+(\.\d{1,2})?$').hasMatch(text)) {
           return 'Enter a valid number';
         }
         return null;
@@ -91,14 +98,15 @@ class AddProductFields {
         return state.maybeWhen(
           loaded: (categories, selectedCategory) {
             final items = categories.map((c) => c.name).toSet().toList();
-            final currentSelectedCategory =isUpdating
+            final currentSelectedCategory = isUpdating
                 ? (selectedCategory?.isNotEmpty == true
-                    ? selectedCategory
-                    : categoryName)
+                      ? selectedCategory
+                      : categoryName)
                 : selectedCategory;
             return CostumWidget.costumDropdown(
               validator: (value) {
-                if (value == null || value.trim().isEmpty) {
+                final text=value?.trim()?? currentSelectedCategory?.trim();
+                if (text == null || text.isEmpty) {
                   return 'Please select a category';
                 }
                 return null;
@@ -140,21 +148,19 @@ class AddProductFields {
         return state.maybeWhen(
           loaded: (brands, selectedBrand) {
             final items = brands.map((b) => b.name.toString()).toList();
-            final currentSelectedBrand = isUpdating
-                ? (brandName?.isNotEmpty == true
-                      ? selectedBrand
-                      : brandName)
-                : selectedBrand;
+            final dropdownValue =
+                selectedBrand ?? (isUpdating ? brandName : null);
             return CostumWidget.costumDropdown(
               items: items,
               validator: (value) {
-                if (value == null || value.trim().isEmpty) {
+                final text=value?.trim()?? dropdownValue?.trim();
+                if (text == null || text.isEmpty) {
                   return 'Please select a brand';
                 }
                 return null;
               },
 
-              selectedValue: currentSelectedBrand,
+              selectedValue: dropdownValue,
 
               hintText: 'Brands',
               onChanged: (value) {
