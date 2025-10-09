@@ -53,4 +53,60 @@ class ProductServices {
       rethrow;
     }
   }
+ Future<List<ProductModel>> searchProducts(String query) async {
+  try {
+    final lowerQuery = query.toLowerCase().trim();
+
+    final nameSnapshot = await firestoreCollection
+        .where('productName', isGreaterThanOrEqualTo: query)
+        .where('productName', isLessThanOrEqualTo: '$query\uf8ff')
+        .get();
+
+    final brandSnapshot = await firestoreCollection
+        .where('brandName', isGreaterThanOrEqualTo: query)
+        .where('brandName', isLessThanOrEqualTo: '$query\uf8ff')
+        .get();
+
+    final categorySnapshot = await firestoreCollection
+        .where('categoryName', isGreaterThanOrEqualTo: query)
+        .where('categoryName', isLessThanOrEqualTo: '$query\uf8ff')
+        .get();
+
+    final allDocs = {
+      ...nameSnapshot.docs,
+      ...brandSnapshot.docs,
+      ...categorySnapshot.docs,
+    };
+
+    final allProducts =
+        allDocs.map((doc) => ProductModel.fromJson(doc.data())).toList();
+
+    final filteredProducts = allProducts.where((product) {
+      final name = product.productName.toLowerCase();
+      final brand = product.brandName.toLowerCase();
+      final category = product.categoryName.toLowerCase();
+
+      final hasMatchingVariant = product.variants.any((variant) {
+        final color = variant.color.toString().toLowerCase();
+        return color.contains(lowerQuery);
+      });
+
+      return name.contains(lowerQuery) ||
+          brand.contains(lowerQuery) ||
+          category.contains(lowerQuery) ||
+          hasMatchingVariant;
+    }).toList();
+
+    final uniqueProducts = {
+      for (var product in filteredProducts) product.id!: product
+    }.values.toList();
+
+    return uniqueProducts;
+  } catch (e) {
+    print('Error while searching products: $e');
+    return [];
+  }
+}
+
+
 }

@@ -91,6 +91,17 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         emit(ProductState.error(e.toString()));
       }
     });
+    on<_SearchProduct>((event, emit) async {
+      emit(ProductState.loading());
+      try {
+        final products = await productServices.searchProducts(event.query);
+        emit(ProductState.loaded(products: products));
+      } catch (e) {
+        emit(ProductState.error(e.toString()));
+      }
+    });
+    
+
 
   }
 }

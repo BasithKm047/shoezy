@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -10,21 +12,54 @@ import 'package:shoezy_admin/presentation/screens/edit_product_screen.dart';
 import 'package:shoezy_admin/widgets/costumWidget.dart';
 import 'package:shoezy_admin/widgets/loading_overlay.dart';
 
-class Productscreen extends StatelessWidget {
+class Productscreen extends StatefulWidget {
   const Productscreen({super.key});
+
+  @override
+  State<Productscreen> createState() => _ProductscreenState();
+}
+
+class _ProductscreenState extends State<Productscreen> {
+  Timer? _debounce;
+  TextEditingController searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<ProductBloc>().add(ProductEvent.getProduct());
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _debounce?.cancel();
+  }
+
+  onSearchingProduct(String query) {
+    if (_debounce?.isActive ?? false) _debounce?.cancel();
+
+    _debounce = Timer(const Duration(microseconds: 500), () {
+      if (query.isEmpty) {
+        context.read<ProductBloc>().add(ProductEvent.getProduct());
+        Logger().d('Getting all the products');
+      } else {
+        context.read<ProductBloc>().add(ProductEvent.searchProduct(query));
+        Logger().d('Searching for $query');
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    context.read<ProductBloc>().add(ProductEvent.getProduct());
 
     return BlocConsumer<ProductBloc, ProductState>(
       listener: (context, state) {
         state.maybeWhen(
           orElse: () {},
           loading: () {
-            LoadingOverlay.show(context, '');
+            LoadingOverlay.show(context, 'Loading...');
           },
           loaded: (s) {
             LoadingOverlay.hide();
@@ -79,7 +114,7 @@ class Productscreen extends StatelessWidget {
                       hintText: 'Search Products',
                       borderRadius: 10,
                       icon: Icons.search,
-                      ontap: () {},
+                      onChanged: onSearchingProduct,
                     ),
                     const SizedBox(height: 10),
                     SizedBox(
@@ -104,12 +139,14 @@ class Productscreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       CostumWidget.costumSearchBar(
+                        controller: searchController,
                         width: screenWidth / 3,
                         hintText: 'Search Products',
                         borderRadius: 10,
                         icon: Icons.search,
-                        ontap: () {},
+                        onChanged: onSearchingProduct,
                       ),
+                      SizedBox(width: 15),
                       CostumWidget.costumElevatedIconButton(
                         fontsize: 15,
                         context: context,
@@ -147,7 +184,17 @@ class Productscreen extends StatelessWidget {
         children: [
           _buildTableHeader(context, isSmallScreen),
           SizedBox(height: 10),
-
+          if (products.isEmpty)
+            Expanded(
+              child: Center(
+                child: Text(
+                  searchController.text.isNotEmpty
+                      ? "No Products Found"
+                      : "No Products Available",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                ),
+              ),
+            ),
           Expanded(
             child: ListView.builder(
               itemCount: products.length,
@@ -238,7 +285,6 @@ class Productscreen extends StatelessWidget {
                       ),
                     );
                     Logger().d('Edit product: $product');
-
                   },
                 ),
                 IconButton(
