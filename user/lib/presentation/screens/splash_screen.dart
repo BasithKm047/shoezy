@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:shoezy/application/bloc/auth_bloc/auth_bloc.dart';
+import 'package:shoezy/presentation/screens/bottom_navigation.dart';
 import 'package:shoezy/presentation/screens/home_screen.dart';
 import 'package:shoezy/presentation/screens/signin_screen.dart';
 import 'package:shoezy/presentation/screens/signup_screen.dart';
@@ -20,7 +21,7 @@ class SplashScreen extends StatelessWidget {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
        if(state is AuthLoggedIn){
-       Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>HomeScreen()));
+       Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>BottomNavigation()));
        }else if(state is AuthLogOUt){
         Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => SigninScreen(),));
        }

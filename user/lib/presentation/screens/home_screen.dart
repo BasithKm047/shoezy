@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoezy/application/bloc/brand_bloc/brand_bloc.dart';
+import 'package:shoezy/presentation/screens/bottom_navigation.dart';
 import 'package:shoezy/presentation/widgets/brands_feild.dart';
 import 'package:shoezy/presentation/widgets/cardfor_showing_shoes.dart';
 import 'package:shoezy/presentation/widgets/carousel_card.dart';
@@ -66,6 +67,7 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
       ),
+
       drawer: MyDrawer(),
       body: SingleChildScrollView(
         child: Column(
@@ -219,7 +221,6 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       ),
-     
     );
   }
 }

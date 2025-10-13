@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class AppColors {
   static Color blue=Colors.blue;
+  static Color scaffoldBackroundColor=Color(0xFFF6F2F2);
   static Color splashScreenBackroundColor=Color(0xFF656FF2);
   static Color white=Colors.white;
   static Color grey=Colors.grey;

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shoezy/application/bloc/auth_bloc/auth_bloc.dart';
 import 'package:shoezy/application/bloc/brand_bloc/brand_bloc.dart';
+import 'package:shoezy/application/bloc/navigation_bar/cubit/bottom_navigation_bar_cubit.dart';
 import 'package:shoezy/data/auth/auth_services.dart';
 import 'package:shoezy/presentation/screens/splash_screen.dart';
 import 'package:shoezy/utils/theme/theme.dart';
@@ -28,13 +29,18 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        BlocProvider(create: (context) => BottomNavigationBarCubit()),
         BlocProvider(
           create: (context) =>
               AuthBloc(authServices: AuthServices())..add(CheckUserStatus()),
         ),
-        BlocProvider(create: (context) => BrandBloc()..add(LoadBrandEvent())..add(LoadBrandEvent())),
+        BlocProvider(
+          create: (context) => BrandBloc()
+            ..add(LoadBrandEvent())
+            ..add(LoadBrandEvent()),
+        ),
 
-      //   BlocProvider(create: (context) => SubjectBloc()),
+        //   BlocProvider(create: (context) => SubjectBloc()),
       ],
       child: MaterialApp(
         theme: Apptheme.lightTheme,
