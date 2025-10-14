@@ -21,6 +21,7 @@ import 'package:shoezy_admin/presentation/bloc/admin_details_bloc/cubit/admin_lo
 import 'package:shoezy_admin/presentation/bloc/brand/bloc/brand_bloc.dart';
 import 'package:shoezy_admin/presentation/bloc/category_bloc/bloc/category_bloc.dart';
 import 'package:shoezy_admin/presentation/bloc/dashBoard_bloc/bloc/dashboard_bloc_bloc.dart';
+import 'package:shoezy_admin/presentation/bloc/gender/cubit/gender_cubit.dart';
 import 'package:shoezy_admin/presentation/bloc/orderSelection_cubit/cubit/order_selection_cubit.dart';
 import 'package:shoezy_admin/presentation/bloc/size_stock/bloc/size_stock_bloc.dart';
 import 'package:shoezy_admin/presentation/bloc/tag_bloc/bloc/tag_bloc.dart';
@@ -72,6 +73,7 @@ void main() async {
         BlocProvider(create: (_) => SizeStockBloc()),
         BlocProvider(create: (_) => UserBloc(UserServices())),
         BlocProvider(create: (_) => TagBloc(tagServices: TagServices())),
+        BlocProvider(create: (_) => GenderCubit()),
       ],
       child: MyApp(),
     ),

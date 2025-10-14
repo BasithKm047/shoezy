@@ -9,7 +9,7 @@ abstract class TagEvent with _$TagEvent {
   const factory TagEvent.searchTag(String query) = _SearchTag;
   const factory TagEvent.clearSelection() = _ClearSelection;
   const factory TagEvent.clearTags() = _ClearTags;
-  const factory TagEvent.selectedTag(TagModel tag) = _SelectedTag;
+  const factory TagEvent.selectedTag(String tagName) = _SelectedTag;
 
 }
 

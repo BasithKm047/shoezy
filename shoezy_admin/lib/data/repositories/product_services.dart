@@ -17,7 +17,6 @@ class ProductServices {
     } catch (e) {
       Logger().e("Error adding product: $e");
     }
-
   }
 
   Future<void> updateProduct({required ProductModel product}) async {
@@ -37,13 +36,12 @@ class ProductServices {
       return snapshot.docs
           .map((doc) => ProductModel.fromJson(doc.data()))
           .toList();
-     
-
     } catch (e) {
       Logger().e("Error fetching products: $e");
       rethrow;
     }
   }
+
   Future<void> deleteProduct({required String id}) async {
     try {
       await firestoreCollection.doc(id).delete();
@@ -53,60 +51,60 @@ class ProductServices {
       rethrow;
     }
   }
- Future<List<ProductModel>> searchProducts(String query) async {
-  try {
-    final lowerQuery = query.toLowerCase().trim();
 
-    final nameSnapshot = await firestoreCollection
-        .where('productName', isGreaterThanOrEqualTo: query)
-        .where('productName', isLessThanOrEqualTo: '$query\uf8ff')
-        .get();
+  Future<List<ProductModel>> searchProducts(String query) async {
+    try {
+      final lowerQuery = query.toLowerCase().trim();
 
-    final brandSnapshot = await firestoreCollection
-        .where('brandName', isGreaterThanOrEqualTo: query)
-        .where('brandName', isLessThanOrEqualTo: '$query\uf8ff')
-        .get();
+      final nameSnapshot = await firestoreCollection
+          .where('productName', isGreaterThanOrEqualTo: query)
+          .where('productName', isLessThanOrEqualTo: '$query\uf8ff')
+          .get();
 
-    final categorySnapshot = await firestoreCollection
-        .where('categoryName', isGreaterThanOrEqualTo: query)
-        .where('categoryName', isLessThanOrEqualTo: '$query\uf8ff')
-        .get();
+      final brandSnapshot = await firestoreCollection
+          .where('brandName', isGreaterThanOrEqualTo: query)
+          .where('brandName', isLessThanOrEqualTo: '$query\uf8ff')
+          .get();
 
-    final allDocs = {
-      ...nameSnapshot.docs,
-      ...brandSnapshot.docs,
-      ...categorySnapshot.docs,
-    };
+      final categorySnapshot = await firestoreCollection
+          .where('categoryName', isGreaterThanOrEqualTo: query)
+          .where('categoryName', isLessThanOrEqualTo: '$query\uf8ff')
+          .get();
 
-    final allProducts =
-        allDocs.map((doc) => ProductModel.fromJson(doc.data())).toList();
+      final allDocs = {
+        ...nameSnapshot.docs,
+        ...brandSnapshot.docs,
+        ...categorySnapshot.docs,
+      };
 
-    final filteredProducts = allProducts.where((product) {
-      final name = product.productName.toLowerCase();
-      final brand = product.brandName.toLowerCase();
-      final category = product.categoryName.toLowerCase();
+      final allProducts = allDocs
+          .map((doc) => ProductModel.fromJson(doc.data()))
+          .toList();
 
-      final hasMatchingVariant = product.variants.any((variant) {
-        final color = variant.color.toString().toLowerCase();
-        return color.contains(lowerQuery);
-      });
+      final filteredProducts = allProducts.where((product) {
+        final name = product.productName.toLowerCase();
+        final brand = product.brandName.toLowerCase();
+        final category = product.categoryName.toLowerCase();
 
-      return name.contains(lowerQuery) ||
-          brand.contains(lowerQuery) ||
-          category.contains(lowerQuery) ||
-          hasMatchingVariant;
-    }).toList();
+        final hasMatchingVariant = product.variants.any((variant) {
+          final color = variant.color.toString().toLowerCase();
+          return color.contains(lowerQuery);
+        });
 
-    final uniqueProducts = {
-      for (var product in filteredProducts) product.id!: product
-    }.values.toList();
+        return name.contains(lowerQuery) ||
+            brand.contains(lowerQuery) ||
+            category.contains(lowerQuery) ||
+            hasMatchingVariant;
+      }).toList();
 
-    return uniqueProducts;
-  } catch (e) {
-    print('Error while searching products: $e');
-    return [];
+      final uniqueProducts = {
+        for (var product in filteredProducts) product.id!: product,
+      }.values.toList();
+
+      return uniqueProducts;
+    } catch (e) {
+      print('Error while searching products: $e');
+      return [];
+    }
   }
-}
-
-
 }

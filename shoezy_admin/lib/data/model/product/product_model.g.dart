@@ -20,6 +20,8 @@ _ProductModel _$ProductModelFromJson(Map<String, dynamic> json) =>
       sizeStock: (json['sizeStock'] as List<dynamic>)
           .map((e) => SizeStockModel.fromJson(e as Map<String, dynamic>))
           .toList(),
+      tag: json['tag'] as String,
+      gender: json['gender'] as String,
       createdAt: DateTime.parse(json['createdAt'] as String),
     );
 
@@ -33,5 +35,7 @@ Map<String, dynamic> _$ProductModelToJson(_ProductModel instance) =>
       'description': instance.description,
       'variants': instance.variants,
       'sizeStock': instance.sizeStock,
+      'tag': instance.tag,
+      'gender': instance.gender,
       'createdAt': instance.createdAt.toIso8601String(),
     };

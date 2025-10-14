@@ -3,11 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
 import 'package:shoezy_admin/data/model/product/product_model.dart';
 import 'package:shoezy_admin/data/model/size_stock_model.dart/size_stock_model.dart';
+import 'package:shoezy_admin/data/model/tag/tag_model.dart';
 import 'package:shoezy_admin/data/model/vareintModel/varientsModel.dart';
 import 'package:shoezy_admin/presentation/bloc/addProducts/bloc/product_bloc.dart';
 import 'package:shoezy_admin/presentation/bloc/brand/bloc/brand_bloc.dart';
 import 'package:shoezy_admin/presentation/bloc/category_bloc/bloc/category_bloc.dart';
+import 'package:shoezy_admin/presentation/bloc/gender/cubit/gender_cubit.dart';
 import 'package:shoezy_admin/presentation/bloc/size_stock/bloc/size_stock_bloc.dart';
+import 'package:shoezy_admin/presentation/bloc/tag_bloc/bloc/tag_bloc.dart';
 import 'package:shoezy_admin/presentation/bloc/varients_bloc/bloc/varients_bloc.dart';
 import 'package:shoezy_admin/widgets/costumWidget.dart';
 import 'package:shoezy_admin/widgets/loading_overlay.dart';
@@ -20,7 +23,7 @@ class AddProductFields {
     return CostumWidget.costumTextformField(
       controller: shoeDescriptionController,
       validator: (value) {
-        final text=value?.trim()?? shoeDescriptionController.text.trim();
+        final text = value?.trim() ?? shoeDescriptionController.text.trim();
         if (text.isEmpty) {
           return 'Please enter a description';
         } else if (text.length < 10) {
@@ -43,7 +46,7 @@ class AddProductFields {
     return CostumWidget.costumTextformField(
       controller: nameController,
       validator: (value) {
-        final text=value?.trim()?? nameController.text.trim();
+        final text = value?.trim() ?? nameController.text.trim();
         if (text.isEmpty) {
           return 'Please enter the shoe name';
         } else if (text.length < 3) {
@@ -74,8 +77,8 @@ class AddProductFields {
       controller: priceController,
       keyboardType: TextInputType.number,
       validator: (value) {
-        final text=value?.trim()?? priceController.text.trim();
-        if (text .isEmpty) {
+        final text = value?.trim() ?? priceController.text.trim();
+        if (text.isEmpty) {
           return 'Price is required';
         } else if (!RegExp(r'^\d+(\.\d{1,2})?$').hasMatch(text)) {
           return 'Enter a valid number';
@@ -105,7 +108,7 @@ class AddProductFields {
                 : selectedCategory;
             return CostumWidget.costumDropdown(
               validator: (value) {
-                final text=value?.trim()?? currentSelectedCategory?.trim();
+                final text = value?.trim() ?? currentSelectedCategory?.trim();
                 if (text == null || text.isEmpty) {
                   return 'Please select a category';
                 }
@@ -153,7 +156,7 @@ class AddProductFields {
             return CostumWidget.costumDropdown(
               items: items,
               validator: (value) {
-                final text=value?.trim()?? dropdownValue?.trim();
+                final text = value?.trim() ?? dropdownValue?.trim();
                 if (text == null || text.isEmpty) {
                   return 'Please select a brand';
                 }
@@ -182,6 +185,89 @@ class AddProductFields {
             width: screenWidth / 2,
             borderRaduis: 10,
           ),
+        );
+      },
+    );
+  }
+
+  static BlocBuilder<TagBloc, TagState> tagSelectorField(
+    double screenWidth, {
+    String? tagName,
+    bool isUpdating = false,
+  }) {
+    return BlocBuilder<TagBloc, TagState>(
+      builder: (context, state) {
+        return state.maybeWhen(
+          loaded: (tags, selectedTag) {
+            final items = tags.map((tag) => tag.name.toString()).toList();
+            final dropdownValue = selectedTag ?? (isUpdating ? tagName : null);
+            return CostumWidget.costumDropdown(
+              items: items,
+              validator: (value) {
+                final text = value?.trim() ?? dropdownValue?.trim();
+                if (text == null || text.isEmpty) {
+                  return 'Please select a brand';
+                }
+                return null;
+              },
+
+              selectedValue: dropdownValue,
+
+              hintText: 'Tags',
+              onChanged: (value) {
+                context.read<TagBloc>().add(
+                  TagEvent.selectedTag(value.toString()),
+                );
+              },
+              backgroundColor: Colors.white,
+              width: screenWidth / 2,
+              borderRaduis: 10,
+            );
+          },
+          orElse: () => CostumWidget.costumDropdown(
+            items: ['No Tags Available'],
+            selectedValue: null,
+            hintText: 'Tags',
+            onChanged: (_) {},
+            backgroundColor: Colors.white,
+            width: screenWidth / 2,
+            borderRaduis: 10,
+          ),
+        );
+      },
+    );
+  }
+
+  static Widget genderSelectorField(
+    double screenWidth,
+    List<String> genderList,
+  ) {
+    return BlocBuilder<GenderCubit, GenderState>(
+      builder: (context, state) {
+        String? selectedGender;
+        if (state is GenderSelected) {
+          selectedGender = state.gender;
+        }
+        return CostumWidget.costumDropdown(
+          items: genderList,
+          selectedValue: selectedGender,
+          hintText: 'Gender',
+          validator: (value) {
+            final text = value?.trim() ?? selectedGender?.trim();
+            if (text == null || text.isEmpty) {
+              return 'Please select a gender';
+            }
+            return null;
+          },
+          onChanged: (value) {
+            if (value != null) {
+              context.read<GenderCubit>().selectGender(value);
+            }
+            Logger().i('Selected Gender: $value');
+          },
+          backgroundColor: Colors.white,
+          width: screenWidth / 2,
+          borderRaduis: 10,
         );
       },
     );
@@ -254,14 +340,58 @@ class AddProductFields {
                             orElse: () => categories.first,
                           ),
                     );
-                if (selectedBrand == null || selectedCategory == null) {
+
+                final selctedtag = context.read<TagBloc>().state.maybeWhen(
+                  orElse: () => null,
+                  loaded: (tags, selectedTags) => tags.firstWhere(
+                    (tag) => tag.name == selectedTags,
+                    orElse: () => tags.first,
+                  ),
+                );
+
+                final selectedGender =
+                    context.read<GenderCubit>().state is GenderSelected
+                    ? (context.read<GenderCubit>().state as GenderSelected)
+                          .gender
+                    : null;
+
+                Logger().i('Selected Gender: $selectedGender');
+
+                if (selectedGender == null) {
                   CostumWidget.showCustomSnackbar(
                     context: context,
-                    message: 'Please select a brand and category',
+                    message: 'Please select a Gender',
                     backgroundColor: Colors.red,
                   );
                   return;
                 }
+                if (selectedBrand == null) {
+                  CostumWidget.showCustomSnackbar(
+                    context: context,
+                    message: 'Please select a Brand',
+                    backgroundColor: Colors.red,
+                  );
+                  return;
+                }
+
+                if (selectedCategory == null) {
+                  CostumWidget.showCustomSnackbar(
+                    context: context,
+                    message: 'Please select a Category',
+                    backgroundColor: Colors.red,
+                  );
+                  return;
+                }
+
+                if (selctedtag == null) {
+                  CostumWidget.showCustomSnackbar(
+                    context: context,
+                    message: 'Please select a Tag',
+                    backgroundColor: Colors.red,
+                  );
+                  return;
+                }
+
                 List<Variantsmodel> variants = context
                     .read<VariantsBloc>()
                     .state
@@ -308,6 +438,8 @@ class AddProductFields {
                   variants: variants,
                   sizeStock: sizeStock,
                   createdAt: DateTime.now(),
+                  gender: selectedGender,
+                  tag: selctedtag.name,
                 );
                 print(products);
                 context.read<ProductBloc>().add(

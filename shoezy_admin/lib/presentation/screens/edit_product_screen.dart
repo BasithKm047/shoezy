@@ -7,7 +7,9 @@ import 'package:shoezy_admin/data/model/vareintModel/varientsModel.dart';
 import 'package:shoezy_admin/presentation/bloc/addProducts/bloc/product_bloc.dart';
 import 'package:shoezy_admin/presentation/bloc/brand/bloc/brand_bloc.dart';
 import 'package:shoezy_admin/presentation/bloc/category_bloc/bloc/category_bloc.dart';
+import 'package:shoezy_admin/presentation/bloc/gender/cubit/gender_cubit.dart';
 import 'package:shoezy_admin/presentation/bloc/size_stock/bloc/size_stock_bloc.dart';
+import 'package:shoezy_admin/presentation/bloc/tag_bloc/bloc/tag_bloc.dart';
 import 'package:shoezy_admin/presentation/bloc/varients_bloc/bloc/varients_bloc.dart';
 import 'package:shoezy_admin/presentation/screens/stock_size_field.dart';
 import 'package:shoezy_admin/presentation/screens/variant_field.dart';
@@ -56,7 +58,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
     );
     _priceController = TextEditingController(text: _originalPrice);
 
-    context.read<BrandBloc>().add( FetchBrands(brandName:_originalBrand));
+    context.read<BrandBloc>().add(FetchBrands(brandName: _originalBrand));
     context.read<CategoryBloc>().add(const GetCategories());
     // context.read<VariantsBloc>().add(const VariantsEvent.getVariants());
     // context.read<SizeStockBloc>().add(const SizeStockEvent.getSizeStock());
@@ -225,7 +227,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
     );
   }
 
-   Widget _buildUpdateButton(BuildContext context, double screenWidth) {
+  Widget _buildUpdateButton(BuildContext context, double screenWidth) {
     // Watch bloc states (automatically rebuilds on state change)
     final brandState = context.watch<BrandBloc>().state;
     final categoryState = context.watch<CategoryBloc>().state;
@@ -249,6 +251,18 @@ class _EditProductScreenState extends State<EditProductScreen> {
         orElse: () => categories.first,
       ),
     );
+
+    final selectedTag = context.read<TagBloc>().state.maybeWhen(
+      orElse: () => null,
+      loaded: (tags, selectedTags) => tags.firstWhere(
+        (tag) => tag.name == selectedTags,
+        orElse: () => tags.first,
+      ),
+    );
+
+    final selectedGender = context.read<GenderCubit>().state is GenderSelected
+        ? (context.read<GenderCubit>().state as GenderSelected).gender
+        : null;
 
     // Extract current variants
     final currentVariants = variantsState.maybeWhen(
@@ -303,12 +317,14 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       variants: currentVariants,
                       sizeStock: currentSizeStocks,
                       createdAt: widget.product.createdAt,
+                      gender: selectedGender!,
+                      tag: selectedTag!.name,
                     );
 
                     // ✅ Always update Firebase — even if unchanged
-                    context
-                        .read<ProductBloc>()
-                        .add(ProductEvent.updateProduct(updatedProduct));
+                    context.read<ProductBloc>().add(
+                      ProductEvent.updateProduct(updatedProduct),
+                    );
                   }
                 : null,
             width: screenWidth / 7,
@@ -318,5 +334,4 @@ class _EditProductScreenState extends State<EditProductScreen> {
       ),
     );
   }
-
 }

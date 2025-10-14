@@ -65,8 +65,13 @@ class TagBloc extends Bloc<TagEvent, TagState> {
       state.maybeWhen(
         orElse: () {},
         loaded: (tags, selectedTags) =>
-            emit(TagState.loaded(tags: tags, selectedTags: event.tag.name)),
+            emit(TagState.loaded(tags: tags, selectedTags: event.tagName)),
       );
+    });
+    on<_ClearSelection>((event, emit){
+      state.maybeWhen(orElse: () {}, loaded: (tags, selectedTags){
+        emit(TagState.loaded(tags: tags, selectedTags: null));
+      },);
     });
   }
 }

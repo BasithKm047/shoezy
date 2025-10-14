@@ -16,6 +16,9 @@ abstract class ProductModel with _$ProductModel {
     required String description,
     required List<Variantsmodel> variants,
     required List<SizeStockModel> sizeStock,
+    required String  tag,
+    required String gender,
+
 
      required DateTime createdAt,
   }) = _ProductModel;

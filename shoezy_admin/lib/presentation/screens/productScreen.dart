@@ -27,6 +27,8 @@ class _ProductscreenState extends State<Productscreen> {
   void initState() {
     super.initState();
     context.read<ProductBloc>().add(ProductEvent.getProduct());
+    Logger().d('Getting all the products');
+ 
   }
 
   @override

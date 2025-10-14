@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoezy_admin/presentation/bloc/brand/bloc/brand_bloc.dart';
 import 'package:shoezy_admin/presentation/bloc/category_bloc/bloc/category_bloc.dart';
+import 'package:shoezy_admin/presentation/bloc/gender/cubit/gender_cubit.dart';
 import 'package:shoezy_admin/presentation/bloc/size_stock/bloc/size_stock_bloc.dart';
+import 'package:shoezy_admin/presentation/bloc/tag_bloc/bloc/tag_bloc.dart';
 import 'package:shoezy_admin/presentation/bloc/varients_bloc/bloc/varients_bloc.dart';
 import 'package:shoezy_admin/presentation/screens/stock_size_field.dart';
 import 'package:shoezy_admin/widgets/add_product_fields.dart';
@@ -23,6 +25,8 @@ class Addproductscreen extends StatelessWidget {
     final priceController = TextEditingController();
     context.read<BrandBloc>().add(FetchBrands());
     context.read<CategoryBloc>().add((GetCategories()));
+    context.read<TagBloc>().add(const TagEvent.fetchTags());
+
     clearField(BuildContext context) {
       shoeNameController.clear();
       priceController.clear();
@@ -31,7 +35,11 @@ class Addproductscreen extends StatelessWidget {
       context.read<CategoryBloc>().add(const CategoryEvent.clearSelection());
       context.read<VariantsBloc>().add(const VariantsEvent.clearVariants());
       context.read<SizeStockBloc>().add(const SizeStockEvent.clearSizeStock());
+      context.read<TagBloc>().add(const TagEvent.clearSelection());
+      context.read<GenderCubit>().clearGender();
     }
+
+    List<String> gender = ['Male', 'Female', 'Children'];
 
     return Scaffold(
       appBar: CostumWidget.appBar(
@@ -66,10 +74,21 @@ class Addproductscreen extends StatelessWidget {
                       AddProductFields.brandSelectField(screenWidth),
                       SizedBox(height: 10),
                       CostumWidget.labelText(context, 'Select Category'),
-                      
+
                       SizedBox(height: 10),
 
-                      AddProductFields.categorySelectField( screenWidth: screenWidth),
+                      AddProductFields.categorySelectField(
+                        screenWidth: screenWidth,
+                      ),
+                      SizedBox(height: 10),
+
+                      CostumWidget.labelText(context, 'Add Tags'),
+                      SizedBox(height: 10),
+                      AddProductFields.tagSelectorField(screenWidth),
+                      SizedBox(height: 10),
+                      CostumWidget.labelText(context, 'Select Gender'),
+                      SizedBox(height: 10),
+                      AddProductFields.genderSelectorField(screenWidth, gender),
                       SizedBox(height: 10),
 
                       CostumWidget.labelText(context, 'Add Variants'),

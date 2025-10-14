@@ -146,7 +146,7 @@ return selectedTag(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( TagModel tag)?  addTag,TResult Function()?  fetchTags,TResult Function( TagModel tag)?  updateTag,TResult Function( String id)?  deleteTag,TResult Function( String query)?  searchTag,TResult Function()?  clearSelection,TResult Function()?  clearTags,TResult Function( TagModel tag)?  selectedTag,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( TagModel tag)?  addTag,TResult Function()?  fetchTags,TResult Function( TagModel tag)?  updateTag,TResult Function( String id)?  deleteTag,TResult Function( String query)?  searchTag,TResult Function()?  clearSelection,TResult Function()?  clearTags,TResult Function( String tagName)?  selectedTag,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AddTag() when addTag != null:
 return addTag(_that.tag);case _FetchTags() when fetchTags != null:
@@ -156,7 +156,7 @@ return deleteTag(_that.id);case _SearchTag() when searchTag != null:
 return searchTag(_that.query);case _ClearSelection() when clearSelection != null:
 return clearSelection();case _ClearTags() when clearTags != null:
 return clearTags();case _SelectedTag() when selectedTag != null:
-return selectedTag(_that.tag);case _:
+return selectedTag(_that.tagName);case _:
   return orElse();
 
 }
@@ -174,7 +174,7 @@ return selectedTag(_that.tag);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( TagModel tag)  addTag,required TResult Function()  fetchTags,required TResult Function( TagModel tag)  updateTag,required TResult Function( String id)  deleteTag,required TResult Function( String query)  searchTag,required TResult Function()  clearSelection,required TResult Function()  clearTags,required TResult Function( TagModel tag)  selectedTag,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( TagModel tag)  addTag,required TResult Function()  fetchTags,required TResult Function( TagModel tag)  updateTag,required TResult Function( String id)  deleteTag,required TResult Function( String query)  searchTag,required TResult Function()  clearSelection,required TResult Function()  clearTags,required TResult Function( String tagName)  selectedTag,}) {final _that = this;
 switch (_that) {
 case _AddTag():
 return addTag(_that.tag);case _FetchTags():
@@ -184,7 +184,7 @@ return deleteTag(_that.id);case _SearchTag():
 return searchTag(_that.query);case _ClearSelection():
 return clearSelection();case _ClearTags():
 return clearTags();case _SelectedTag():
-return selectedTag(_that.tag);case _:
+return selectedTag(_that.tagName);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -201,7 +201,7 @@ return selectedTag(_that.tag);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( TagModel tag)?  addTag,TResult? Function()?  fetchTags,TResult? Function( TagModel tag)?  updateTag,TResult? Function( String id)?  deleteTag,TResult? Function( String query)?  searchTag,TResult? Function()?  clearSelection,TResult? Function()?  clearTags,TResult? Function( TagModel tag)?  selectedTag,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( TagModel tag)?  addTag,TResult? Function()?  fetchTags,TResult? Function( TagModel tag)?  updateTag,TResult? Function( String id)?  deleteTag,TResult? Function( String query)?  searchTag,TResult? Function()?  clearSelection,TResult? Function()?  clearTags,TResult? Function( String tagName)?  selectedTag,}) {final _that = this;
 switch (_that) {
 case _AddTag() when addTag != null:
 return addTag(_that.tag);case _FetchTags() when fetchTags != null:
@@ -211,7 +211,7 @@ return deleteTag(_that.id);case _SearchTag() when searchTag != null:
 return searchTag(_that.query);case _ClearSelection() when clearSelection != null:
 return clearSelection();case _ClearTags() when clearTags != null:
 return clearTags();case _SelectedTag() when selectedTag != null:
-return selectedTag(_that.tag);case _:
+return selectedTag(_that.tagName);case _:
   return null;
 
 }
@@ -643,10 +643,10 @@ String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
 
 
 class _SelectedTag with DiagnosticableTreeMixin implements TagEvent {
-  const _SelectedTag(this.tag);
+  const _SelectedTag(this.tagName);
   
 
- final  TagModel tag;
+ final  String tagName;
 
 /// Create a copy of TagEvent
 /// with the given fields replaced by the non-null parameter values.
@@ -659,21 +659,21 @@ _$SelectedTagCopyWith<_SelectedTag> get copyWith => __$SelectedTagCopyWithImpl<_
 void debugFillProperties(DiagnosticPropertiesBuilder properties) {
   properties
     ..add(DiagnosticsProperty('type', 'TagEvent.selectedTag'))
-    ..add(DiagnosticsProperty('tag', tag));
+    ..add(DiagnosticsProperty('tagName', tagName));
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SelectedTag&&(identical(other.tag, tag) || other.tag == tag));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SelectedTag&&(identical(other.tagName, tagName) || other.tagName == tagName));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,tag);
+int get hashCode => Object.hash(runtimeType,tagName);
 
 @override
 String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
-  return 'TagEvent.selectedTag(tag: $tag)';
+  return 'TagEvent.selectedTag(tagName: $tagName)';
 }
 
 
@@ -684,11 +684,11 @@ abstract mixin class _$SelectedTagCopyWith<$Res> implements $TagEventCopyWith<$R
   factory _$SelectedTagCopyWith(_SelectedTag value, $Res Function(_SelectedTag) _then) = __$SelectedTagCopyWithImpl;
 @useResult
 $Res call({
- TagModel tag
+ String tagName
 });
 
 
-$TagModelCopyWith<$Res> get tag;
+
 
 }
 /// @nodoc
@@ -701,23 +701,14 @@ class __$SelectedTagCopyWithImpl<$Res>
 
 /// Create a copy of TagEvent
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? tag = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? tagName = null,}) {
   return _then(_SelectedTag(
-null == tag ? _self.tag : tag // ignore: cast_nullable_to_non_nullable
-as TagModel,
+null == tagName ? _self.tagName : tagName // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
 
-/// Create a copy of TagEvent
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$TagModelCopyWith<$Res> get tag {
-  
-  return $TagModelCopyWith<$Res>(_self.tag, (value) {
-    return _then(_self.copyWith(tag: value));
-  });
-}
+
 }
 
 /// @nodoc
