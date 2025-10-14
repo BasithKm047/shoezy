@@ -15,6 +15,10 @@ class Routes {
   static String addBrandScreen='/addBrandScreen';
   static String varientsScreen='/varientScreen';
   static String addvarientsScreen='/addVarientScreen';
+  static String addTagScreen='/addTagScreen';
+  static String tagScreen='/tagScreen';
+  static String editTagScreen='/editTagScreen';
+  
 
 
 }

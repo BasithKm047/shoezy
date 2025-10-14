@@ -98,7 +98,10 @@ class AddcategoryScreen extends StatelessWidget {
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'Please enter a category name';
+        }else if(value.length < 3){
+          return 'Category name must be at least 3 characters';
         }
+        
         return null;
       },
       hintText: 'Name',

@@ -9,6 +9,7 @@ import 'package:go_router/go_router.dart';
 import 'package:shoezy_admin/data/repositories/brand_services.dart';
 import 'package:shoezy_admin/data/repositories/category_services.dart';
 import 'package:shoezy_admin/data/repositories/product_services.dart';
+import 'package:shoezy_admin/data/repositories/tag_services.dart';
 import 'package:shoezy_admin/data/repositories/user_services.dart';
 import 'package:shoezy_admin/fetures/utils/const/routes.dart';
 import 'package:shoezy_admin/fetures/utils/theme/theme.dart';
@@ -22,19 +23,23 @@ import 'package:shoezy_admin/presentation/bloc/category_bloc/bloc/category_bloc.
 import 'package:shoezy_admin/presentation/bloc/dashBoard_bloc/bloc/dashboard_bloc_bloc.dart';
 import 'package:shoezy_admin/presentation/bloc/orderSelection_cubit/cubit/order_selection_cubit.dart';
 import 'package:shoezy_admin/presentation/bloc/size_stock/bloc/size_stock_bloc.dart';
+import 'package:shoezy_admin/presentation/bloc/tag_bloc/bloc/tag_bloc.dart';
 import 'package:shoezy_admin/presentation/bloc/user/bloc/user_bloc.dart';
 import 'package:shoezy_admin/presentation/bloc/varients_bloc/bloc/varients_bloc.dart';
 import 'package:shoezy_admin/presentation/screens/addBrand_screen.dart';
 import 'package:shoezy_admin/presentation/screens/addCategory_screen.dart';
 import 'package:shoezy_admin/presentation/screens/addProductScreen.dart';
+import 'package:shoezy_admin/presentation/screens/addTag_screen.dart';
 import 'package:shoezy_admin/presentation/screens/brandScreen.dart';
 import 'package:shoezy_admin/presentation/screens/catogeryScreen.dart';
 import 'package:shoezy_admin/presentation/screens/dashboard.dart';
+import 'package:shoezy_admin/presentation/screens/edit_tag_screen.dart';
 import 'package:shoezy_admin/presentation/screens/loginscreen.dart';
 import 'package:shoezy_admin/presentation/screens/order_detail_screen.dart';
 import 'package:shoezy_admin/presentation/screens/orderlistScreen.dart';
 import 'package:shoezy_admin/presentation/screens/productScreen.dart';
 import 'package:shoezy_admin/presentation/screens/settingsScreen.dart';
+import 'package:shoezy_admin/presentation/screens/tag_screen.dart';
 import 'package:shoezy_admin/presentation/screens/usersList.dart';
 
 void main() async {
@@ -66,6 +71,7 @@ void main() async {
         BlocProvider(create: (_) => ProductBloc(ProductServices())),
         BlocProvider(create: (_) => SizeStockBloc()),
         BlocProvider(create: (_) => UserBloc(UserServices())),
+        BlocProvider(create: (_) => TagBloc(tagServices: TagServices())),
       ],
       child: MyApp(),
     ),
@@ -120,6 +126,14 @@ class MyApp extends StatelessWidget {
         GoRoute(
           path: Routes.addBrandScreen,
           builder: (context, state) => AddbrandScreen(),
+        ),
+        GoRoute(
+          path: Routes.tagScreen,
+          builder: (context, state) => TagScreen(),
+        ),
+        GoRoute(
+          path: Routes.addTagScreen,
+          builder: (context, state) => AddTagScreen(),
         ),
       ],
     );

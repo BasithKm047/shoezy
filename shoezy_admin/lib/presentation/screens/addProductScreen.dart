@@ -66,6 +66,7 @@ class Addproductscreen extends StatelessWidget {
                       AddProductFields.brandSelectField(screenWidth),
                       SizedBox(height: 10),
                       CostumWidget.labelText(context, 'Select Category'),
+                      
                       SizedBox(height: 10),
 
                       AddProductFields.categorySelectField( screenWidth: screenWidth),
