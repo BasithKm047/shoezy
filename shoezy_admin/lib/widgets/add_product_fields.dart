@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
 import 'package:shoezy_admin/data/model/product/product_model.dart';
 import 'package:shoezy_admin/data/model/size_stock_model.dart/size_stock_model.dart';
-import 'package:shoezy_admin/data/model/tag/tag_model.dart';
 import 'package:shoezy_admin/data/model/vareintModel/varientsModel.dart';
 import 'package:shoezy_admin/presentation/bloc/addProducts/bloc/product_bloc.dart';
 import 'package:shoezy_admin/presentation/bloc/brand/bloc/brand_bloc.dart';
@@ -278,6 +277,7 @@ class AddProductFields {
     TextEditingController priceController,
     TextEditingController shoeDescriptionController,
     Null Function(BuildContext context) clearField,
+    GlobalKey<FormState> formkey,
     double screenWidth,
   ) {
     return Row(
@@ -322,133 +322,140 @@ class AddProductFields {
               backgroundColor: Colors.blue,
               foregroundColor: Colors.white,
               ontap: () async {
-                final selectedBrand = context.read<BrandBloc>().state.maybeWhen(
-                  orElse: () => null,
-                  loaded: (brands, selectedBrandName) => brands.firstWhere(
-                    (b) => b.name == selectedBrandName,
-                    orElse: () => brands.first,
-                  ),
-                );
-                final selectedCategory = context
-                    .read<CategoryBloc>()
-                    .state
-                    .maybeWhen(
-                      orElse: () => null,
-                      loaded: (categories, selectedCategoryName) =>
-                          categories.firstWhere(
-                            (c) => c.name == selectedCategoryName,
-                            orElse: () => categories.first,
-                          ),
+                if (formkey.currentState!.validate()) {
+                  final selectedBrand = context
+                      .read<BrandBloc>()
+                      .state
+                      .maybeWhen(
+                        orElse: () => null,
+                        loaded: (brands, selectedBrandName) =>
+                            brands.firstWhere(
+                              (b) => b.name == selectedBrandName,
+                              orElse: () => brands.first,
+                            ),
+                      );
+                  final selectedCategory = context
+                      .read<CategoryBloc>()
+                      .state
+                      .maybeWhen(
+                        orElse: () => null,
+                        loaded: (categories, selectedCategoryName) =>
+                            categories.firstWhere(
+                              (c) => c.name == selectedCategoryName,
+                              orElse: () => categories.first,
+                            ),
+                      );
+
+                  final selctedtag = context.read<TagBloc>().state.maybeWhen(
+                    orElse: () => null,
+                    loaded: (tags, selectedTags) => tags.firstWhere(
+                      (tag) => tag.name == selectedTags,
+                      orElse: () => tags.first,
+                    ),
+                  );
+
+                  final selectedGender =
+                      context.read<GenderCubit>().state is GenderSelected
+                      ? (context.read<GenderCubit>().state as GenderSelected)
+                            .gender
+                      : null;
+
+                  Logger().i('Selected Gender: $selectedGender');
+
+                  if (selectedGender == null) {
+                    CostumWidget.showCustomSnackbar(
+                      context: context,
+                      message: 'Please select a Gender',
+                      backgroundColor: Colors.red,
                     );
-
-                final selctedtag = context.read<TagBloc>().state.maybeWhen(
-                  orElse: () => null,
-                  loaded: (tags, selectedTags) => tags.firstWhere(
-                    (tag) => tag.name == selectedTags,
-                    orElse: () => tags.first,
-                  ),
-                );
-
-                final selectedGender =
-                    context.read<GenderCubit>().state is GenderSelected
-                    ? (context.read<GenderCubit>().state as GenderSelected)
-                          .gender
-                    : null;
-
-                Logger().i('Selected Gender: $selectedGender');
-
-                if (selectedGender == null) {
-                  CostumWidget.showCustomSnackbar(
-                    context: context,
-                    message: 'Please select a Gender',
-                    backgroundColor: Colors.red,
-                  );
-                  return;
-                }
-                if (selectedBrand == null) {
-                  CostumWidget.showCustomSnackbar(
-                    context: context,
-                    message: 'Please select a Brand',
-                    backgroundColor: Colors.red,
-                  );
-                  return;
-                }
-
-                if (selectedCategory == null) {
-                  CostumWidget.showCustomSnackbar(
-                    context: context,
-                    message: 'Please select a Category',
-                    backgroundColor: Colors.red,
-                  );
-                  return;
-                }
-
-                if (selctedtag == null) {
-                  CostumWidget.showCustomSnackbar(
-                    context: context,
-                    message: 'Please select a Tag',
-                    backgroundColor: Colors.red,
-                  );
-                  return;
-                }
-
-                List<Variantsmodel> variants = context
-                    .read<VariantsBloc>()
-                    .state
-                    .maybeWhen(
-                      orElse: () => [],
-                      data: (images, variants, showFields) => variants,
+                    return;
+                  }
+                  if (selectedBrand == null) {
+                    CostumWidget.showCustomSnackbar(
+                      context: context,
+                      message: 'Please select a Brand',
+                      backgroundColor: Colors.red,
                     );
-                Logger().i('Current variants count: ${variants.length}');
+                    return;
+                  }
 
-                if (variants.isEmpty) {
-                  CostumWidget.showCustomSnackbar(
-                    context: context,
-                    message: 'Please add at least one variant',
-                    backgroundColor: Colors.red,
-                  );
-                  return;
-                }
-
-                List<SizeStockModel> sizeStock = context
-                    .read<SizeStockBloc>()
-                    .state
-                    .maybeWhen(
-                      orElse: () => [],
-                      loaded: (sizeStock) => sizeStock,
+                  if (selectedCategory == null) {
+                    CostumWidget.showCustomSnackbar(
+                      context: context,
+                      message: 'Please select a Category',
+                      backgroundColor: Colors.red,
                     );
+                    return;
+                  }
 
-                Logger().i('Current SizeStock count: ${sizeStock.length}');
+                  if (selctedtag == null) {
+                    CostumWidget.showCustomSnackbar(
+                      context: context,
+                      message: 'Please select a Tag',
+                      backgroundColor: Colors.red,
+                    );
+                    return;
+                  }
 
-                if (sizeStock.isEmpty) {
-                  CostumWidget.showCustomSnackbar(
-                    context: context,
-                    message: 'Please add at least one size and stock',
-                    backgroundColor: Colors.red,
+                  List<Variantsmodel> variants = context
+                      .read<VariantsBloc>()
+                      .state
+                      .maybeWhen(
+                        orElse: () => [],
+                        data: (images, variants, showFields) => variants,
+                      );
+                  Logger().i('Current variants count: ${variants.length}');
+
+                  if (variants.isEmpty) {
+                    CostumWidget.showCustomSnackbar(
+                      context: context,
+                      message: 'Please add at least one variant',
+                      backgroundColor: Colors.red,
+                    );
+                    return;
+                  }
+
+                  List<SizeStockModel> sizeStock = context
+                      .read<SizeStockBloc>()
+                      .state
+                      .maybeWhen(
+                        orElse: () => [],
+                        loaded: (sizeStock) => sizeStock,
+                      );
+
+                  Logger().i('Current SizeStock count: ${sizeStock.length}');
+
+                  if (sizeStock.isEmpty) {
+                    CostumWidget.showCustomSnackbar(
+                      context: context,
+                      message: 'Please add at least one size and stock',
+                      backgroundColor: Colors.red,
+                    );
+                    return;
+                  }
+
+                  final products = ProductModel(
+                    productName: shoeNameController.text.trim(),
+                    brandName: selectedBrand.name,
+                    categoryName: selectedCategory.name,
+                    price: priceController.text,
+                    description: shoeDescriptionController.text.trim(),
+                    variants: variants,
+                    sizeStock: sizeStock,
+                    createdAt: DateTime.now(),
+                    gender: selectedGender,
+                    tag: selctedtag.name,
                   );
-                  return;
+                  print(products);
+                  context.read<ProductBloc>().add(
+                    ProductEvent.addProduct(product: products),
+                  );
+                  Logger().d(products);
+                  clearField(context);
+                  LoadingOverlay.show(context, 'Adding Product ...');
+                  await Future.delayed(Duration(seconds: 1));
+                  LoadingOverlay.hide();
                 }
-
-                final products = ProductModel(
-                  productName: shoeNameController.text.trim(),
-                  brandName: selectedBrand.name,
-                  categoryName: selectedCategory.name,
-                  price: priceController.text,
-                  description: shoeDescriptionController.text.trim(),
-                  variants: variants,
-                  sizeStock: sizeStock,
-                  createdAt: DateTime.now(),
-                  gender: selectedGender,
-                  tag: selctedtag.name,
-                );
-                print(products);
-                context.read<ProductBloc>().add(
-                  ProductEvent.addProduct(product: products),
-                );
-                clearField(context);
-                LoadingOverlay.show(context, 'Adding Product ...');
-                await Future.delayed(Duration(seconds: 1));
-                LoadingOverlay.hide();
               },
 
               width: screenWidth / 7,

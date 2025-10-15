@@ -116,6 +116,7 @@ class Addproductscreen extends StatelessWidget {
                         priceController,
                         shoeDescriptionController,
                         clearField,
+                        formKey,
                         screenWidth,
                       ),
                       SizedBox(height: 20),

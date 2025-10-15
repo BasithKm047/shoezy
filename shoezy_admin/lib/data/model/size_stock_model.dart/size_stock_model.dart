@@ -6,6 +6,7 @@ part 'size_stock_model.g.dart';
 // @JsonSerializable(explicitToJson: true)
  abstract class SizeStockModel with _$SizeStockModel{
   factory SizeStockModel({
+    String ? id,
     required String size,
     required int stock,
   })= _SizeStockModel;

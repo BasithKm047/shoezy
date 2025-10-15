@@ -39,6 +39,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
   late final String _originalCategory;
   late final List<Variantsmodel> _originalVariants;
   late final List<SizeStockModel> _originalSizeStocks;
+  late final String _originalTag;
+  late final String _originalGender;
 
   @override
   void initState() {
@@ -51,6 +53,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
     _originalCategory = widget.product.categoryName;
     _originalVariants = List<Variantsmodel>.from(widget.product.variants);
     _originalSizeStocks = List<SizeStockModel>.from(widget.product.sizeStock);
+    _originalTag = widget.product.tag;
+    _originalGender = widget.product.gender;
+
 
     _shoeNameController = TextEditingController(text: _originalName);
     _shoeDescriptionController = TextEditingController(
@@ -60,8 +65,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
 
     context.read<BrandBloc>().add(FetchBrands(brandName: _originalBrand));
     context.read<CategoryBloc>().add(const GetCategories());
-    // context.read<VariantsBloc>().add(const VariantsEvent.getVariants());
-    // context.read<SizeStockBloc>().add(const SizeStockEvent.getSizeStock());
+    context.read<TagBloc>().add(const TagEvent.fetchTags());
+
+    
 
     Future.delayed(const Duration(milliseconds: 100), () {
       print('its running');
@@ -80,6 +86,10 @@ class _EditProductScreenState extends State<EditProductScreen> {
       context.read<SizeStockBloc>().add(
         SizeStockEvent.addedSizeStock(_originalSizeStocks),
       );
+      context.read<TagBloc>().add(
+        TagEvent.selectedTag(_originalTag),
+      );
+      context.read<GenderCubit>().selectGender(_originalGender);
     });
   }
 
@@ -96,6 +106,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
     required String currentCategory,
     required List<Variantsmodel> currentVariants,
     required List<SizeStockModel> currentSizeStocks,
+    required String currentTag,
+    required String currentGender,
   }) {
     // Check simple fields
     final currentName = _shoeNameController.text.trim();
@@ -112,7 +124,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
 
     // Check lists by length (simple check; extend to deep equality if needed)
     if (currentVariants.length != _originalVariants.length ||
-        currentSizeStocks.length != _originalSizeStocks.length) {
+        currentSizeStocks.length != _originalSizeStocks.length||
+        currentTag != _originalTag ||
+        currentGender != _originalGender) {
       return true;
     }
 
@@ -193,6 +207,21 @@ class _EditProductScreenState extends State<EditProductScreen> {
                           screenWidth: screenWidth,
                         ),
                         const SizedBox(height: 10),
+                        CostumWidget.labelText(context, 'Add Tags'),
+                        const SizedBox(height: 10),
+                        AddProductFields.tagSelectorField(
+                          screenWidth,
+                          tagName: _originalTag,
+                          isUpdating: true,
+                        ),
+                        const SizedBox(height: 10),
+                        CostumWidget.labelText(context, 'Select Gender'),
+                        const SizedBox(height: 10),
+                        AddProductFields.genderSelectorField(
+                          screenWidth,
+                          ['Male', 'Female', 'Children'],
+                        ),
+                        const SizedBox(height: 10),
                         CostumWidget.labelText(context, 'Add Variants'),
                         const SizedBox(height: 10),
                         VariantField(), // This will now reflect pre-populated variants from bloc
@@ -233,6 +262,11 @@ class _EditProductScreenState extends State<EditProductScreen> {
     final categoryState = context.watch<CategoryBloc>().state;
     final variantsState = context.watch<VariantsBloc>().state;
     final sizeState = context.watch<SizeStockBloc>().state;
+    // final tagState = context.watch<TagBloc>().state;
+    // final genderState = context.watch<GenderCubit>().state;
+
+    
+
 
     // Extract selected brand
     final selectedBrand = brandState.maybeWhen(
@@ -275,6 +309,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
       orElse: () => <SizeStockModel>[],
       loaded: (sizeStock) => sizeStock,
     );
+    
 
     // ✅ Remove change detection — now it updates regardless
     final hasBrandAndCategory =

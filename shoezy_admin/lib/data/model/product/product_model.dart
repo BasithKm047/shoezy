@@ -5,7 +5,7 @@ part 'product_model.freezed.dart';
 part 'product_model.g.dart';
 
 @freezed
-// @JsonSerializable(explicitToJson: true)
+@JsonSerializable(explicitToJson: true)
 abstract class ProductModel with _$ProductModel {
   const factory ProductModel({
     String? id,
@@ -16,14 +16,12 @@ abstract class ProductModel with _$ProductModel {
     required String description,
     required List<Variantsmodel> variants,
     required List<SizeStockModel> sizeStock,
-    required String  tag,
+    required String tag,
     required String gender,
 
-
-     required DateTime createdAt,
+    required DateTime createdAt,
   }) = _ProductModel;
 
   factory ProductModel.fromJson(Map<String, dynamic> json) =>
       _$ProductModelFromJson(json);
-      
 }

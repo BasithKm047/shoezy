@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/web.dart';
@@ -98,10 +97,10 @@ class AddcategoryScreen extends StatelessWidget {
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'Please enter a category name';
-        }else if(value.length < 3){
+        } else if (value.length < 3) {
           return 'Category name must be at least 3 characters';
         }
-        
+
         return null;
       },
       hintText: 'Name',
@@ -123,9 +122,7 @@ class AddcategoryScreen extends StatelessWidget {
         );
       },
       onSingleImageRemoved: () {
-        context.read<CategoryBloc>().add(
-          CategoryEvent.clearImage(),
-        );
+        context.read<CategoryBloc>().add(CategoryEvent.clearImage());
       },
     );
   }
@@ -140,40 +137,34 @@ class AddcategoryScreen extends StatelessWidget {
       children: [
         CostumWidget.costumElevatedButton(
           ontap: () async {
-            final image = state.maybeWhen(
-              orElse: () => null,
-              imagesUpdated: (images) => images,
-            );
-            // Logger().d('messages: ${image.length}');
-            if (!Commonfunction.singleImageValidator(image, context)) {
-              return;
+            if (_formKey.currentState!.validate()) {
+              final image = state.maybeWhen(
+                orElse: () => null,
+                imagesUpdated: (images) => images,
+              );
+              // Logger().d('messages: ${image.length}');
+              if (!Commonfunction.singleImageValidator(image, context)) {
+                return;
+              }
+              CloudinaryServices cloudinaryServices = CloudinaryServices();
+              final cloudImage = await cloudinaryServices.uploadSingleImage(
+                image!,
+              );
+
+              final categories = CategoryModel(
+                name: _categoryNameController.text.trim(),
+                image: cloudImage,
+              );
+              context.read<CategoryBloc>().add(
+                CategoryEvent.addCategory(category: categories),
+              );
+              clearfield(context);
+
+              LoadingOverlay.show(context, 'Adding Category ...');
+
+              await Future.delayed(Duration(seconds: 1));
+              LoadingOverlay.hide();
             }
-            CloudinaryServices cloudinaryServices = CloudinaryServices();
-            final cloudImage = await cloudinaryServices.uploadSingleImage(
-              image!,
-            );
-            Commonfunction.validateAndSubmitForm(
-              context: context,
-              formKey: _formKey,
-
-              onSuccess: () {
-                Logger().d('Category added: ${_categoryNameController.text}');
-              },
-            );
-            // Logger().d('Cloudinary Image: $cloudImage');
-            final categories = CategoryModel(
-              name: _categoryNameController.text.trim(),
-              image: cloudImage,
-            );
-            context.read<CategoryBloc>().add(
-              CategoryEvent.addCategory(category: categories),
-            );
-            clearfield(context);
-
-            LoadingOverlay.show(context,  'Adding Category ...');
-
-            await Future.delayed(Duration(seconds: 1));
-            LoadingOverlay.hide();
           },
           context: context,
           title: 'Add Category',

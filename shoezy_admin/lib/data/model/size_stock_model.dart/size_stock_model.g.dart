@@ -8,9 +8,14 @@ part of 'size_stock_model.dart';
 
 _SizeStockModel _$SizeStockModelFromJson(Map<String, dynamic> json) =>
     _SizeStockModel(
+      id: json['id'] as String?,
       size: json['size'] as String,
       stock: (json['stock'] as num).toInt(),
     );
 
 Map<String, dynamic> _$SizeStockModelToJson(_SizeStockModel instance) =>
-    <String, dynamic>{'size': instance.size, 'stock': instance.stock};
+    <String, dynamic>{
+      'id': instance.id,
+      'size': instance.size,
+      'stock': instance.stock,
+    };

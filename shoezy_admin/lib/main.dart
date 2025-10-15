@@ -34,7 +34,6 @@ import 'package:shoezy_admin/presentation/screens/addTag_screen.dart';
 import 'package:shoezy_admin/presentation/screens/brandScreen.dart';
 import 'package:shoezy_admin/presentation/screens/catogeryScreen.dart';
 import 'package:shoezy_admin/presentation/screens/dashboard.dart';
-import 'package:shoezy_admin/presentation/screens/edit_tag_screen.dart';
 import 'package:shoezy_admin/presentation/screens/loginscreen.dart';
 import 'package:shoezy_admin/presentation/screens/order_detail_screen.dart';
 import 'package:shoezy_admin/presentation/screens/orderlistScreen.dart';

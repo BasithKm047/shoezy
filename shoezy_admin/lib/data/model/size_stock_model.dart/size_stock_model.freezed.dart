@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$SizeStockModel {
 
- String get size; int get stock;
+ String? get id; String get size; int get stock;
 /// Create a copy of SizeStockModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $SizeStockModelCopyWith<SizeStockModel> get copyWith => _$SizeStockModelCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SizeStockModel&&(identical(other.size, size) || other.size == size)&&(identical(other.stock, stock) || other.stock == stock));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SizeStockModel&&(identical(other.id, id) || other.id == id)&&(identical(other.size, size) || other.size == size)&&(identical(other.stock, stock) || other.stock == stock));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,size,stock);
+int get hashCode => Object.hash(runtimeType,id,size,stock);
 
 @override
 String toString() {
-  return 'SizeStockModel(size: $size, stock: $stock)';
+  return 'SizeStockModel(id: $id, size: $size, stock: $stock)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $SizeStockModelCopyWith<$Res>  {
   factory $SizeStockModelCopyWith(SizeStockModel value, $Res Function(SizeStockModel) _then) = _$SizeStockModelCopyWithImpl;
 @useResult
 $Res call({
- String size, int stock
+ String? id, String size, int stock
 });
 
 
@@ -65,9 +65,10 @@ class _$SizeStockModelCopyWithImpl<$Res>
 
 /// Create a copy of SizeStockModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? size = null,Object? stock = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? size = null,Object? stock = null,}) {
   return _then(_self.copyWith(
-size: null == size ? _self.size : size // ignore: cast_nullable_to_non_nullable
+id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String?,size: null == size ? _self.size : size // ignore: cast_nullable_to_non_nullable
 as String,stock: null == stock ? _self.stock : stock // ignore: cast_nullable_to_non_nullable
 as int,
   ));
@@ -154,10 +155,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String size,  int stock)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? id,  String size,  int stock)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _SizeStockModel() when $default != null:
-return $default(_that.size,_that.stock);case _:
+return $default(_that.id,_that.size,_that.stock);case _:
   return orElse();
 
 }
@@ -175,10 +176,10 @@ return $default(_that.size,_that.stock);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String size,  int stock)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? id,  String size,  int stock)  $default,) {final _that = this;
 switch (_that) {
 case _SizeStockModel():
-return $default(_that.size,_that.stock);case _:
+return $default(_that.id,_that.size,_that.stock);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -195,10 +196,10 @@ return $default(_that.size,_that.stock);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String size,  int stock)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? id,  String size,  int stock)?  $default,) {final _that = this;
 switch (_that) {
 case _SizeStockModel() when $default != null:
-return $default(_that.size,_that.stock);case _:
+return $default(_that.id,_that.size,_that.stock);case _:
   return null;
 
 }
@@ -210,9 +211,10 @@ return $default(_that.size,_that.stock);case _:
 @JsonSerializable()
 
 class _SizeStockModel implements SizeStockModel {
-   _SizeStockModel({required this.size, required this.stock});
+   _SizeStockModel({this.id, required this.size, required this.stock});
   factory _SizeStockModel.fromJson(Map<String, dynamic> json) => _$SizeStockModelFromJson(json);
 
+@override final  String? id;
 @override final  String size;
 @override final  int stock;
 
@@ -229,16 +231,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SizeStockModel&&(identical(other.size, size) || other.size == size)&&(identical(other.stock, stock) || other.stock == stock));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SizeStockModel&&(identical(other.id, id) || other.id == id)&&(identical(other.size, size) || other.size == size)&&(identical(other.stock, stock) || other.stock == stock));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,size,stock);
+int get hashCode => Object.hash(runtimeType,id,size,stock);
 
 @override
 String toString() {
-  return 'SizeStockModel(size: $size, stock: $stock)';
+  return 'SizeStockModel(id: $id, size: $size, stock: $stock)';
 }
 
 
@@ -249,7 +251,7 @@ abstract mixin class _$SizeStockModelCopyWith<$Res> implements $SizeStockModelCo
   factory _$SizeStockModelCopyWith(_SizeStockModel value, $Res Function(_SizeStockModel) _then) = __$SizeStockModelCopyWithImpl;
 @override @useResult
 $Res call({
- String size, int stock
+ String? id, String size, int stock
 });
 
 
@@ -266,9 +268,10 @@ class __$SizeStockModelCopyWithImpl<$Res>
 
 /// Create a copy of SizeStockModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? size = null,Object? stock = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? size = null,Object? stock = null,}) {
   return _then(_SizeStockModel(
-size: null == size ? _self.size : size // ignore: cast_nullable_to_non_nullable
+id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String?,size: null == size ? _self.size : size // ignore: cast_nullable_to_non_nullable
 as String,stock: null == stock ? _self.stock : stock // ignore: cast_nullable_to_non_nullable
 as int,
   ));

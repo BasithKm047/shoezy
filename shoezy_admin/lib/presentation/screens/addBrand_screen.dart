@@ -96,8 +96,6 @@ class AddbrandScreen extends StatelessWidget {
     );
   }
 
-
-
   Widget brandNamingField(double screenWidth) {
     return CostumWidget.costumTextformField(
       validator: (value) {
@@ -116,7 +114,6 @@ class AddbrandScreen extends StatelessWidget {
     return CostumImageUploader(
       singleMode: true,
       image: state.maybeWhen(
-        
         orElse: () => null,
         imagesUpdated: (images) => images,
         // removedImageState: (index) => index,
@@ -142,39 +139,35 @@ class AddbrandScreen extends StatelessWidget {
         context: context,
         title: 'Add Brand',
         ontap: () async {
-          final   images = state.maybeWhen(
-            orElse: () => null,
-            imagesUpdated: (images) => images,
-            // removedImageState: (removedImage) => removedImage,
-          );
-          if (!Commonfunction.singleImageValidator(images, context)) {
-            return;
+          if (_formKey.currentState!.validate()) {
+            final images = state.maybeWhen(
+              orElse: () => null,
+              imagesUpdated: (images) => images,
+            );
+            if (!Commonfunction.singleImageValidator(images, context)) {
+              return;
+            }
+
+            CloudinaryServices cloudinaryServices = CloudinaryServices();
+            final cloudImage = await cloudinaryServices.uploadSingleImage(
+              images!,
+            );
+
+            Logger().d('Cloudinary Image: $cloudImage');
+            String? brandId = createId();
+            final brands = BrandModel(
+              id: brandId,
+              name: _brandNameController.text,
+              imageUrl: cloudImage,
+            );
+            // ignore: use_build_context_synchronously
+            context.read<BrandBloc>().add(AddBrand(brands));
+            clearfield(context);
+            LoadingOverlay.show(context, 'Adding Brand...');
+
+            await Future.delayed(Duration(seconds: 1));
+            LoadingOverlay.hide();
           }
-
-          CloudinaryServices cloudinaryServices = CloudinaryServices();
-          final cloudImage = await cloudinaryServices.uploadSingleImage(
-            images!,
-          );
-          Commonfunction.validateAndSubmitForm(
-            context: context,
-            formKey: _formKey,
-            // successMessage: 'Brand added successfully',
-            // errorMessage: 'Failed to add brand',
-          );
-          Logger().d('Cloudinary Image: $cloudImage');
-          String? brandId = createId();
-          final brands = BrandModel(
-            id: brandId,
-            name: _brandNameController.text,
-            imageUrl: cloudImage,
-          );
-          // ignore: use_build_context_synchronously
-          context.read<BrandBloc>().add(AddBrand(brands));
-          clearfield(context);
-          LoadingOverlay.show(context,'Adding Brand...');
-
-          await Future.delayed(Duration(seconds: 1));
-          LoadingOverlay.hide();
         },
       ),
     );

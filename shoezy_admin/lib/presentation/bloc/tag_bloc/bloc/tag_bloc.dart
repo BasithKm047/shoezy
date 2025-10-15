@@ -1,7 +1,6 @@
+// ignore: depend_on_referenced_packages
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/rendering.dart';
-import 'package:meta/meta.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:shoezy_admin/data/model/tag/tag_model.dart';
 import 'package:shoezy_admin/data/repositories/tag_services.dart';
