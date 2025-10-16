@@ -12,7 +12,7 @@ class Apptheme {
     textTheme: TTextTheme.lightTextTheme,
     brightness: Brightness.light,
     primaryColor: Colors.blue,
-    scaffoldBackgroundColor:Color(0xFFF6F2F2),
+    scaffoldBackgroundColor:Colors.white,
     elevatedButtonTheme: TElevatedButtonTheme.lightElevatedButtonTheme,
     appBarTheme: TAppbartheme.lightAppbarTheme(isTitleCenter: true),
     bottomSheetTheme: TBottomSheetThemeData.lightBottomsheetThemeData,

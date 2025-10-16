@@ -3,7 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:shoezy/application/bloc/auth_bloc/auth_bloc.dart';
 import 'package:shoezy/application/bloc/brand_bloc/brand_bloc.dart';
 import 'package:shoezy/application/bloc/navigation_bar/cubit/bottom_navigation_bar_cubit.dart';
+import 'package:shoezy/application/bloc/product_bloc/bloc/product_bloc.dart';
 import 'package:shoezy/data/auth/auth_services.dart';
+import 'package:shoezy/data/repositories/product_repository.dart';
 import 'package:shoezy/presentation/screens/splash_screen.dart';
 import 'package:shoezy/utils/theme/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -40,7 +42,8 @@ class MyApp extends StatelessWidget {
             ..add(LoadBrandEvent()),
         ),
 
-        //   BlocProvider(create: (context) => SubjectBloc()),
+        BlocProvider(create: (context) => ProductBloc(ProductRepository())),
+
       ],
       child: MaterialApp(
         theme: Apptheme.lightTheme,

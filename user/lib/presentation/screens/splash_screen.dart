@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:shoezy/application/bloc/auth_bloc/auth_bloc.dart';
 import 'package:shoezy/presentation/screens/bottom_navigation.dart';
-import 'package:shoezy/presentation/screens/home_screen.dart';
 import 'package:shoezy/presentation/screens/signin_screen.dart';
 import 'package:shoezy/presentation/screens/signup_screen.dart';
 import 'package:shoezy/presentation/widgets/costum_widget.dart';

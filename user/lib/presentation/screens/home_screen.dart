@@ -1,8 +1,11 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:logger/logger.dart';
 import 'package:shoezy/application/bloc/brand_bloc/brand_bloc.dart';
-import 'package:shoezy/presentation/screens/bottom_navigation.dart';
+import 'package:shoezy/application/bloc/product_bloc/bloc/product_bloc.dart';
+import 'package:shoezy/data/models/product/product_model.dart';
+import 'package:shoezy/presentation/screens/tags_detailed_showing_screen.dart';
 import 'package:shoezy/presentation/widgets/brands_feild.dart';
 import 'package:shoezy/presentation/widgets/cardfor_showing_shoes.dart';
 import 'package:shoezy/presentation/widgets/carousel_card.dart';
@@ -13,8 +16,19 @@ import 'package:shoezy/presentation/widgets/searchField.dart';
 import 'package:shoezy/utils/const/colors.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<ProductBloc>().add(ProductEvent.loadProducts());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,11 +97,14 @@ class HomeScreen extends StatelessWidget {
                   return Padding(
                     padding: const EdgeInsets.only(left: 20.0),
                     child: SizedBox(
-                      height: 100,
+                      height: 120,
                       child: ListView.separated(
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) {
-                          return BrandsFeild(imagePath: brands[index].imageUrl);
+                          return BrandsFeild(
+                            imagePath: brands[index].imageUrl,
+                            name: brands[index].name,
+                          );
                         },
                         separatorBuilder: (context, index) =>
                             SizedBox(width: 20),
@@ -109,10 +126,16 @@ class HomeScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  CostumWidget.labelText(context, 'Popular Shoes'),
+                  CostumWidget.labelText(context, 'Top Rated'),
 
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => TagsDetailedShowingScreen(),
+                        ),
+                      );
+                    },
                     child: Text(
                       'See all',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -127,23 +150,36 @@ class HomeScreen extends StatelessWidget {
 
             Padding(
               padding: const EdgeInsets.only(left: 10.0),
-              child: SizedBox(
-                height: 220.0,
-                child: ListView.separated(
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) {
-                    return CardforShowingShoes(
-                      // height: 50.0,
-                      width: 150.0,
-                      imageUrl: shoeImages[index],
-                      price: '2000',
-                      shoeName: 'Nike air',
-                      tag: 'Best Seller',
-                    );
-                  },
-                  itemCount: shoeImages.length,
-                  separatorBuilder: (context, index) => SizedBox(width: 20),
-                ),
+              child: BlocBuilder<ProductBloc, ProductState>(
+                builder: (context, state) {
+                  final List<ProductModel> products = state.maybeWhen(
+                    orElse: () => [],
+                    loaded: (products) => products,
+                  );
+
+                  final filteredByTag = products
+                      .where((p) => p.tag.contains('Top Rated'))
+                      .toList();
+                  Logger().d(filteredByTag);
+
+                  return SizedBox(
+                    height: 220.0,
+                    child: ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) {
+                        return CardforShowingShoes(
+                          width: 150.0,
+                          imageUrl: filteredByTag[index].image.first,
+                          price: filteredByTag[index].price,
+                          shoeName: filteredByTag[index].productName,
+                          tag: filteredByTag[index].tag,
+                        );
+                      },
+                      itemCount: filteredByTag.length,
+                      separatorBuilder: (context, index) => SizedBox(width: 20),
+                    ),
+                  );
+                },
               ),
             ),
             SizedBox(height: 5),
@@ -152,10 +188,16 @@ class HomeScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  CostumWidget.labelText(context, 'New Arrivals'),
+                  CostumWidget.labelText(context, 'Best Seller'),
 
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => TagsDetailedShowingScreen(),
+                        ),
+                      );
+                    },
                     child: Text(
                       'See all',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -187,32 +229,46 @@ class HomeScreen extends StatelessWidget {
               },
             ),
 
-            CarouselSlider.builder(
-              carouselController: carouselController,
-              options: CarouselOptions(
-                height: 170,
-                enlargeCenterPage: true,
-                autoPlay: true,
-                aspectRatio: 16 / 9,
-                autoPlayCurve: Curves.fastOutSlowIn,
-                enableInfiniteScroll: true,
-                autoPlayAnimationDuration: Duration(seconds: 1),
-                viewportFraction: 0.9,
-                onPageChanged: (index, reason) {
-                  activeIndex.value = index;
-                },
-              ),
-              itemCount: shoeImages.length,
-              itemBuilder: (context, index, realIndex) {
-                return CarouselCard(
-                  imageHeight: 120.0,
-                  shoeImage: shoeImages[index],
+            BlocBuilder<ProductBloc, ProductState>(
+              builder: (context, state) {
+                final List<ProductModel> products = state.maybeWhen(
+                  orElse: () => [],
+                  loaded: (products) => products,
+                );
 
-                  shoeName: 'Nike New',
-                  price: '1999',
-                  tag: 'Best Choice',
-                  width: screenWidth / 1.1,
-                  height: 110,
+                final filteredProducts = products
+                    .where((p) => p.tag.contains('Best Seller'))
+                    .toList();
+
+                Logger().d(filteredProducts);
+                return CarouselSlider.builder(
+                  carouselController: carouselController,
+                  options: CarouselOptions(
+                    height: 170,
+                    enlargeCenterPage: true,
+                    autoPlay: true,
+                    aspectRatio: 16 / 9,
+                    autoPlayCurve: Curves.fastOutSlowIn,
+                    enableInfiniteScroll: true,
+                    autoPlayAnimationDuration: Duration(seconds: 1),
+                    viewportFraction: 0.9,
+                    onPageChanged: (index, reason) {
+                      activeIndex.value = index;
+                    },
+                  ),
+                  itemCount: filteredProducts.length,
+                  itemBuilder: (context, index, realIndex) {
+                    return CarouselCard(
+                      imageHeight: 120.0,
+                      shoeImage: filteredProducts[index].image.first,
+
+                      shoeName: filteredProducts[index].productName,
+                      price: filteredProducts[index].price,
+                      tag: filteredProducts[index].tag,
+                      width: screenWidth / 1.1,
+                      height: 110,
+                    );
+                  },
                 );
               },
             ),
@@ -244,7 +300,7 @@ class Colomforhome extends StatelessWidget {
         ),
         Row(
           children: [
-            SizedBox(width: screenWidth / 12),
+            SizedBox(width: screenWidth / 8),
             Icon(Icons.location_on_outlined, size: 20, color: AppColors.orange),
             SizedBox(width: 2),
             Text(

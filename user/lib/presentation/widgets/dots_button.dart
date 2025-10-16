@@ -10,7 +10,7 @@ class DotsButton extends StatelessWidget {
       width: 5.0,
       height: 5.0,
       decoration: BoxDecoration(
-        color: AppColors.white,
+        color: AppColors.dotColor,
         shape: BoxShape.circle,
         // boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 8)],
       ),

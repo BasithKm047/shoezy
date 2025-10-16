@@ -72,11 +72,30 @@ class CarouselCard extends StatelessWidget {
                 ],
               ),
             ),
-
+            SizedBox(width: 20),
             SizedBox(
               height: imageHeight,
               width: imageWidth,
-              child: Image.asset(shoeImage),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: AspectRatio(
+                  aspectRatio:1.7,
+                  child: Image.network(
+                    shoeImage,
+                    fit: BoxFit.cover,
+                    alignment: Alignment.center,
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return Center(child: CircularProgressIndicator());
+                    },
+                    errorBuilder: (context, error, stackTrace) => Icon(
+                      Icons.image_not_supported,
+                      color: Colors.grey[400],
+                      size: 60,
+                    ),
+                  ),
+                ),
+              ),
             ),
           ],
         ),
