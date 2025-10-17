@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:shoezy/data/models/product/product_model.dart';
+import 'package:shoezy/presentation/screens/product_listing_screen.dart';
 import 'package:shoezy/utils/const/colors.dart';
 
 class BrandsFeild extends StatelessWidget {
   final String imagePath;
   final String name;
-  const BrandsFeild({super.key, required this.imagePath, required this.name});
+  final List<ProductModel> products;
+  const BrandsFeild({
+    super.key,
+    required this.imagePath,
+    required this.name,
+    required this.products,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +20,14 @@ class BrandsFeild extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         GestureDetector(
-          onTap: () {},
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) =>
+                    ProductListingScreen(products: products, title: name),
+              ),
+            );
+          },
           child: Container(
             width: 80,
             height: 80,

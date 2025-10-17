@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoezy/application/bloc/navigation_bar/cubit/bottom_navigation_bar_cubit.dart';
 import 'package:shoezy/presentation/screens/cart_screen.dart';
 import 'package:shoezy/presentation/screens/category_screen.dart';
-import 'package:shoezy/presentation/screens/favourote_screen.dart';
 import 'package:shoezy/presentation/screens/home_screen.dart';
 import 'package:shoezy/presentation/screens/profile_screen.dart';
 import 'package:shoezy/utils/const/colors.dart';
@@ -18,7 +17,7 @@ class BottomNavigation extends StatelessWidget {
   final List<Map<String, dynamic>> navitems = const [
     {'icon': Icons.home, 'label': 'Home'},
     // {'icon': Icons.favorite_border, 'label': 'Favourite'},
-    {'icon': Icons.category_outlined, 'label': 'category'},
+    {'icon': Icons.grid_view, 'label': 'category'},
     {'icon': Icons.shopping_cart_outlined, 'label': 'Cart'},
     {'icon': Icons.person, 'label': 'Profile'},
   ];
