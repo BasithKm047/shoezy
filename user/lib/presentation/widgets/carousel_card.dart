@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shoezy/presentation/widgets/costum_widget.dart';
+import 'package:shoezy/presentation/widgets/shimmer_loading.dart';
 import 'package:shoezy/utils/const/colors.dart';
 
 class CarouselCard extends StatelessWidget {
@@ -88,7 +89,7 @@ class CarouselCard extends StatelessWidget {
                       alignment: Alignment.center,
                       loadingBuilder: (context, child, loadingProgress) {
                         if (loadingProgress == null) return child;
-                        return Center(child: CircularProgressIndicator());
+                        return  ShimmerLoading.shimmerImagePlaceholder(height:height! , width: width!);
                       },
                       errorBuilder: (context, error, stackTrace) => Icon(
                         Icons.image_not_supported,

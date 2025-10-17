@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shoezy/application/bloc/auth_bloc/auth_bloc.dart';
 import 'package:shoezy/application/bloc/brand_bloc/brand_bloc.dart';
+import 'package:shoezy/application/bloc/favourite/cubit/favourie_cubit.dart';
 import 'package:shoezy/application/bloc/navigation_bar/cubit/bottom_navigation_bar_cubit.dart';
 import 'package:shoezy/application/bloc/product_bloc/bloc/product_bloc.dart';
 import 'package:shoezy/data/auth/auth_services.dart';
+import 'package:shoezy/data/repositories/favourite_repository.dart';
 import 'package:shoezy/data/repositories/product_repository.dart';
 import 'package:shoezy/presentation/screens/splash_screen.dart';
 import 'package:shoezy/utils/theme/theme.dart';
@@ -25,7 +27,9 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final favoritesRepository = FavoritesRepository(userId: 'currentUserId');
+
+  MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +47,9 @@ class MyApp extends StatelessWidget {
         ),
 
         BlocProvider(create: (context) => ProductBloc(ProductRepository())),
-
+        BlocProvider(
+          create: (context) => FavoritesCubit(repository: favoritesRepository),
+        ),
       ],
       child: MaterialApp(
         theme: Apptheme.lightTheme,

@@ -1,7 +1,7 @@
-import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:shoezy/application/bloc/brand_bloc/brand_bloc.dart';
 import 'package:shoezy/application/bloc/product_bloc/bloc/product_bloc.dart';
 import 'package:shoezy/data/models/product/product_model.dart';
@@ -12,6 +12,7 @@ import 'package:shoezy/presentation/widgets/cardfor_showing_shoes.dart';
 import 'package:shoezy/presentation/widgets/carousel_card.dart';
 import 'package:shoezy/presentation/widgets/costum_widget.dart';
 import 'package:shoezy/presentation/widgets/dots_button.dart';
+import 'package:shoezy/presentation/widgets/shimmer_loading.dart';
 import 'package:shoezy/utils/const/colors.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -62,7 +63,17 @@ class HomeScreenWidgets {
     return BlocBuilder<BrandBloc, BrandState>(
       builder: (context, state) {
         if (state is BrandLoadingState) {
-          return CircularProgressIndicator(color: AppColors.blue);
+          return SizedBox(
+            height: 120,
+            child: ListView.separated(
+              scrollDirection: Axis.horizontal,
+              itemCount: 5,
+              separatorBuilder: (context, index) => const SizedBox(width: 20),
+              itemBuilder: (context, index) {
+                return ShimmerLoading.shimmerCircular(size: 80);
+              },
+            ),
+          );
         } else if (state is BrandLoadedState) {
           final brands = state.brands;
           return Padding(
@@ -104,6 +115,33 @@ class HomeScreenWidgets {
         final List<ProductModel> products = state.maybeWhen(
           orElse: () => [],
           loaded: (products) => products,
+        );
+        state.maybeWhen(
+          orElse: () {},
+          loading: () {
+            return CarouselSlider.builder(
+              itemCount: 3,
+              itemBuilder: (context, index, realIndex) {
+                return Shimmer.fromColors(
+                  baseColor: Colors.grey[300]!,
+                  highlightColor: Colors.grey[100]!,
+                  child: Container(
+                    width: screenWidth / 1.1,
+                    height: 110,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                  ),
+                );
+              },
+              options: CarouselOptions(
+                height: 170,
+                enlargeCenterPage: true,
+                viewportFraction: 0.9,
+              ),
+            );
+          },
         );
 
         final filteredProducts = products
@@ -211,6 +249,17 @@ class HomeScreenWidgets {
           final List<ProductModel> products = state.maybeWhen(
             orElse: () => [],
             loaded: (products) => products,
+          );
+
+          state.maybeWhen(
+            orElse: () {},
+
+            loading: () {
+              return ShimmerLoading.buildShimmerGrid(
+                itemCount: 3,
+                mainAxisExtent: 280,
+              );
+            },
           );
 
           final filteredByTag = products

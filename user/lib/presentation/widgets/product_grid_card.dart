@@ -5,7 +5,9 @@ import 'package:shoezy/utils/const/colors.dart';
 class ProductGridCard extends StatelessWidget {
   final ProductModel product;
   final VoidCallback? ontap;
-  const ProductGridCard({super.key, required this.product, this.ontap});
+  final bool isFavourite;
+  final VoidCallback ? onFavouriteTap;
+  const ProductGridCard({super.key, required this.product, this.ontap, required this.isFavourite, this.onFavouriteTap});
 
   @override
   Widget build(BuildContext context) {
@@ -28,17 +30,41 @@ class ProductGridCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Product Image
-            ClipRRect(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(12),
-                topRight: Radius.circular(12),
+            Stack(
+              children: [
+                   ClipRRect(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(12),
+                  topRight: Radius.circular(12),
+                ),
+                child: Image.network(
+                  product.image.first,
+                  height: 180.0,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
               ),
-              child: Image.network(
-                product.image.first,
-                height: 180.0,
-                width: double.infinity,
-                fit: BoxFit.cover,
-              ),
+                  Positioned(
+                  top: 8,
+                  right: 8,
+                  child: GestureDetector(
+                    onTap: onFavouriteTap,
+                    child: Container(
+                      padding: EdgeInsets.all(6),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.8),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        isFavourite ? Icons.favorite : Icons.favorite_border,
+                        color: isFavourite ? Colors.red : Colors.grey,
+                        size: 18,
+                      ),
+                    ),
+                  ),
+                ),
+
+              ] 
             ),
             SizedBox(height: 6),
             Padding(

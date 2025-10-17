@@ -3,12 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoezy/application/bloc/navigation_bar/cubit/bottom_navigation_bar_cubit.dart';
 import 'package:shoezy/presentation/screens/cart_screen.dart';
 import 'package:shoezy/presentation/screens/category_screen.dart';
+import 'package:shoezy/presentation/screens/favourote_screen.dart';
 import 'package:shoezy/presentation/screens/home_screen.dart';
-import 'package:shoezy/presentation/screens/profile_screen.dart';
 import 'package:shoezy/utils/const/colors.dart';
 
 class BottomNavigation extends StatelessWidget {
-  const BottomNavigation({super.key});
+   BottomNavigation({super.key});
 
   final Color activeColor = const Color(0xFF00FF7F);
   final Color inactiveColorLight = const Color(0xFFE8E8E8);
@@ -16,18 +16,18 @@ class BottomNavigation extends StatelessWidget {
 
   final List<Map<String, dynamic>> navitems = const [
     {'icon': Icons.home, 'label': 'Home'},
-    // {'icon': Icons.favorite_border, 'label': 'Favourite'},
     {'icon': Icons.grid_view, 'label': 'category'},
+    {'icon': Icons.favorite_border, 'label': 'Favourite'},
     {'icon': Icons.shopping_cart_outlined, 'label': 'Cart'},
-    {'icon': Icons.person, 'label': 'Profile'},
+    // {'icon': Icons.person, 'label': 'Profile'},
   ];
 
-  final List<Widget> screens = const [
-    HomeScreen(),
-    // FavouroteScreen(),
-    CartScreen(),
-    ProfileScreen(),
-    CategoryScreen(),
+  final List<Widget> screens = [
+    const HomeScreen(),
+    const CategoryScreen(),
+    FavoritesScreen(),
+    const CartScreen(),
+    // const ProfileScreen(),
   ];
 
   @override

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shoezy/data/models/product/product_model.dart';
 import 'package:shoezy/presentation/screens/product_listing_screen.dart';
+import 'package:shoezy/presentation/widgets/shimmer_loading.dart';
 import 'package:shoezy/utils/const/colors.dart';
 
 class BrandsFeild extends StatelessWidget {
@@ -46,12 +47,11 @@ class BrandsFeild extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(1.0),
               child: CircleAvatar(
+                backgroundColor: AppColors.white,
                 backgroundImage: NetworkImage(imagePath),
-                // radius: 40,
-                backgroundColor: Colors.transparent,
-                // onBackgroundImageError: (exception, stackTrace) {
-
-                // },
+                onBackgroundImageError: (exception, stackTrace) =>
+                    ShimmerLoading.shimmerCircular(size: 80),
+             
               ),
             ),
           ),

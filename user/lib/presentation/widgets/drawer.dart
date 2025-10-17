@@ -49,6 +49,7 @@ class MyDrawer extends StatelessWidget {
           buttons(
             context: context,
             ontap: () {
+              Navigator.of(context).pop();
               Navigator.of(
                 context,
               ).push(MaterialPageRoute(builder: (context) => ProfileScreen()));
@@ -61,6 +62,7 @@ class MyDrawer extends StatelessWidget {
           buttons(
             context: context,
             ontap: () {
+              Navigator.of(context).pop();
               Navigator.of(
                 context,
               ).push(MaterialPageRoute(builder: (context) => SettingsScreen()));
@@ -71,6 +73,7 @@ class MyDrawer extends StatelessWidget {
           SizedBox(height: 20),
           buttons(
             ontap: () {
+                Navigator.of(context).pop();
               Navigator.of(
                 context,
               ).push(MaterialPageRoute(builder: (context) => CartScreen()));
@@ -82,8 +85,9 @@ class MyDrawer extends StatelessWidget {
           SizedBox(height: 20),
           buttons(
             ontap: () {
+                Navigator.of(context).pop();
               Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => FavouroteScreen()),
+                MaterialPageRoute(builder: (context) => FavoritesScreen()),
               );
             },
             icon: Icons.favorite_border,
@@ -93,6 +97,7 @@ class MyDrawer extends StatelessWidget {
           SizedBox(height: 20),
           buttons(
             ontap: () {
+                Navigator.of(context).pop();
               Navigator.of(
                 context,
               ).push(MaterialPageRoute(builder: (context) => OrdersScreen()));
@@ -104,6 +109,7 @@ class MyDrawer extends StatelessWidget {
           SizedBox(height: 20),
           buttons(
             ontap: () {
+                Navigator.of(context).pop();
               Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) => NotificationScreen()),
               );
