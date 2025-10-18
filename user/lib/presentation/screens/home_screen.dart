@@ -1,7 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:logger/web.dart';
 import 'package:shoezy/application/bloc/product_bloc/bloc/product_bloc.dart';
 import 'package:shoezy/data/models/product/product_model.dart';
@@ -10,6 +9,7 @@ import 'package:shoezy/presentation/widgets/gender_tabbar.dart';
 import 'package:shoezy/presentation/widgets/home_screen_widgets.dart';
 import 'package:shoezy/presentation/widgets/horizontalGridview.dart';
 import 'package:shoezy/presentation/widgets/searchField.dart';
+import 'package:shoezy/presentation/widgets/shimmer_loading.dart';
 import 'package:shoezy/utils/const/colors.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -47,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
             loaded: (products) => products,
           );
           if (products.isEmpty) {
-            return SpinKitFadingCircle(color: AppColors.blue, size: 50.0);
+            return AnimationLoading.spinnerAnimation();
           }
           Logger().d(products.first);
 
@@ -162,6 +162,8 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+
+  
 }
 
 // ignore: must_be_immutable

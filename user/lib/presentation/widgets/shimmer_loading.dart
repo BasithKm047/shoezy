@@ -1,8 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:shoezy/utils/const/colors.dart';
 
-class ShimmerLoading {
+class AnimationLoading {
   static Widget buildShimmerGrid({
     required int itemCount,
     required double mainAxisExtent,
@@ -83,10 +85,7 @@ class ShimmerLoading {
     );
   }
 
-  static Widget shimmerHorizontalGrid({
-    required int itemCount,
-
-  }){
+  static Widget shimmerHorizontalGrid({required int itemCount}) {
     return SizedBox(
       height: 300,
       child: ListView.builder(
@@ -117,7 +116,8 @@ class ShimmerLoading {
       ),
     );
   }
-   static Widget shimmerTagGrid() {
+
+  static Widget shimmerTagGrid() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Shimmer.fromColors(
@@ -168,4 +168,7 @@ class ShimmerLoading {
       ),
     );
   }
+
+  static SpinKitFadingCircle spinnerAnimation() =>
+      SpinKitFadingCircle(color: AppColors.blue, size: 50.0,);
 }

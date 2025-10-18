@@ -20,7 +20,7 @@ class TagsDetailedShowingScreen extends StatelessWidget {
           return Scaffold(
             body: Padding(
               padding: const EdgeInsets.all(10.0),
-              child: ShimmerLoading.buildShimmerGrid(
+              child: AnimationLoading.buildShimmerGrid(
                 itemCount: 6,
                 mainAxisExtent: 280,
               ),

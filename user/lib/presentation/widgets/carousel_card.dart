@@ -89,7 +89,7 @@ class CarouselCard extends StatelessWidget {
                       alignment: Alignment.center,
                       loadingBuilder: (context, child, loadingProgress) {
                         if (loadingProgress == null) return child;
-                        return  ShimmerLoading.shimmerImagePlaceholder(height:height! , width: width!);
+                        return  AnimationLoading.shimmerImagePlaceholder(height:height! , width: width!);
                       },
                       errorBuilder: (context, error, stackTrace) => Icon(
                         Icons.image_not_supported,

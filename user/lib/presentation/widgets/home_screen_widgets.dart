@@ -68,7 +68,7 @@ class HomeScreenWidgets {
               itemCount: 5,
               separatorBuilder: (context, index) => const SizedBox(width: 20),
               itemBuilder: (context, index) {
-                return ShimmerLoading.shimmerCircular(size: 80);
+                return AnimationLoading.shimmerCircular(size: 80);
               },
             ),
           );
@@ -76,23 +76,43 @@ class HomeScreenWidgets {
           final brands = state.brands;
           return Padding(
             padding: const EdgeInsets.only(left: 20.0),
-            child: SizedBox(
-              height: 120,
-              child: ListView.separated(
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) {
-                  return BrandsFeild(
-                    products: products
-                        .where((p) => p.brandName == brands[index].name)
-                        .toList(),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: GestureDetector(
+                    onTap: () {
+                      
+                    },
+                                    
+                    child: Text(
+                      "See All →",
+                      style: TextStyle(color: AppColors.blue),
+                    ),
+                                    ),
+                  ),
+                SizedBox(
+                  height: 140,
+                  child: ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return BrandsFeild(
+                        products: products
+                            .where((p) => p.brandName == brands[index].name)
+                            .toList(),
 
-                    imagePath: brands[index].imageUrl,
-                    name: brands[index].name,
-                  );
-                },
-                separatorBuilder: (context, index) => SizedBox(width: 20),
-                itemCount: brands.length,
-              ),
+                        imagePath: brands[index].imageUrl,
+                        name: brands[index].name,
+                      );
+                    },
+                    separatorBuilder: (context, index) => SizedBox(width: 20),
+                    itemCount: brands.length,
+                  ),
+                ),
+              
+              ],
             ),
           );
         } else if (state is BrandLoadErrorState) {
@@ -214,10 +234,7 @@ class HomeScreenWidgets {
       width: screenWidth / 1.1,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          CostumWidget.labelText(context, tagName),
-         
-        ],
+        children: [CostumWidget.labelText(context, tagName)],
       ),
     );
   }

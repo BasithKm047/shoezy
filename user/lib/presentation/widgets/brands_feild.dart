@@ -50,7 +50,7 @@ class BrandsFeild extends StatelessWidget {
                 backgroundColor: AppColors.white,
                 backgroundImage: NetworkImage(imagePath),
                 onBackgroundImageError: (exception, stackTrace) =>
-                    ShimmerLoading.shimmerCircular(size: 80),
+                    AnimationLoading.shimmerCircular(size: 80),
              
               ),
             ),

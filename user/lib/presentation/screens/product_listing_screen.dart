@@ -5,6 +5,7 @@ import 'package:shoezy/application/bloc/favourite/cubit/favourie_cubit.dart';
 import 'package:shoezy/application/bloc/favourite/cubit/favourie_state.dart';
 import 'package:shoezy/data/models/product/product_model.dart';
 import 'package:shoezy/presentation/widgets/product_grid_card.dart';
+import 'package:shoezy/presentation/widgets/shimmer_loading.dart';
 import 'package:shoezy/utils/const/colors.dart';
 
 class ProductListingScreen extends StatelessWidget {
@@ -40,11 +41,8 @@ class ProductListingScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(10),
         child: products.isEmpty
-            ? const Center(
-                child: Text(
-                  "No products available",
-                  style: TextStyle(color: Colors.grey),
-                ),
+            ?  Center(
+                child: AnimationLoading.spinnerAnimation()
               )
             : BlocBuilder<FavoritesCubit, FavoritesState>(
                 builder: (context, favouriteStatus) {

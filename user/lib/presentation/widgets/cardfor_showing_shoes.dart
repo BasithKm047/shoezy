@@ -28,7 +28,7 @@ class HorizontalProductList extends StatelessWidget {
     if (isLoading) {
       return SizedBox(
         height: 250,
-        child: ShimmerLoading.shimmerTagGrid(), // shimmer for horizontal scroll
+        child: AnimationLoading.shimmerTagGrid(), // shimmer for horizontal scroll
       );
     }
 
@@ -92,7 +92,7 @@ class HorizontalProductList extends StatelessWidget {
                       width: double.infinity,
                       loadingBuilder: (context, child, progress) {
                         if (progress == null) return child;
-                        return ShimmerLoading.shimmerImagePlaceholder(
+                        return AnimationLoading.shimmerImagePlaceholder(
                           height: double.infinity,
                           width: double.infinity,
                         );

@@ -35,7 +35,7 @@ class HorizontalTagSection extends StatelessWidget {
     if (isLoading ) {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
-        child: ShimmerLoading.shimmerTagGrid(),
+        child: AnimationLoading.shimmerTagGrid(),
       );
     }
 
@@ -153,7 +153,7 @@ class HorizontalTagSection extends StatelessWidget {
                   width: double.infinity,
                   loadingBuilder: (context, child, progress) {
                     if (progress == null) return child;
-                    return ShimmerLoading.shimmerImagePlaceholder(
+                    return AnimationLoading.shimmerImagePlaceholder(
                       height: double.infinity,
                       width: double.infinity,
                     );
