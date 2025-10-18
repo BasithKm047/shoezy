@@ -42,87 +42,97 @@ class BottomNavigation extends StatelessWidget {
 
     return BlocBuilder<BottomNavigationBarCubit, BottomNavigationBarState>(
       builder: (context, state) {
-        return Scaffold(
-          body: screens[state.index],
-          bottomNavigationBar: Padding(
-            padding: const EdgeInsets.only(bottom: 10,
-                left: 8, right: 8), // lift nav bar slightly up
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-              decoration: BoxDecoration(
-                color: navBarColor,
-                borderRadius: const BorderRadius.vertical(
-                  top: Radius.circular(22),
-                  bottom: Radius.circular(22) // smaller radius
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: isDark
-                        ? Colors.black.withOpacity(0.4)
-                        : Colors.grey.withOpacity(0.3),
-                    blurRadius: 10,
-                    offset: const Offset(0, -2),
+        return WillPopScope(
+          onWillPop: () async {
+            if (state.index != 0) {
+              context.read<BottomNavigationBarCubit>().changeIndex(0);
+              return false;
+            } else {
+              return true;
+            }
+          },
+          child: Scaffold(
+            body: screens[state.index],
+            bottomNavigationBar: Padding(
+              padding: const EdgeInsets.only(bottom: 10,
+                  left: 8, right: 8), // lift nav bar slightly up
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                decoration: BoxDecoration(
+                  color: navBarColor,
+                  borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(22),
+                    bottom: Radius.circular(22) // smaller radius
                   ),
-                ],
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: List.generate(navitems.length, (index) {
-                  final items = navitems[index];
-                  final isSelected = state.index == index;
-
-                  return GestureDetector(
-                    onTap: () => context
-                        .read<BottomNavigationBarCubit>()
-                        .changeIndex(index),
-                    child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 250),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 14,
-                        vertical: 8,
-                      ),
-                      decoration: BoxDecoration(
-                        color: isSelected ? activeColor : inactiveColor,
-                        borderRadius: BorderRadius.circular(22),
-                        boxShadow: isSelected
-                            ? [
-                                BoxShadow(
-                                  color: activeColor.withOpacity(0.4),
-                                  blurRadius: 8,
-                                  spreadRadius: 1,
-                                ),
-                              ]
-                            : [],
-                      ),
-                      child: Row(
-                        children: [
-                          Icon(
-                            items['icon'],
-                            color: isSelected ? Colors.black : iconColor,
-                            size: 24,
-                          ),
-                          if (isSelected)
-                            Padding(
-                              padding: const EdgeInsets.only(left: 6),
-                              child: Text(
-                                items['label'],
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium
-                                    ?.copyWith(
-                                      color: isDark
-                                          ? Colors.black
-                                          : Colors.black87,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                              ),
-                            ),
-                        ],
-                      ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: isDark
+                          ? Colors.black.withOpacity(0.4)
+                          : Colors.grey.withOpacity(0.3),
+                      blurRadius: 10,
+                      offset: const Offset(0, -2),
                     ),
-                  );
-                }),
+                  ],
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: List.generate(navitems.length, (index) {
+                    final items = navitems[index];
+                    final isSelected = state.index == index;
+          
+                    return GestureDetector(
+                      onTap: () => context
+                          .read<BottomNavigationBarCubit>()
+                          .changeIndex(index),
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 250),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 14,
+                          vertical: 8,
+                        ),
+                        decoration: BoxDecoration(
+                          color: isSelected ? activeColor : inactiveColor,
+                          borderRadius: BorderRadius.circular(22),
+                          boxShadow: isSelected
+                              ? [
+                                  BoxShadow(
+                                    color: activeColor.withOpacity(0.4),
+                                    blurRadius: 8,
+                                    spreadRadius: 1,
+                                  ),
+                                ]
+                              : [],
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              items['icon'],
+                              color: isSelected ? Colors.black : iconColor,
+                              size: 24,
+                            ),
+                            if (isSelected)
+                              Padding(
+                                padding: const EdgeInsets.only(left: 6),
+                                child: Text(
+                                  items['label'],
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.copyWith(
+                                        color: isDark
+                                            ? Colors.black
+                                            : Colors.black87,
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                ),
+                              ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }),
+                ),
               ),
             ),
           ),
