@@ -6,7 +6,9 @@ import 'package:logger/web.dart';
 import 'package:shoezy/application/bloc/product_bloc/bloc/product_bloc.dart';
 import 'package:shoezy/data/models/product/product_model.dart';
 import 'package:shoezy/presentation/widgets/drawer.dart';
+import 'package:shoezy/presentation/widgets/gender_tabbar.dart';
 import 'package:shoezy/presentation/widgets/home_screen_widgets.dart';
+import 'package:shoezy/presentation/widgets/horizontalGridview.dart';
 import 'package:shoezy/presentation/widgets/searchField.dart';
 import 'package:shoezy/utils/const/colors.dart';
 
@@ -18,11 +20,13 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final ValueNotifier<String> selectedGender = ValueNotifier("Male");
   List<ProductModel> products = [];
   @override
   void initState() {
     super.initState();
     context.read<ProductBloc>().add(ProductEvent.loadProducts());
+    selectedGender.value = "Male";
   }
 
   @override
@@ -66,26 +70,91 @@ class _HomeScreenState extends State<HomeScreen> {
                   carouselController,
                 ),
                 SizedBox(height: 10),
-                HomeScreenWidgets.tagLabel(
-                  screenWidth,
-                  context,
-                  'Top Rated',
-                  true,
-                ),
-                SizedBox(height: 5),
-
-                HomeScreenWidgets.tagProducts('Top Rated'),
-                SizedBox(height: 5),
-                HomeScreenWidgets.tagLabel(
-                  screenWidth,
-                  context,
-                  'Best Seller',
-                  true,
-                ),
+                GenderTabBar(selectedGender: selectedGender),
                 SizedBox(height: 10),
-                HomeScreenWidgets.tagProducts('Best Seller'),
 
-                SizedBox(height: 20),
+                BlocBuilder<ProductBloc, ProductState>(
+                  builder: (context, state) {
+                    final List<ProductModel> products = state.maybeWhen(
+                      orElse: () => [],
+                      loaded: (products) => products,
+                    );
+                    return ValueListenableBuilder<String>(
+                      valueListenable: selectedGender,
+                      builder: (context, gender, child) {
+                        final filteredProducts = products
+                            .where(
+                              (p) =>
+                                  p.gender.toLowerCase() ==
+                                      gender.toLowerCase() &&
+                                  p.tag.contains('Top Rated'),
+                            )
+                            .toList();
+                        Logger().d(filteredProducts);
+
+                        return HorizontalTagSection(
+                          gender: selectedGender.value,
+                          tagName: 'Top Rated',
+                          products: filteredProducts,
+                          isLoading: state.maybeWhen(
+                            orElse: () => false,
+                            loading: () => true,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
+
+                SizedBox(height: 10),
+                if (products.isNotEmpty)
+                  BlocBuilder<ProductBloc, ProductState>(
+                    builder: (context, state) {
+                      final List<ProductModel> products = state.maybeWhen(
+                        orElse: () => [],
+                        loaded: (products) => products,
+                      );
+                      return ValueListenableBuilder<String>(
+                        valueListenable: selectedGender,
+                        builder: (context, gender, child) {
+                          final filteredProducts = products
+                              .where(
+                                (p) =>
+                                    p.gender.toLowerCase() ==
+                                        gender.toLowerCase() &&
+                                    p.tag.contains('Best Seller'),
+                              )
+                              .toList();
+                          Logger().d(filteredProducts);
+
+                          return HorizontalTagSection(
+                            gender: selectedGender.value,
+                            tagName: 'Best Seller',
+                            products: filteredProducts,
+                            isLoading: state.maybeWhen(
+                              orElse: () => false,
+                              loading: () => true,
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  ),
+
+                // 'Best Seller'
+
+                // HomeScreenWidgets.tagProducts('Top Rated'),
+                // SizedBox(height: 5),
+                // HomeScreenWidgets.tagLabel(
+                //   screenWidth,
+                //   context,
+                // ,
+                //   true,
+                // ),
+                SizedBox(height: 10),
+                // HomeScreenWidgets.tagProducts('Best Seller'),
+
+                // SizedBox(height: 20),
               ],
             ),
           );

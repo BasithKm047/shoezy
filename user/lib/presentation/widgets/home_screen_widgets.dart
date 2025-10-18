@@ -218,74 +218,53 @@ class HomeScreenWidgets {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           CostumWidget.labelText(context, tagName),
-          if (isWantToSeeAll)
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => TagsDetailedShowingScreen(),
-                  ),
-                );
-              },
-
-              child: Text(
-                'See all',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: AppColors.blue,
-                  fontSize: 14,
-                ),
-              ),
-            ),
+         
         ],
       ),
     );
   }
 
-  static Padding tagProducts(String tagName) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 10.0),
-      child: BlocBuilder<ProductBloc, ProductState>(
-        builder: (context, state) {
-          final List<ProductModel> products = state.maybeWhen(
-            orElse: () => [],
-            loaded: (products) => products,
-          );
+  // static Padding tagProducts(String tagName) {
+  //   return Padding(
+  //     padding: const EdgeInsets.only(left: 10.0),
+  //     child: BlocBuilder<ProductBloc, ProductState>(
+  //       builder: (context, state) {
+  //         final List<ProductModel> products = state.maybeWhen(
+  //           orElse: () => [],
+  //           loaded: (products) => products,
+  //         );
 
-          state.maybeWhen(
-            orElse: () {},
+  //         state.maybeWhen(
+  //           orElse: () {},
 
-            loading: () {
-              return ShimmerLoading.buildShimmerGrid(
-                itemCount: 3,
-                mainAxisExtent: 280,
-              );
-            },
-          );
+  //           loading: () {
+  //             return ShimmerLoading.buildShimmerGrid(
+  //               itemCount: 3,
+  //               mainAxisExtent: 280,
+  //             );
+  //           },
+  //         );
 
-          final filteredByTag = products
-              .where((p) => p.tag.contains(tagName))
-              .toList();
-          // Logger().d(filteredByTag);
+  //         final filteredByTag = products
+  //             .where((p) => p.tag.contains(tagName))
+  //             .toList();
+  //         // Logger().d(filteredByTag);
 
-          return SizedBox(
-            height: 220.0,
-            child: ListView.separated(
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                return CardforShowingShoes(
-                  width: 150.0,
-                  imageUrl: filteredByTag[index].image.first,
-                  price: filteredByTag[index].price,
-                  shoeName: filteredByTag[index].productName,
-                  tag: filteredByTag[index].tag,
-                );
-              },
-              itemCount: filteredByTag.length,
-              separatorBuilder: (context, index) => SizedBox(width: 20),
-            ),
-          );
-        },
-      ),
-    );
-  }
+  //         return SizedBox(
+  //           height: 300.0,
+  //           child: ListView.separated(
+  //             scrollDirection: Axis.horizontal,
+  //             itemBuilder: (context, index) {
+  //               return CardforShowingShoesGrid(
+  //             gender: ,
+  //               );
+  //             },
+  //             itemCount: filteredByTag.length,
+  //             separatorBuilder: (context, index) => SizedBox(width:1),
+  //           ),
+  //         );
+  //       },
+  //     ),
+  //   );
+  // }
 }

@@ -1,70 +1,101 @@
 import 'package:flutter/material.dart';
-import 'package:shoezy/presentation/widgets/costum_widget.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shoezy/application/bloc/favourite/cubit/favourie_cubit.dart';
+import 'package:shoezy/data/models/product/product_model.dart';
 import 'package:shoezy/presentation/widgets/shimmer_loading.dart';
 import 'package:shoezy/utils/const/colors.dart';
 
-class CardforShowingShoes extends StatelessWidget {
-  final double? height;
-  final double? width;
-  final String imageUrl;
-  final String tag;
-  final String shoeName;
-  final String price;
-  const CardforShowingShoes({
+class HorizontalProductList extends StatelessWidget {
+  final String tagName;
+  // final String gender;
+  final List<ProductModel> products;
+  final bool isLoading;
+
+  const HorizontalProductList({
     super.key,
-    this.height,
-    this.width,
-    required this.imageUrl,
-    required this.price,
-    required this.shoeName,
-    required this.tag,
+    required this.tagName,
+    // required this.gender,
+    required this.products,
+    this.isLoading = true,
   });
 
   @override
   Widget build(BuildContext context) {
+    final filteredProducts = products
+        .where((p) => p.tag.contains(tagName))
+        .toList();
+
+    if (isLoading) {
+      return SizedBox(
+        height: 250,
+        child: ShimmerLoading.shimmerTagGrid(), // shimmer for horizontal scroll
+      );
+    }
+
+    if (filteredProducts.isEmpty) {
+      return Center(child: Text("No products found"));
+    }
+
+    return SizedBox(
+      height: 250, // adjust height as needed
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        itemCount: filteredProducts.length,
+        itemBuilder: (context, index) {
+          final product = filteredProducts[index];
+          return Padding(
+            padding: const EdgeInsets.only(right: 12.0),
+            child: _productCard(context, product),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _productCard(BuildContext context, ProductModel product) {
+    onFavouriteTap() {
+      context.read<FavoritesCubit>().toggleFavorite(product);
+    }
+
+    final isFavourite = context.watch<FavoritesCubit>().isFavorite(product);
+
     return GestureDetector(
-      onTap: () {
-        
-      },
-      child: Card(
-        elevation: 2,
-        shadowColor: AppColors.white,
-      
-        color: AppColors.white,
-      
-        child: Container(
-          height: height,
-          width: width,
-          decoration: BoxDecoration(
-            // gradient: LinearGradient(
-            //   colors: [Colors.white, Colors.grey.shade100],
-            //   begin: Alignment.topCenter,
-            //   end: Alignment.bottomCenter,
-            // ),
-            color: AppColors.white,
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(height: 7),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(15),
-                  child: AspectRatio(
-                    aspectRatio: 1.4,
+      onTap: () {},
+      child: Container(
+        width: 180, // width of each card
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.06),
+              blurRadius: 6,
+              offset: const Offset(2, 3),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              flex: 7,
+              child: Stack(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(12),
+                    ),
                     child: Image.network(
-                      imageUrl,
+                      product.image.first,
                       fit: BoxFit.cover,
-                
-                      // height: 114,
-                      // width: 200,
-                      alignment: Alignment.center,
-                      loadingBuilder: (context, child, loadingProgress) {
-                        if (loadingProgress == null) return child;
-                        return ShimmerLoading.shimmerImagePlaceholder(height: 150, width: double.infinity);
+                      width: double.infinity,
+                      loadingBuilder: (context, child, progress) {
+                        if (progress == null) return child;
+                        return ShimmerLoading.shimmerImagePlaceholder(
+                          height: double.infinity,
+                          width: double.infinity,
+                        );
                       },
                       errorBuilder: (context, error, stackTrace) => Icon(
                         Icons.image_not_supported,
@@ -73,36 +104,63 @@ class CardforShowingShoes extends StatelessWidget {
                       ),
                     ),
                   ),
+                  Positioned(
+                    top: 8,
+                    right: 8,
+                    child: GestureDetector(
+                      onTap: onFavouriteTap,
+                      child: Container(
+                        padding: EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.8),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          isFavourite ? Icons.favorite : Icons.favorite_border,
+                          color: isFavourite ? Colors.red : Colors.grey,
+                          size: 18,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            Expanded(
+              flex: 3,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 8.0,
+                  vertical: 6.0,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      product.productName,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black87,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      "₹${product.price}",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.blue,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              SizedBox(height: 15),
-              CostumWidget.labelText(
-                context,
-                tag,
-                color: AppColors.blue,
-                fontSize: 13.0,
-                fontWeight: FontWeight.w500,
-              ),
-              //  SizedBox(height: 3,),
-              CostumWidget.labelText(
-                context,
-                shoeName,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: AppColors.black,
-              ),
-              SizedBox(height: 5),
-      
-              CostumWidget.labelText(
-                context,
-                '₹$price',
-                color: AppColors.black,
-                fontSize: 14.0,
-                fontWeight: FontWeight.w700,
-              ),
-              SizedBox(height: 3),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
