@@ -5,6 +5,7 @@ import 'package:shimmer/shimmer.dart';
 import 'package:shoezy/application/bloc/brand_bloc/brand_bloc.dart';
 import 'package:shoezy/application/bloc/product_bloc/bloc/product_bloc.dart';
 import 'package:shoezy/data/models/product/product_model.dart';
+import 'package:shoezy/presentation/screens/brand_field_screen.dart';
 import 'package:shoezy/presentation/screens/home_screen.dart';
 import 'package:shoezy/presentation/widgets/brands_feild.dart';
 import 'package:shoezy/presentation/widgets/carousel_card.dart';
@@ -80,19 +81,23 @@ class HomeScreenWidgets {
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: GestureDetector(
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: GestureDetector(
                     onTap: () {
-                      
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => BrandFieldScreen(product: products,),
+                        ),
+                      );
                     },
-                                    
+
                     child: Text(
                       "See All →",
                       style: TextStyle(color: AppColors.blue),
                     ),
-                                    ),
                   ),
+                ),
                 SizedBox(
                   height: 140,
                   child: ListView.separated(
@@ -111,7 +116,6 @@ class HomeScreenWidgets {
                     itemCount: brands.length,
                   ),
                 ),
-              
               ],
             ),
           );
