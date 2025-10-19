@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoezy/application/bloc/favourite/cubit/favourie_cubit.dart';
 import 'package:shoezy/data/models/product/product_model.dart';
+import 'package:shoezy/presentation/widgets/lottie_widgets.dart';
 import 'package:shoezy/presentation/widgets/shimmer_loading.dart';
 import 'package:shoezy/utils/const/colors.dart';
 
@@ -33,11 +34,11 @@ class HorizontalProductList extends StatelessWidget {
     }
 
     if (filteredProducts.isEmpty) {
-      return Center(child: Text("No products found"));
+      return Center(child: LottieWidgets.noData('Product', context ,));
     }
 
     return SizedBox(
-      height: 250, // adjust height as needed
+      height: 250, 
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -63,7 +64,7 @@ class HorizontalProductList extends StatelessWidget {
     return GestureDetector(
       onTap: () {},
       child: Container(
-        width: 180, // width of each card
+        width: 180, 
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
           color: Colors.white,

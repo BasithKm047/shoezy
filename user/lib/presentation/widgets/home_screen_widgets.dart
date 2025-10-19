@@ -11,6 +11,7 @@ import 'package:shoezy/presentation/widgets/brands_feild.dart';
 import 'package:shoezy/presentation/widgets/carousel_card.dart';
 import 'package:shoezy/presentation/widgets/costum_widget.dart';
 import 'package:shoezy/presentation/widgets/dots_button.dart';
+import 'package:shoezy/presentation/widgets/lottie_widgets.dart';
 import 'package:shoezy/presentation/widgets/shimmer_loading.dart';
 import 'package:shoezy/utils/const/colors.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -87,7 +88,8 @@ class HomeScreenWidgets {
                     onTap: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => BrandFieldScreen(product: products,),
+                          builder: (context) =>
+                              BrandFieldScreen(product: products),
                         ),
                       );
                     },
@@ -98,24 +100,28 @@ class HomeScreenWidgets {
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: 140,
-                  child: ListView.separated(
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      return BrandsFeild(
-                        products: products
-                            .where((p) => p.brandName == brands[index].name)
-                            .toList(),
+                if (brands.isEmpty)
+                  Center(child: LottieWidgets.noData('Brand', context)),
 
-                        imagePath: brands[index].imageUrl,
-                        name: brands[index].name,
-                      );
-                    },
-                    separatorBuilder: (context, index) => SizedBox(width: 20),
-                    itemCount: brands.length,
+                if (brands.isNotEmpty)
+                  SizedBox(
+                    height: 140,
+                    child: ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) {
+                        return BrandsFeild(
+                          products: products
+                              .where((p) => p.brandName == brands[index].name)
+                              .toList(),
+
+                          imagePath: brands[index].imageUrl,
+                          name: brands[index].name,
+                        );
+                      },
+                      separatorBuilder: (context, index) => SizedBox(width: 20),
+                      itemCount: brands.length,
+                    ),
                   ),
-                ),
               ],
             ),
           );

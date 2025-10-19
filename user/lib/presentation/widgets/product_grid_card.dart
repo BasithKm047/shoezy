@@ -98,7 +98,6 @@ class ProductGridCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Rating and reviews
                   Row(
                     children: [
                       Icon(Icons.star, size: 14, color: AppColors.green),
@@ -122,7 +121,6 @@ class ProductGridCard extends StatelessWidget {
                   ),
                   SizedBox(height: 4),
 
-                  // Brand Name
                   Text(
                     product.brandName,
                     style: const TextStyle(
@@ -132,7 +130,6 @@ class ProductGridCard extends StatelessWidget {
                   ),
                   SizedBox(height: 2),
 
-                  // Product Name
                   Text(
                     product.productName,
                     maxLines: 1,
@@ -145,7 +142,6 @@ class ProductGridCard extends StatelessWidget {
                   ),
                   SizedBox(height: 6),
 
-                  // Price and Tag
                   Row(
                     children: [
                       Text(
