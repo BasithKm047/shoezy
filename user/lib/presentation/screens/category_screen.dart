@@ -6,7 +6,7 @@ import 'package:shoezy/application/bloc/product_bloc/bloc/product_bloc.dart';
 import 'package:shoezy/data/models/category/category_model.dart';
 import 'package:shoezy/data/models/product/product_model.dart';
 import 'package:shoezy/presentation/screens/product_listing_screen.dart';
-import 'package:shoezy/presentation/widgets/shimmer_loading.dart';
+import 'package:shoezy/presentation/widgets/loading_state_manager.dart';
 
 class CategoryScreen extends StatelessWidget {
   const CategoryScreen({super.key});
@@ -32,19 +32,12 @@ class CategoryScreen extends StatelessWidget {
             );
             Logger().d(categories);
 
-            state.maybeWhen(
-              orElse: () {},
-              loading: () {
-                return Scaffold(body: AnimationLoading.spinnerAnimation());
-              },
+            final isLoading = state.maybeWhen(
+              orElse: () => false,
+              loading: () => true,
             );
 
-            state.maybeWhen(
-              orElse: () {},
-              error: (message) {
-                return Scaffold(body: Center(child: Text(message)));
-              },
-            );
+            final isEmpty = categories.isEmpty;
 
             return Scaffold(
               appBar: PreferredSize(
@@ -70,54 +63,58 @@ class CategoryScreen extends StatelessWidget {
                 ),
               ),
 
-              body: categories.isNotEmpty
-                  ? ListView.separated(
-                      itemCount: categories.length,
-                      separatorBuilder: (context, index) => Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: const Divider(height: 1, color: Colors.grey),
+              body: LoadingStateManager(
+                isLoading: isLoading,
+                isEmpty: isEmpty,
+                emptyMessage: 'No categories available',
+                lottieAsset: 'asset/empty-box_2.json',
+                child: ListView.separated(
+                  itemCount: categories.length,
+                  separatorBuilder: (context, index) => Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: const Divider(height: 1, color: Colors.grey),
+                  ),
+                  itemBuilder: (context, index) {
+                    final category = categories[index];
+                    return ListTile(
+                      leading: Image.network(
+                        category.image,
+                        width: 60,
+                        height: 60,
+                        fit: BoxFit.cover,
                       ),
-                      itemBuilder: (context, index) {
-                        final category = categories[index];
-                        return ListTile(
-                          leading: Image.network(
-                            category.image,
-                            width: 60,
-                            height: 60,
-                            fit: BoxFit.cover,
-                          ),
-                          title: Text(
-                            category.name.toUpperCase(),
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w500,
-                              letterSpacing: 1.2,
+                      title: Text(
+                        category.name.toUpperCase(),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w500,
+                          letterSpacing: 1.2,
+                        ),
+                      ),
+                      trailing: const Icon(
+                        Icons.arrow_forward_ios,
+                        size: 16,
+                      ),
+                      onTap: () {
+                        final filteredProducts = products
+                            .where(
+                              (p) =>
+                                  p.categoryName.toLowerCase() ==
+                                  category.name.toLowerCase(),
+                            )
+                            .toList();
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => ProductListingScreen(
+                              products: filteredProducts,
+                              title: category.name,
                             ),
                           ),
-                          trailing: const Icon(
-                            Icons.arrow_forward_ios,
-                            size: 16,
-                          ),
-                          onTap: () {
-                            final filteredProducts = products
-                                .where(
-                                  (p) =>
-                                      p.categoryName.toLowerCase() ==
-                                      category.name.toLowerCase(),
-                                )
-                                .toList();
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => ProductListingScreen(
-                                  products: filteredProducts,
-                                  title: category.name,
-                                ),
-                              ),
-                            );
-                          },
                         );
                       },
-                    )
-                  : Center(child: AnimationLoading.spinnerAnimation()),
+                    );
+                  },
+                ),
+              ),
             );
           },
         );

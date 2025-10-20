@@ -9,7 +9,7 @@ import 'package:shoezy/presentation/widgets/gender_tabbar.dart';
 import 'package:shoezy/presentation/widgets/home_screen_widgets.dart';
 import 'package:shoezy/presentation/widgets/horizontalGridview.dart';
 import 'package:shoezy/presentation/widgets/searchField.dart';
-import 'package:shoezy/presentation/widgets/shimmer_loading.dart';
+import 'package:shoezy/presentation/widgets/loading_state_manager.dart';
 import 'package:shoezy/utils/const/colors.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -46,12 +46,20 @@ class _HomeScreenState extends State<HomeScreen> {
             orElse: () => [],
             loaded: (products) => products,
           );
-          if (products.isEmpty) {
-            return AnimationLoading.spinnerAnimation();
-          }
-          Logger().d(products.first);
+          
+          final isLoading = state.maybeWhen(
+            orElse: () => false,
+            loading: () => true,
+          );
+          
+          final isEmpty = products.isEmpty;
 
-          return SingleChildScrollView(
+          return LoadingStateManager(
+            isLoading: isLoading,
+            isEmpty: isEmpty,
+            emptyMessage: 'No products available',
+            lottieAsset: 'asset/empty-box_2.json',
+            child: SingleChildScrollView(
             child: Column(
               children: [
                 Center(child: Searchfield(screenWidth: screenWidth)),
@@ -156,6 +164,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                 // SizedBox(height: 20),
               ],
+            ),
             ),
           );
         },
