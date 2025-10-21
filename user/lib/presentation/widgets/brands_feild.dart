@@ -47,8 +47,11 @@ class BrandsFeild extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(1.0),
               child: CircleAvatar(
+                radius: 40,
                 backgroundColor: AppColors.white,
-                backgroundImage: NetworkImage(imagePath),
+                backgroundImage: NetworkImage(imagePath,
+                
+                ),
                 onBackgroundImageError: (exception, stackTrace) =>
                     AnimationLoading.shimmerCircular(size: 80),
              

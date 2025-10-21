@@ -20,13 +20,13 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final ValueNotifier<String> selectedGender = ValueNotifier("Male");
+  final ValueNotifier<String> selectedGender = ValueNotifier("Men");
   List<ProductModel> products = [];
   @override
   void initState() {
     super.initState();
     context.read<ProductBloc>().add(ProductEvent.loadProducts());
-    selectedGender.value = "Male";
+    selectedGender.value = "Men";
   }
 
   @override
@@ -130,14 +130,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                 (p) =>
                                     p.gender.toLowerCase() ==
                                         gender.toLowerCase() &&
-                                    p.tag.contains('Best Seller'),
+                                    p.tag.contains('New Arrival'),
                               )
                               .toList();
                           Logger().d(filteredProducts);
 
                           return HorizontalTagSection(
                             gender: selectedGender.value,
-                            tagName: 'Best Seller',
+                            tagName: 'New Arrival',
                             products: filteredProducts,
                             isLoading: state.maybeWhen(
                               orElse: () => false,

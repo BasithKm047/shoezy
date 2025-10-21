@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:logger/web.dart';
 import 'package:shoezy/data/models/product/product_model.dart';
 
 class ProductRepository {
@@ -56,7 +55,7 @@ class ProductRepository {
         );
       }).toList();
     } catch (e) {
-      Logger().d('Error fetching products: $e');
+      // Logger().d('Error fetching products: $e');
       rethrow;
     }
   }

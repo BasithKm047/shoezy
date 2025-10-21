@@ -114,7 +114,7 @@ class HomeScreenWidgets {
                               .where((p) => p.brandName == brands[index].name)
                               .toList(),
 
-                          imagePath: brands[index].imageUrl,
+                          imagePath: brands[index].logoImage ??'',
                           name: brands[index].name,
                         );
                       },
@@ -248,48 +248,5 @@ class HomeScreenWidgets {
       ),
     );
   }
-
-  // static Padding tagProducts(String tagName) {
-  //   return Padding(
-  //     padding: const EdgeInsets.only(left: 10.0),
-  //     child: BlocBuilder<ProductBloc, ProductState>(
-  //       builder: (context, state) {
-  //         final List<ProductModel> products = state.maybeWhen(
-  //           orElse: () => [],
-  //           loaded: (products) => products,
-  //         );
-
-  //         state.maybeWhen(
-  //           orElse: () {},
-
-  //           loading: () {
-  //             return ShimmerLoading.buildShimmerGrid(
-  //               itemCount: 3,
-  //               mainAxisExtent: 280,
-  //             );
-  //           },
-  //         );
-
-  //         final filteredByTag = products
-  //             .where((p) => p.tag.contains(tagName))
-  //             .toList();
-  //         // Logger().d(filteredByTag);
-
-  //         return SizedBox(
-  //           height: 300.0,
-  //           child: ListView.separated(
-  //             scrollDirection: Axis.horizontal,
-  //             itemBuilder: (context, index) {
-  //               return CardforShowingShoesGrid(
-  //             gender: ,
-  //               );
-  //             },
-  //             itemCount: filteredByTag.length,
-  //             separatorBuilder: (context, index) => SizedBox(width:1),
-  //           ),
-  //         );
-  //       },
-  //     ),
-  //   );
-  // }
+  
 }

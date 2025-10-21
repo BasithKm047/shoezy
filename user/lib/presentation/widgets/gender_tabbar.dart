@@ -6,7 +6,7 @@ class GenderTabBar extends StatelessWidget {
 
   const GenderTabBar({super.key, required this.selectedGender});
 
-  final genders = const ["Male", "Female", "Kids",];
+  final genders = const ["Men", "Women", "Kids",];
 
   @override
   Widget build(BuildContext context) {

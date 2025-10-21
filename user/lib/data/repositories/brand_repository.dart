@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:logger/logger.dart';
 import 'package:shoezy/data/models/brand_model.dart';
 
 class BrandRepository {
@@ -14,7 +13,7 @@ class BrandRepository {
         return BrandModel.fromMap(data, b.id);
       }).toList();
     } catch (e) {
-      Logger().d('Error fetching brands: $e');
+      // Logger().d('Error fetching brands: $e');
       rethrow;
     }
   }

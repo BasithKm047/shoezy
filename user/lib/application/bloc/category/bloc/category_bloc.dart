@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:logger/logger.dart';
 // ignore: depend_on_referenced_packages
 import 'package:shoezy/data/models/category/category_model.dart';
 import 'package:shoezy/data/repositories/category_repository.dart';
@@ -16,9 +15,9 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
       try {
         final categories = await categoryRepository.getCategories();
         emit(_Loaded(categories));
-        for (var cat in categories) {
-          Logger().d('Category: ${cat.name}, Image: ${cat.image}');
-        }
+        // for (var cat in categories) {
+        //   // Logger().d('Category: ${cat.name}, Image: ${cat.image}');
+        // }
       } catch (e) {
         emit(_Error(e.toString()));
       }
