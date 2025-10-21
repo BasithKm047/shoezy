@@ -1,6 +1,5 @@
 // ignore: depend_on_referenced_packages
 import 'package:bloc/bloc.dart';
-import 'package:logger/logger.dart';
 // ignore: depend_on_referenced_packages
 import 'package:meta/meta.dart';
 
@@ -11,11 +10,11 @@ class GenderCubit extends Cubit<GenderState> {
 
   void selectGender(String gender) {
     emit(GenderSelected(gender));
-    Logger().i('Selected Gender: $gender');
+    // Logger().i('Selected Gender: $gender');
   }
 
   void clearGender() {
     emit(GenderInitial());
-    Logger().i('Gender Cleared');
+    // Logger().i('Gender Cleared');
   }
 }

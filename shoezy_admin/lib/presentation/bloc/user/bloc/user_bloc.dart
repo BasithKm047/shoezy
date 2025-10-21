@@ -1,7 +1,6 @@
 // ignore: depend_on_referenced_packages
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:logger/logger.dart';
 import 'package:shoezy_admin/data/model/user/userModel.dart';
 import 'package:shoezy_admin/data/repositories/user_services.dart';
 
@@ -18,9 +17,9 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       try {
         final users = await userServices.fetchUsers();
         emit(UserLoaded(users));
-        Logger().d('Users fetched successfully');
+        // Logger().d('Users fetched successfully');
       } catch (e) {
-        Logger().e('Error fetching users: $e');
+        // Logger().e('Error fetching users: $e');
         emit(UserError(e.toString()));
 
       }
@@ -29,31 +28,31 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       try {
         final users = await userServices.searchUsers(event.query);
         emit(UserLoaded(users));
-        Logger().d('Users searched successfully');
+        // Logger().d('Users searched successfully');
       } catch (e) {
-        Logger().e('Error searching users: $e');
+        // Logger().e('Error searching users: $e');
         emit(UserError(e.toString()));
       }
     });
     on<BlockUnblockUser>((event, emit) async {
       try {
         await userServices.updateUserBlocked(event.user);
-        Logger().d('User block/unblock status updated successfully');
+        // Logger().d('User block/unblock status updated successfully');
         final users = await userServices.fetchUsers();
         emit(UserLoaded(users));
       } catch (e) {
-        Logger().e('Error updating user block/unblock status: $e');
+        // Logger().e('Error updating user block/unblock status: $e');
         emit(UserError(e.toString()));
       }
     });
     on<DeleteUser>((event, emit) async {
       try {
         await userServices.deleteUser(event.id);
-        Logger().d('User deleted successfully');
+        // Logger().d('User deleted successfully');
         final users = await userServices.fetchUsers();
         emit(UserLoaded(users));
       } catch (e) {
-        Logger().e('Error deleting user: $e');
+        // Logger().e('Error deleting user: $e');
         emit(UserError(e.toString()));
       }
     });

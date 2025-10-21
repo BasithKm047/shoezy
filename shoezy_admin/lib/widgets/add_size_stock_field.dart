@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logger/logger.dart';
 import 'package:shoezy_admin/data/model/size_stock_model.dart/size_stock_model.dart';
 import 'package:shoezy_admin/presentation/bloc/size_stock/bloc/size_stock_bloc.dart';
 import 'package:shoezy_admin/widgets/costumWidget.dart';
@@ -43,9 +42,9 @@ class AddSizeStockField {
                                   content:
                                       'Are you sure you want to delete size ${sizeStock.size}?',
                                   onConfirm: () {
-                                    Logger().i(
-                                      'Removing SizeStockModel: Size=${sizeStock.size}, Stock=${sizeStock.stock}',
-                                    );
+                                    // Logger().i(
+                                    //   'Removing SizeStockModel: Size=${sizeStock.size}, Stock=${sizeStock.stock}',
+                                    // );
 
                                     context.read<SizeStockBloc>().add(
                                       SizeStockEvent.removedSizeStock(
@@ -114,7 +113,7 @@ class AddSizeStockField {
           context: context,
           text: 'Add Size',
           ontap: () {
-            Logger().i('Add Size button tapped');
+            // Logger().i('Add Size button tapped');
             if (formKey.currentState!.validate()) {
               final List<SizeStockModel> sizeStock = [
                 SizeStockModel(
@@ -125,9 +124,9 @@ class AddSizeStockField {
               context.read<SizeStockBloc>().add(
                 SizeStockEvent.addedSizeStock(sizeStock),
               );
-              Logger().i(
-                'SizeStockModel added: Size=${sizeController.text}, Stock=${stockController.text}',
-              );
+              // Logger().i(
+              //   'SizeStockModel added: Size=${sizeController.text}, Stock=${stockController.text}',
+              // );
               sizeController.clear();
               stockController.clear();
             } else {

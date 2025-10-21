@@ -5,7 +5,7 @@ part 'product_model.freezed.dart';
 part 'product_model.g.dart';
 
 @freezed
-@JsonSerializable(explicitToJson: true)
+// @JsonSerializable(explicitToJson: true)
 abstract class ProductModel with _$ProductModel {
   const factory ProductModel({
     String? id,

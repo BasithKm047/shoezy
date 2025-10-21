@@ -3,7 +3,6 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:logger/logger.dart';
 import 'package:shoezy_admin/data/model/vareintModel/varientsModel.dart';
 import 'package:shoezy_admin/data/repositories/cloudinary_services.dart';
 import 'package:shoezy_admin/fetures/utils/const/commonFunction.dart';
@@ -58,7 +57,7 @@ class VariantAddingFeilds {
             context.read<VariantsBloc>().add(
               VariantsEvent.imageUpload(changedImages ),
             );
-            Logger().i('Images updated:  images selected');
+            // Logger().i('Images updated:  images selected');
           },
           onImageRemoved: (index) {
             final List<Uint8List> imagetoCheck = state.maybeWhen(
@@ -71,9 +70,9 @@ class VariantAddingFeilds {
               context.read<VariantsBloc>().add(
                 VariantsEvent.imageRemoved(index),
               );
-              Logger().i('Image removal requested at index: $index');
+              // Logger().i('Image removal requested at index: $index');
             } else {
-              Logger().w('Invalid index for image removal: $index');
+              // Logger().w('Invalid index for image removal: $index');
             }
           },
         );
@@ -94,7 +93,7 @@ class VariantAddingFeilds {
         },
         builder: (context, state) {
           // Handle loading state
-          Logger().i('Current state: $state');
+          // Logger().i('Current state: $state');
           return state.maybeWhen(
             loading: () => Center(
               child: Column(
@@ -114,7 +113,7 @@ class VariantAddingFeilds {
               ),
             ),
             data: (images, variants, showFields) {
-              Logger().i('Variants in data state: $variants'); // Log variants
+              // Logger().i('Variants in data state: $variants'); // Log variants
               if (variants.isEmpty) {
                 return Center(
                   child: Column(
@@ -257,11 +256,11 @@ class VariantAddingFeilds {
                               content: 'Are you sure you want to delete this variant?',
                               onConfirm: () { 
                                 // Navigator.of(context).pop(); //
-                                Logger().i('Delete confirmed for variant: $variant');
+                                // Logger().i('Delete confirmed for variant: $variant');
                                 context.read<VariantsBloc>().add(
                                   VariantsEvent.removeVariants(variant),
                                 );  
-                                 Logger().i('Variant removed: $variant');
+                                //  Logger().i('Variant removed: $variant');
                               },
                             );
                           },
@@ -275,9 +274,9 @@ class VariantAddingFeilds {
               );
             },
             orElse: () {
-              Logger().i(
-                'orElse state triggered',
-              ); // Log when orElse is triggered
+              // Logger().i(
+              //   'orElse state triggered',
+              // ); // Log when orElse is triggered
               return Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -326,7 +325,7 @@ class VariantAddingFeilds {
               ontap: isLoading
                   ? null
                   : () async {
-                    Logger().i('Add Variants button pressed');
+                    // Logger().i('Add Variants button pressed');
                       final images = state.maybeWhen(
                         orElse: () {},
                         data: (images, variants, showFields) => images,
@@ -335,17 +334,17 @@ class VariantAddingFeilds {
                       );
                       // Logger().i('Images to validate: $images');
                       if (!Commonfunction.imageValidator(images! , context)) {
-                      Logger().i('Image validation failed');
+                      // Logger().i('Image validation failed');
                       LoadingOverlay.hide();
                       return;
                     }
                     if (!formKey.currentState!.validate()) {
-                      Logger().i('Form validation failed');
+                      // Logger().i('Form validation failed');
                       LoadingOverlay.hide();
                       return;
                     }
                     
-                      Logger().i('Form validated, submitting...');
+                      // Logger().i('Form validated, submitting...');
                       Commonfunction.validateAndSubmitForm(
                         context: context,
                         formKey: formKey,
@@ -362,20 +361,20 @@ class VariantAddingFeilds {
                           images: cloudImages,
                         ),
                       ];
-                      Logger().i('Adding variants: $variants');
+                      // Logger().i('Adding variants: $variants');
                       context.read<VariantsBloc>().add(
                         VariantsEvent.addVariants(variants),
                       );
                       colorController.clear();
                       sizeController.clear();
                       stockController.clear();
-                      Logger().i('Clearing form and resetting images');
+                      // Logger().i('Clearing form and resetting images');
                       context.read<VariantsBloc>().add(
                         VariantsEvent.resetImgae(),
                       );
                     }
                     catch(e){
-                      Logger().e('Error during variant addition: $e');
+                      // Logger().e('Error during variant addition: $e');
                       LoadingOverlay.hide();
                       CostumWidget.showCustomSnackbar(
                         context: context,

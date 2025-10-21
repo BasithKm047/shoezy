@@ -10,6 +10,7 @@ _BrandModel _$BrandModelFromJson(Map<String, dynamic> json) => _BrandModel(
   id: json['id'] as String?,
   name: json['name'] as String,
   imageUrl: json['imageUrl'] as String?,
+  logoImage: json['logoImage'] as String?,
 );
 
 Map<String, dynamic> _$BrandModelToJson(_BrandModel instance) =>
@@ -17,4 +18,5 @@ Map<String, dynamic> _$BrandModelToJson(_BrandModel instance) =>
       'id': instance.id,
       'name': instance.name,
       'imageUrl': instance.imageUrl,
+      'logoImage': instance.logoImage,
     };

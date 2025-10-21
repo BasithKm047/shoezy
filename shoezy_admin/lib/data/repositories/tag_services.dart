@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:logger/logger.dart';
 import 'package:shoezy_admin/data/model/tag/tag_model.dart';
 import 'package:shoezy_admin/fetures/core/id.dart';
 
@@ -13,7 +12,7 @@ class TagServices {
       final tags = TagModel(name: tagsmodel.name);
       await db.doc(id).set(tags.toJson());
     } catch (e) {
-      Logger().d('Error adding tags: $e');
+      // Logger().d('Error adding tags: $e');
       rethrow;
     }
   }
@@ -26,7 +25,7 @@ class TagServices {
         return TagModel.fromJson(data).copyWith(id: e.id);
       }).toList();
     } catch (e) {
-      Logger().d('Error fetching tags: $e');
+      // Logger().d('Error fetching tags: $e');
       rethrow;
     }
   }
@@ -35,7 +34,7 @@ class TagServices {
     try {
       await db.doc(tagsmodel.id).update(tagsmodel.toJson());
     } catch (e) {
-      Logger().d('Error updating tags: $e');
+      // Logger().d('Error updating tags: $e');
       rethrow;
     }
   }
@@ -44,7 +43,7 @@ class TagServices {
     try {
       await db.doc(id).delete();
     } catch (e) {
-      Logger().d('Error deleting tags: $e');
+      // Logger().d('Error deleting tags: $e');
       rethrow;
     }
   }
@@ -60,7 +59,7 @@ Future<List<TagModel>> searchTag(String query) async {
       return TagModel.fromJson(data).copyWith(id: tag.id);
     }).toList();
   } catch (e) {
-    Logger().e('Error searching tags: $e');
+    // Logger().e('Error searching tags: $e');
     rethrow;
   }
 }

@@ -79,10 +79,10 @@ class CostumImageUploader extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          singleMode ? 'Example Image' : 'Example Images',
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-        ),
+        // Text(
+        //   singleMode ? 'Example Image' : 'Example Images',
+        //   style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+        // ),
         const SizedBox(height: 12),
 
         // --- SINGLE MODE ---

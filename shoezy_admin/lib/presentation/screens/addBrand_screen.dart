@@ -9,6 +9,7 @@ import 'package:shoezy_admin/presentation/bloc/brand/bloc/brand_bloc.dart';
 import 'package:shoezy_admin/widgets/costumWidget.dart';
 import 'package:shoezy_admin/widgets/imageUploader.dart';
 import 'package:shoezy_admin/widgets/loading_overlay.dart';
+import 'package:shoezy_admin/widgets/log_image_picker.dart';
 
 // ignore: must_be_immutable
 class AddbrandScreen extends StatelessWidget {
@@ -53,12 +54,19 @@ class AddbrandScreen extends StatelessWidget {
                 );
               },
               loading: () {
-                Logger().d('Loading...');
+                // Logger().d('Loading...');
               },
             );
           },
           builder: (context, state) {
-            Logger().d('Current state: $state');
+            final logoImage = state.maybeWhen(
+              orElse: () => null,
+              imagesUpdated: (logoimage, brandImage) => logoimage,
+            );
+           
+           
+
+            // Logger().d('Current state: $state');
             // ignore: unnecessary_type_check
             if (state is BrandState &&
                 state.maybeWhen(orElse: () => false, loading: () => true)) {
@@ -79,8 +87,19 @@ class AddbrandScreen extends StatelessWidget {
                       const SizedBox(height: 10),
                       brandNamingField(screenWidth),
                       const SizedBox(height: 30),
-                      CostumWidget.labelText(context, 'Logo'),
+                      LogoPicker(
+                        logo:logoImage,
+                        onLogoSelected: (image) {
+                          context.read<BrandBloc>().add(LogoUpload(image));
+                        },
+                        onLogoRemoved: () {
+                          context.read<BrandBloc>().add(ClearLogoImage());
+                        },
+                      ),
+
                       const SizedBox(height: 10),
+                      CostumWidget.labelText(context, 'Brand Image'),
+                      SizedBox(height: 10),
                       imageField(state, context),
                       const SizedBox(height: 40),
                       addBrandButton(screenWidth, context, state),
@@ -115,7 +134,7 @@ class AddbrandScreen extends StatelessWidget {
       singleMode: true,
       image: state.maybeWhen(
         orElse: () => null,
-        imagesUpdated: (images) => images,
+        imagesUpdated: (logoImage, brandImage) => brandImage,
         // removedImageState: (index) => index,
       ),
 
@@ -123,7 +142,7 @@ class AddbrandScreen extends StatelessWidget {
         context.read<BrandBloc>().add(ImageUploaded(image));
       },
       onSingleImageRemoved: () {
-        context.read<BrandBloc>().add(RemovedImage());
+        context.read<BrandBloc>().add(ClearImage());
       },
     );
   }
@@ -142,9 +161,17 @@ class AddbrandScreen extends StatelessWidget {
           if (_formKey.currentState!.validate()) {
             final images = state.maybeWhen(
               orElse: () => null,
-              imagesUpdated: (images) => images,
+              imagesUpdated: (logoImage, brandImage) => brandImage,
             );
             if (!Commonfunction.singleImageValidator(images, context)) {
+              return;
+            }
+
+            final logoImage = state.maybeWhen(
+              orElse: () => null,
+              imagesUpdated: (logo, brandimage) => logo,
+            );
+            if (!Commonfunction.singleImageValidator(logoImage, context)) {
               return;
             }
 
@@ -153,12 +180,17 @@ class AddbrandScreen extends StatelessWidget {
               images!,
             );
 
+            final logoCloudImage = await cloudinaryServices.uploadSingleImage(
+              logoImage!,
+            );
+
             Logger().d('Cloudinary Image: $cloudImage');
             String? brandId = createId();
             final brands = BrandModel(
               id: brandId,
               name: _brandNameController.text,
               imageUrl: cloudImage,
+              logoImage: logoCloudImage,
             );
             // ignore: use_build_context_synchronously
             context.read<BrandBloc>().add(AddBrand(brands));
@@ -170,6 +202,33 @@ class AddbrandScreen extends StatelessWidget {
           }
         },
       ),
+    );
+  }
+
+  static Widget logoPicker({
+    required BuildContext context,
+    required BrandState state,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        CostumWidget.labelText(context, 'Brand Logo'),
+        const SizedBox(height: 10),
+
+        CostumImageUploader(
+          singleMode: true, // only one logo
+          image: state.maybeWhen(
+            orElse: () => null,
+            imagesUpdated: (logoImage, brandImage) => logoImage,
+          ),
+          onImageSelected: (image) {
+            context.read<BrandBloc>().add(LogoUpload(image));
+          },
+          onSingleImageRemoved: () {
+            context.read<BrandBloc>().add(ClearLogoImage());
+          },
+        ),
+      ],
     );
   }
 

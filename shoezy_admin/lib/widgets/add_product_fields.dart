@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logger/logger.dart';
 import 'package:shoezy_admin/data/model/product/product_model.dart';
 import 'package:shoezy_admin/data/model/size_stock_model.dart/size_stock_model.dart';
 import 'package:shoezy_admin/data/model/vareintModel/varientsModel.dart';
@@ -262,7 +261,7 @@ class AddProductFields {
             if (value != null) {
               context.read<GenderCubit>().selectGender(value);
             }
-            Logger().i('Selected Gender: $value');
+            // Logger().i('Selected Gender: $value');
           },
           backgroundColor: Colors.white,
           width: screenWidth / 2,
@@ -294,7 +293,7 @@ class AddProductFields {
                   message: 'Product Added Successfully',
                   backgroundColor: Colors.blue,
                 );
-                Logger().d('Product Added Successfully');
+                // Logger().d('Product Added Successfully');
               },
               error: (error) {
                 CostumWidget.showCustomSnackbar(
@@ -302,7 +301,7 @@ class AddProductFields {
                   message: 'Error Adding Product: $error',
                   backgroundColor: Colors.red,
                 );
-                Logger().e('Error Adding Product: $error');
+                // Logger().e('Error Adding Product: $error');
               },
             );
           },
@@ -360,7 +359,7 @@ class AddProductFields {
                             .gender
                       : null;
 
-                  Logger().i('Selected Gender: $selectedGender');
+                  // Logger().i('Selected Gender: $selectedGender');
 
                   if (selectedGender == null) {
                     CostumWidget.showCustomSnackbar(
@@ -404,7 +403,7 @@ class AddProductFields {
                         orElse: () => [],
                         data: (images, variants, showFields) => variants,
                       );
-                  Logger().i('Current variants count: ${variants.length}');
+                  // Logger().i('Current variants count: ${variants.length}');
 
                   if (variants.isEmpty) {
                     CostumWidget.showCustomSnackbar(
@@ -423,7 +422,7 @@ class AddProductFields {
                         loaded: (sizeStock) => sizeStock,
                       );
 
-                  Logger().i('Current SizeStock count: ${sizeStock.length}');
+                  // Logger().i('Current SizeStock count: ${sizeStock.length}');
 
                   if (sizeStock.isEmpty) {
                     CostumWidget.showCustomSnackbar(
@@ -450,7 +449,7 @@ class AddProductFields {
                   context.read<ProductBloc>().add(
                     ProductEvent.addProduct(product: products),
                   );
-                  Logger().d(products);
+                  // Logger().d(products);
                   clearField(context);
                   LoadingOverlay.show(context, 'Adding Product ...');
                   await Future.delayed(Duration(seconds: 1));

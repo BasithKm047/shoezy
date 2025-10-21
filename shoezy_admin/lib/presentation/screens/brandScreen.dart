@@ -69,6 +69,10 @@ class _BrandscreenState extends State<Brandscreen> {
           orElse: () => [],
           loaded: (brands, selectedBrand) => brands,
         );
+
+        // Logger().f(brands);
+
+
         return Scaffold(
           appBar: CostumWidget.appBar(
             title: 'Brand',
@@ -171,7 +175,16 @@ Widget _widget({
           flex: 3,
           child: SizedBox(
             child: Row(
-              children: [CostumWidget.imageField(image: brand.imageUrl!)],
+              children: [CostumWidget.imageField(image: brand.imageUrl?? '')],
+            ),
+          ),
+        ),
+
+        Expanded(
+          flex: 3,
+          child: SizedBox(
+            child: Row(
+              children: [CostumWidget.imageField(image: brand.logoImage?? '')],
             ),
           ),
         ),
@@ -245,6 +258,16 @@ Widget header({required BuildContext context}) {
           child: CostumWidget.labelText(
             context,
             'Image',
+            fontSize: 15,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+
+         Expanded(
+          flex: 3,
+          child: CostumWidget.labelText(
+            context,
+            'Logo Image',
             fontSize: 15,
             fontWeight: FontWeight.bold,
           ),

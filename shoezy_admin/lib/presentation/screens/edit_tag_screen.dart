@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logger/logger.dart';
 import 'package:shoezy_admin/data/model/tag/tag_model.dart';
 import 'package:shoezy_admin/presentation/bloc/tag_bloc/bloc/tag_bloc.dart';
 import 'package:shoezy_admin/widgets/costumWidget.dart';
@@ -105,7 +104,7 @@ class EditTagScreen extends StatelessWidget {
                               context
                                   .read<TagBloc>()
                                   .add(TagEvent.updateTag(updatedTag));
-                              Logger().d('Updated Tag: $updatedTag');
+                              // Logger().d('Updated Tag: $updatedTag');
                             }
                           },
                         ),

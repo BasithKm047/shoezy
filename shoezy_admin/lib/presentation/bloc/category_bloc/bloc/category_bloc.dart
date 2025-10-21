@@ -4,7 +4,6 @@ import 'dart:typed_data';
 import 'package:bloc/bloc.dart';
 // import 'package:flutter/rendering.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:logger/logger.dart';
 import 'package:shoezy_admin/data/model/categoryModel/category_model.dart';
 import 'package:shoezy_admin/data/repositories/category_services.dart';
 // import 'package:meta/meta.dart';
@@ -23,7 +22,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
           emit(CategoryState.loading());
           try {
             await categoryServices.addCategory(category.name, category.image!);
-        Logger().d('Category Added Successfully');
+        // Logger().d('Category Added Successfully');
 
             emit(CategoryState.success());
           } catch (e) {
@@ -36,7 +35,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
             await categoryServices.deleteCategory(id);
             emit(CategoryState.success());
           }catch(e){
-            Logger().d('Error: ${e.toString()}');
+            // Logger().d('Error: ${e.toString()}');
             emit(CategoryState.failure(e.toString()));
           }
         },
@@ -46,7 +45,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
             await categoryServices.updateCategory(category);
             emit(CategoryState.success());
           }catch(e){
-            Logger().d('Error: ${e.toString()}');
+            // Logger().d('Error: ${e.toString()}');
             emit(CategoryState.failure(e.toString()));
           }
         },
@@ -113,7 +112,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
         },
       clearImage: () {
   emit(CategoryState.imagesUpdated(null));
-  Logger().d("All images cleared");
+  // Logger().d("All images cleared");
 },
 
       );

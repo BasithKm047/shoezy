@@ -1,7 +1,6 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logger/logger.dart';
 import 'package:shoezy_admin/data/model/brand/brand_model.dart';
 import 'package:shoezy_admin/data/repositories/cloudinary_services.dart';
 import 'package:shoezy_admin/fetures/utils/const/commonFunction.dart';
@@ -9,6 +8,7 @@ import 'package:shoezy_admin/presentation/bloc/brand/bloc/brand_bloc.dart';
 import 'package:shoezy_admin/widgets/costumWidget.dart';
 import 'package:shoezy_admin/widgets/imageUploader.dart';
 import 'package:shoezy_admin/widgets/loading_overlay.dart';
+import 'package:shoezy_admin/widgets/log_image_picker.dart';
 
 // ignore: must_be_immutable
 class EditBrandScreen extends StatelessWidget {
@@ -24,6 +24,9 @@ class EditBrandScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<BrandBloc>().add(StartEditing(brand));
+    });
 
     return Scaffold(
       appBar: CostumWidget.appBar(
@@ -45,7 +48,7 @@ class EditBrandScreen extends StatelessWidget {
             },
             loading: () {
               LoadingOverlay.show(context, 'Loading...');
-              Logger().d('Loading...');
+              // Logger().d('Loading...');
             },
             error: (message) {
               CostumWidget.showCustomSnackbar(
@@ -57,10 +60,22 @@ class EditBrandScreen extends StatelessWidget {
           );
         },
         builder: (context, state) {
-          final Uint8List? selectedImage = state.maybeWhen(
-            orElse: () => null,
-            imagesUpdated: (imageBytes) => imageBytes,
+          Uint8List? selectedLogoImage;
+          Uint8List? selectedBrandImage;
+          BrandModel? editingBrand;
+
+          state.maybeWhen(
+            editing: (b, newLogo, newBrand) {
+              editingBrand = b;
+              selectedLogoImage = newLogo;
+              selectedBrandImage = newBrand;
+            },
+            orElse: () {
+              editingBrand = brand;
+            },
           );
+
+          final currentBrand = editingBrand ?? brand;
 
           return Center(
             child: SizedBox(
@@ -92,16 +107,26 @@ class EditBrandScreen extends StatelessWidget {
                         },
                       ),
                       const SizedBox(height: 20),
+                      LogoPicker(
+                        logo: selectedLogoImage ?? currentBrand.logoImage,
+                        onLogoSelected: (img) {
+                          context.read<BrandBloc>().add(UpdateLogoImage(img));
+                        },
+                        onLogoRemoved: () {
+                          context.read<BrandBloc>().add(ClearLogoImage());
+                        },
+                      ),
+                      SizedBox(height: 10),
 
                       CostumImageUploader(
                         updateimage: updatBrand,
                         singleMode: true,
-                        image: selectedImage ?? brand.imageUrl,
+                        image: selectedBrandImage ?? currentBrand.imageUrl,
                         onImageSelected: (img) {
-                          Logger().d('Image selected');
+                          // Logger().d('Image selected');
 
                           context.read<BrandBloc>().add(
-                            BrandEvent.imageUploaded(img),
+                            BrandEvent.updateBrandImage(img),
                           );
                         },
                         onSingleImageRemoved: () {
@@ -110,7 +135,7 @@ class EditBrandScreen extends StatelessWidget {
                           );
                           updatBrand = false;
                           brand = brand.copyWith(imageUrl: null);
-                          Logger().d('Image removed');
+                          // Logger().d('Image removed');
                         },
                       ),
 
@@ -121,58 +146,53 @@ class EditBrandScreen extends StatelessWidget {
                           context: context,
                           title: 'Update Brand',
                           ontap: () async {
-                            final finalImageUrl = state.maybeWhen(
-                              orElse: () => null,
-                              imagesUpdated: (imageBytes) => imageBytes,
-                            );
-                            final bool namechanged =
+                            final bool nameChanged =
                                 _brandNameController.text.trim() != brand.name;
                             final bool imageChanged =
-                                (finalImageUrl != null &&
-                                    finalImageUrl.isNotEmpty) ||
-                                (updatBrand == false && brand.imageUrl == null);
+                                selectedBrandImage != null ||
+                                selectedLogoImage != null ||
+                                (!updatBrand && brand.imageUrl == null);
 
-                            if (!namechanged && !imageChanged) {
+                            if (!nameChanged && !imageChanged) {
                               context.read<BrandBloc>().add(
                                 BrandEvent.updateBrand(brand),
                               );
                               clearfield(context);
-                              Logger().d('No changes made');
-
-                              return;
-                            }
-                            if (brand.imageUrl == null &&
-                                finalImageUrl == null) {
-                              CostumWidget.showCustomSnackbar(
-                                context: context,
-                                message: 'Please select an image',
-                                backgroundColor: Colors.red,
-                              );
                               return;
                             }
 
-                            String? cloudImage = brand.imageUrl;
-                            if (finalImageUrl != null) {
-                              cloudImage = await CloudinaryServices()
-                                  .uploadSingleImage(finalImageUrl);
-                            }
+                            // Validate form
                             Commonfunction.validateAndSubmitForm(
                               context: context,
                               formKey: _formKey,
                             );
 
+                            // Upload new images if selected
+                            String? cloudBrand = currentBrand.imageUrl;
+                            String? cloudLogo = currentBrand.logoImage;
+
+                            if (selectedBrandImage != null) {
+                              cloudBrand = await CloudinaryServices()
+                                  .uploadSingleImage(selectedBrandImage!);
+                            }
+                            if (selectedLogoImage != null) {
+                              cloudLogo = await CloudinaryServices()
+                                  .uploadSingleImage(selectedLogoImage!);
+                            }
+
+                            // Create updated BrandModel
                             final updated = BrandModel(
                               id: brand.id,
                               name: _brandNameController.text.trim(),
-                              imageUrl: cloudImage,
+                              imageUrl: cloudBrand,
+                              logoImage: cloudLogo,
                             );
 
+                            // Dispatch update event
                             context.read<BrandBloc>().add(
                               BrandEvent.updateBrand(updated),
                             );
                             clearfield(context);
-
-                            Logger().d('Updated Brand: $updated');
                           },
                         ),
                       ),
@@ -190,10 +210,12 @@ class EditBrandScreen extends StatelessWidget {
 
   clearfield(BuildContext context) {
     _brandNameController.clear();
-    context.read<BrandBloc>().add(const BrandEvent.clearImage());
+    context.read<BrandBloc>().add(ClearImage());
+    context.read<BrandBloc>().add(ClearLogoImage());
     updatBrand = true;
     brand = brand.copyWith(name: '');
     brand = brand.copyWith(imageUrl: null);
-    Logger().d('Fields cleared');
+    brand = brand.copyWith(logoImage: null);
+    // Logger().d('Fields cleared');
   }
 }

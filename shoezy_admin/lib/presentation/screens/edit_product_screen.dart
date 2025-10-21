@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logger/logger.dart';
 import 'package:shoezy_admin/data/model/product/product_model.dart';
 import 'package:shoezy_admin/data/model/size_stock_model.dart/size_stock_model.dart';
 import 'package:shoezy_admin/data/model/vareintModel/varientsModel.dart';
@@ -74,10 +73,10 @@ class _EditProductScreenState extends State<EditProductScreen> {
       context.read<CategoryBloc>().add(
         CategoryEvent.selectedCategory(_originalCategory),
       );
-      Logger().d(_originalCategory);
+      // Logger().d(_originalCategory);
 
       context.read<BrandBloc>().add(BrandEvent.selectedBrand(_originalBrand));
-      Logger().d(_originalBrand);
+      // Logger().d(_originalBrand);
 
       context.read<VariantsBloc>().add(
         VariantsEvent.addVariants(_originalVariants),

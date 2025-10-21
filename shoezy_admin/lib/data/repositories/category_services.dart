@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:logger/logger.dart';
 
 import 'package:shoezy_admin/data/model/categoryModel/category_model.dart';
 import 'package:shoezy_admin/fetures/core/id.dart';
@@ -15,7 +14,7 @@ class CategoryServices {
     try{
       await db.doc(id).delete();
     } catch (e) {
-      Logger().e('Error deleting category: $e');
+      // Logger().e('Error deleting category: $e');
       rethrow;
     }
   }
@@ -32,7 +31,7 @@ class CategoryServices {
         return CategoryModel.fromJson(data).copyWith(id: doc.id);
       }).toList();
     } catch (e) {
-      Logger().e('Error fetching categories: $e');
+      // Logger().e('Error fetching categories: $e');
       rethrow;
     }
   }
@@ -52,7 +51,7 @@ class CategoryServices {
         return CategoryModel.fromJson(data).copyWith(id: doc.id);
       }).toList();
     } catch (e) {
-      Logger().e('Error searching categories: $e');
+      // Logger().e('Error searching categories: $e');
       rethrow;
     }
   }

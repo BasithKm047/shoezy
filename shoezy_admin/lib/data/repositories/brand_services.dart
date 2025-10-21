@@ -1,17 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:logger/logger.dart';
 import 'package:shoezy_admin/data/model/brand/brand_model.dart';
 import 'package:shoezy_admin/fetures/core/id.dart';
 
 class BrandServices {
   final db = FirebaseFirestore.instance.collection('brands');
-  Future<void> addBrand({required String name, required String image}) async {
+  Future<void> addBrand({required String name, required String image, String? logoImage}) async {
     try {
       final id = createId();
-      final brand = BrandModel(id: id, name: name, imageUrl: image);
+      final brand = BrandModel(id: id, name: name, imageUrl: image, logoImage: logoImage);
       await db.doc(id).set(brand.toJson());
     } catch (e) {
-      Logger().e("Error adding brand: $e");
+      // Logger().e("Error adding brand: $e");
     }
   }
 
@@ -23,7 +22,7 @@ class BrandServices {
             brand.toJson(),
           ); 
     } catch (e) {
-      Logger().e("Error updating brand: $e");
+      // Logger().e("Error updating brand: $e");
       rethrow;
     }
   }
@@ -32,7 +31,7 @@ class BrandServices {
     try {
       await db.doc(id).delete();
     } catch (e) {
-      Logger().e("Error deleting brand: $e");
+      // Logger().e("Error deleting brand: $e");
     }
   }
 
@@ -45,7 +44,7 @@ class BrandServices {
         return BrandModel.fromJson(data).copyWith(id: doc.id);
       }).toList();
     } catch (e) {
-      Logger().d("Error Fetching Brands$e");
+      // Logger().d("Error Fetching Brands$e");
       rethrow;
     }
   }
@@ -58,7 +57,7 @@ class BrandServices {
       }
       return null;
     } catch (e) {
-      Logger().e("Error fetching brand by id: $e");
+      // Logger().e("Error fetching brand by id: $e");
       rethrow;
     }
   }
@@ -74,7 +73,7 @@ class BrandServices {
         return BrandModel.fromJson(data).copyWith(id: doc.id);
       }).toList();
     } catch (e) {
-      Logger().e("Error searching brands: $e");
+      // Logger().e("Error searching brands: $e");
       rethrow;
     }
   }

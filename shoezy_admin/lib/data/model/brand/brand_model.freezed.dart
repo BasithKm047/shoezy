@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$BrandModel {
 
- String? get id; String get name; String? get imageUrl;
+ String? get id; String get name; String? get imageUrl; String? get logoImage;
 /// Create a copy of BrandModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $BrandModelCopyWith<BrandModel> get copyWith => _$BrandModelCopyWithImpl<BrandMo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is BrandModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is BrandModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.logoImage, logoImage) || other.logoImage == logoImage));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,imageUrl);
+int get hashCode => Object.hash(runtimeType,id,name,imageUrl,logoImage);
 
 @override
 String toString() {
-  return 'BrandModel(id: $id, name: $name, imageUrl: $imageUrl)';
+  return 'BrandModel(id: $id, name: $name, imageUrl: $imageUrl, logoImage: $logoImage)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $BrandModelCopyWith<$Res>  {
   factory $BrandModelCopyWith(BrandModel value, $Res Function(BrandModel) _then) = _$BrandModelCopyWithImpl;
 @useResult
 $Res call({
- String? id, String name, String? imageUrl
+ String? id, String name, String? imageUrl, String? logoImage
 });
 
 
@@ -65,11 +65,12 @@ class _$BrandModelCopyWithImpl<$Res>
 
 /// Create a copy of BrandModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? name = null,Object? imageUrl = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? name = null,Object? imageUrl = freezed,Object? logoImage = freezed,}) {
   return _then(_self.copyWith(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String?,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,imageUrl: freezed == imageUrl ? _self.imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
+as String?,logoImage: freezed == logoImage ? _self.logoImage : logoImage // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
@@ -155,10 +156,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? id,  String name,  String? imageUrl)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? id,  String name,  String? imageUrl,  String? logoImage)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _BrandModel() when $default != null:
-return $default(_that.id,_that.name,_that.imageUrl);case _:
+return $default(_that.id,_that.name,_that.imageUrl,_that.logoImage);case _:
   return orElse();
 
 }
@@ -176,10 +177,10 @@ return $default(_that.id,_that.name,_that.imageUrl);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? id,  String name,  String? imageUrl)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? id,  String name,  String? imageUrl,  String? logoImage)  $default,) {final _that = this;
 switch (_that) {
 case _BrandModel():
-return $default(_that.id,_that.name,_that.imageUrl);case _:
+return $default(_that.id,_that.name,_that.imageUrl,_that.logoImage);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -196,10 +197,10 @@ return $default(_that.id,_that.name,_that.imageUrl);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? id,  String name,  String? imageUrl)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? id,  String name,  String? imageUrl,  String? logoImage)?  $default,) {final _that = this;
 switch (_that) {
 case _BrandModel() when $default != null:
-return $default(_that.id,_that.name,_that.imageUrl);case _:
+return $default(_that.id,_that.name,_that.imageUrl,_that.logoImage);case _:
   return null;
 
 }
@@ -211,12 +212,13 @@ return $default(_that.id,_that.name,_that.imageUrl);case _:
 @JsonSerializable()
 
 class _BrandModel implements BrandModel {
-  const _BrandModel({this.id, required this.name, required this.imageUrl});
+  const _BrandModel({this.id, required this.name, required this.imageUrl, this.logoImage});
   factory _BrandModel.fromJson(Map<String, dynamic> json) => _$BrandModelFromJson(json);
 
 @override final  String? id;
 @override final  String name;
 @override final  String? imageUrl;
+@override final  String? logoImage;
 
 /// Create a copy of BrandModel
 /// with the given fields replaced by the non-null parameter values.
@@ -231,16 +233,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BrandModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BrandModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.logoImage, logoImage) || other.logoImage == logoImage));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,imageUrl);
+int get hashCode => Object.hash(runtimeType,id,name,imageUrl,logoImage);
 
 @override
 String toString() {
-  return 'BrandModel(id: $id, name: $name, imageUrl: $imageUrl)';
+  return 'BrandModel(id: $id, name: $name, imageUrl: $imageUrl, logoImage: $logoImage)';
 }
 
 
@@ -251,7 +253,7 @@ abstract mixin class _$BrandModelCopyWith<$Res> implements $BrandModelCopyWith<$
   factory _$BrandModelCopyWith(_BrandModel value, $Res Function(_BrandModel) _then) = __$BrandModelCopyWithImpl;
 @override @useResult
 $Res call({
- String? id, String name, String? imageUrl
+ String? id, String name, String? imageUrl, String? logoImage
 });
 
 
@@ -268,11 +270,12 @@ class __$BrandModelCopyWithImpl<$Res>
 
 /// Create a copy of BrandModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? name = null,Object? imageUrl = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? name = null,Object? imageUrl = freezed,Object? logoImage = freezed,}) {
   return _then(_BrandModel(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String?,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,imageUrl: freezed == imageUrl ? _self.imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
+as String?,logoImage: freezed == logoImage ? _self.logoImage : logoImage // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }

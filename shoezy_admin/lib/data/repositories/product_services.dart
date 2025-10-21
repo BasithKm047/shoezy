@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:logger/logger.dart';
 import 'package:shoezy_admin/data/model/product/product_model.dart';
 import 'package:shoezy_admin/fetures/core/id.dart';
 
@@ -12,19 +11,19 @@ class ProductServices {
       final nwProduct = products.copyWith(id: productId);
 
       await firestoreCollection.doc(productId).set(nwProduct.toJson());
-      Logger().d("Product added successfully");
-      Logger().d("Product data: ${nwProduct.toJson()}");
+      // Logger().d("Product added successfully");
+      // Logger().d("Product data: ${nwProduct.toJson()}");
     } catch (e) {
-      Logger().e("Error adding product: $e");
+      // Logger().e("Error adding product: $e");
     }
   }
 
   Future<void> updateProduct({required ProductModel product}) async {
     try {
       await firestoreCollection.doc(product.id).update(product.toJson());
-      Logger().d("Product updated successfully");
+      // Logger().d("Product updated successfully");
     } catch (e) {
-      Logger().e("Error updating product: $e");
+      // Logger().e("Error updating product: $e");
       rethrow;
     }
   }
@@ -37,7 +36,7 @@ class ProductServices {
           .map((doc) => ProductModel.fromJson(doc.data()))
           .toList();
     } catch (e) {
-      Logger().e("Error fetching products: $e");
+      // ().e("Error fetching products: $e");
       rethrow;
     }
   }
@@ -45,9 +44,9 @@ class ProductServices {
   Future<void> deleteProduct({required String id}) async {
     try {
       await firestoreCollection.doc(id).delete();
-      Logger().d("Product deleted successfully");
+      // Logger().d("Product deleted successfully");
     } catch (e) {
-      Logger().e("Error deleting product: $e");
+      // Logger().e("Error deleting product: $e");
       rethrow;
     }
   }

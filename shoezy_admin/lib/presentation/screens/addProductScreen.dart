@@ -39,7 +39,7 @@ class Addproductscreen extends StatelessWidget {
       context.read<GenderCubit>().clearGender();
     }
 
-    List<String> gender = ['Male', 'Female', 'Children'];
+    List<String> gender = ['Men', 'Women', 'Kids'];
 
     return Scaffold(
       appBar: CostumWidget.appBar(

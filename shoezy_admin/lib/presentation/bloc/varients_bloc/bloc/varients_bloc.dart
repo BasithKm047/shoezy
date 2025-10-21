@@ -2,7 +2,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:logger/logger.dart';
 import 'package:shoezy_admin/data/model/size_stock_model.dart/size_stock_model.dart';
 import 'package:shoezy_admin/data/model/vareintModel/varientsModel.dart';
 
@@ -38,7 +37,7 @@ class VariantsBloc extends Bloc<VariantsEvent, VariantsState> {
           imageAddedState: (images) => images,
           imageRemovedState: (reimage) => reimage,
         );
-        Logger().d('Current images before removal: ');
+        // Logger().d('Current images before removal: ');
 
         if (event.index >= 0 && event.index < currentImages.length) {
           images = List<Uint8List>.from(currentImages)..removeAt(event.index);
@@ -49,9 +48,9 @@ class VariantsBloc extends Bloc<VariantsEvent, VariantsState> {
               variants: variants,
             ),
           );
-          Logger().d(
-            'Image removed successfully at index: ${event.index}, new count: ',
-          );
+          // Logger().d(
+          //   'Image removed successfully at index: ${event.index}, new count: ',
+          // );
         } else {
           emit(
             VariantsState.data(
@@ -59,18 +58,18 @@ class VariantsBloc extends Bloc<VariantsEvent, VariantsState> {
               variants: variants,
             ),
           );
-          Logger().d('Invalid index for image removal: ${event.index}');
+          // Logger().d('Invalid index for image removal: ${event.index}');
         }
       } catch (e) {
         emit(_Failure(e.toString()));
-        Logger().e('Error removing image: $e');
+        // Logger().e('Error removing image: $e');
       }
     });
 
  
 
     on<_ResetImage>((event, emit) {
-      Logger().i('Resetting images, preserving variants: $variants');
+      // Logger().i('Resetting images, preserving variants: $variants');
       images = [];
       emit(
         VariantsState.data(
@@ -99,7 +98,7 @@ class VariantsBloc extends Bloc<VariantsEvent, VariantsState> {
       emit(_Loading());
       try {
        variants = List.from(variants)..addAll(event.varaints);
-        Logger().i('Variants Added: $variants');
+        // Logger().i('Variants Added: $variants');
         emit(
           VariantsState.data(
             images:List.from(images),
@@ -107,7 +106,7 @@ class VariantsBloc extends Bloc<VariantsEvent, VariantsState> {
           ),
         );
       } catch (e) {
-        Logger().e('Error adding variants: $e');
+        // Logger().e('Error adding variants: $e');
         emit(_Failure(e.toString()));
       }
     });
@@ -121,7 +120,7 @@ class VariantsBloc extends Bloc<VariantsEvent, VariantsState> {
     });
     on<_ClearVariants>((event, emit) async {
       try {
-        Logger().i('Clearing all variants and images');
+        // Logger().i('Clearing all variants and images');
         variants = [];
         images = [];
         emit(
@@ -136,9 +135,9 @@ class VariantsBloc extends Bloc<VariantsEvent, VariantsState> {
     });
   on<_RemoveVariants>((event, emit) async {
       try {
-        Logger().i('Before removing variant: $variants');
+        // Logger().i('Before removing variant: $variants');
         variants = variants.where((v) => v.id != event.variants.id).toList();
-        Logger().i('After removing variant: $variants');
+        // Logger().i('After removing variant: $variants');
         emit(
           VariantsState.data(
             images: List.from(images),

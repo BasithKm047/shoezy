@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logger/web.dart';
 import 'package:shoezy_admin/data/model/categoryModel/category_model.dart';
 import 'package:shoezy_admin/data/repositories/cloudinary_services.dart';
 import 'package:shoezy_admin/fetures/utils/const/commonFunction.dart';
@@ -46,12 +45,12 @@ class AddcategoryScreen extends StatelessWidget {
               );
             },
             loading: () {
-              Logger().d('Loading...');
+              // Logger().d('Loading...');
             },
           );
         },
         builder: (context, state) {
-          Logger().d('Current state: $state');
+          // Logger().d('Current state: $state');
           // ignore: unnecessary_type_check
           if (state is CategoryState &&
               state.maybeWhen(orElse: () => false, loading: () => true)) {

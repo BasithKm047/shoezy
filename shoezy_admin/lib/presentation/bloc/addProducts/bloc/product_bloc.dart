@@ -5,7 +5,6 @@ import 'package:bloc/bloc.dart';
 // ignore: unnecessary_import
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:logger/logger.dart';
 import 'package:shoezy_admin/data/model/product/product_model.dart';
 import 'package:shoezy_admin/data/repositories/product_services.dart';
 
@@ -52,7 +51,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         final product = event.product;
           
          await productServices.addProduct(products: product);
-        Logger().d('Product Added Successfully');
+        // Logger().d('Product Added Successfully');
 
         emit(ProductState.success());
       } catch (e) {
@@ -72,7 +71,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       emit(ProductState.loading());
       try {
         await productServices.deleteProduct(id: event.id);
-        Logger().d('Product deleted successfully');
+        // Logger().d('Product deleted successfully');
         final products = await productServices.getProduct();
         emit(ProductState.loaded(products: products));
       } catch (e) {
@@ -84,10 +83,10 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       try {
         final product = event.product;
         await productServices.updateProduct(product: product);
-        Logger().d('Product updated successfully');
+        // Logger().d('Product updated successfully');
         emit(ProductState.success());
       } catch (e) {
-        Logger().e('Error updating product: $e');
+        // Logger().e('Error updating product: $e');
         emit(ProductState.error(e.toString()));
       }
     });

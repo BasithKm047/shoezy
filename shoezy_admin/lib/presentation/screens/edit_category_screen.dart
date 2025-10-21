@@ -1,7 +1,6 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logger/web.dart';
 import 'package:shoezy_admin/data/model/categoryModel/category_model.dart';
 import 'package:shoezy_admin/data/repositories/cloudinary_services.dart';
 // Keep uploads in repository/bloc layer; screen only supplies bytes
@@ -67,7 +66,7 @@ class EditCategoryScreen extends StatelessWidget {
             },
             loading: () {
               LoadingOverlay.show(context, 'Loading...');
-              Logger().d('Updating...');
+              // Logger().d('Updating...');
             },
           );
         },
@@ -118,7 +117,7 @@ class EditCategoryScreen extends StatelessWidget {
                         singleMode: true,
                         image: currentImage ?? category.image,
                         onImageSelected: (changedImages) {
-                          Logger().d('Image selected');
+                          // Logger().d('Image selected');
                           context.read<CategoryBloc>().add(
                             CategoryEvent.imagesUpdated(images: changedImages),
                           );
@@ -130,7 +129,7 @@ class EditCategoryScreen extends StatelessWidget {
                           updatecategory = false;
                           category = category.copyWith(image: null);
                           // category. = null;
-                          Logger().d('Image removed');
+                          // Logger().d('Image removed');
                         },
                       ),
                       const SizedBox(height: 50),
@@ -163,7 +162,7 @@ class EditCategoryScreen extends StatelessWidget {
                                     ),
                                   );
                                   clearField(context);
-                                  Logger().d('No changes made');
+                                  // Logger().d('No changes made');
                                   return;
                                 }
                                 if (imageCandidate == null &&
@@ -199,7 +198,7 @@ class EditCategoryScreen extends StatelessWidget {
                                   ),
                                 );
                                 clearField(context);
-                                Logger().d('Updated Brand: $updated');
+                                // Logger().d('Updated Brand: $updated');
                               },
                               context: context,
                               title: 'Update Category',
@@ -228,6 +227,6 @@ class EditCategoryScreen extends StatelessWidget {
     updatecategory = true;
     category = category.copyWith(image: null);
     category = category.copyWith(name: '');
-    Logger().d('Fields cleared');
+    // Logger().d('Fields cleared');
   }
 }

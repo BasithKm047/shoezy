@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:logger/logger.dart';
 import 'package:shoezy_admin/data/model/product/product_model.dart';
 import 'package:shoezy_admin/fetures/utils/const/colors.dart';
 import 'package:shoezy_admin/fetures/utils/const/routes.dart';
@@ -27,7 +26,7 @@ class _ProductscreenState extends State<Productscreen> {
   void initState() {
     super.initState();
     context.read<ProductBloc>().add(ProductEvent.getProduct());
-    Logger().d('Getting all the products');
+    // Logger().d('Getting all the products');
  
   }
 
@@ -43,10 +42,10 @@ class _ProductscreenState extends State<Productscreen> {
     _debounce = Timer(const Duration(microseconds: 500), () {
       if (query.isEmpty) {
         context.read<ProductBloc>().add(ProductEvent.getProduct());
-        Logger().d('Getting all the products');
+        // Logger().d('Getting all the products');
       } else {
         context.read<ProductBloc>().add(ProductEvent.searchProduct(query));
-        Logger().d('Searching for $query');
+        // Logger().d('Searching for $query');
       }
     });
   }
@@ -204,7 +203,7 @@ class _ProductscreenState extends State<Productscreen> {
                 final product = products[index];
                 // inside your itemBuilder:
 
-                Logger().d("🔎 Variants for ${products[index].variants}");
+                // Logger().d("🔎 Variants for ${products[index].variants}");
                 return _buildProductRow(
                   context,
                   product: product,
@@ -286,7 +285,7 @@ class _ProductscreenState extends State<Productscreen> {
                             EditProductScreen(product: product),
                       ),
                     );
-                    Logger().d('Edit product: $product');
+                    // Logger().d('Edit product: $product');
                   },
                 ),
                 IconButton(
