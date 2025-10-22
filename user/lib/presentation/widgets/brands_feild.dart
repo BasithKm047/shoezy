@@ -45,16 +45,22 @@ class BrandsFeild extends StatelessWidget {
               ],
             ),
             child: Padding(
-              padding: const EdgeInsets.all(1.0),
-              child: CircleAvatar(
-                radius: 40,
-                backgroundColor: AppColors.white,
-                backgroundImage: NetworkImage(imagePath,
-                
-                ),
-                onBackgroundImageError: (exception, stackTrace) =>
-                    AnimationLoading.shimmerCircular(size: 80),
-             
+              padding: const EdgeInsets.all(8.0),
+              child: Image.network(
+                imagePath,
+                fit: BoxFit.contain,
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) {
+                    return child;
+                  } else {
+                    return Center(
+                      child: AnimationLoading.shimmerImagePlaceholder(
+                        height: 80,
+                        width: 80,
+                      ),
+                    );
+                  }
+                },
               ),
             ),
           ),

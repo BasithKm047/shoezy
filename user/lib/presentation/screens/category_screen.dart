@@ -7,6 +7,7 @@ import 'package:shoezy/data/models/category/category_model.dart';
 import 'package:shoezy/data/models/product/product_model.dart';
 import 'package:shoezy/presentation/screens/product_listing_screen.dart';
 import 'package:shoezy/presentation/widgets/loading_state_manager.dart';
+import 'package:shoezy/presentation/widgets/shimmer_loading.dart';
 
 class CategoryScreen extends StatelessWidget {
   const CategoryScreen({super.key});
@@ -77,11 +78,26 @@ class CategoryScreen extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final category = categories[index];
                     return ListTile(
-                      leading: Image.network(
-                        category.image,
-                        width: 60,
-                        height: 60,
-                        fit: BoxFit.cover,
+                      leading: ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image.network(
+                          category.image,
+                          width: 70,
+                          height: 70,
+                          fit: BoxFit.cover,
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) {
+                              return child;
+                            } else {
+                              return  Center(
+                                child: AnimationLoading.shimmerImagePlaceholder(
+                                  height: 80,
+                                  width: 80,
+                                ),
+                              );
+                            }
+                          },
+                        ),
                       ),
                       title: Text(
                         category.name.toUpperCase(),

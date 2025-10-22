@@ -3,6 +3,7 @@ import 'package:shoezy/data/models/product/product_model.dart';
 import 'package:shoezy/presentation/screens/tags_detailed_showing_screen.dart';
 import 'package:shoezy/presentation/widgets/shimmer_loading.dart';
 import 'package:shoezy/utils/const/colors.dart';
+import 'package:shoezy/utils/const/navigation_styles.dart';
 
 class HorizontalTagSection extends StatelessWidget {
   final String tagName;
@@ -28,11 +29,11 @@ class HorizontalTagSection extends StatelessWidget {
               p.tag.contains(tagName),
         )
         .toList();
-   if (filteredProducts.isEmpty) {
-    return SizedBox.shrink(); // returns an empty widget
-  }
+    if (filteredProducts.isEmpty) {
+      return SizedBox.shrink(); // returns an empty widget
+    }
     // ✅ Show shimmer when loading or empty
-    if (isLoading ) {
+    if (isLoading) {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: AnimationLoading.shimmerTagGrid(),
@@ -58,12 +59,7 @@ class HorizontalTagSection extends StatelessWidget {
               ),
               TextButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) =>  TagsDetailedShowingScreen( gender: gender,),
-                    ),
-                  );
+                  NavigationStyles.slideFromLeft(context, TagsDetailedShowingScreen(gender: gender));
                 },
                 child: Text(
                   "See All →",
@@ -84,7 +80,7 @@ class HorizontalTagSection extends StatelessWidget {
               children: [
                 Expanded(
                   flex: 4,
-                  child: _imageCard(  filteredProducts[0], isLarge: true),
+                  child: _imageCard(filteredProducts[0], isLarge: true),
                 ),
                 const SizedBox(width: 12),
 
@@ -95,7 +91,7 @@ class HorizontalTagSection extends StatelessWidget {
                       Expanded(
                         flex: 5,
                         child: _imageCard(
-                           filteredProducts.length > 1
+                          filteredProducts.length > 1
                               ? filteredProducts[1]
                               : filteredProducts[0],
                         ),
@@ -104,7 +100,7 @@ class HorizontalTagSection extends StatelessWidget {
                       Expanded(
                         flex: 5,
                         child: _imageCard(
-                           filteredProducts.length > 2
+                          filteredProducts.length > 2
                               ? filteredProducts[2]
                               : filteredProducts[0],
                         ),
@@ -121,11 +117,8 @@ class HorizontalTagSection extends StatelessWidget {
   }
 
   Widget _imageCard(ProductModel product, {bool isLarge = false}) {
-    return 
-    GestureDetector(
-      onTap: () {
-        
-      },
+    return GestureDetector(
+      onTap: () {},
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
@@ -139,10 +132,8 @@ class HorizontalTagSection extends StatelessWidget {
           ],
         ),
         child: Column(
-      
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-      
             Expanded(
               flex: 7,
               child: ClipRRect(

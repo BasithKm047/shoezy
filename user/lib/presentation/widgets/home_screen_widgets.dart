@@ -1,3 +1,4 @@
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -87,9 +88,38 @@ class HomeScreenWidgets {
                   child: GestureDetector(
                     onTap: () {
                       Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              BrandFieldScreen(product: products),
+                        PageRouteBuilder(
+                          pageBuilder:
+                              (context, animation, secondaryAnimation) {
+                                return BrandFieldScreen(product: products);
+                              },
+                          transitionsBuilder:
+                              (context, animation, secondaryAnimation, child) {
+                                // final curvedAnimation = CurvedAnimation(
+                                //   parent: animation,
+                                //   curve: Curves.bounceOut,
+                                // );
+
+                                final position = Tween<Offset>(
+                                  begin: Offset(
+                                    -1,
+                                    0,
+                                  ), // starts from right side
+                                  end: Offset.zero, // ends in normal position
+                                ).animate(animation);
+
+                                return SlideTransition(
+                                  position: position,
+                                  child: child,
+                                );
+                              },
+                          // transitionDuration: Duration(seconds: 1),
+                          // reverseTransitionDuration: Duration(microseconds: 500),
+                          // // opaque: true,
+                          // fullscreenDialog: true,
+
+                          // barrierColor: Colors.amber,
+                          // allowSnapshotting: true,
                         ),
                       );
                     },
@@ -114,7 +144,7 @@ class HomeScreenWidgets {
                               .where((p) => p.brandName == brands[index].name)
                               .toList(),
 
-                          imagePath: brands[index].logoImage ??'',
+                          imagePath: brands[index].logoImage ?? '',
                           name: brands[index].name,
                         );
                       },
@@ -196,11 +226,7 @@ class HomeScreenWidgets {
           itemBuilder: (context, index, realIndex) {
             return CarouselCard(
               imageHeight: 120.0,
-              shoeImage: filteredProducts[index].image.first,
-
-              shoeName: filteredProducts[index].productName,
-              price: filteredProducts[index].price,
-              tag: filteredProducts[index].tag,
+              product: filteredProducts[index],
               width: screenWidth / 1.1,
               height: 110,
             );
@@ -248,5 +274,4 @@ class HomeScreenWidgets {
       ),
     );
   }
-  
 }

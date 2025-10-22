@@ -19,7 +19,7 @@ class Searchfield extends StatelessWidget {
         width: screenWidth / 1.1,
         child: TextFormField(
           decoration: InputDecoration(
-            suffixIcon: Icon(Entypo.camera, color: AppColors.black),
+            // suffixIcon: Icon(Entypo.camera, color: AppColors.black),
             prefixIcon: Icon(
               AntDesign.search1,
               size: 25.0,

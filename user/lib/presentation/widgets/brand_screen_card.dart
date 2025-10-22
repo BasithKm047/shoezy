@@ -46,23 +46,26 @@ class BrandScreenCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
           child: Stack(
             children: [
-              Image.network(
-                imageUrl,
-                fit: BoxFit.cover,
-                width: double.infinity,
-                height: double.infinity,
-                loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress == null) {
-                    return child;
-                  } else {
-                    return Center(
-                      child: AnimationLoading.shimmerImagePlaceholder(
-                        height: double.infinity,
-                        width: double.infinity,
-                      ),
-                    );
-                  }
-                },
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Image.network(
+                  imageUrl,
+                  fit: BoxFit.contain,
+                  width: double.infinity,
+                  height: double.infinity,
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) {
+                      return child;
+                    } else {
+                      return Center(
+                        child: AnimationLoading.shimmerImagePlaceholder(
+                          height: double.infinity,
+                          width: double.infinity,
+                        ),
+                      );
+                    }
+                  },
+                ),
               ),
               Positioned(
                 bottom: 0,

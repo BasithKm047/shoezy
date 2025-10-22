@@ -208,7 +208,8 @@ class AnimationLoading {
   }
 
   static SpinKitFadingCircle spinnerAnimation() =>
-      SpinKitFadingCircle(color: AppColors.blue, size: 50.0,);
+      SpinKitFadingCircle(color: AppColors.blue, size: 50.0,
+      );
 
   static Widget isEmptyField({
     String? message,

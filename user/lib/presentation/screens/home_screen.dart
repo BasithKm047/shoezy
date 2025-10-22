@@ -98,11 +98,79 @@ class _HomeScreenState extends State<HomeScreen> {
                                   p.tag.contains('Top Rated'),
                             )
                             .toList();
-                        Logger().d(filteredProducts);
+                        Logger().f(filteredProducts);
 
                         return HorizontalTagSection(
                           gender: selectedGender.value,
                           tagName: 'Top Rated',
+                          products: filteredProducts,
+                          isLoading: state.maybeWhen(
+                            orElse: () => false,
+                            loading: () => true,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
+
+                SizedBox(height: 10,),
+                BlocBuilder<ProductBloc, ProductState>(
+                  builder: (context, state) {
+                    final List<ProductModel> products = state.maybeWhen(
+                      orElse: () => [],
+                      loaded: (products) => products,
+                    );
+                    return ValueListenableBuilder<String>(
+                      valueListenable: selectedGender,
+                      builder: (context, gender, child) {
+                        final filteredProducts = products
+                            .where(
+                              (p) =>
+                                  p.gender.toLowerCase() ==
+                                      gender.toLowerCase() &&
+                                  p.tag.contains('Best Seller'),
+                            )
+                            .toList();
+                        Logger().f(filteredProducts);
+
+                        return HorizontalTagSection(
+                          gender: selectedGender.value,
+                          tagName: 'Best Seller',
+                          products: filteredProducts,
+                          isLoading: state.maybeWhen(
+                            orElse: () => false,
+                            loading: () => true,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
+
+                SizedBox(height: 10,),
+                BlocBuilder<ProductBloc, ProductState>(
+                  builder: (context, state) {
+                    final List<ProductModel> products = state.maybeWhen(
+                      orElse: () => [],
+                      loaded: (products) => products,
+                    );
+                    return ValueListenableBuilder<String>(
+                      valueListenable: selectedGender,
+                      builder: (context, gender, child) {
+                        final filteredProducts = products
+                            .where(
+                              (p) =>
+                                  p.gender.toLowerCase() ==
+                                      gender.toLowerCase() &&
+                                  p.tag.contains('New Arrival'),
+                            )
+                            .toList();
+                        Logger().f(filteredProducts);
+
+                        return HorizontalTagSection(
+                          gender: selectedGender.value,
+                          tagName: 'New Arrival',
                           products: filteredProducts,
                           isLoading: state.maybeWhen(
                             orElse: () => false,
@@ -130,14 +198,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                 (p) =>
                                     p.gender.toLowerCase() ==
                                         gender.toLowerCase() &&
-                                    p.tag.contains('New Arrival'),
+                                    p.tag.contains('Trending'),
                               )
                               .toList();
                           Logger().d(filteredProducts);
 
                           return HorizontalTagSection(
                             gender: selectedGender.value,
-                            tagName: 'New Arrival',
+                            tagName: 'Trending',
                             products: filteredProducts,
                             isLoading: state.maybeWhen(
                               orElse: () => false,

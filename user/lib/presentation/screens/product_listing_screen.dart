@@ -3,9 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:shoezy/application/bloc/favourite/cubit/favourie_cubit.dart';
 import 'package:shoezy/application/bloc/favourite/cubit/favourie_state.dart';
+import 'package:shoezy/application/bloc/product_bloc/bloc/product_bloc.dart';
 import 'package:shoezy/data/models/product/product_model.dart';
+import 'package:shoezy/presentation/widgets/loading_state_manager.dart';
 import 'package:shoezy/presentation/widgets/product_grid_card.dart';
-import 'package:shoezy/presentation/widgets/shimmer_loading.dart';
 import 'package:shoezy/utils/const/colors.dart';
 
 class ProductListingScreen extends StatelessWidget {
@@ -20,30 +21,38 @@ class ProductListingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return BlocBuilder<ProductBloc, ProductState>(
+      builder: (context, state) {
+       final isLoading=state.maybeWhen(
+        orElse: () => false,
+        loading: () => true,
+       );
+       final isEmpty=products.isEmpty; 
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          title,
-
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: AppColors.black,
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(
+              title,
+        
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: AppColors.black,
+              ),
+            ),
+            centerTitle: true,
+            elevation: 0.5,
+            backgroundColor: Colors.white,
+            foregroundColor: Colors.black,
           ),
-        ),
-        centerTitle: true,
-        elevation: 0.5,
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(10),
-        child: products.isEmpty
-            ?  Center(
-                child: AnimationLoading.spinnerAnimation()
-              )
-            : BlocBuilder<FavoritesCubit, FavoritesState>(
+          body: LoadingStateManager(
+            isLoading: isLoading,
+            isEmpty: isEmpty,
+            lottieAsset: 'asset/empty-box_2.json',
+            emptyMessage: 'No products available',
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: BlocBuilder<FavoritesCubit, FavoritesState>(
                 builder: (context, favouriteStatus) {
                   if (favouriteStatus is FavoritesLoading) {
                     return GridView.builder(
@@ -69,16 +78,15 @@ class ProductListingScreen extends StatelessWidget {
                       },
                     );
                   }
-
+                    
                   return GridView.builder(
                     physics: const BouncingScrollPhysics(),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          mainAxisExtent: 280,
-                          crossAxisSpacing: 12,
-                          mainAxisSpacing: 12,
-                        ),
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisExtent: 280,
+                      crossAxisSpacing: 12,
+                      mainAxisSpacing: 12,
+                    ),
                     itemCount: products.length,
                     itemBuilder: (context, index) {
                       final product = products[index];
@@ -88,9 +96,7 @@ class ProductListingScreen extends StatelessWidget {
                       return ProductGridCard(
                         isFavourite: isFav,
                         onFavouriteTap: () {
-                          context.read<FavoritesCubit>().toggleFavorite(
-                            product,
-                          );
+                          context.read<FavoritesCubit>().toggleFavorite(product);
                         },
                         product: product,
                         ontap: () {
@@ -101,7 +107,10 @@ class ProductListingScreen extends StatelessWidget {
                   );
                 },
               ),
-      ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

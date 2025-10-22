@@ -1,23 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:shoezy/data/models/product/product_model.dart';
+import 'package:shoezy/presentation/screens/product_details_screen.dart';
 import 'package:shoezy/presentation/widgets/costum_widget.dart';
 import 'package:shoezy/presentation/widgets/shimmer_loading.dart';
 import 'package:shoezy/utils/const/colors.dart';
 
 class CarouselCard extends StatelessWidget {
-  final String shoeName;
-  final String tag;
-  final String price;
-  final String shoeImage;
+  final ProductModel product;
   final double? height;
   final double? width;
   final double? imageHeight;
   final double? imageWidth;
   const CarouselCard({
     super.key,
-    required this.shoeImage,
-    required this.shoeName,
-    required this.price,
-    required this.tag,
+    required this.product,
     this.height,
     this.width,
     this.imageHeight,
@@ -27,7 +23,21 @@ class CarouselCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Navigator.of(context).push(
+          PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) {
+              return ProductDetailsScreen(products: product);
+            },
+
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+                  return FadeTransition(opacity: animation, child: child);
+                },
+          ),
+          
+        );
+      },
       child: Card(
         color: AppColors.white,
         shadowColor: AppColors.white,
@@ -50,7 +60,7 @@ class CarouselCard extends StatelessWidget {
                     SizedBox(height: 20),
                     CostumWidget.labelText(
                       context,
-                      tag,
+                      product.tag,
                       color: AppColors.blue,
                       fontSize: 13.0,
                       fontWeight: FontWeight.w500,
@@ -58,7 +68,7 @@ class CarouselCard extends StatelessWidget {
                     // SizedBox(height: 3),
                     CostumWidget.labelText(
                       context,
-                      shoeName,
+                      product.productName,
                       fontSize: 23,
                       fontWeight: FontWeight.bold,
                       color: AppColors.black,
@@ -66,7 +76,7 @@ class CarouselCard extends StatelessWidget {
                     SizedBox(height: 10),
                     CostumWidget.labelText(
                       context,
-                      '₹$price',
+                      '₹${product.price}',
                       color: AppColors.black,
                       fontSize: 15.0,
                       fontWeight: FontWeight.w700,
@@ -84,12 +94,15 @@ class CarouselCard extends StatelessWidget {
                   child: AspectRatio(
                     aspectRatio: 1.7,
                     child: Image.network(
-                      shoeImage,
+                      product.image.first,
                       fit: BoxFit.cover,
                       alignment: Alignment.center,
                       loadingBuilder: (context, child, loadingProgress) {
                         if (loadingProgress == null) return child;
-                        return  AnimationLoading.shimmerImagePlaceholder(height:height! , width: width!);
+                        return AnimationLoading.shimmerImagePlaceholder(
+                          height: height!,
+                          width: width!,
+                        );
                       },
                       errorBuilder: (context, error, stackTrace) => Icon(
                         Icons.image_not_supported,
