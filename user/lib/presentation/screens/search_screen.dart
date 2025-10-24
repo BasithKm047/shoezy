@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shoezy/application/bloc/brand_bloc/brand_bloc.dart';
 import 'package:shoezy/application/bloc/category/bloc/category_bloc.dart';
 import 'package:shoezy/application/bloc/product_bloc/bloc/product_bloc.dart';
@@ -21,6 +24,8 @@ class _SearchScreenState extends State<SearchScreen> {
   late TextEditingController _searchController;
   late final ValueNotifier<String> _queryNotifier;
   late final ValueNotifier<List<String>> _recentSearchesNotifier;
+  Timer? _debounce;
+
 
   final List<String> _suggestions = [
     'Nike',
@@ -38,6 +43,10 @@ class _SearchScreenState extends State<SearchScreen> {
     _queryNotifier = ValueNotifier<String>('');
     _recentSearchesNotifier = ValueNotifier<List<String>>([]);
 
+    
+   _loadRecentSearches().then((value){
+    _recentSearchesNotifier.value=value;
+   });
     // Load all data once
     context.read<CategoryBloc>().add(CategoryEvent.loadCategories());
     context.read<ProductBloc>().add(ProductEvent.loadProducts());
@@ -50,6 +59,7 @@ class _SearchScreenState extends State<SearchScreen> {
     _queryNotifier.dispose();
     _recentSearchesNotifier.dispose();
     super.dispose();
+    _debounce?.cancel();
   }
 
   // 🔍 Filter logic
@@ -74,13 +84,20 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   // 🕘 Save recent searches
-  void _addToRecentSearches(String query) {
+  Future<void> _addToRecentSearches(String query) async {
     if (query.isEmpty) return;
-    final currentList = _recentSearchesNotifier.value;
+    final prefs = await SharedPreferences.getInstance();
+    final currentList = prefs.getStringList('recent_searches') ?? [];
     final updated = [query, ...currentList.where((e) => e != query)];
-    if (updated.length > 5) updated.removeLast(); // limit to 5 items
-    _recentSearchesNotifier.value = updated;
+    if (updated.length > 5) updated.removeLast();
+    prefs.setStringList('recent_searches', updated);
   }
+
+  Future<List<String>> _loadRecentSearches() async {
+  final prefs = await SharedPreferences.getInstance();
+  return prefs.getStringList('recent_searches') ?? [];
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -121,11 +138,20 @@ class _SearchScreenState extends State<SearchScreen> {
                       borderSide: BorderSide.none,
                     ),
                   ),
-                  onChanged: (value) => _queryNotifier.value = value,
-                  onSubmitted: (value) {
+                  onChanged: (value) {
+                    if (_debounce?.isActive ?? false) _debounce?.cancel();
+
+                    _debounce = Timer(const Duration(milliseconds: 300), () async {
+                      _addToRecentSearches(value);
+                      _queryNotifier.value = value;
+                      _recentSearchesNotifier.value = await _loadRecentSearches();
+                    });
+                  },
+                  onSubmitted: (value)async {
                     _addToRecentSearches(value);
                     _queryNotifier.value = value;
                     FocusScope.of(context).unfocus();
+                    _recentSearchesNotifier.value=await _loadRecentSearches();
                   },
                 ),
               ),
