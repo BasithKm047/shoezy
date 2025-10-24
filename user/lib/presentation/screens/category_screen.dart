@@ -8,6 +8,7 @@ import 'package:shoezy/data/models/product/product_model.dart';
 import 'package:shoezy/presentation/screens/product_listing_screen.dart';
 import 'package:shoezy/presentation/widgets/loading_state_manager.dart';
 import 'package:shoezy/presentation/widgets/shimmer_loading.dart';
+import 'package:shoezy/utils/const/navigation_styles.dart';
 
 class CategoryScreen extends StatelessWidget {
   const CategoryScreen({super.key});
@@ -89,7 +90,7 @@ class CategoryScreen extends StatelessWidget {
                             if (loadingProgress == null) {
                               return child;
                             } else {
-                              return  Center(
+                              return Center(
                                 child: AnimationLoading.shimmerImagePlaceholder(
                                   height: 80,
                                   width: 80,
@@ -106,10 +107,7 @@ class CategoryScreen extends StatelessWidget {
                           letterSpacing: 1.2,
                         ),
                       ),
-                      trailing: const Icon(
-                        Icons.arrow_forward_ios,
-                        size: 16,
-                      ),
+                      trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                       onTap: () {
                         final filteredProducts = products
                             .where(
@@ -118,12 +116,11 @@ class CategoryScreen extends StatelessWidget {
                                   category.name.toLowerCase(),
                             )
                             .toList();
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => ProductListingScreen(
-                              products: filteredProducts,
-                              title: category.name,
-                            ),
+                        NavigationStyles.scale(
+                          context,
+                          ProductListingScreen(
+                            products: filteredProducts,
+                            title: category.name,
                           ),
                         );
                       },

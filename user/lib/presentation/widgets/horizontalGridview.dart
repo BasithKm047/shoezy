@@ -1,124 +1,201 @@
 import 'package:flutter/material.dart';
 import 'package:shoezy/data/models/product/product_model.dart';
+import 'package:shoezy/presentation/screens/product_details_screen.dart';
 import 'package:shoezy/presentation/screens/tags_detailed_showing_screen.dart';
 import 'package:shoezy/presentation/widgets/shimmer_loading.dart';
 import 'package:shoezy/utils/const/colors.dart';
 import 'package:shoezy/utils/const/navigation_styles.dart';
 
-class HorizontalTagSection extends StatelessWidget {
+class HorizontalTagSection extends StatefulWidget {
   final String tagName;
-  final String gender;
+  final ValueNotifier<String> selectedGender;
   final List<ProductModel> products;
   final bool isLoading;
 
   const HorizontalTagSection({
     super.key,
     required this.tagName,
-    required this.gender,
+    required this.selectedGender,
     required this.products,
-    this.isLoading = true,
+    this.isLoading = false,
   });
 
   @override
+  State<HorizontalTagSection> createState() => _HorizontalTagSectionState();
+}
+
+class _HorizontalTagSectionState extends State<HorizontalTagSection>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+  late Animation<double> _fadeAnimation;
+
+  final List<String> genders = const ["Men", "Women", "Kids"];
+
+  @override
+  void initState() {
+    super.initState();
+
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 550),
+      reverseDuration: const Duration(milliseconds: 550),
+      
+    );
+
+    _fadeAnimation = CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeInOut,
+    );
+    
+    Future.delayed(const Duration(milliseconds: 150), () {
+  _animationController.forward();
+});
+
+    
+    widget.selectedGender.addListener(() {
+      _animationController.forward(from: 0);
+    });
+  }
+
+  String getNextGender(String current) {
+    final index = genders.indexOf(current);
+    return (index < genders.length - 1) ? genders[index + 1] : current;
+  }
+
+  String getPreviousGender(String current) {
+    final index = genders.indexOf(current);
+    return (index > 0) ? genders[index - 1] : current;
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // ✅ Filter products by gender and tag
-    final filteredProducts = products
-        .where(
-          (p) =>
-              p.gender.toLowerCase() == gender.toLowerCase() &&
-              p.tag.contains(tagName),
-        )
-        .toList();
-    if (filteredProducts.isEmpty) {
-      return SizedBox.shrink(); // returns an empty widget
-    }
-    // ✅ Show shimmer when loading or empty
-    if (isLoading) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
-        child: AnimationLoading.shimmerTagGrid(),
-      );
-    }
+    return GestureDetector(
+      onHorizontalDragEnd: (details) {
+        if (details.primaryVelocity == null) return;
 
-    // ✅ Actual UI
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // 🔹 Header Section
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                tagName,
-                style: const TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              TextButton(
-                onPressed: () {
-                  NavigationStyles.slideFromLeft(context, TagsDetailedShowingScreen(gender: gender));
-                },
-                child: Text(
-                  "See All →",
-                  style: TextStyle(color: AppColors.blue),
-                ),
-              ),
-            ],
-          ),
-        ),
+        if (details.primaryVelocity! < -50) {
+          widget.selectedGender.value =
+              getNextGender(widget.selectedGender.value);
+        } else if (details.primaryVelocity! > 50) {
+          widget.selectedGender.value =
+              getPreviousGender(widget.selectedGender.value);
+        }
+      },
+      child: FadeTransition(
+        opacity: _fadeAnimation,
+        child: ValueListenableBuilder<String>(
+          valueListenable: widget.selectedGender,
+          builder: (context, gender, _) {
+            final filteredProducts = widget.products
+                .where(
+                  (p) =>
+                      p.gender.toLowerCase() == gender.toLowerCase() &&
+                      p.tag.contains(widget.tagName),
+                )
+                .toList();
 
-        const SizedBox(height: 10),
+            if (filteredProducts.isEmpty) {
+              return const SizedBox.shrink();
+            }
 
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: SizedBox(
-            height: 360,
-            child: Row(
+            if (widget.isLoading) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: AnimationLoading.shimmerTagGrid(),
+              );
+            }
+
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(
-                  flex: 4,
-                  child: _imageCard(filteredProducts[0], isLarge: true),
-                ),
-                const SizedBox(width: 12),
-
-                Expanded(
-                  flex: 3,
-                  child: Column(
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Expanded(
-                        flex: 5,
-                        child: _imageCard(
-                          filteredProducts.length > 1
-                              ? filteredProducts[1]
-                              : filteredProducts[0],
+                      Text(
+                        widget.tagName,
+                        style: const TextStyle(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                      SizedBox(height: 12),
-                      Expanded(
-                        flex: 5,
-                        child: _imageCard(
-                          filteredProducts.length > 2
-                              ? filteredProducts[2]
-                              : filteredProducts[0],
+                      TextButton(
+                        onPressed: () {
+                          NavigationStyles.slideFromLeft(
+                            context,
+                            TagsDetailedShowingScreen(gender: gender),
+                          );
+                        },
+                        child: Text(
+                          "See All →",
+                          style: TextStyle(color: AppColors.blue),
                         ),
                       ),
                     ],
                   ),
                 ),
+                const SizedBox(height: 10),
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: SizedBox(
+                    height: 360,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          flex: 4,
+                          child: _imageCard(context, filteredProducts[0],
+                              isLarge: true),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          flex: 3,
+                          child: Column(
+                            children: [
+                              Expanded(
+                                flex: 5,
+                                child: _imageCard(
+                                  context,
+                                  filteredProducts.length > 1
+                                      ? filteredProducts[1]
+                                      : filteredProducts[0],
+                                ),
+                              ),
+                              const SizedBox(height: 12),
+                              Expanded(
+                                flex: 5,
+                                child: _imageCard(
+                                  context,
+                                  filteredProducts.length > 2
+                                      ? filteredProducts[2]
+                                      : filteredProducts[0],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ],
-            ),
-          ),
+            );
+          },
         ),
-      ],
+      ),
     );
   }
 
-  Widget _imageCard(ProductModel product, {bool isLarge = false}) {
+  Widget _imageCard(BuildContext context, ProductModel product,
+      {bool isLarge = false}) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        NavigationStyles.fade(
+          context,
+          ProductDetailsScreen(products: product),
+        );
+      },
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
@@ -137,7 +214,7 @@ class HorizontalTagSection extends StatelessWidget {
             Expanded(
               flex: 7,
               child: ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(12)),
+                borderRadius: const BorderRadius.all(Radius.circular(12)),
                 child: Image.network(
                   product.image.first,
                   fit: BoxFit.cover,
@@ -155,7 +232,8 @@ class HorizontalTagSection extends StatelessWidget {
             Expanded(
               flex: 3,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -185,5 +263,11 @@ class HorizontalTagSection extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
   }
 }

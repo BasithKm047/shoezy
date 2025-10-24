@@ -13,7 +13,7 @@ class LoadingStateManager extends StatefulWidget {
 
   const LoadingStateManager({
     super.key,
-    required this.child,
+    required this.child, 
     required this.isLoading,
     required this.isEmpty,
     this.emptyMessage,

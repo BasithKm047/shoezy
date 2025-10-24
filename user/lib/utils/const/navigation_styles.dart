@@ -35,7 +35,9 @@ class NavigationStyles {
         },
       ),
     );
-  }static void fallFromTop(BuildContext context, Widget page) {
+  }
+  
+  static void fallFromTop(BuildContext context, Widget page) {
     Navigator.push(
       context,
       PageRouteBuilder(
@@ -43,16 +45,27 @@ class NavigationStyles {
         transitionsBuilder: (_, animation, secondaryAnimation, child) {
           final curved = CurvedAnimation(
             parent: animation,
-            curve: Curves.bounceOut,
+            curve: Curves.easeOutCubic,
           );
 
           final offsetAnimation = Tween<Offset>(
             begin: const Offset(0, -1), // top → bottom
             end: Offset.zero,
           ).animate(curved);
+           final fadeAnimation = Tween<double>(
+          begin: 0.6,
+          end: 1.0,
+        ).animate(curved);
 
-          return SlideTransition(position: offsetAnimation, child: child);
+
+          return SlideTransition(position: offsetAnimation, child: FadeTransition(
+            opacity: fadeAnimation,
+            child: child,
+          ));
+          
         },
+        transitionDuration: const Duration(milliseconds: 600),
+        reverseTransitionDuration: const Duration(milliseconds: 600),
       ),
     );
   }

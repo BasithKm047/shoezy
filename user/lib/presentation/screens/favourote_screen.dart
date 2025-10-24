@@ -3,8 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoezy/application/bloc/favourite/cubit/favourie_cubit.dart';
 import 'package:shoezy/application/bloc/favourite/cubit/favourie_state.dart';
 import 'package:shoezy/data/models/product/product_model.dart';
+import 'package:shoezy/presentation/screens/product_details_screen.dart';
 import 'package:shoezy/presentation/widgets/product_grid_card.dart';
 import 'package:shoezy/presentation/widgets/shimmer_loading.dart';
+import 'package:shoezy/utils/const/navigation_styles.dart';
 
 // ignore: must_be_immutable
 class FavoritesScreen extends StatelessWidget {
@@ -60,7 +62,9 @@ class FavoritesScreen extends StatelessWidget {
                   isFavourite: true,
                   onFavouriteTap: () =>
                       context.read<FavoritesCubit>().toggleFavorite(product),
-                  ontap: () {},
+                  ontap: () {
+                    NavigationStyles.fade(context, ProductDetailsScreen(products: product));
+                  },
                 );
               },
             );

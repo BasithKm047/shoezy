@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shoezy/data/models/product/product_model.dart';
 import 'package:shoezy/presentation/screens/product_listing_screen.dart';
 import 'package:shoezy/presentation/widgets/shimmer_loading.dart';
+import 'package:shoezy/utils/const/navigation_styles.dart';
 
 // ignore: must_be_immutable
 class BrandScreenCard extends StatelessWidget {
@@ -23,11 +24,9 @@ class BrandScreenCard extends StatelessWidget {
         .toList();
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) =>
-                ProductListingScreen(products: filteredProducts, title: title),
-          ),
+        NavigationStyles.fallFromTop(
+          context,
+          ProductListingScreen(products: filteredProducts, title: title),
         );
       },
       child: Container(

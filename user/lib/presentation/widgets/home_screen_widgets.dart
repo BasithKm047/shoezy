@@ -137,12 +137,14 @@ class HomeScreenWidgets {
                   SizedBox(
                     height: 140,
                     child: ListView.separated(
+                      
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index) {
+                        final brandProducts = products
+                            .where((p) => p.brandName == brands[index].name)
+                            .toList();
                         return BrandsFeild(
-                          products: products
-                              .where((p) => p.brandName == brands[index].name)
-                              .toList(),
+                          products: brandProducts,
 
                           imagePath: brands[index].logoImage ?? '',
                           name: brands[index].name,
@@ -150,6 +152,7 @@ class HomeScreenWidgets {
                       },
                       separatorBuilder: (context, index) => SizedBox(width: 20),
                       itemCount: brands.length,
+                      
                     ),
                   ),
               ],

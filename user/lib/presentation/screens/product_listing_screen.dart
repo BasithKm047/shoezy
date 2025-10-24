@@ -5,9 +5,11 @@ import 'package:shoezy/application/bloc/favourite/cubit/favourie_cubit.dart';
 import 'package:shoezy/application/bloc/favourite/cubit/favourie_state.dart';
 import 'package:shoezy/application/bloc/product_bloc/bloc/product_bloc.dart';
 import 'package:shoezy/data/models/product/product_model.dart';
+import 'package:shoezy/presentation/screens/product_details_screen.dart';
 import 'package:shoezy/presentation/widgets/loading_state_manager.dart';
 import 'package:shoezy/presentation/widgets/product_grid_card.dart';
 import 'package:shoezy/utils/const/colors.dart';
+import 'package:shoezy/utils/const/navigation_styles.dart';
 
 class ProductListingScreen extends StatelessWidget {
   final List<ProductModel> products;
@@ -100,7 +102,7 @@ class ProductListingScreen extends StatelessWidget {
                         },
                         product: product,
                         ontap: () {
-                          // Navigate to product details (optional)
+                          NavigationStyles.fade(context, ProductDetailsScreen(products: product));
                         },
                       );
                     },

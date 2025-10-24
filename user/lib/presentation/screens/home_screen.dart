@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/web.dart';
 import 'package:shoezy/application/bloc/product_bloc/bloc/product_bloc.dart';
 import 'package:shoezy/data/models/product/product_model.dart';
+import 'package:shoezy/presentation/screens/search_screen.dart';
 import 'package:shoezy/presentation/widgets/drawer.dart';
 import 'package:shoezy/presentation/widgets/gender_tabbar.dart';
 import 'package:shoezy/presentation/widgets/home_screen_widgets.dart';
@@ -11,6 +12,7 @@ import 'package:shoezy/presentation/widgets/horizontalGridview.dart';
 import 'package:shoezy/presentation/widgets/searchField.dart';
 import 'package:shoezy/presentation/widgets/loading_state_manager.dart';
 import 'package:shoezy/utils/const/colors.dart';
+import 'package:shoezy/utils/const/navigation_styles.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -27,6 +29,12 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     context.read<ProductBloc>().add(ProductEvent.loadProducts());
     selectedGender.value = "Men";
+    }
+
+  @override
+  void dispose() {
+    selectedGender.dispose();
+    super.dispose();
   }
 
   @override
@@ -62,7 +70,12 @@ class _HomeScreenState extends State<HomeScreen> {
             child: SingleChildScrollView(
             child: Column(
               children: [
-                Center(child: Searchfield(screenWidth: screenWidth)),
+                Center(child: SearchField(screenWidth: screenWidth, onTap: () {
+                  NavigationStyles.scale(
+                    context,
+                    const SearchScreen(),
+                  );
+                },)),
                 SizedBox(height: 5),
                 HomeScreenWidgets.brandFields(products),
                 SizedBox(height: 5),
@@ -101,7 +114,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         Logger().f(filteredProducts);
 
                         return HorizontalTagSection(
-                          gender: selectedGender.value,
+                          selectedGender: selectedGender,
+                          // gender: selectedGender.value,
                           tagName: 'Top Rated',
                           products: filteredProducts,
                           isLoading: state.maybeWhen(
@@ -135,7 +149,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         Logger().f(filteredProducts);
 
                         return HorizontalTagSection(
-                          gender: selectedGender.value,
+                          selectedGender: selectedGender,
+                          // gender: selectedGender.value,
                           tagName: 'Best Seller',
                           products: filteredProducts,
                           isLoading: state.maybeWhen(
@@ -169,7 +184,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         Logger().f(filteredProducts);
 
                         return HorizontalTagSection(
-                          gender: selectedGender.value,
+                          selectedGender: selectedGender,
+                          // gender: selectedGender.value,
                           tagName: 'New Arrival',
                           products: filteredProducts,
                           isLoading: state.maybeWhen(
@@ -204,7 +220,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           Logger().d(filteredProducts);
 
                           return HorizontalTagSection(
-                            gender: selectedGender.value,
+                            selectedGender: selectedGender,
+                            // : selectedGender.value,
                             tagName: 'Trending',
                             products: filteredProducts,
                             isLoading: state.maybeWhen(
