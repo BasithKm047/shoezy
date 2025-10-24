@@ -15,13 +15,22 @@ class FavoritesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("My Favorites"), centerTitle: true),
+      appBar: AppBar(
+        title: Text(
+          "My Favorites",
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        centerTitle: true,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(10),
         child: BlocBuilder<FavoritesCubit, FavoritesState>(
           builder: (context, state) {
             final isLoading = state is FavoritesLoading;
-            
+
             if (state is FavoritesError) {
               return const Center(child: Text("Error Fetching Favorites!"));
             } else if (state is FavoritesLoaded) {
@@ -63,7 +72,10 @@ class FavoritesScreen extends StatelessWidget {
                   onFavouriteTap: () =>
                       context.read<FavoritesCubit>().toggleFavorite(product),
                   ontap: () {
-                    NavigationStyles.fade(context, ProductDetailsScreen(products: product));
+                    NavigationStyles.fade(
+                      context,
+                      ProductDetailsScreen(products: product),
+                    );
                   },
                 );
               },

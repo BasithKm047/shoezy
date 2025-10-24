@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
@@ -14,17 +13,19 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final screenWidth = MediaQuery.of(context).size.width;
-    
-    return BlocListener<AuthBloc, AuthState>(
-      listener: (context, state) {
-       if(state is AuthLoggedIn){
-       Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>BottomNavigation()));
-       }else if(state is AuthLogOUt){
-        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => SigninScreen(),));
-       }
 
+    return BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) async {
+        if (state is AuthLoggedIn) {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => BottomNavigation()),
+          );
+        } else if (state is AuthLogOUt) {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => SigninScreen()),
+          );
+        }
       },
       child: Scaffold(
         backgroundColor: AppColors.splashScreenBackroundColor,

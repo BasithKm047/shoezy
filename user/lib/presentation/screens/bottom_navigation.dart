@@ -8,7 +8,7 @@ import 'package:shoezy/presentation/screens/home_screen.dart';
 import 'package:shoezy/utils/const/colors.dart';
 
 class BottomNavigation extends StatelessWidget {
-   BottomNavigation({super.key});
+  BottomNavigation({super.key});
 
   final Color activeColor = const Color(0xFF00FF7F);
   final Color inactiveColorLight = const Color(0xFFE8E8E8);
@@ -34,7 +34,6 @@ class BottomNavigation extends StatelessWidget {
   Widget build(BuildContext context) {
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
 
-    // Adaptive colors
     final Color navBarColor = isDark ? const Color(0xFF1A1A1A) : Colors.white;
     final Color inactiveColor = isDark ? inactiveColorDark : inactiveColorLight;
     final Color iconColor = isDark ? AppColors.white : AppColors.black;
@@ -54,15 +53,17 @@ class BottomNavigation extends StatelessWidget {
           child: Scaffold(
             body: screens[state.index],
             bottomNavigationBar: Padding(
-              padding: const EdgeInsets.only(bottom: 10,
-                  left: 8, right: 8), // lift nav bar slightly up
+              padding: const EdgeInsets.only(bottom: 10, left: 8, right: 8),
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 10,
+                ),
                 decoration: BoxDecoration(
                   color: navBarColor,
                   borderRadius: const BorderRadius.vertical(
                     top: Radius.circular(22),
-                    bottom: Radius.circular(22) // smaller radius
+                    bottom: Radius.circular(22),
                   ),
                   boxShadow: [
                     BoxShadow(
@@ -79,7 +80,7 @@ class BottomNavigation extends StatelessWidget {
                   children: List.generate(navitems.length, (index) {
                     final items = navitems[index];
                     final isSelected = state.index == index;
-          
+
                     return GestureDetector(
                       onTap: () => context
                           .read<BottomNavigationBarCubit>()
@@ -115,9 +116,7 @@ class BottomNavigation extends StatelessWidget {
                                 padding: const EdgeInsets.only(left: 6),
                                 child: Text(
                                   items['label'],
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyMedium
+                                  style: Theme.of(context).textTheme.bodyMedium
                                       ?.copyWith(
                                         color: isDark
                                             ? Colors.black

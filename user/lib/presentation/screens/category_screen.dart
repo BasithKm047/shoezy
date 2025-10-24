@@ -45,13 +45,7 @@ class CategoryScreen extends StatelessWidget {
               appBar: PreferredSize(
                 preferredSize: const Size.fromHeight(80),
                 child: AppBar(
-                  leading: IconButton(
-                    icon: const Icon(
-                      Icons.arrow_back_ios_new,
-                      color: Colors.black,
-                    ),
-                    onPressed: () => Navigator.pop(context),
-                  ),
+                  automaticallyImplyLeading: false,
                   title: Text(
                     'SHOES',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
