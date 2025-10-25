@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => BottomNavigationBarCubit()),
         BlocProvider(
           create: (context) =>
-              AuthBloc(authServices: AuthServices())..add(CheckUserStatus()),
+              AuthBloc(authServices: AuthServices()),
         ),
         BlocProvider(
           create: (context) => BrandBloc()
@@ -60,7 +60,7 @@ class MyApp extends StatelessWidget {
         darkTheme: Apptheme.darkTheme,
         themeMode: ThemeMode.system,
         debugShowCheckedModeBanner: false,
-        home: InternetCheckingScreeen(child: SplashScreen()),
+        home: SplashScreen(),
       ),
     );
   }
