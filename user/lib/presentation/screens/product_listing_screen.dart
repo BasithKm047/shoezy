@@ -57,6 +57,7 @@ class ProductListingScreen extends StatelessWidget {
               child: BlocBuilder<FavoritesCubit, FavoritesState>(
                 builder: (context, favouriteStatus) {
                   if (favouriteStatus is FavoritesLoading) {
+
                     return GridView.builder(
                       itemCount: 6,
                       gridDelegate:

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shoezy/application/bloc/favourite/cubit/favourie_cubit.dart';
+import 'package:shoezy/application/bloc/favourite/cubit/favourie_state.dart';
 import 'package:shoezy/data/models/product/product_model.dart';
 import 'package:shoezy/presentation/screens/product_details_screen.dart';
 import 'package:shoezy/presentation/screens/tags_detailed_showing_screen.dart';
@@ -39,19 +42,17 @@ class _HorizontalTagSectionState extends State<HorizontalTagSection>
       vsync: this,
       duration: const Duration(milliseconds: 550),
       reverseDuration: const Duration(milliseconds: 550),
-      
     );
 
     _fadeAnimation = CurvedAnimation(
       parent: _animationController,
       curve: Curves.easeInOut,
     );
-    
-    Future.delayed(const Duration(milliseconds: 150), () {
-  _animationController.forward();
-});
 
-    
+    Future.delayed(const Duration(milliseconds: 150), () {
+      _animationController.forward();
+    });
+
     widget.selectedGender.addListener(() {
       _animationController.forward(from: 0);
     });
@@ -74,11 +75,13 @@ class _HorizontalTagSectionState extends State<HorizontalTagSection>
         if (details.primaryVelocity == null) return;
 
         if (details.primaryVelocity! < -50) {
-          widget.selectedGender.value =
-              getNextGender(widget.selectedGender.value);
+          widget.selectedGender.value = getNextGender(
+            widget.selectedGender.value,
+          );
         } else if (details.primaryVelocity! > 50) {
-          widget.selectedGender.value =
-              getPreviousGender(widget.selectedGender.value);
+          widget.selectedGender.value = getPreviousGender(
+            widget.selectedGender.value,
+          );
         }
       },
       child: FadeTransition(
@@ -145,8 +148,11 @@ class _HorizontalTagSectionState extends State<HorizontalTagSection>
                       children: [
                         Expanded(
                           flex: 4,
-                          child: _imageCard(context, filteredProducts[0],
-                              isLarge: true),
+                          child: _imageCard(
+                            context,
+                            filteredProducts[0],
+                            isLarge: true,
+                          ),
                         ),
                         const SizedBox(width: 12),
                         Expanded(
@@ -187,81 +193,91 @@ class _HorizontalTagSectionState extends State<HorizontalTagSection>
     );
   }
 
-  Widget _imageCard(BuildContext context, ProductModel product,
-      {bool isLarge = false}) {
-    return GestureDetector(
-      onTap: () {
-        NavigationStyles.fade(
-          context,
-          ProductDetailsScreen(products: product),
+  Widget _imageCard(
+    BuildContext context,
+    ProductModel product, {
+    bool isLarge = false,
+  }) {
+    return BlocBuilder<FavoritesCubit, FavoritesState>(
+      builder: (context, state) {
+
+        return GestureDetector(
+          onTap: () {
+            NavigationStyles.fade(
+              context,
+              ProductDetailsScreen(products: product,),
+            );
+          },
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.06),
+                  blurRadius: 6,
+                  offset: const Offset(2, 3),
+                ),
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  flex: 7,
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.all(Radius.circular(12)),
+                    child: Image.network(
+                      product.image.first,
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      loadingBuilder: (context, child, progress) {
+                        if (progress == null) return child;
+                        return AnimationLoading.shimmerImagePlaceholder(
+                          height: double.infinity,
+                          width: double.infinity,
+                        );
+                      },
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 3,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 6,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          product.productName,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: isLarge ? 15 : 14,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black87,
+                          ),
+                        ),
+                        Text(
+                          "₹${product.price}",
+                          style: TextStyle(
+                            fontSize: isLarge ? 14 : 13,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.blue,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         );
       },
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.06),
-              blurRadius: 6,
-              offset: const Offset(2, 3),
-            ),
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              flex: 7,
-              child: ClipRRect(
-                borderRadius: const BorderRadius.all(Radius.circular(12)),
-                child: Image.network(
-                  product.image.first,
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                  loadingBuilder: (context, child, progress) {
-                    if (progress == null) return child;
-                    return AnimationLoading.shimmerImagePlaceholder(
-                      height: double.infinity,
-                      width: double.infinity,
-                    );
-                  },
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 3,
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      product.productName,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontSize: isLarge ? 15 : 14,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black87,
-                      ),
-                    ),
-                    Text(
-                      "₹${product.price}",
-                      style: TextStyle(
-                        fontSize: isLarge ? 14 : 13,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.blue,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 

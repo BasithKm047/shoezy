@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoezy/application/bloc/favourite/cubit/favourie_cubit.dart';
 import 'package:shoezy/data/models/product/product_model.dart';
+import 'package:shoezy/presentation/screens/product_details_screen.dart';
 import 'package:shoezy/presentation/widgets/lottie_widgets.dart';
 import 'package:shoezy/presentation/widgets/shimmer_loading.dart';
 import 'package:shoezy/utils/const/colors.dart';
+import 'package:shoezy/utils/const/navigation_styles.dart';
 
 class HorizontalProductList extends StatelessWidget {
   final String tagName;
@@ -62,7 +64,12 @@ class HorizontalProductList extends StatelessWidget {
     final isFavourite = context.watch<FavoritesCubit>().isFavorite(product);
 
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        NavigationStyles.fade(
+          context,
+          ProductDetailsScreen(products: product,),
+        );
+      },
       child: Container(
         width: 180, 
         decoration: BoxDecoration(

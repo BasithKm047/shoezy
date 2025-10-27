@@ -18,4 +18,44 @@ class AppColors {
   static Color orange=Colors.orange;
 }
 
+Color getColorFromName(String colorName) {
+  switch (colorName.toLowerCase()) {
+    case 'red':
+      return Colors.red;
+    case 'blue':
+      return Colors.blue;
+    case 'green':
+      return Colors.green;
+
+     case 'cyan':
+      return Colors.cyan;
+      case 'teal':
+      return Colors.teal;
+    case 'indigo':
+      return Colors.indigo;
+      case 'brown':
+      return Colors.brown;
+    case 'yellow':
+      return Colors.yellow;
+    case 'black':
+      return Colors.black;
+    case 'white':
+      return Colors.white;
+    case 'orange':
+      return Colors.orange;
+    case 'purple':
+      return Colors.purple;
+    case 'pink':
+      return Colors.pink;
+    case 'brown':
+      return Colors.brown;
+    case 'grey':
+    case 'gray':
+      return Colors.grey;
+
+    default:
+      return Colors.transparent; 
+  }
+}
+
 

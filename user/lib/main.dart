@@ -10,7 +10,6 @@ import 'package:shoezy/data/auth/auth_services.dart';
 import 'package:shoezy/data/repositories/category_repository.dart';
 import 'package:shoezy/data/repositories/favourite_repository.dart';
 import 'package:shoezy/data/repositories/product_repository.dart';
-import 'package:shoezy/presentation/screens/internet_checking_screeen.dart';
 import 'package:shoezy/presentation/screens/splash_screen.dart';
 import 'package:shoezy/utils/theme/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -40,8 +39,7 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => BottomNavigationBarCubit()),
         BlocProvider(
-          create: (context) =>
-              AuthBloc(authServices: AuthServices()),
+          create: (context) => AuthBloc(authServices: AuthServices()),
         ),
         BlocProvider(
           create: (context) => BrandBloc()
