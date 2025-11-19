@@ -19,7 +19,8 @@ class Addproductscreen extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
 
     final formKey = GlobalKey<FormState>();
-
+     context.read<VariantsBloc>().add(VariantsEvent.clearVariants());
+     context.read<SizeStockBloc>().add(SizeStockEvent.clearSizeStock());
     final shoeNameController = TextEditingController();
     final shoeDescriptionController = TextEditingController();
     final priceController = TextEditingController();
@@ -88,7 +89,12 @@ class Addproductscreen extends StatelessWidget {
                       SizedBox(height: 10),
                       CostumWidget.labelText(context, 'Select Gender'),
                       SizedBox(height: 10),
-                      AddProductFields.genderSelectorField(screenWidth, gender),
+                      AddProductFields.genderSelectorField(
+                        screenWidth,
+
+                        genderList: gender,
+                        // isUpdating: false,
+                      ),
                       SizedBox(height: 10),
 
                       CostumWidget.labelText(context, 'Add Variants'),

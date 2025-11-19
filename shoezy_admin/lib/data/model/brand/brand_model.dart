@@ -13,3 +13,4 @@ abstract class BrandModel with _$BrandModel {
   factory BrandModel.fromJson(Map<String, dynamic> json) =>
       _$BrandModelFromJson(json);
 }
+

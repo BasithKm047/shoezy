@@ -18,6 +18,12 @@ class Routes {
   static String addTagScreen='/addTagScreen';
   static String tagScreen='/tagScreen';
   static String editTagScreen='/editTagScreen';
+  static String editProductScreen='/editProductScreen';
+  static String editCategoryScreen='/editCategoryScreen';
+  static String editBrandScreen='/editBrandScreen';
+  static String OfferManagerScreen='/offerManageScreen';
+  static String addOfferScreen='/addOfferScreen';
+  static String editOfferScreen='/editOfferScreen';
   
 
 

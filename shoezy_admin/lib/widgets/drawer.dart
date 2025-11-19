@@ -106,6 +106,7 @@ class Drawers extends StatelessWidget {
                   icon: Icons.settings,
                   routeName: Routes.setting,
                 ),
+                buildDrawerButton(context: context, title: 'OfferS&Discounts', icon: Icons.abc, routeName: Routes.OfferManagerScreen),
                 const Spacer(),
                 Padding(
                   padding: const EdgeInsets.symmetric(

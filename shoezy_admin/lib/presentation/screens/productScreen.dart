@@ -27,7 +27,6 @@ class _ProductscreenState extends State<Productscreen> {
     super.initState();
     context.read<ProductBloc>().add(ProductEvent.getProduct());
     // Logger().d('Getting all the products');
- 
   }
 
   @override
@@ -277,14 +276,19 @@ class _ProductscreenState extends State<Productscreen> {
               children: [
                 IconButton(
                   icon: const Icon(Icons.edit, color: Colors.blue),
-                  onPressed: () {
-                    Navigator.push(
+                  onPressed: () async {
+                    final result = await Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>
-                            EditProductScreen(product: product),
+                        builder: (_) => EditProductScreen(product: product),
                       ),
                     );
+                    if (result == true) {
+                      // refresh product list explicitly
+                      context.read<ProductBloc>().add(
+                        ProductEvent.getProduct(),
+                      );
+                    }
                     // Logger().d('Edit product: $product');
                   },
                 ),

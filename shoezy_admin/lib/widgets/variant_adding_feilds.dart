@@ -57,7 +57,6 @@ class VariantAddingFeilds {
             context.read<VariantsBloc>().add(
               VariantsEvent.imageUpload(changedImages ),
             );
-            // Logger().i('Images updated:  images selected');
           },
           onImageRemoved: (index) {
             final List<Uint8List> imagetoCheck = state.maybeWhen(
@@ -70,9 +69,7 @@ class VariantAddingFeilds {
               context.read<VariantsBloc>().add(
                 VariantsEvent.imageRemoved(index),
               );
-              // Logger().i('Image removal requested at index: $index');
             } else {
-              // Logger().w('Invalid index for image removal: $index');
             }
           },
         );
@@ -92,8 +89,7 @@ class VariantAddingFeilds {
           );
         },
         builder: (context, state) {
-          // Handle loading state
-          // Logger().i('Current state: $state');
+        
           return state.maybeWhen(
             loading: () => Center(
               child: Column(

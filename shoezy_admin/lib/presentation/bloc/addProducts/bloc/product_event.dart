@@ -13,6 +13,7 @@ class ProductEvent with _$ProductEvent {
   const factory ProductEvent.productLoaded(List<ProductModel> products)=_ProductLoaded;
   const factory ProductEvent.deleteProduct(String id)=_DeleteProduct;
   const factory ProductEvent.searchProduct(String query) = _SearchProduct;
+  const factory ProductEvent.reset() = _Reset;
   
 
   

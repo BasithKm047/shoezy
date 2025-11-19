@@ -41,7 +41,7 @@ class SizeStockBloc extends Bloc<SizeStockEvent, SizeStockState> {
     });
     on<_ClearSizeStock>((event, emit) {
       sizeStock.clear();
-      emit(const SizeStockState.success());
+      // emit(const SizeStockState.success());
     });
     on<_SearchSizeStock>((event, emit) {
       emit(const SizeStockState.loading());
@@ -60,7 +60,7 @@ class SizeStockBloc extends Bloc<SizeStockEvent, SizeStockState> {
       try {
         emit(
           SizeStockState.editing(List.from(sizeStock)),
-        ); // always give fresh list
+        ); 
       } catch (e) {
         emit(SizeStockState.failure(e.toString()));
       }

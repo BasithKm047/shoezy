@@ -136,6 +136,11 @@ class MyApp extends StatelessWidget {
           path: Routes.addTagScreen,
           builder: (context, state) => AddTagScreen(),
         ),
+        // GoRoute(path: Routes.OfferManagerScreen,
+        // builder: (context, state) => const OfferManagerScreen(),),
+        // GoRoute(path: Routes.editOfferScreen,
+        // builder: (context, state) => const OfferManagerScreen(),)
+
       ],
     );
 

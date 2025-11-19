@@ -237,21 +237,24 @@ class AddProductFields {
   }
 
   static Widget genderSelectorField(
-    double screenWidth,
-    List<String> genderList,
-  ) {
+    double screenWidth, {
+    String? gender,
+    List<String>? genderList,
+    bool isUpdating = false,
+  }) {
     return BlocBuilder<GenderCubit, GenderState>(
       builder: (context, state) {
         String? selectedGender;
         if (state is GenderSelected) {
           selectedGender = state.gender;
         }
+        final dropdownValue = selectedGender ?? (isUpdating ? gender : null);
         return CostumWidget.costumDropdown(
-          items: genderList,
-          selectedValue: selectedGender,
+          items: genderList!,
+          selectedValue: dropdownValue,
           hintText: 'Gender',
           validator: (value) {
-            final text = value?.trim() ?? selectedGender?.trim();
+            final text = value?.trim() ?? dropdownValue;
             if (text == null || text.isEmpty) {
               return 'Please select a gender';
             }

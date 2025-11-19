@@ -98,7 +98,6 @@ class VariantsBloc extends Bloc<VariantsEvent, VariantsState> {
       emit(_Loading());
       try {
        variants = List.from(variants)..addAll(event.varaints);
-        // Logger().i('Variants Added: $variants');
         emit(
           VariantsState.data(
             images:List.from(images),
@@ -106,7 +105,6 @@ class VariantsBloc extends Bloc<VariantsEvent, VariantsState> {
           ),
         );
       } catch (e) {
-        // Logger().e('Error adding variants: $e');
         emit(_Failure(e.toString()));
       }
     });

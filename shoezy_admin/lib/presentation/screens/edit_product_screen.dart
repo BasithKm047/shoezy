@@ -30,7 +30,6 @@ class _EditProductScreenState extends State<EditProductScreen> {
   late final TextEditingController _priceController;
   final _formKey = GlobalKey<FormState>();
 
-  // Store original values for change detection
   late final String _originalName;
   late final String _originalDescription;
   late final String _originalPrice;
@@ -45,6 +44,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
   void initState() {
     super.initState();
 
+    context.read<ProductBloc>().add(ProductEvent.reset());
+    print(widget.product.gender);
     _originalName = widget.product.productName.trim();
     _originalDescription = widget.product.description.trim();
     _originalPrice = widget.product.price.trim();
@@ -55,7 +56,6 @@ class _EditProductScreenState extends State<EditProductScreen> {
     _originalTag = widget.product.tag;
     _originalGender = widget.product.gender;
 
-
     _shoeNameController = TextEditingController(text: _originalName);
     _shoeDescriptionController = TextEditingController(
       text: _originalDescription,
@@ -65,29 +65,26 @@ class _EditProductScreenState extends State<EditProductScreen> {
     context.read<BrandBloc>().add(FetchBrands(brandName: _originalBrand));
     context.read<CategoryBloc>().add(const GetCategories());
     context.read<TagBloc>().add(const TagEvent.fetchTags());
-
-    
+    // context.read<GenderCubit>().fe
 
     Future.delayed(const Duration(milliseconds: 100), () {
       print('its running');
       context.read<CategoryBloc>().add(
         CategoryEvent.selectedCategory(_originalCategory),
       );
-      // Logger().d(_originalCategory);
 
       context.read<BrandBloc>().add(BrandEvent.selectedBrand(_originalBrand));
-      // Logger().d(_originalBrand);
 
+      context.read<VariantsBloc>().add(VariantsEvent.clearVariants());
       context.read<VariantsBloc>().add(
         VariantsEvent.addVariants(_originalVariants),
       );
 
+      context.read<SizeStockBloc>().add(SizeStockEvent.clearSizeStock());
       context.read<SizeStockBloc>().add(
         SizeStockEvent.addedSizeStock(_originalSizeStocks),
       );
-      context.read<TagBloc>().add(
-        TagEvent.selectedTag(_originalTag),
-      );
+      context.read<TagBloc>().add(TagEvent.selectedTag(_originalTag));
       context.read<GenderCubit>().selectGender(_originalGender);
     });
   }
@@ -121,9 +118,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
       return true;
     }
 
-    // Check lists by length (simple check; extend to deep equality if needed)
     if (currentVariants.length != _originalVariants.length ||
-        currentSizeStocks.length != _originalSizeStocks.length||
+        currentSizeStocks.length != _originalSizeStocks.length ||
         currentTag != _originalTag ||
         currentGender != _originalGender) {
       return true;
@@ -136,117 +132,137 @@ class _EditProductScreenState extends State<EditProductScreen> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
 
-    return Scaffold(
-      appBar: CostumWidget.appBar(
-        title: 'Edit Product',
-        context: context,
-        centerTitle: true,
-      ),
-      body: BlocListener<ProductBloc, ProductState>(
-        listener: (context, state) {
-          state.maybeWhen(
-            loading: () => LoadingOverlay.show(context, 'Updating...'),
-            success: () {
-              LoadingOverlay.hide();
-              CostumWidget.showCustomSnackbar(
-                context: context,
-                message: 'Product updated successfully!',
-              );
-              context.read<ProductBloc>().add(ProductEvent.getProduct());
-              // Optionally navigate back after success
-              // Navigator.pop(context);
-            },
-            error: (message) {
-              LoadingOverlay.hide();
-              CostumWidget.showCustomSnackbar(
-                context: context,
-                message: 'Error: $message',
-                backgroundColor: Colors.red,
-              );
-            },
-            orElse: () {},
-          );
-        },
-        child: SingleChildScrollView(
-          child: Center(
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  CostumWidget.costumCard(
-                    padding: 30,
-                    width: screenWidth / 1.1,
-                    borderRaduis: 15,
-                    elevetion: 4,
-                    color: Colors.white,
-                    widget: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CostumWidget.labelText(context, 'Shoe Name'),
-                        const SizedBox(height: 10),
-                        AddProductFields.namingFeild(
-                          _shoeNameController,
-                          screenWidth,
-                        ),
-                        const SizedBox(height: 10),
-                        CostumWidget.labelText(context, 'Select Brand'),
-                        const SizedBox(height: 10),
-                        AddProductFields.brandSelectField(
-                          screenWidth,
-                          brandName: _originalBrand,
-                          isUpdating: true,
-                        ),
-
-                        const SizedBox(height: 10),
-                        CostumWidget.labelText(context, 'Select Category'),
-                        const SizedBox(height: 10),
-                        AddProductFields.categorySelectField(
-                          categoryName: _originalCategory,
-                          isUpdating: true,
-                          screenWidth: screenWidth,
-                        ),
-                        const SizedBox(height: 10),
-                        CostumWidget.labelText(context, 'Add Tags'),
-                        const SizedBox(height: 10),
-                        AddProductFields.tagSelectorField(
-                          screenWidth,
-                          tagName: _originalTag,
-                          isUpdating: true,
-                        ),
-                        const SizedBox(height: 10),
-                        CostumWidget.labelText(context, 'Select Gender'),
-                        const SizedBox(height: 10),
-                        AddProductFields.genderSelectorField(
-                          screenWidth,
-                          ['Male', 'Female', 'Children'],
-                        ),
-                        const SizedBox(height: 10),
-                        CostumWidget.labelText(context, 'Add Variants'),
-                        const SizedBox(height: 10),
-                        VariantField(), // This will now reflect pre-populated variants from bloc
-                        const SizedBox(height: 10),
-                        SizeStockFieldWidget(), // This will now reflect pre-populated size stocks from bloc
-                        const SizedBox(height: 10),
-                        CostumWidget.labelText(context, 'Price'),
-                        const SizedBox(height: 10),
-                        AddProductFields.priceField(
-                          _priceController,
-                          screenWidth,
-                        ),
-                        const SizedBox(height: 10),
-                        CostumWidget.labelText(context, 'Description'),
-                        const SizedBox(height: 10),
-                        AddProductFields.descriptionFeild(
-                          _shoeDescriptionController,
-                          screenWidth,
-                        ),
-                        const SizedBox(height: 20),
-                        _buildUpdateButton(context, screenWidth),
-                        const SizedBox(height: 20),
-                      ],
+    return PopScope(
+      canPop: true,
+      // ignore: deprecated_member_use
+      onPopInvoked: (didPop) {
+        context.read<ProductBloc>().add(ProductEvent.getProduct());
+      },
+      child: Scaffold(
+        appBar: CostumWidget.appBar(
+          title: 'Edit Product',
+          context: context,
+          centerTitle: true,
+        ),
+        body: BlocListener<ProductBloc, ProductState>(
+          listenWhen: (previous, current) {
+            final prevIsSuccess = previous.maybeWhen(
+              success: () => true,
+              orElse: () => false,
+            );
+            final currIsSuccess = current.maybeWhen(
+              success: () => true,
+              orElse: () => false,
+            );
+            return !prevIsSuccess &&
+                currIsSuccess; // only when it becomes success
+          },
+          listener: (context, state) {
+            state.maybeWhen(
+              loading: () => LoadingOverlay.show(context, 'Updating...'),
+              success: () {
+                LoadingOverlay.hide();
+                CostumWidget.showCustomSnackbar(
+                  context: context,
+                  message: 'Product updated successfully!',
+                );
+                context.read<ProductBloc>().add(ProductEvent.getProduct());
+              },
+              error: (message) {
+                LoadingOverlay.hide();
+                CostumWidget.showCustomSnackbar(
+                  context: context,
+                  message: 'Error: $message',
+                  backgroundColor: Colors.red,
+                );
+              },
+              orElse: () {},
+            );
+          },
+          child: SingleChildScrollView(
+            child: Center(
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    CostumWidget.costumCard(
+                      padding: 30,
+                      width: screenWidth / 1.1,
+                      borderRaduis: 15,
+                      elevetion: 4,
+                      color: Colors.white,
+                      widget: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CostumWidget.labelText(context, 'Shoe Name'),
+                          const SizedBox(height: 10),
+                          AddProductFields.namingFeild(
+                            _shoeNameController,
+                            screenWidth,
+                          ),
+                          const SizedBox(height: 10),
+                          CostumWidget.labelText(context, 'Select Brand'),
+                          const SizedBox(height: 10),
+                          AddProductFields.brandSelectField(
+                            screenWidth,
+                            brandName: _originalBrand,
+                            isUpdating: true,
+                          ),
+      
+                          const SizedBox(height: 10),
+                          CostumWidget.labelText(context, 'Select Category'),
+                          const SizedBox(height: 10),
+                          AddProductFields.categorySelectField(
+                            categoryName: _originalCategory,
+                            isUpdating: true,
+                            screenWidth: screenWidth,
+                          ),
+                          const SizedBox(height: 10),
+                          CostumWidget.labelText(context, 'Add Tags'),
+                          const SizedBox(height: 10),
+                          AddProductFields.tagSelectorField(
+                            screenWidth,
+                            tagName: _originalTag,
+                            isUpdating: true,
+                          ),
+                          const SizedBox(height: 10),
+                          CostumWidget.labelText(context, 'Select Gender'),
+                          const SizedBox(height: 10),
+                          AddProductFields.genderSelectorField(
+                            screenWidth,
+      
+                            gender: _originalGender,
+                            genderList: ['Men', 'Women', 'Kids'],
+                            isUpdating: true,
+                          ),
+                          const SizedBox(height: 10),
+                          CostumWidget.labelText(context, 'Add Variants'),
+                          const SizedBox(height: 10),
+                          VariantField(), // This will now reflect pre-populated variants from bloc
+                          const SizedBox(height: 10),
+                          SizeStockFieldWidget(), // This will now reflect pre-populated size stocks from bloc
+                          const SizedBox(height: 10),
+                          CostumWidget.labelText(context, 'Price'),
+                          const SizedBox(height: 10),
+                          AddProductFields.priceField(
+                            _priceController,
+                            screenWidth,
+                          ),
+                          const SizedBox(height: 10),
+                          CostumWidget.labelText(context, 'Description'),
+                          const SizedBox(height: 10),
+                          AddProductFields.descriptionFeild(
+                            _shoeDescriptionController,
+                            screenWidth,
+                          ),
+                          const SizedBox(height: 20),
+                          _buildUpdateButton(context, screenWidth),
+                          const SizedBox(height: 20),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
@@ -256,18 +272,11 @@ class _EditProductScreenState extends State<EditProductScreen> {
   }
 
   Widget _buildUpdateButton(BuildContext context, double screenWidth) {
-    // Watch bloc states (automatically rebuilds on state change)
     final brandState = context.watch<BrandBloc>().state;
     final categoryState = context.watch<CategoryBloc>().state;
     final variantsState = context.watch<VariantsBloc>().state;
     final sizeState = context.watch<SizeStockBloc>().state;
-    // final tagState = context.watch<TagBloc>().state;
-    // final genderState = context.watch<GenderCubit>().state;
 
-    
-
-
-    // Extract selected brand
     final selectedBrand = brandState.maybeWhen(
       orElse: () => null,
       loaded: (brands, selectedBrandName) => brands.firstWhere(
@@ -276,7 +285,6 @@ class _EditProductScreenState extends State<EditProductScreen> {
       ),
     );
 
-    // Extract selected category
     final selectedCategory = categoryState.maybeWhen(
       orElse: () => null,
       loaded: (categories, selectedCategoryName) => categories.firstWhere(
@@ -297,26 +305,21 @@ class _EditProductScreenState extends State<EditProductScreen> {
         ? (context.read<GenderCubit>().state as GenderSelected).gender
         : null;
 
-    // Extract current variants
     final currentVariants = variantsState.maybeWhen(
       orElse: () => <Variantsmodel>[],
       data: (images, variants, showfield) => variants,
     );
 
-    // Extract current size stocks
     final currentSizeStocks = sizeState.maybeWhen(
       orElse: () => <SizeStockModel>[],
       loaded: (sizeStock) => sizeStock,
     );
-    
 
-    // ✅ Remove change detection — now it updates regardless
     final hasBrandAndCategory =
         selectedBrand != null && selectedCategory != null;
     final hasVariants = currentVariants.isNotEmpty;
     final hasSizeStocks = currentSizeStocks.isNotEmpty;
 
-    // ✅ Update allowed if all fields have valid data (no need to check for changes)
     final canUpdate = hasBrandAndCategory && hasVariants && hasSizeStocks;
 
     return BlocListener<ProductBloc, ProductState>(
@@ -355,10 +358,13 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       tag: selectedTag!.name,
                     );
 
-                    // ✅ Always update Firebase — even if unchanged
                     context.read<ProductBloc>().add(
                       ProductEvent.updateProduct(updatedProduct),
                     );
+                    context.read<ProductBloc>().add(
+                      ProductEvent.getProduct(),
+                    ); // optional
+                    Navigator.of(context).pop(true);
                   }
                 : null,
             width: screenWidth / 7,

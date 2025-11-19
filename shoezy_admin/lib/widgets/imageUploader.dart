@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
+
 // ignore: must_be_immutable
 class CostumImageUploader extends StatelessWidget {
-  final List<Uint8List>? images; 
-  final Function(List<Uint8List>)? onImagesChanged; 
+  final List<Uint8List>? images;
+  final Function(List<Uint8List>)? onImagesChanged;
   final Function(int index)? onImageRemoved;
 
   final dynamic image;
@@ -14,7 +15,7 @@ class CostumImageUploader extends StatelessWidget {
   final VoidCallback? onSingleImageRemoved;
 
   final bool singleMode;
-   bool updateimage;
+  bool updateimage;
   final Bloc? blocofImage;
 
   CostumImageUploader({
@@ -33,10 +34,12 @@ class CostumImageUploader extends StatelessWidget {
   final ImagePicker _picker = ImagePicker();
 
   Future<void> _pickImages() async {
-    updateimage=false;
+    updateimage = false;
     try {
       if (singleMode) {
-        final XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+        final XFile? pickedFile = await _picker.pickImage(
+          source: ImageSource.gallery,
+        );
         if (pickedFile != null) {
           Uint8List bytes = await pickedFile.readAsBytes();
           onImageSelected?.call(bytes);
@@ -48,7 +51,7 @@ class CostumImageUploader extends StatelessWidget {
           Uint8List bytes = await xfile.readAsBytes();
           newImages.add(bytes);
         }
-        onImagesChanged?.call([...images ?? [], ...newImages]); // 🔹 CHANGE
+        onImagesChanged?.call([...images ?? [], ...newImages]);
       }
     } catch (e) {
       print('Error picking images: $e');
@@ -60,13 +63,15 @@ class CostumImageUploader extends StatelessWidget {
       return Image.memory(
         img,
         fit: BoxFit.cover,
-        errorBuilder: (context, error, stackTrace) => const Text('Error Loading Image'),
+        errorBuilder: (context, error, stackTrace) =>
+            const Text('Error Loading Image'),
       );
     } else if (img is String) {
       return Image.network(
         img,
         fit: BoxFit.cover,
-        errorBuilder: (context, error, stackTrace) => const Text('Error Loading Image'),
+        errorBuilder: (context, error, stackTrace) =>
+            const Text('Error Loading Image'),
       );
     }
     return const Text('Unsupported image type');
@@ -100,7 +105,10 @@ class CostumImageUploader extends StatelessWidget {
                           top: 5,
                           right: 5,
                           child: IconButton(
-                            icon: const Icon(Icons.remove_circle, color: Colors.red),
+                            icon: const Icon(
+                              Icons.remove_circle,
+                              color: Colors.red,
+                            ),
                             onPressed: onSingleImageRemoved,
                           ),
                         ),
@@ -132,7 +140,10 @@ class CostumImageUploader extends StatelessWidget {
                                 top: 5,
                                 right: 5,
                                 child: IconButton(
-                                  icon: const Icon(Icons.remove_circle, color: Colors.red),
+                                  icon: const Icon(
+                                    Icons.remove_circle,
+                                    color: Colors.red,
+                                  ),
                                   onPressed: () {
                                     onImageRemoved?.call(index);
                                   },
@@ -165,7 +176,10 @@ class CostumImageUploader extends StatelessWidget {
                 const SizedBox(height: 10),
                 Text(
                   singleMode ? 'Upload Image' : 'Upload Images',
-                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 const SizedBox(height: 5),
                 Text(

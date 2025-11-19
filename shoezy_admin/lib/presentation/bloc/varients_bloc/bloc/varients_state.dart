@@ -22,7 +22,7 @@ abstract class VariantsState with _$VariantsState {
   const factory VariantsState.data({
     required List<Uint8List> images,
     required List<Variantsmodel> variants,
-    @Default(false) bool showFields,  // If you need to track show/hide fields too
+    @Default(false) bool showFields, 
   }) = _Data;
 
 }

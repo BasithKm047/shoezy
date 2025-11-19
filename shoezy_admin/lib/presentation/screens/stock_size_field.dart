@@ -46,11 +46,10 @@ class SizeStockFieldWidget extends StatelessWidget {
                   listener: (context, state) {
                     state.maybeWhen(
                       success: () {
-                        // If you want to show a snackbar or hide loading overlay
-                        CostumWidget.showCustomSnackbar(
-                          context: context,
-                          message: "Size/Stock updated successfully",
-                        );
+                        // CostumWidget.showCustomSnackbar(
+                        //   context: context,
+                        //   message: "Size/Stock updated successfully",
+                        // );
                       },
                       failure: (err) {
                         CostumWidget.showCustomSnackbar(

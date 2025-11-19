@@ -50,7 +50,7 @@ class VariantField extends StatelessWidget {
                   ),
                   SizedBox(height: 20),
                   VariantAddingFeilds.varaintListView(),
-
+             
                   SizedBox(height: 20),
                 ],
               ),
