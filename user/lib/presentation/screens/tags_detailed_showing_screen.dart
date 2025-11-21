@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shoezy/application/bloc/product_bloc/bloc/product_bloc.dart';
+import 'package:shoezy/presentation/bloc/product_bloc/bloc/product_bloc.dart';
 import 'package:shoezy/data/models/product/product_model.dart';
 import 'package:shoezy/presentation/widgets/cardfor_showing_shoes.dart';
 import 'package:shoezy/presentation/widgets/home_screen_widgets.dart';
 import 'package:shoezy/presentation/widgets/shimmer_loading.dart';
+import 'package:shoezy/utils/const/colors.dart';
 
 class TagsDetailedShowingScreen extends StatelessWidget {
-   final String gender;
-  const TagsDetailedShowingScreen({super.key, required this.gender});
+
+  const TagsDetailedShowingScreen({super.key,});
 
   @override
   Widget build(BuildContext context) {
@@ -33,10 +34,8 @@ class TagsDetailedShowingScreen extends StatelessWidget {
           loaded: (products) => products,
         );
         final tags = products.map((p) => p.tag).toSet().toList();
-        final filterdByGender = products
-            .where((p) => p.gender.toLowerCase() == gender.toLowerCase())
-            .toList();
-        products = filterdByGender;
+       
+        
 
         return Scaffold(
           body: ListView.separated(
@@ -64,7 +63,14 @@ class TagsDetailedShowingScreen extends StatelessWidget {
                 ],
               );
             },
-            separatorBuilder: (context, index) => SizedBox(height: 10),
+            separatorBuilder: (context, index) => Padding(
+              padding: const EdgeInsets.only(left:50,right: 50),
+              child: SizedBox(
+                width: 24,
+                height: 30,
+                child: Divider(color: AppColors.grey,),
+              ),
+            ),
             itemCount: tags.length,
           ),
         );

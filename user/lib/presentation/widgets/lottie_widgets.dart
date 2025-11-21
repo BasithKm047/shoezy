@@ -34,7 +34,7 @@ class LottieWidgets {
     return Column(
       children: [
         LottieBuilder.asset(
-          '/asset/empty-box_2.json',
+          'asset/empty-box_2.json',
           height: 100,
           width: 50,
           fit: BoxFit.cover,

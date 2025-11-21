@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shoezy/application/bloc/favourite/cubit/favourie_cubit.dart';
-import 'package:shoezy/application/bloc/favourite/cubit/favourie_state.dart';
+import 'package:shoezy/presentation/bloc/favourite/cubit/favourie_cubit.dart';
+import 'package:shoezy/presentation/bloc/favourite/cubit/favourie_state.dart';
 import 'package:shoezy/data/models/product/product_model.dart';
 import 'package:shoezy/presentation/screens/product_details_screen.dart';
-import 'package:shoezy/presentation/screens/tags_detailed_showing_screen.dart';
 import 'package:shoezy/presentation/widgets/shimmer_loading.dart';
 import 'package:shoezy/utils/const/colors.dart';
 import 'package:shoezy/utils/const/navigation_styles.dart';
@@ -125,10 +124,10 @@ class _HorizontalTagSectionState extends State<HorizontalTagSection>
                       ),
                       TextButton(
                         onPressed: () {
-                          NavigationStyles.slideFromLeft(
-                            context,
-                            TagsDetailedShowingScreen(gender: gender),
-                          );
+                          // NavigationStyles.slideFromLeft(
+                          //   context,
+                          //   // TagsDetailedShowingScreen(gender: gender),
+                          // );
                         },
                         child: Text(
                           "See All →",

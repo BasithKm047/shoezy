@@ -309,7 +309,7 @@ class AnimationLoading {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Lottie.asset(
-                  'asset/box_empty_1.json',
+                  'asset/empty-box_2.json',
                   width: lottieSize,
                   height: lottieSize,
                   fit: BoxFit.contain,

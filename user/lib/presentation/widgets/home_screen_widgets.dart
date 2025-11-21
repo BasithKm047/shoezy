@@ -1,10 +1,9 @@
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:shoezy/application/bloc/brand_bloc/brand_bloc.dart';
-import 'package:shoezy/application/bloc/product_bloc/bloc/product_bloc.dart';
+import 'package:shoezy/presentation/bloc/brand_bloc/brand_bloc.dart';
+import 'package:shoezy/presentation/bloc/product_bloc/bloc/product_bloc.dart';
 import 'package:shoezy/data/models/product/product_model.dart';
 import 'package:shoezy/presentation/screens/brand_field_screen.dart';
 import 'package:shoezy/presentation/screens/home_screen.dart';
@@ -15,6 +14,7 @@ import 'package:shoezy/presentation/widgets/dots_button.dart';
 import 'package:shoezy/presentation/widgets/lottie_widgets.dart';
 import 'package:shoezy/presentation/widgets/shimmer_loading.dart';
 import 'package:shoezy/utils/const/colors.dart';
+import 'package:shoezy/utils/const/navigation_styles.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class HomeScreenWidgets {
@@ -87,43 +87,19 @@ class HomeScreenWidgets {
                   padding: const EdgeInsets.all(10.0),
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.of(context).push(
-                        PageRouteBuilder(
-                          pageBuilder:
-                              (context, animation, secondaryAnimation) {
-                                return BrandFieldScreen(product: products);
-                              },
-                          transitionsBuilder:
-                              (context, animation, secondaryAnimation, child) {
-                                // final curvedAnimation = CurvedAnimation(
-                                //   parent: animation,
-                                //   curve: Curves.bounceOut,
-                                // );
-
-                                final position = Tween<Offset>(
-                                  begin: Offset(
-                                    -1,
-                                    0,
-                                  ), // starts from right side
-                                  end: Offset.zero, // ends in normal position
-                                ).animate(animation);
-
-                                return SlideTransition(
-                                  position: position,
-                                  child: child,
-                                );
-                              },
-                          // transitionDuration: Duration(seconds: 1),
-                          // reverseTransitionDuration: Duration(microseconds: 500),
-                          // // opaque: true,
-                          // fullscreenDialog: true,
-
-                          // barrierColor: Colors.amber,
-                          // allowSnapshotting: true,
-                        ),
+                      NavigationStyles.slideFromLeft(
+                        context,
+                        BrandFieldScreen(product: products),
                       );
                     },
 
+                    // transitionDuration: Duration(seconds: 1),
+                    // reverseTransitionDuration: Duration(microseconds: 500),
+                    // // opaque: true,
+                    // fullscreenDialog: true,
+
+                    // barrierColor: Colors.amber,
+                    // allowSnapshotting: true,
                     child: Text(
                       "See All →",
                       style: TextStyle(color: AppColors.blue),
@@ -137,7 +113,6 @@ class HomeScreenWidgets {
                   SizedBox(
                     height: 140,
                     child: ListView.separated(
-                      
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index) {
                         final brandProducts = products
@@ -152,7 +127,6 @@ class HomeScreenWidgets {
                       },
                       separatorBuilder: (context, index) => SizedBox(width: 20),
                       itemCount: brands.length,
-                      
                     ),
                   ),
               ],

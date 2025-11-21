@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shoezy/application/bloc/auth_bloc/auth_bloc.dart';
+import 'package:shoezy/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:shoezy/presentation/widgets/costum_widget.dart';
 import 'package:shoezy/utils/const/colors.dart';
 import 'package:shoezy/utils/const/commonFunctions.dart';

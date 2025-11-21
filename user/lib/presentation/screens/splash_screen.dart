@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:shoezy/application/bloc/auth_bloc/auth_bloc.dart';
+import 'package:shoezy/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:shoezy/presentation/screens/bottom_navigation.dart';
 import 'package:shoezy/presentation/screens/signin_screen.dart';
 import 'package:shoezy/presentation/screens/signup_screen.dart';

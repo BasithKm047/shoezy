@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shoezy/application/bloc/favourite/cubit/favourie_cubit.dart';
-import 'package:shoezy/application/bloc/favourite/cubit/favourie_state.dart';
+import 'package:shoezy/presentation/bloc/favourite/cubit/favourie_cubit.dart';
+import 'package:shoezy/presentation/bloc/favourite/cubit/favourie_state.dart';
 import 'package:shoezy/data/models/product/product_model.dart';
 import 'package:shoezy/utils/const/colors.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';

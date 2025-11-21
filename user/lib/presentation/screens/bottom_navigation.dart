@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shoezy/application/bloc/navigation_bar/cubit/bottom_navigation_bar_cubit.dart';
+import 'package:shoezy/presentation/bloc/navigation_bar/cubit/bottom_navigation_bar_cubit.dart';
 import 'package:shoezy/presentation/screens/cart_screen.dart';
 import 'package:shoezy/presentation/screens/category_screen.dart';
 import 'package:shoezy/presentation/screens/favourote_screen.dart';
@@ -10,9 +10,9 @@ import 'package:shoezy/utils/const/colors.dart';
 class BottomNavigation extends StatelessWidget {
   BottomNavigation({super.key});
 
-  final Color activeColor = const Color(0xFF00FF7F);
-  final Color inactiveColorLight = const Color(0xFFE8E8E8);
-  final Color inactiveColorDark = const Color(0xFF2C2C2C);
+  final Color activeColor = AppColors.blue;
+  final Color inactiveColorLight = AppColors.white;
+  final Color inactiveColorDark = AppColors.black;
 
   final List<Map<String, dynamic>> navitems = const [
     {'icon': Icons.home, 'label': 'Home'},
@@ -34,7 +34,7 @@ class BottomNavigation extends StatelessWidget {
   Widget build(BuildContext context) {
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
 
-    final Color navBarColor = isDark ? const Color(0xFF1A1A1A) : Colors.white;
+    final Color navBarColor = isDark ? AppColors.black : Colors.white;
     final Color inactiveColor = isDark ? inactiveColorDark : inactiveColorLight;
     final Color iconColor = isDark ? AppColors.white : AppColors.black;
     // final Color textColor = isDark ? Colors.white : Colors.black87;
@@ -108,7 +108,7 @@ class BottomNavigation extends StatelessWidget {
                           children: [
                             Icon(
                               items['icon'],
-                              color: isSelected ? Colors.black : iconColor,
+                              color: isSelected ? Colors.white : iconColor,
                               size: 24,
                             ),
                             if (isSelected)
@@ -118,9 +118,7 @@ class BottomNavigation extends StatelessWidget {
                                   items['label'],
                                   style: Theme.of(context).textTheme.bodyMedium
                                       ?.copyWith(
-                                        color: isDark
-                                            ? Colors.black
-                                            : Colors.black87,
+                                        color: Colors.white,
                                         fontSize: 13,
                                         fontWeight: FontWeight.w600,
                                       ),

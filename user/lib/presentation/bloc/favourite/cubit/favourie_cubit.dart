@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shoezy/application/bloc/favourite/cubit/favourie_state.dart';
+import 'package:shoezy/presentation/bloc/favourite/cubit/favourie_state.dart';
 import 'package:shoezy/data/models/product/product_model.dart';
 import 'package:shoezy/data/repositories/favourite_repository.dart';
 

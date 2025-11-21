@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:shoezy/application/bloc/auth_bloc/auth_bloc.dart';
+import 'package:shoezy/presentation/bloc/auth_bloc/auth_bloc.dart';
 
 import 'package:shoezy/data/models/user_model.dart';
 import 'package:shoezy/presentation/screens/home_screen.dart';

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:shoezy/application/bloc/auth_bloc/auth_bloc.dart';
-import 'package:shoezy/application/bloc/brand_bloc/brand_bloc.dart';
-import 'package:shoezy/application/bloc/category/bloc/category_bloc.dart';
-import 'package:shoezy/application/bloc/favourite/cubit/favourie_cubit.dart';
-import 'package:shoezy/application/bloc/navigation_bar/cubit/bottom_navigation_bar_cubit.dart';
-import 'package:shoezy/application/bloc/product_bloc/bloc/product_bloc.dart';
+import 'package:shoezy/presentation/bloc/auth_bloc/auth_bloc.dart';
+import 'package:shoezy/presentation/bloc/brand_bloc/brand_bloc.dart';
+import 'package:shoezy/presentation/bloc/category/bloc/category_bloc.dart';
+import 'package:shoezy/presentation/bloc/favourite/cubit/favourie_cubit.dart';
+import 'package:shoezy/presentation/bloc/navigation_bar/cubit/bottom_navigation_bar_cubit.dart';
+import 'package:shoezy/presentation/bloc/productFilter/cubit/product_filter_cubit.dart';
+import 'package:shoezy/presentation/bloc/product_bloc/bloc/product_bloc.dart';
 import 'package:shoezy/data/auth/auth_services.dart';
 import 'package:shoezy/data/repositories/category_repository.dart';
 import 'package:shoezy/data/repositories/favourite_repository.dart';
@@ -52,6 +53,7 @@ class MyApp extends StatelessWidget {
           create: (context) => FavoritesCubit(repository: favoritesRepository),
         ),
         BlocProvider(create: (context) => CategoryBloc(CategoryRepository())),
+        BlocProvider(create: (context) => ProductFilterCubit(),)
       ],
       child: MaterialApp(
         theme: Apptheme.lightTheme,
