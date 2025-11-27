@@ -11,6 +11,7 @@ import 'package:shoezy/data/auth/auth_services.dart';
 import 'package:shoezy/data/repositories/category_repository.dart';
 import 'package:shoezy/data/repositories/favourite_repository.dart';
 import 'package:shoezy/data/repositories/product_repository.dart';
+import 'package:shoezy/presentation/bloc/product_sort/cubit/product_sort_cubit.dart';
 import 'package:shoezy/presentation/screens/splash_screen.dart';
 import 'package:shoezy/utils/theme/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -53,7 +54,8 @@ class MyApp extends StatelessWidget {
           create: (context) => FavoritesCubit(repository: favoritesRepository),
         ),
         BlocProvider(create: (context) => CategoryBloc(CategoryRepository())),
-        BlocProvider(create: (context) => ProductFilterCubit(),)
+        BlocProvider(create: (context) => ProductFilterCubit()),
+        BlocProvider<ProductSortCubit>(create: (_) => ProductSortCubit()),
       ],
       child: MaterialApp(
         theme: Apptheme.lightTheme,

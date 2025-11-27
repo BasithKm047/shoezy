@@ -3,13 +3,11 @@ import 'package:shoezy/utils/const/colors.dart';
 
 class ProductBottomNav extends StatelessWidget {
   final VoidCallback onSortTap;
-  final VoidCallback onCategoryTap;
   final VoidCallback onFilterTap;
 
   const ProductBottomNav({
     super.key,
     required this.onSortTap,
-    required this.onCategoryTap,
     required this.onFilterTap,
   });
 
@@ -50,13 +48,13 @@ class ProductBottomNav extends StatelessWidget {
 
             _verticalDivider(),
 
-            _navButton(
-              icon: Icons.category,
-              label: "CATEGORY",
-              onTap: onCategoryTap,
-            ),
+            // _navButton(
+            //   icon: Icons.category,
+            //   label: "CATEGORY",
+            //   onTap: onCategoryTap,
+            // ),
 
-            _verticalDivider(),
+            // _verticalDivider(),
 
             _navButton(
               icon: Icons.filter_list,

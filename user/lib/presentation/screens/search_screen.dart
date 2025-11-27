@@ -5,12 +5,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shoezy/presentation/bloc/brand_bloc/brand_bloc.dart';
 import 'package:shoezy/presentation/bloc/category/bloc/category_bloc.dart';
+import 'package:shoezy/presentation/bloc/productFilter/cubit/product_filter_cubit.dart';
+import 'package:shoezy/presentation/bloc/productFilter/cubit/product_filter_state.dart';
 import 'package:shoezy/presentation/bloc/product_bloc/bloc/product_bloc.dart';
 import 'package:shoezy/presentation/bloc/favourite/cubit/favourie_cubit.dart';
 import 'package:shoezy/data/models/product/product_model.dart';
+import 'package:shoezy/presentation/bloc/product_sort/cubit/product_sort_cubit.dart';
 import 'package:shoezy/presentation/screens/product_details_screen.dart';
+import 'package:shoezy/presentation/widgets/filter_modal.dart';
+import 'package:shoezy/presentation/widgets/filtering_product_nav_bar.dart';
 import 'package:shoezy/presentation/widgets/product_grid_card.dart';
 import 'package:shoezy/presentation/widgets/shimmer_loading.dart';
+import 'package:shoezy/presentation/widgets/sorting_filter_modal.dart';
 import 'package:shoezy/utils/const/navigation_styles.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -110,6 +116,11 @@ class _SearchScreenState extends State<SearchScreen> {
           orElse: () => <ProductModel>[],
           loaded: (productList) => productList,
         );
+        final filterCubit = context.read<ProductFilterCubit>();
+        if (products.isNotEmpty && filterCubit.state.sourceProducts.isEmpty) {
+          filterCubit.setSourceProducts(products);
+        }
+      
 
         return Scaffold(
           appBar: AppBar(
@@ -147,6 +158,20 @@ class _SearchScreenState extends State<SearchScreen> {
                             () async {
                               _addToRecentSearches(value);
                               _queryNotifier.value = value;
+
+                              final products = context
+                                  .read<ProductBloc>()
+                                  .state
+                                  .maybeWhen(
+                                    orElse: () => <ProductModel>[],
+                                    loaded: (products) => products,
+                                  );
+                              context
+                                  .read<ProductFilterCubit>()
+                                  .setSourceProducts(
+                                    products,
+                                    titleFilter: value,
+                                  );
                               _recentSearchesNotifier.value =
                                   await _loadRecentSearches();
                             },
@@ -156,6 +181,17 @@ class _SearchScreenState extends State<SearchScreen> {
                           _addToRecentSearches(value);
                           _queryNotifier.value = value;
                           FocusScope.of(context).unfocus();
+                          final products = context
+                              .read<ProductBloc>()
+                              .state
+                              .maybeWhen(
+                                orElse: () => <ProductModel>[],
+                                loaded: (products) => products,
+                              );
+                          context.read<ProductFilterCubit>().setSourceProducts(
+                            products,
+                            titleFilter: value,
+                          );
                           _recentSearchesNotifier.value =
                               await _loadRecentSearches();
                         },
@@ -166,122 +202,190 @@ class _SearchScreenState extends State<SearchScreen> {
                       child: ValueListenableBuilder<String>(
                         valueListenable: _queryNotifier,
                         builder: (context, query, _) {
-                          final filteredProducts = _filterProducts(
-                            products,
-                            query,
-                          );
-                          final defaultProducts = products.take(4).toList();
-                          final showSuggestions = query.isEmpty;
+                         
 
-                          return SingleChildScrollView(
-                            physics: const BouncingScrollPhysics(),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 15,
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  // 🕘 Recent Searches + Popular Searches
-                                  if (showSuggestions) ...[
-                                    const SizedBox(height: 10),
-                                    ValueListenableBuilder<List<String>>(
-                                      valueListenable: _recentSearchesNotifier,
-                                      builder: (context, recent, _) {
-                                        if (recent.isEmpty) {
-                                          return const SizedBox.shrink();
-                                        }
-                                        return Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            const Text(
-                                              'Recent Searches',
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 16,
-                                              ),
-                                            ),
-                                            const SizedBox(height: 8),
-                                            Wrap(
-                                              spacing: 8,
-                                              children: recent
-                                                  .map(
-                                                    (item) => ActionChip(
-                                                      backgroundColor:
-                                                          Colors.grey.shade300,
-                                                      label: Text(item),
-                                                      onPressed: () {
-                                                        _searchController.text =
-                                                            item;
-                                                        _queryNotifier.value =
-                                                            item;
-                                                      },
-                                                    ),
-                                                  )
-                                                  .toList(),
-                                            ),
-                                            const SizedBox(height: 20),
-                                          ],
-                                        );
-                                      },
-                                    ),
-                                    const Text(
-                                      'Popular Searches',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 8),
-                                    Wrap(
-                                      spacing: 8,
-                                      children: _suggestions
-                                          .map(
-                                            (sug) => ActionChip(
-                                              backgroundColor:
-                                                  Colors.grey.shade300,
-                                              label: Text(sug),
-                                              onPressed: () {
-                                                _searchController.text = sug;
-                                                _addToRecentSearches(sug);
-                                                _queryNotifier.value = sug;
-                                              },
-                                            ),
-                                          )
-                                          .toList(),
-                                    ),
-                                    const SizedBox(height: 25),
+                          return BlocBuilder<
+                            ProductFilterCubit,
+                            ProductFilterState
+                          >(
+                            builder: (context, state) {
+                              final showSuggestions =
+                                  query.isEmpty && !state.hasActiveFilters;
+                              final defaultProducts = state.defaultProducts
+                                  .take(4)
+                                  .toList();
+                              final filteredProducts = state.hasActiveFilters?
+                                  state.filteredProducts :
+                                  _filterProducts(
+                                    state.sourceProducts,
+                                    query,
+                                  );
+                              return SingleChildScrollView(
+                                physics: const BouncingScrollPhysics(),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 15,
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      // 🕘 Recent Searches + Popular Searches
+                                      if (showSuggestions) ...[
+                                        const SizedBox(height: 10),
+                                        ValueListenableBuilder<List<String>>(
+                                          valueListenable:
+                                              _recentSearchesNotifier,
+                                          builder: (context, recent, _) {
+                                            if (recent.isEmpty) {
+                                              return const SizedBox.shrink();
+                                            }
+                                            return Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                const Text(
+                                                  'Recent Searches',
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 16,
+                                                  ),
+                                                ),
+                                                const SizedBox(height: 8),
+                                                Wrap(
+                                                  spacing: 8,
+                                                  children: recent
+                                                      .map(
+                                                        (item) => ActionChip(
+                                                          backgroundColor:
+                                                              Colors
+                                                                  .grey
+                                                                  .shade300,
+                                                          label: Text(item),
+                                                          onPressed: () {
+                                                            _searchController
+                                                                    .text =
+                                                                item;
+                                                            _queryNotifier
+                                                                    .value =
+                                                                item;
+                                                          },
+                                                        ),
+                                                      )
+                                                      .toList(),
+                                                ),
+                                                const SizedBox(height: 20),
+                                              ],
+                                            );
+                                          },
+                                        ),
+                                        const Text(
+                                          'Popular Searches',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 8),
+                                        Wrap(
+                                          spacing: 8,
+                                          children: _suggestions
+                                              .map(
+                                                (sug) => ActionChip(
+                                                  backgroundColor:
+                                                      Colors.grey.shade300,
+                                                  label: Text(sug),
+                                                  onPressed: () {
+                                                    _searchController.text =
+                                                        sug;
+                                                    _addToRecentSearches(sug);
+                                                    _queryNotifier.value = sug;
+                                                  },
+                                                ),
+                                              )
+                                              .toList(),
+                                        ),
+                                        const SizedBox(height: 25),
 
-                                    // 👟 Recommended Products (Always 4)
-                                    const Text(
-                                      'Recommended for You',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 10),
-                                    _buildProductGrid(context, defaultProducts),
-                                  ],
+                                        // 👟 Recommended Products (Always 4)
+                                        const Text(
+                                          'Recommended for You',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 10),
+                                        _buildProductGrid(
+                                          context,
+                                          defaultProducts,
+                                        ),
+                                      ],
 
-                                  // 🔍 Filtered Search Results
-                                  if (!showSuggestions) ...[
-                                    const SizedBox(height: 10),
-                                    _buildProductGrid(
-                                      context,
-                                      filteredProducts,
-                                    ),
-                                  ],
-                                ],
-                              ),
-                            ),
+                                      // 🔍 Filtered Search Results
+                                      if (!showSuggestions) ...[
+                                        const SizedBox(height: 10),
+                                        _buildProductGrid(
+                                          context,
+                                          filteredProducts,
+                                        ),
+                                      ],
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
                           );
                         },
                       ),
                     ),
                   ],
                 ),
+          bottomNavigationBar: ProductBottomNav(
+            onSortTap: () async{
+                final sortCubit = context.read<ProductSortCubit>(); // NEW
+
+    await showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) => BlocProvider.value(
+        value: sortCubit,
+        child: const SortingFilterModal(),   // NEW
+      ),
+    );
+  },
+           
+            
+            onFilterTap: () async {
+              final cubit = context.read<ProductFilterCubit>();
+
+              // Get current products from ProductBloc
+              final productState = context.read<ProductBloc>().state;
+              final currentProducts = productState.maybeWhen(
+                orElse: () => <ProductModel>[],
+                loaded: (products) => products,
+              );
+              final currentQuery = _queryNotifier.value;
+              cubit.setSourceProducts(
+                currentProducts,
+                titleFilter: currentQuery.isEmpty ? null : currentQuery,
+              );
+
+              // Initialize filter cubit with products
+
+              await showModalBottomSheet<void>(
+                context: context,
+                isScrollControlled: true,
+                backgroundColor: Colors.transparent,
+                builder: (_) => BlocProvider.value(
+                  value: cubit,
+                  child: const ProductFilterModal(),
+                ),
+              );
+            },
+          
+          ),
         );
       },
     );
