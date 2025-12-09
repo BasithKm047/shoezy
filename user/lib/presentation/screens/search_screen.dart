@@ -451,7 +451,7 @@ class _SearchScreenState extends State<SearchScreen> {
           ontap: () {
             NavigationStyles.fade(
               context,
-              ProductDetailsScreen(products: product),
+              ProductDetailsScreen(product: product),
             );
           },
         );

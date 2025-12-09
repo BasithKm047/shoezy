@@ -74,7 +74,7 @@ class FavoritesScreen extends StatelessWidget {
                   ontap: () {
                     NavigationStyles.fade(
                       context,
-                      ProductDetailsScreen(products: product ),
+                      ProductDetailsScreen(product: product),
                     );
                   },
                 );

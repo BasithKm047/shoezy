@@ -27,7 +27,7 @@ class CarouselCard extends StatelessWidget {
         Navigator.of(context).push(
           PageRouteBuilder(
             pageBuilder: (context, animation, secondaryAnimation) {
-              return ProductDetailsScreen(products: product );
+              return ProductDetailsScreen(product: product );
             },
 
             transitionsBuilder:

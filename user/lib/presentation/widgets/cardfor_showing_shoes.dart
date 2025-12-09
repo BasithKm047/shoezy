@@ -67,7 +67,7 @@ class HorizontalProductList extends StatelessWidget {
       onTap: () {
         NavigationStyles.fade(
           context,
-          ProductDetailsScreen(products: product,),
+          ProductDetailsScreen(product: product,),
         );
       },
       child: Container(
