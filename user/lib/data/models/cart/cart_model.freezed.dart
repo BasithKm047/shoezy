@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$CartModel {
 
- String? get id; String get productId; String get color; String get size; String get price; String get userId; int get quantity;
+ String? get id; String get productId; String get image; String get name; String get color; String get size; double get price; String get userId; int get quantity;
 /// Create a copy of CartModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $CartModelCopyWith<CartModel> get copyWith => _$CartModelCopyWithImpl<CartModel>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CartModel&&(identical(other.id, id) || other.id == id)&&(identical(other.productId, productId) || other.productId == productId)&&(identical(other.color, color) || other.color == color)&&(identical(other.size, size) || other.size == size)&&(identical(other.price, price) || other.price == price)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.quantity, quantity) || other.quantity == quantity));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CartModel&&(identical(other.id, id) || other.id == id)&&(identical(other.productId, productId) || other.productId == productId)&&(identical(other.image, image) || other.image == image)&&(identical(other.name, name) || other.name == name)&&(identical(other.color, color) || other.color == color)&&(identical(other.size, size) || other.size == size)&&(identical(other.price, price) || other.price == price)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.quantity, quantity) || other.quantity == quantity));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,productId,color,size,price,userId,quantity);
+int get hashCode => Object.hash(runtimeType,id,productId,image,name,color,size,price,userId,quantity);
 
 @override
 String toString() {
-  return 'CartModel(id: $id, productId: $productId, color: $color, size: $size, price: $price, userId: $userId, quantity: $quantity)';
+  return 'CartModel(id: $id, productId: $productId, image: $image, name: $name, color: $color, size: $size, price: $price, userId: $userId, quantity: $quantity)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $CartModelCopyWith<$Res>  {
   factory $CartModelCopyWith(CartModel value, $Res Function(CartModel) _then) = _$CartModelCopyWithImpl;
 @useResult
 $Res call({
- String? id, String productId, String color, String size, String price, String userId, int quantity
+ String? id, String productId, String image, String name, String color, String size, double price, String userId, int quantity
 });
 
 
@@ -65,14 +65,16 @@ class _$CartModelCopyWithImpl<$Res>
 
 /// Create a copy of CartModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? productId = null,Object? color = null,Object? size = null,Object? price = null,Object? userId = null,Object? quantity = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? productId = null,Object? image = null,Object? name = null,Object? color = null,Object? size = null,Object? price = null,Object? userId = null,Object? quantity = null,}) {
   return _then(_self.copyWith(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String?,productId: null == productId ? _self.productId : productId // ignore: cast_nullable_to_non_nullable
+as String,image: null == image ? _self.image : image // ignore: cast_nullable_to_non_nullable
+as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,color: null == color ? _self.color : color // ignore: cast_nullable_to_non_nullable
 as String,size: null == size ? _self.size : size // ignore: cast_nullable_to_non_nullable
 as String,price: null == price ? _self.price : price // ignore: cast_nullable_to_non_nullable
-as String,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
+as double,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as String,quantity: null == quantity ? _self.quantity : quantity // ignore: cast_nullable_to_non_nullable
 as int,
   ));
@@ -159,10 +161,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? id,  String productId,  String color,  String size,  String price,  String userId,  int quantity)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? id,  String productId,  String image,  String name,  String color,  String size,  double price,  String userId,  int quantity)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CartModel() when $default != null:
-return $default(_that.id,_that.productId,_that.color,_that.size,_that.price,_that.userId,_that.quantity);case _:
+return $default(_that.id,_that.productId,_that.image,_that.name,_that.color,_that.size,_that.price,_that.userId,_that.quantity);case _:
   return orElse();
 
 }
@@ -180,10 +182,10 @@ return $default(_that.id,_that.productId,_that.color,_that.size,_that.price,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? id,  String productId,  String color,  String size,  String price,  String userId,  int quantity)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? id,  String productId,  String image,  String name,  String color,  String size,  double price,  String userId,  int quantity)  $default,) {final _that = this;
 switch (_that) {
 case _CartModel():
-return $default(_that.id,_that.productId,_that.color,_that.size,_that.price,_that.userId,_that.quantity);case _:
+return $default(_that.id,_that.productId,_that.image,_that.name,_that.color,_that.size,_that.price,_that.userId,_that.quantity);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -200,10 +202,10 @@ return $default(_that.id,_that.productId,_that.color,_that.size,_that.price,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? id,  String productId,  String color,  String size,  String price,  String userId,  int quantity)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? id,  String productId,  String image,  String name,  String color,  String size,  double price,  String userId,  int quantity)?  $default,) {final _that = this;
 switch (_that) {
 case _CartModel() when $default != null:
-return $default(_that.id,_that.productId,_that.color,_that.size,_that.price,_that.userId,_that.quantity);case _:
+return $default(_that.id,_that.productId,_that.image,_that.name,_that.color,_that.size,_that.price,_that.userId,_that.quantity);case _:
   return null;
 
 }
@@ -215,14 +217,16 @@ return $default(_that.id,_that.productId,_that.color,_that.size,_that.price,_tha
 @JsonSerializable()
 
 class _CartModel implements CartModel {
-  const _CartModel({this.id, required this.productId, required this.color, required this.size, required this.price, required this.userId, required this.quantity});
+  const _CartModel({this.id, required this.productId, required this.image, required this.name, required this.color, required this.size, required this.price, required this.userId, required this.quantity});
   factory _CartModel.fromJson(Map<String, dynamic> json) => _$CartModelFromJson(json);
 
 @override final  String? id;
 @override final  String productId;
+@override final  String image;
+@override final  String name;
 @override final  String color;
 @override final  String size;
-@override final  String price;
+@override final  double price;
 @override final  String userId;
 @override final  int quantity;
 
@@ -239,16 +243,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CartModel&&(identical(other.id, id) || other.id == id)&&(identical(other.productId, productId) || other.productId == productId)&&(identical(other.color, color) || other.color == color)&&(identical(other.size, size) || other.size == size)&&(identical(other.price, price) || other.price == price)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.quantity, quantity) || other.quantity == quantity));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CartModel&&(identical(other.id, id) || other.id == id)&&(identical(other.productId, productId) || other.productId == productId)&&(identical(other.image, image) || other.image == image)&&(identical(other.name, name) || other.name == name)&&(identical(other.color, color) || other.color == color)&&(identical(other.size, size) || other.size == size)&&(identical(other.price, price) || other.price == price)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.quantity, quantity) || other.quantity == quantity));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,productId,color,size,price,userId,quantity);
+int get hashCode => Object.hash(runtimeType,id,productId,image,name,color,size,price,userId,quantity);
 
 @override
 String toString() {
-  return 'CartModel(id: $id, productId: $productId, color: $color, size: $size, price: $price, userId: $userId, quantity: $quantity)';
+  return 'CartModel(id: $id, productId: $productId, image: $image, name: $name, color: $color, size: $size, price: $price, userId: $userId, quantity: $quantity)';
 }
 
 
@@ -259,7 +263,7 @@ abstract mixin class _$CartModelCopyWith<$Res> implements $CartModelCopyWith<$Re
   factory _$CartModelCopyWith(_CartModel value, $Res Function(_CartModel) _then) = __$CartModelCopyWithImpl;
 @override @useResult
 $Res call({
- String? id, String productId, String color, String size, String price, String userId, int quantity
+ String? id, String productId, String image, String name, String color, String size, double price, String userId, int quantity
 });
 
 
@@ -276,14 +280,16 @@ class __$CartModelCopyWithImpl<$Res>
 
 /// Create a copy of CartModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? productId = null,Object? color = null,Object? size = null,Object? price = null,Object? userId = null,Object? quantity = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? productId = null,Object? image = null,Object? name = null,Object? color = null,Object? size = null,Object? price = null,Object? userId = null,Object? quantity = null,}) {
   return _then(_CartModel(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String?,productId: null == productId ? _self.productId : productId // ignore: cast_nullable_to_non_nullable
+as String,image: null == image ? _self.image : image // ignore: cast_nullable_to_non_nullable
+as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,color: null == color ? _self.color : color // ignore: cast_nullable_to_non_nullable
 as String,size: null == size ? _self.size : size // ignore: cast_nullable_to_non_nullable
 as String,price: null == price ? _self.price : price // ignore: cast_nullable_to_non_nullable
-as String,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
+as double,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as String,quantity: null == quantity ? _self.quantity : quantity // ignore: cast_nullable_to_non_nullable
 as int,
   ));

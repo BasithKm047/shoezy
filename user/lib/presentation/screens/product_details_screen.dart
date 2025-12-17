@@ -1,17 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shoezy/data/models/cart/cart_model.dart';
 import 'package:shoezy/presentation/bloc/favourite/cubit/favourie_cubit.dart';
 import 'package:shoezy/presentation/bloc/favourite/cubit/favourie_state.dart';
 import 'package:shoezy/data/models/product/product_model.dart';
+import 'package:shoezy/presentation/bloc/product_cart/cubit/product_cart_cubit.dart';
+import 'package:shoezy/utils/const/colors.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-class ProductDetailsScreen extends StatelessWidget {
+class ProductDetailsScreen extends StatefulWidget {
   final ProductModel product;
 
-  const ProductDetailsScreen({
-    super.key,
-    required this.product,
-  });
+  const ProductDetailsScreen({super.key, required this.product});
+
+  @override
+  State<ProductDetailsScreen> createState() => _ProductDetailsScreenState();
+}
+
+class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
+  ValueNotifier<int> currentImageIndex = ValueNotifier<int>(0);
+  ValueNotifier<String?> selectedColor = ValueNotifier<String?>(null);
+  ValueNotifier<String?> selectedSize = ValueNotifier<String?>(null);
+  @override
+  void initState() {
+    super.initState();
+    selectedColor.value = widget.product.color.isNotEmpty
+        ? widget.product.color.first
+        : null;
+    selectedSize.value = widget.product.size.isNotEmpty
+        ? widget.product.size.first
+        : null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,31 +41,35 @@ class ProductDetailsScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _ProductImageSection(product: product),
+              _ProductImageSection(product: widget.product),
               const SizedBox(height: 20),
-              _ProductHeaderSection(product: product),
+              _ProductHeaderSection(product: widget.product),
               const SizedBox(height: 20),
-              _SectionTitle(
-                title: 'Colors Available',
+              _SectionTitle(title: 'Colors Available'),
+              const SizedBox(height: 20),
+              ColorOptionsRow(
+                selectedColorNotifier: selectedColor,
+                colors: widget.product.color,
+                onSelect: (color) {
+                  selectedColor.value = color;
+                },
               ),
-              const SizedBox(height: 20),
-              ColorOptionsRow(colors: product.color),
               const SizedBox(height: 30),
-              _SectionTitle(
-                title: 'Size Available',
-              ),
+              _SectionTitle(title: 'Size Available'),
               const SizedBox(height: 20),
-              SizeOptionsRow(sizes: product.size),
-              const SizedBox(height: 30),
-              _SectionTitle(
-                title: 'Rating & Reviews',
+              SizeOptionsRow(
+                selectedSizeNotifier: selectedSize,
+                sizes: widget.product.size,
+                onSelect: (size) {
+                  selectedSize.value = size;
+                },
               ),
+              const SizedBox(height: 30),
+              _SectionTitle(title: 'Rating & Reviews'),
               const SizedBox(height: 20),
               const RatingRow(rating: 4.5),
               const SizedBox(height: 30),
-              _SectionTitle(
-                title: 'Customer Reviews',
-              ),
+              _SectionTitle(title: 'Customer Reviews'),
               const SizedBox(height: 20),
               const CustomerReviewTile(
                 userName: 'John Doe',
@@ -55,8 +78,20 @@ class ProductDetailsScreen extends StatelessWidget {
               ),
               const SizedBox(height: 30),
               PriceAndAddToCartRow(
-                price: product.price,
+                price: widget.product.price,
                 onAddToCart: () {
+                  final cartItem = CartModel(
+                    productId: widget.product.id!,
+                    image: widget.product.image.first,
+                    name: widget.product.productName,
+                    color: selectedColor.value ?? '',
+                    size: selectedSize.value ?? '',
+                    price: double.tryParse(widget.product.price) ?? 0.0,
+                    userId: 'currentUserId', // Replace with actual user ID
+                    quantity: 1,
+                  );
+                  
+                  context.read<ProductCartCubit>().addItem(cartItem);
                 },
               ),
             ],
@@ -67,26 +102,12 @@ class ProductDetailsScreen extends StatelessWidget {
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
 /// ------------------------- IMAGE + FAV + INDICATOR -------------------------
 
 class _ProductImageSection extends StatefulWidget {
   final ProductModel product;
 
-  const _ProductImageSection({
-    required this.product,
-  });
+  const _ProductImageSection({required this.product});
 
   @override
   State<_ProductImageSection> createState() => _ProductImageSectionState();
@@ -117,9 +138,7 @@ class _ProductImageSectionState extends State<_ProductImageSection> {
         Container(
           height: 500,
           width: double.infinity,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-          ),
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
           child: Stack(
             children: [
               PageView.builder(
@@ -167,10 +186,7 @@ class _ProductImageSectionState extends State<_ProductImageSection> {
 class FavoriteIconButton extends StatelessWidget {
   final ProductModel product;
 
-  const FavoriteIconButton({
-    super.key,
-    required this.product,
-  });
+  const FavoriteIconButton({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {
@@ -198,9 +214,7 @@ class FavoriteIconButton extends StatelessWidget {
 class _ProductHeaderSection extends StatelessWidget {
   final ProductModel product;
 
-  const _ProductHeaderSection({
-    required this.product,
-  });
+  const _ProductHeaderSection({required this.product});
 
   @override
   Widget build(BuildContext context) {
@@ -248,9 +262,7 @@ class _ProductHeaderSection extends StatelessWidget {
 class _SectionTitle extends StatelessWidget {
   final String title;
 
-  const _SectionTitle({
-    required this.title,
-  });
+  const _SectionTitle({required this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -271,97 +283,172 @@ class _SectionTitle extends StatelessWidget {
 }
 
 /// ------------------------- COLOR OPTIONS ROW -------------------------
-
+// ignore: must_be_immutable
 class ColorOptionsRow extends StatelessWidget {
   final List<String> colors;
+  final ValueNotifier<String?> selectedColorNotifier;
+  final void Function(String) onSelect;
 
   const ColorOptionsRow({
     super.key,
     required this.colors,
+    required this.selectedColorNotifier,
+    required this.onSelect,
   });
 
   @override
   Widget build(BuildContext context) {
     if (colors.isEmpty) return const SizedBox.shrink();
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-      child: SizedBox(
-        height: 50,
-        child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: colors.length,
-          itemBuilder: (context, index) {
-            final colorName = colors[index];
-            final color = getColorFromName(colorName);
+    return ValueListenableBuilder(
+      valueListenable: selectedColorNotifier,
+      builder: (context, selectedColor, child) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: SizedBox(
+            height: 50,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: colors.length,
+              itemBuilder: (context, index) {
+                final colorName = colors[index];
+                final color = getColorFromName(colorName);
+                final bool isSelected = selectedColor == colorName;
 
-            return Container(
-              width: 40,
-              height: 40,
-              margin: const EdgeInsets.only(right: 10),
-              decoration: BoxDecoration(
-                color: color,
-                shape: BoxShape.circle,
-                border: color == Colors.white
-                    ? Border.all(color: Colors.grey)
-                    : null,
-              ),
-            );
-          },
-        ),
-      ),
+                return GestureDetector(
+                  onTap: () => onSelect(colorName),
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 250),
+                    curve: Curves.easeOutBack,
+                    margin: const EdgeInsets.only(right: 12),
+                    padding: EdgeInsets.all(isSelected ? 6: 3),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      // boxShadow: isSelected
+                      //     ? [
+                      //         BoxShadow(
+                      //           color: color.withOpacity(0.5),
+                      //           blurRadius: 12,
+                      //           spreadRadius: 2,
+                      //         ),
+                      //       ]
+                      //     : [],
+                    ),
+                    child: AnimatedScale(
+                      scale: isSelected ? 1.30 :.85,
+                      duration: const Duration(milliseconds: 250),
+                      curve: Curves.easeOutBack,
+                      child: Container(
+                        width: isSelected ? 50: 40,
+                        height: isSelected ? 50: 40,
+                        decoration: BoxDecoration(
+                          color: color,
+                          shape: BoxShape.circle,
+                          // border: Border.all(
+                          //   color: isSelected
+                          //       ? Colors.black
+                          //       : Colors.grey.shade400,
+                          //   width: isSelected ? 1 : 0,
+                          // ),
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        );
+      },
     );
   }
 }
 
 /// ------------------------- SIZE OPTIONS ROW -------------------------
-
+// ignore: must_be_immutable
 class SizeOptionsRow extends StatelessWidget {
   final List<String> sizes;
+  final void Function(String) onSelect;
+  ValueNotifier<String?> selectedSizeNotifier = ValueNotifier<String?>(null);
 
-  const SizeOptionsRow({
+  SizeOptionsRow({
     super.key,
     required this.sizes,
+    required this.onSelect,
+    required this.selectedSizeNotifier,
   });
 
   @override
   Widget build(BuildContext context) {
     if (sizes.isEmpty) return const SizedBox.shrink();
 
-    final theme = Theme.of(context).textTheme;
+    return ValueListenableBuilder(
+      valueListenable: selectedSizeNotifier,
+      builder: (context, selectedSize, child) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: SizedBox(
+            height: 50,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: sizes.length,
+              itemBuilder: (context, index) {
+                final size = sizes[index];
+                final bool isSelected = selectedSize == size;
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-      child: SizedBox(
-        height: 50,
-        child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: sizes.length,
-          itemBuilder: (context, index) {
-            final size = sizes[index];
-
-            return Container(
-              width: 60,
-              height: 40,
-              margin: const EdgeInsets.only(right: 10),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: Colors.grey),
-              ),
-              alignment: Alignment.center,
-              child: Text(
-                size,
-                style: theme.bodyMedium?.copyWith(
-                  fontSize: 16,
-                  color: Colors.black,
-                  fontWeight: FontWeight.normal,
-                ),
-              ),
-            );
-          },
-        ),
-      ),
+                return GestureDetector(
+                  onTap: () => onSelect(size),
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 250),
+                    curve: Curves.easeOutBack,
+                    margin: const EdgeInsets.only(right: 10),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: isSelected ? 6 : 3,
+                    ),
+                    decoration: BoxDecoration(
+                      color: isSelected ? AppColors.blue : Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: isSelected
+                          ? [
+                              BoxShadow(
+                                color: AppColors.blue.withOpacity(0.4),
+                                blurRadius: 10,
+                                spreadRadius: 1,
+                                offset: const Offset(0, 3),
+                              ),
+                            ]
+                          : [],
+                    ),
+                    child: AnimatedScale(
+                      scale: isSelected ? 1.12 : 1.0,
+                      duration: const Duration(milliseconds: 250),
+                      curve: Curves.easeOutBack,
+                      child: Container(
+                        alignment: Alignment.center,
+                        width: 60,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          size,
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: isSelected ? Colors.white : AppColors.grey,
+                            fontWeight: isSelected
+                                ? FontWeight.bold
+                                : FontWeight.normal,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        );
+      },
     );
   }
 }
@@ -371,10 +458,7 @@ class SizeOptionsRow extends StatelessWidget {
 class RatingRow extends StatelessWidget {
   final double rating;
 
-  const RatingRow({
-    super.key,
-    required this.rating,
-  });
+  const RatingRow({super.key, required this.rating});
 
   @override
   Widget build(BuildContext context) {
@@ -516,10 +600,7 @@ class PriceAndAddToCartRow extends StatelessWidget {
             onPressed: onAddToCart,
             style: ElevatedButton.styleFrom(
               backgroundColor: Theme.of(context).primaryColor,
-              padding: const EdgeInsets.symmetric(
-                horizontal: 40,
-                vertical: 15,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15),
               ),
@@ -551,7 +632,37 @@ Color getColorFromName(String name) {
       return Colors.black;
     case 'white':
       return Colors.white;
+    case 'green':
+      return Colors.green;
+    case 'yellow':
+      return Colors.yellow;
+    case 'orange':
+      return Colors.orange;
+    case 'purple':
+      return Colors.purple;
+    case 'pink':
+      return Colors.pink;
+    case 'grey':
+      return Colors.grey;
+    case 'brown':
+      return Colors.brown;
+
     default:
-      return Colors.blue; // from your colors.dart
+      return Colors.blue;
   }
 }
+
+
+class FunctiosForProductDetailsScreen {
+
+  static imageShowingFunction(
+      String colorSelected
+
+  ) {
+
+    //showing image based on the color selected
+    
+   
+
+  }
+} 
