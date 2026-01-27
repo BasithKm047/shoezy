@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:shoezy/data/models/product/product_model.dart';
+
 class Commonfunctions {
   static String? usernameValidator(String? value) {
     try {
@@ -42,4 +45,34 @@ class Commonfunctions {
     }
     return null;
   }
+
+  static Widget productImage(ProductModel product) {
+  if (product.variants.isEmpty) {
+    return const Center(
+      child: Icon(Icons.image_not_supported, size: 42, color: Colors.grey),
+    );
+  }
+
+  final variant = product.variants.first;
+
+  if (variant.images.isEmpty) {
+    return const Center(
+      child: Icon(Icons.image_not_supported, size: 42, color: Colors.grey),
+    );
+  }
+
+  return Image.network(
+    variant.images.first,
+    fit: BoxFit.cover,
+    errorBuilder: (_, __, ___) => const Center(
+      child: Icon(Icons.image_not_supported, size: 42),
+    ),
+  );
+}
+
+static bool hasTag(ProductModel product, String tag) {
+  return product.tag.contains(tag);
+}
+
+
 }

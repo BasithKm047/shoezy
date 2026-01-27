@@ -3,9 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoezy/presentation/bloc/favourite/cubit/favourie_cubit.dart';
 import 'package:shoezy/presentation/bloc/favourite/cubit/favourie_state.dart';
 import 'package:shoezy/data/models/product/product_model.dart';
+import 'package:shoezy/presentation/bloc/product_cart/cubit/product_cart_cubit.dart';
+import 'package:shoezy/presentation/bloc/product_cart/cubit/product_cart_state.dart';
 import 'package:shoezy/presentation/screens/product_details_screen.dart';
 import 'package:shoezy/presentation/widgets/shimmer_loading.dart';
 import 'package:shoezy/utils/const/colors.dart';
+import 'package:shoezy/utils/const/commonFunctions.dart';
 import 'package:shoezy/utils/const/navigation_styles.dart';
 
 class HorizontalTagSection extends StatefulWidget {
@@ -197,16 +200,20 @@ class _HorizontalTagSectionState extends State<HorizontalTagSection>
     ProductModel product, {
     bool isLarge = false,
   }) {
-    return BlocBuilder<FavoritesCubit, FavoritesState>(
+    return BlocBuilder<ProductCartCubit, ProductCartState>(
       builder: (context, state) {
 
         return GestureDetector(
-          onTap: () {
-            NavigationStyles.fade(
-              context,
-              ProductDetailsScreen(product: product,),
-            );
-          },
+         onTap: () {
+  NavigationStyles.fade(
+    context,
+    BlocProvider.value(
+      value: context.read<ProductCartCubit>(),
+      child: ProductDetailsScreen(product: product),
+    ),
+  );
+},
+
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
@@ -226,18 +233,7 @@ class _HorizontalTagSectionState extends State<HorizontalTagSection>
                   flex: 7,
                   child: ClipRRect(
                     borderRadius: const BorderRadius.all(Radius.circular(12)),
-                    child: Image.network(
-                      product.image.first,
-                      fit: BoxFit.cover,
-                      width: double.infinity,
-                      loadingBuilder: (context, child, progress) {
-                        if (progress == null) return child;
-                        return AnimationLoading.shimmerImagePlaceholder(
-                          height: double.infinity,
-                          width: double.infinity,
-                        );
-                      },
-                    ),
+                    child: Commonfunctions.productImage(product),
                   ),
                 ),
                 Expanded(

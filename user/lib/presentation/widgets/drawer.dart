@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoezy/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:shoezy/presentation/screens/cart_screen.dart';
-import 'package:shoezy/presentation/screens/favourote_screen.dart';
+import 'package:shoezy/presentation/screens/favourite_screen.dart';
 import 'package:shoezy/presentation/screens/notification_screen.dart';
 import 'package:shoezy/presentation/screens/orders_screen.dart';
 import 'package:shoezy/presentation/screens/profile_screen.dart';

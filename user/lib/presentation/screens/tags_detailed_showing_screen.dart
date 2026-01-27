@@ -47,13 +47,14 @@ class TagsDetailedShowingScreen extends StatelessWidget {
                   HomeScreenWidgets.tagLabel(
                     screenWidth,
                     context,
-                    tags[index],
+                    tags[index][index],
+          
                     false,
                   ),
                   SizedBox(height: 10),
 
                   HorizontalProductList(
-                    tagName: tags[index],
+                    tagName: tags[index][index],
                     products: products,
                     isLoading: state.maybeWhen(
                       orElse: () => false,

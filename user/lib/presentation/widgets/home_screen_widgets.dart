@@ -116,8 +116,13 @@ class HomeScreenWidgets {
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index) {
                         final brandProducts = products
-                            .where((p) => p.brandName == brands[index].name)
+                            .where(
+                              (p) =>
+                                  p.brandName.trim().toLowerCase() ==
+                                  brands[index].name.trim().toLowerCase(),
+                            )
                             .toList();
+                            // Logger().d(brandProducts);
                         return BrandsFeild(
                           products: brandProducts,
 

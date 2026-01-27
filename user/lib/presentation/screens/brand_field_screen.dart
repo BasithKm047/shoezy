@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:logger/logger.dart';
 import 'package:shoezy/presentation/bloc/brand_bloc/brand_bloc.dart';
 import 'package:shoezy/data/models/product/product_model.dart';
 import 'package:shoezy/presentation/widgets/brand_screen_card.dart';
@@ -24,7 +25,7 @@ class BrandFieldScreen extends StatelessWidget {
        }
        if(state is BrandLoadedState){
         final brands = state.brands;
-       
+        // Logger().d(brands.map((b) => b.logoImage).toList());
         return Scaffold(
           appBar: AppBar(
             title: Text(

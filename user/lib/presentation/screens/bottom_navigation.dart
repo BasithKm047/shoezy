@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoezy/presentation/bloc/navigation_bar/cubit/bottom_navigation_bar_cubit.dart';
 import 'package:shoezy/presentation/screens/cart_screen.dart';
 import 'package:shoezy/presentation/screens/category_screen.dart';
-import 'package:shoezy/presentation/screens/favourote_screen.dart';
+import 'package:shoezy/presentation/screens/favourite_screen.dart';
 import 'package:shoezy/presentation/screens/home_screen.dart';
 import 'package:shoezy/utils/const/colors.dart';
 

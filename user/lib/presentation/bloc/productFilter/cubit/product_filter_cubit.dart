@@ -164,7 +164,7 @@ class ProductFilterCubit extends Cubit<ProductFilterState> {
     final filtered = products.where((p) {
       // Sizes: require at least one selected size to be present in product
       if (sizesSel.isNotEmpty) {
-        final prodSizes = p.size.map((s) => s.toString()).toSet();
+        final prodSizes = p.sizeStock.map((s) => s.toString()).toSet();
         if (!sizesSel.any((sel) => prodSizes.contains(sel))) return false;
       }
 
@@ -206,7 +206,7 @@ class ProductFilterCubit extends Cubit<ProductFilterState> {
 
   // Helper: extract color tokens from a product's color field; supports List or String formats
   List<String> _productColorTokens(ProductModel p) {
-    final raw = p.color;
+    final raw = p.variants.map((v) => v.color).toList();
     final out = <String>[];
     for (final item in raw) {
       out.addAll(splitTokens((item).toString()));
@@ -218,8 +218,9 @@ class ProductFilterCubit extends Cubit<ProductFilterState> {
   List<String> _extractUniqueSizes(List<ProductModel> products) {
     final s = <String>{};
     for (final p in products) {
-      for (final size in p.size) {
-        s.add(size.toString());
+      for (final size in p.sizeStock) {
+           s.add(size.size.toString());
+
       }
     }
     final list = s.toList();

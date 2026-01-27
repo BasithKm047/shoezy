@@ -12,6 +12,7 @@ import 'package:shoezy/presentation/widgets/loading_state_manager.dart';
 import 'package:shoezy/presentation/widgets/lottie_widgets.dart';
 import 'package:shoezy/presentation/widgets/searchField.dart';
 import 'package:shoezy/utils/const/colors.dart';
+import 'package:shoezy/utils/const/commonFunctions.dart';
 import 'package:shoezy/utils/const/navigation_styles.dart';
 
 import 'package:shoezy/presentation/widgets/home_screen_card.dart';
@@ -57,15 +58,15 @@ class _HomeScreenState extends State<HomeScreen> {
             loaded: (products) => products,
           );
           final filteredProducts = products
-              .where((p) => p.tag.contains('Best Seller'))
+              .where((p) => Commonfunctions.hasTag(p, 'Best Seller'))
               .toList();
           final filteredProducts2 = products
-              .where((p) => p.tag.contains('Top Rated'))
+              .where((p) => Commonfunctions.hasTag(p, 'Top Rated'))
               .toList();
           final filteredProducts3 = products
-              .where((p) => p.tag.contains('New Arrival'))
+              .where((p) => Commonfunctions.hasTag(p, 'New Arrival'))
               .toList();
-         
+
           final isLoading = state.maybeWhen(
             orElse: () => false,
             loading: () => true,
@@ -139,10 +140,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   SizedBox(
                     height: 250,
-                    child: filteredProducts3.isEmpty?
-                        Center(child: LottieWidgets.emptyBox1('Product', context))
-                        :
-                        ListView.separated(
+                    child: filteredProducts3.isEmpty
+                        ? Center(
+                            child: LottieWidgets.emptyBox1('Product', context),
+                          )
+                        : ListView.separated(
                             padding: const EdgeInsets.symmetric(horizontal: 12),
                             scrollDirection: Axis.horizontal,
                             separatorBuilder: (_, __) =>
@@ -199,7 +201,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   SizedBox(
                     height: 250,
                     child: filteredProducts.isEmpty
-                        ? Center(child: LottieWidgets.emptyBox2('Product', context))
+                        ? Center(
+                            child: LottieWidgets.emptyBox2('Product', context),
+                          )
                         : ListView.separated(
                             padding: const EdgeInsets.symmetric(horizontal: 12),
                             scrollDirection: Axis.horizontal,
@@ -257,7 +261,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   SizedBox(
                     height: 300,
                     child: filteredProducts2.isEmpty
-                        ? Center(child: LottieWidgets.emptyBox1('Product', context))
+                        ? Center(
+                            child: LottieWidgets.emptyBox1('Product', context),
+                          )
                         : ListView.separated(
                             padding: const EdgeInsets.symmetric(horizontal: 12),
                             scrollDirection: Axis.horizontal,
@@ -279,7 +285,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                   ),
                   SizedBox(height: 10),
-              
+
                   //     final List<ProductModel> products = state.maybeWhen(
                   //       orElse: () => [],
                   //       loaded: (products) => products,

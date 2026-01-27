@@ -1,29 +1,32 @@
 import 'package:equatable/equatable.dart';
-import 'package:shoezy/data/models/product/product_model.dart';
 
 abstract class FavoritesState extends Equatable {
-  const FavoritesState();
-
-  @override
-  List<Object?> get props => [];
-}
-
-class FavoritesLoading extends FavoritesState {}
-
-class FavoritesLoaded extends FavoritesState {
-  final List<ProductModel> favorites;
-
-  const FavoritesLoaded(this.favorites);
+  final Set<String> favorites;
+  const FavoritesState(this.favorites);
 
   @override
   List<Object?> get props => [favorites];
 }
 
+class FavoritesInitial extends FavoritesState {
+  FavoritesInitial() : super({});
+}
+
+class FavoritesLoaded extends FavoritesState {
+  const FavoritesLoaded(Set<String> favorites) : super(favorites);
+}
+
+class FavoritesLoading extends FavoritesState {
+  FavoritesLoading() : super({});
+}
+
 class FavoritesError extends FavoritesState {
   final String message;
-
-  const FavoritesError(this.message);
+  FavoritesError(this.message) : super({});
 
   @override
   List<Object?> get props => [message];
 }
+
+
+

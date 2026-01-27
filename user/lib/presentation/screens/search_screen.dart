@@ -10,6 +10,7 @@ import 'package:shoezy/presentation/bloc/productFilter/cubit/product_filter_stat
 import 'package:shoezy/presentation/bloc/product_bloc/bloc/product_bloc.dart';
 import 'package:shoezy/presentation/bloc/favourite/cubit/favourie_cubit.dart';
 import 'package:shoezy/data/models/product/product_model.dart';
+import 'package:shoezy/presentation/bloc/product_cart/cubit/product_cart_cubit.dart';
 import 'package:shoezy/presentation/bloc/product_sort/cubit/product_sort_cubit.dart';
 import 'package:shoezy/presentation/screens/product_details_screen.dart';
 import 'package:shoezy/presentation/widgets/filter_modal.dart';
@@ -441,19 +442,23 @@ class _SearchScreenState extends State<SearchScreen> {
       itemCount: productsList.length.clamp(0, 4), // Show max 4
       itemBuilder: (context, index) {
         final product = productsList[index];
-        final isFav = context.read<FavoritesCubit>().isFavorite(product);
+        final isFav = context.select<FavoritesCubit, bool>((cubit) => cubit.isFavorite(product.id!));
         return ProductGridCard(
           isFavourite: isFav,
           onFavouriteTap: () {
-            context.read<FavoritesCubit>().toggleFavorite(product);
+            context.read<FavoritesCubit>().toggleFavorite(product.id!);
           },
           product: product,
-          ontap: () {
-            NavigationStyles.fade(
-              context,
-              ProductDetailsScreen(product: product),
-            );
-          },
+        ontap: () {
+  NavigationStyles.fade(
+    context,
+    BlocProvider.value(
+      value: context.read<ProductCartCubit>(),
+      child: ProductDetailsScreen(product: product),
+    ),
+  );
+},
+
         );
       },
     );

@@ -55,7 +55,7 @@ extension ProductEventPatterns on ProductEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _LoadProducts value)?  loadProducts,TResult Function( _SearchProducts value)?  searchProducts,TResult Function( _FilterProducts value)?  filterProducts,TResult Function( _SortProducts value)?  sortProducts,TResult Function( _LoadMoreProducts value)?  loadMoreProducts,TResult Function( _RefreshProducts value)?  refreshProducts,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _LoadProducts value)?  loadProducts,TResult Function( _SearchProducts value)?  searchProducts,TResult Function( _FilterProducts value)?  filterProducts,TResult Function( _SortProducts value)?  sortProducts,TResult Function( _LoadMoreProducts value)?  loadMoreProducts,TResult Function( _RefreshProducts value)?  refreshProducts,TResult Function( _IsFavouriteToggled value)?  isFavouriteToggled,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _LoadProducts() when loadProducts != null:
@@ -64,7 +64,8 @@ return searchProducts(_that);case _FilterProducts() when filterProducts != null:
 return filterProducts(_that);case _SortProducts() when sortProducts != null:
 return sortProducts(_that);case _LoadMoreProducts() when loadMoreProducts != null:
 return loadMoreProducts(_that);case _RefreshProducts() when refreshProducts != null:
-return refreshProducts(_that);case _:
+return refreshProducts(_that);case _IsFavouriteToggled() when isFavouriteToggled != null:
+return isFavouriteToggled(_that);case _:
   return orElse();
 
 }
@@ -82,7 +83,7 @@ return refreshProducts(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _LoadProducts value)  loadProducts,required TResult Function( _SearchProducts value)  searchProducts,required TResult Function( _FilterProducts value)  filterProducts,required TResult Function( _SortProducts value)  sortProducts,required TResult Function( _LoadMoreProducts value)  loadMoreProducts,required TResult Function( _RefreshProducts value)  refreshProducts,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _LoadProducts value)  loadProducts,required TResult Function( _SearchProducts value)  searchProducts,required TResult Function( _FilterProducts value)  filterProducts,required TResult Function( _SortProducts value)  sortProducts,required TResult Function( _LoadMoreProducts value)  loadMoreProducts,required TResult Function( _RefreshProducts value)  refreshProducts,required TResult Function( _IsFavouriteToggled value)  isFavouriteToggled,}){
 final _that = this;
 switch (_that) {
 case _LoadProducts():
@@ -91,7 +92,8 @@ return searchProducts(_that);case _FilterProducts():
 return filterProducts(_that);case _SortProducts():
 return sortProducts(_that);case _LoadMoreProducts():
 return loadMoreProducts(_that);case _RefreshProducts():
-return refreshProducts(_that);case _:
+return refreshProducts(_that);case _IsFavouriteToggled():
+return isFavouriteToggled(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -108,7 +110,7 @@ return refreshProducts(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _LoadProducts value)?  loadProducts,TResult? Function( _SearchProducts value)?  searchProducts,TResult? Function( _FilterProducts value)?  filterProducts,TResult? Function( _SortProducts value)?  sortProducts,TResult? Function( _LoadMoreProducts value)?  loadMoreProducts,TResult? Function( _RefreshProducts value)?  refreshProducts,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _LoadProducts value)?  loadProducts,TResult? Function( _SearchProducts value)?  searchProducts,TResult? Function( _FilterProducts value)?  filterProducts,TResult? Function( _SortProducts value)?  sortProducts,TResult? Function( _LoadMoreProducts value)?  loadMoreProducts,TResult? Function( _RefreshProducts value)?  refreshProducts,TResult? Function( _IsFavouriteToggled value)?  isFavouriteToggled,}){
 final _that = this;
 switch (_that) {
 case _LoadProducts() when loadProducts != null:
@@ -117,7 +119,8 @@ return searchProducts(_that);case _FilterProducts() when filterProducts != null:
 return filterProducts(_that);case _SortProducts() when sortProducts != null:
 return sortProducts(_that);case _LoadMoreProducts() when loadMoreProducts != null:
 return loadMoreProducts(_that);case _RefreshProducts() when refreshProducts != null:
-return refreshProducts(_that);case _:
+return refreshProducts(_that);case _IsFavouriteToggled() when isFavouriteToggled != null:
+return isFavouriteToggled(_that);case _:
   return null;
 
 }
@@ -134,7 +137,7 @@ return refreshProducts(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  loadProducts,TResult Function( String query)?  searchProducts,TResult Function( String category)?  filterProducts,TResult Function( String sortBy)?  sortProducts,TResult Function()?  loadMoreProducts,TResult Function()?  refreshProducts,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  loadProducts,TResult Function( String query)?  searchProducts,TResult Function( String category)?  filterProducts,TResult Function( String sortBy)?  sortProducts,TResult Function()?  loadMoreProducts,TResult Function()?  refreshProducts,TResult Function( bool isFavourite)?  isFavouriteToggled,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _LoadProducts() when loadProducts != null:
 return loadProducts();case _SearchProducts() when searchProducts != null:
@@ -142,7 +145,8 @@ return searchProducts(_that.query);case _FilterProducts() when filterProducts !=
 return filterProducts(_that.category);case _SortProducts() when sortProducts != null:
 return sortProducts(_that.sortBy);case _LoadMoreProducts() when loadMoreProducts != null:
 return loadMoreProducts();case _RefreshProducts() when refreshProducts != null:
-return refreshProducts();case _:
+return refreshProducts();case _IsFavouriteToggled() when isFavouriteToggled != null:
+return isFavouriteToggled(_that.isFavourite);case _:
   return orElse();
 
 }
@@ -160,7 +164,7 @@ return refreshProducts();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  loadProducts,required TResult Function( String query)  searchProducts,required TResult Function( String category)  filterProducts,required TResult Function( String sortBy)  sortProducts,required TResult Function()  loadMoreProducts,required TResult Function()  refreshProducts,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  loadProducts,required TResult Function( String query)  searchProducts,required TResult Function( String category)  filterProducts,required TResult Function( String sortBy)  sortProducts,required TResult Function()  loadMoreProducts,required TResult Function()  refreshProducts,required TResult Function( bool isFavourite)  isFavouriteToggled,}) {final _that = this;
 switch (_that) {
 case _LoadProducts():
 return loadProducts();case _SearchProducts():
@@ -168,7 +172,8 @@ return searchProducts(_that.query);case _FilterProducts():
 return filterProducts(_that.category);case _SortProducts():
 return sortProducts(_that.sortBy);case _LoadMoreProducts():
 return loadMoreProducts();case _RefreshProducts():
-return refreshProducts();case _:
+return refreshProducts();case _IsFavouriteToggled():
+return isFavouriteToggled(_that.isFavourite);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -185,7 +190,7 @@ return refreshProducts();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  loadProducts,TResult? Function( String query)?  searchProducts,TResult? Function( String category)?  filterProducts,TResult? Function( String sortBy)?  sortProducts,TResult? Function()?  loadMoreProducts,TResult? Function()?  refreshProducts,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  loadProducts,TResult? Function( String query)?  searchProducts,TResult? Function( String category)?  filterProducts,TResult? Function( String sortBy)?  sortProducts,TResult? Function()?  loadMoreProducts,TResult? Function()?  refreshProducts,TResult? Function( bool isFavourite)?  isFavouriteToggled,}) {final _that = this;
 switch (_that) {
 case _LoadProducts() when loadProducts != null:
 return loadProducts();case _SearchProducts() when searchProducts != null:
@@ -193,7 +198,8 @@ return searchProducts(_that.query);case _FilterProducts() when filterProducts !=
 return filterProducts(_that.category);case _SortProducts() when sortProducts != null:
 return sortProducts(_that.sortBy);case _LoadMoreProducts() when loadMoreProducts != null:
 return loadMoreProducts();case _RefreshProducts() when refreshProducts != null:
-return refreshProducts();case _:
+return refreshProducts();case _IsFavouriteToggled() when isFavouriteToggled != null:
+return isFavouriteToggled(_that.isFavourite);case _:
   return null;
 
 }
@@ -496,6 +502,72 @@ String toString() {
 
 
 /// @nodoc
+
+
+class _IsFavouriteToggled implements ProductEvent {
+  const _IsFavouriteToggled(this.isFavourite);
+  
+
+ final  bool isFavourite;
+
+/// Create a copy of ProductEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$IsFavouriteToggledCopyWith<_IsFavouriteToggled> get copyWith => __$IsFavouriteToggledCopyWithImpl<_IsFavouriteToggled>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _IsFavouriteToggled&&(identical(other.isFavourite, isFavourite) || other.isFavourite == isFavourite));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,isFavourite);
+
+@override
+String toString() {
+  return 'ProductEvent.isFavouriteToggled(isFavourite: $isFavourite)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$IsFavouriteToggledCopyWith<$Res> implements $ProductEventCopyWith<$Res> {
+  factory _$IsFavouriteToggledCopyWith(_IsFavouriteToggled value, $Res Function(_IsFavouriteToggled) _then) = __$IsFavouriteToggledCopyWithImpl;
+@useResult
+$Res call({
+ bool isFavourite
+});
+
+
+
+
+}
+/// @nodoc
+class __$IsFavouriteToggledCopyWithImpl<$Res>
+    implements _$IsFavouriteToggledCopyWith<$Res> {
+  __$IsFavouriteToggledCopyWithImpl(this._self, this._then);
+
+  final _IsFavouriteToggled _self;
+  final $Res Function(_IsFavouriteToggled) _then;
+
+/// Create a copy of ProductEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? isFavourite = null,}) {
+  return _then(_IsFavouriteToggled(
+null == isFavourite ? _self.isFavourite : isFavourite // ignore: cast_nullable_to_non_nullable
+as bool,
+  ));
+}
+
+
+}
+
+/// @nodoc
 mixin _$ProductState {
 
 
@@ -539,14 +611,15 @@ extension ProductStatePatterns on ProductState {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Initial value)?  initial,TResult Function( _Loading value)?  loading,TResult Function( _Loaded value)?  loaded,TResult Function( _Error value)?  error,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Initial value)?  initial,TResult Function( _Loading value)?  loading,TResult Function( _Loaded value)?  loaded,TResult Function( _Error value)?  error,TResult Function( _FavouriteUpdated value)?  favouriteUpdated,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
 return initial(_that);case _Loading() when loading != null:
 return loading(_that);case _Loaded() when loaded != null:
 return loaded(_that);case _Error() when error != null:
-return error(_that);case _:
+return error(_that);case _FavouriteUpdated() when favouriteUpdated != null:
+return favouriteUpdated(_that);case _:
   return orElse();
 
 }
@@ -564,14 +637,15 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Initial value)  initial,required TResult Function( _Loading value)  loading,required TResult Function( _Loaded value)  loaded,required TResult Function( _Error value)  error,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Initial value)  initial,required TResult Function( _Loading value)  loading,required TResult Function( _Loaded value)  loaded,required TResult Function( _Error value)  error,required TResult Function( _FavouriteUpdated value)  favouriteUpdated,}){
 final _that = this;
 switch (_that) {
 case _Initial():
 return initial(_that);case _Loading():
 return loading(_that);case _Loaded():
 return loaded(_that);case _Error():
-return error(_that);case _:
+return error(_that);case _FavouriteUpdated():
+return favouriteUpdated(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -588,14 +662,15 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Initial value)?  initial,TResult? Function( _Loading value)?  loading,TResult? Function( _Loaded value)?  loaded,TResult? Function( _Error value)?  error,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Initial value)?  initial,TResult? Function( _Loading value)?  loading,TResult? Function( _Loaded value)?  loaded,TResult? Function( _Error value)?  error,TResult? Function( _FavouriteUpdated value)?  favouriteUpdated,}){
 final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
 return initial(_that);case _Loading() when loading != null:
 return loading(_that);case _Loaded() when loaded != null:
 return loaded(_that);case _Error() when error != null:
-return error(_that);case _:
+return error(_that);case _FavouriteUpdated() when favouriteUpdated != null:
+return favouriteUpdated(_that);case _:
   return null;
 
 }
@@ -612,13 +687,14 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( List<ProductModel> products)?  loaded,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( List<ProductModel> products)?  loaded,TResult Function( String message)?  error,TResult Function( bool isFavourite)?  favouriteUpdated,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
 return initial();case _Loading() when loading != null:
 return loading();case _Loaded() when loaded != null:
 return loaded(_that.products);case _Error() when error != null:
-return error(_that.message);case _:
+return error(_that.message);case _FavouriteUpdated() when favouriteUpdated != null:
+return favouriteUpdated(_that.isFavourite);case _:
   return orElse();
 
 }
@@ -636,13 +712,14 @@ return error(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( List<ProductModel> products)  loaded,required TResult Function( String message)  error,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( List<ProductModel> products)  loaded,required TResult Function( String message)  error,required TResult Function( bool isFavourite)  favouriteUpdated,}) {final _that = this;
 switch (_that) {
 case _Initial():
 return initial();case _Loading():
 return loading();case _Loaded():
 return loaded(_that.products);case _Error():
-return error(_that.message);case _:
+return error(_that.message);case _FavouriteUpdated():
+return favouriteUpdated(_that.isFavourite);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -659,13 +736,14 @@ return error(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( List<ProductModel> products)?  loaded,TResult? Function( String message)?  error,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( List<ProductModel> products)?  loaded,TResult? Function( String message)?  error,TResult? Function( bool isFavourite)?  favouriteUpdated,}) {final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
 return initial();case _Loading() when loading != null:
 return loading();case _Loaded() when loaded != null:
 return loaded(_that.products);case _Error() when error != null:
-return error(_that.message);case _:
+return error(_that.message);case _FavouriteUpdated() when favouriteUpdated != null:
+return favouriteUpdated(_that.isFavourite);case _:
   return null;
 
 }
@@ -869,6 +947,72 @@ class __$ErrorCopyWithImpl<$Res>
   return _then(_Error(
 null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
 as String,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class _FavouriteUpdated implements ProductState {
+  const _FavouriteUpdated(this.isFavourite);
+  
+
+ final  bool isFavourite;
+
+/// Create a copy of ProductState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$FavouriteUpdatedCopyWith<_FavouriteUpdated> get copyWith => __$FavouriteUpdatedCopyWithImpl<_FavouriteUpdated>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _FavouriteUpdated&&(identical(other.isFavourite, isFavourite) || other.isFavourite == isFavourite));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,isFavourite);
+
+@override
+String toString() {
+  return 'ProductState.favouriteUpdated(isFavourite: $isFavourite)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$FavouriteUpdatedCopyWith<$Res> implements $ProductStateCopyWith<$Res> {
+  factory _$FavouriteUpdatedCopyWith(_FavouriteUpdated value, $Res Function(_FavouriteUpdated) _then) = __$FavouriteUpdatedCopyWithImpl;
+@useResult
+$Res call({
+ bool isFavourite
+});
+
+
+
+
+}
+/// @nodoc
+class __$FavouriteUpdatedCopyWithImpl<$Res>
+    implements _$FavouriteUpdatedCopyWith<$Res> {
+  __$FavouriteUpdatedCopyWithImpl(this._self, this._then);
+
+  final _FavouriteUpdated _self;
+  final $Res Function(_FavouriteUpdated) _then;
+
+/// Create a copy of ProductState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? isFavourite = null,}) {
+  return _then(_FavouriteUpdated(
+null == isFavourite ? _self.isFavourite : isFavourite // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 

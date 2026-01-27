@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoezy/data/models/product/product_model.dart';
+import 'package:shoezy/presentation/bloc/product_details_cubit/cubit/product_details_cubit.dart';
 import 'package:shoezy/presentation/screens/product_details_screen.dart';
 import 'package:shoezy/presentation/widgets/costum_widget.dart';
-import 'package:shoezy/presentation/widgets/shimmer_loading.dart';
 import 'package:shoezy/utils/const/colors.dart';
+import 'package:shoezy/utils/const/commonFunctions.dart';
 
 class CarouselCard extends StatelessWidget {
   final ProductModel product;
@@ -27,7 +29,10 @@ class CarouselCard extends StatelessWidget {
         Navigator.of(context).push(
           PageRouteBuilder(
             pageBuilder: (context, animation, secondaryAnimation) {
-              return ProductDetailsScreen(product: product );
+              return BlocProvider.value(
+                value: context.read<ProductDetailsCubit>(),
+                child: ProductDetailsScreen(product: product),
+              );
             },
 
             transitionsBuilder:
@@ -35,7 +40,6 @@ class CarouselCard extends StatelessWidget {
                   return FadeTransition(opacity: animation, child: child);
                 },
           ),
-          
         );
       },
       child: Card(
@@ -93,23 +97,7 @@ class CarouselCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(15),
                   child: AspectRatio(
                     aspectRatio: 1.7,
-                    child: Image.network(
-                      product.image.first,
-                      fit: BoxFit.cover,
-                      alignment: Alignment.center,
-                      loadingBuilder: (context, child, loadingProgress) {
-                        if (loadingProgress == null) return child;
-                        return AnimationLoading.shimmerImagePlaceholder(
-                          height: height!,
-                          width: width!,
-                        );
-                      },
-                      errorBuilder: (context, error, stackTrace) => Icon(
-                        Icons.image_not_supported,
-                        color: Colors.grey[400],
-                        size: 60,
-                      ),
-                    ),
+                    child: Commonfunctions.productImage(product),
                   ),
                 ),
               ),

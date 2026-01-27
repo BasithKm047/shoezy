@@ -2,15 +2,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:shoezy/presentation/bloc/favourite/cubit/favourie_cubit.dart';
 
 import 'package:shoezy/presentation/bloc/productFilter/cubit/product_filter_cubit.dart';
 import 'package:shoezy/presentation/bloc/productFilter/cubit/product_filter_state.dart';
 import 'package:shoezy/presentation/bloc/product_bloc/bloc/product_bloc.dart';
 
-import 'package:shoezy/presentation/bloc/favourite/cubit/favourie_cubit.dart';
-import 'package:shoezy/presentation/bloc/favourite/cubit/favourie_state.dart';
-
 import 'package:shoezy/data/models/product/product_model.dart';
+import 'package:shoezy/presentation/bloc/product_cart/cubit/product_cart_cubit.dart';
 import 'package:shoezy/presentation/screens/product_details_screen.dart';
 
 import 'package:shoezy/presentation/widgets/loading_state_manager.dart';
@@ -112,63 +111,71 @@ class _ProductListingView extends StatelessWidget {
                       : 'No products available',
                   child: Padding(
                     padding: const EdgeInsets.all(10),
-                    child: BlocBuilder<FavoritesCubit, FavoritesState>(
-                      builder: (context, favState) {
-                        if (favState is FavoritesLoading) {
-                          return GridView.builder(
-                            itemCount: 6,
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  mainAxisExtent: 280,
-                                  crossAxisSpacing: 12,
-                                  mainAxisSpacing: 12,
-                                ),
-                            itemBuilder: (_, __) => Shimmer.fromColors(
-                              baseColor: Colors.grey[300]!,
-                              highlightColor: Colors.grey[100]!,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(15),
+                    child: BlocBuilder<ProductBloc, ProductState>(
+                      builder: (context, productState) {
+                        return productState.maybeWhen(
+                          loading: () {
+                            return GridView.builder(
+                              itemCount: 6,
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    mainAxisExtent: 280,
+                                    crossAxisSpacing: 12,
+                                    mainAxisSpacing: 12,
+                                  ),
+                              itemBuilder: (_, __) => Shimmer.fromColors(
+                                baseColor: Colors.grey[300]!,
+                                highlightColor: Colors.grey[100]!,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
                                 ),
                               ),
-                            ),
-                          );
-                        }
-
-                        return GridView.builder(
-                          physics: const BouncingScrollPhysics(),
-                          itemCount: filtered.length,
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                mainAxisExtent: 280,
-                                crossAxisSpacing: 12,
-                                mainAxisSpacing: 12,
-                              ),
-                          itemBuilder: (_, index) {
-                            final product = filtered[index];
-                            final isFav = context
-                                .read<FavoritesCubit>()
-                                .isFavorite(product);
-
-                            return ProductGridCard(
-                              isFavourite: isFav,
-                              onFavouriteTap: () {
-                                context.read<FavoritesCubit>().toggleFavorite(
-                                  product,
-                                );
-                              },
-                              product: product,
-                              ontap: () {
-                                NavigationStyles.fade(
-                                  context,
-                                  ProductDetailsScreen(product: product),
+                            );
+                          },
+                          loaded: (_) {
+                             final favIds = context.watch<FavoritesCubit>().state;
+                            return GridView.builder(
+                              physics: const BouncingScrollPhysics(),
+                              itemCount: filtered.length,
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    mainAxisExtent: 280,
+                                    crossAxisSpacing: 12,
+                                    mainAxisSpacing: 12,
+                                  ),
+                              itemBuilder: (_, index) {
+                                final product = filtered[index];
+                                 final isFavourite = favIds.contains(product.id);
+                                return ProductGridCard(
+                                  
+                                  product: product,
+                                  isFavourite: isFavourite,
+                                  onFavouriteTap: () {
+                                    context
+                                        .read<FavoritesCubit>()
+                                        .toggleFavorite(product.id!);
+                                  },
+                                  ontap: () {
+                                    NavigationStyles.fade(
+                                      context,
+                                      BlocProvider.value(
+                                        value: context.read<ProductCartCubit>(),
+                                        child: ProductDetailsScreen(
+                                          product: product,
+                                        ),
+                                      ),
+                                    );
+                                  },
                                 );
                               },
                             );
                           },
+                          orElse: () => const SizedBox(),
                         );
                       },
                     ),
@@ -182,5 +189,3 @@ class _ProductListingView extends StatelessWidget {
     );
   }
 }
-
-

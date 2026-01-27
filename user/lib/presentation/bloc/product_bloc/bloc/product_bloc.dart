@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:logger/logger.dart';
 import 'package:shoezy/data/models/product/product_model.dart';
 import 'package:shoezy/data/repositories/product_repository.dart';
 part 'product_bloc.freezed.dart';
@@ -19,5 +20,6 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         emit(_Error(e.toString()));
       }
     });
+   
   }
 }

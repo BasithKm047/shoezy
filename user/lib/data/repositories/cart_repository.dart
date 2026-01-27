@@ -3,11 +3,12 @@ import 'package:shoezy/data/models/cart/cart_model.dart';
 
 class CartRepository {
   // Add your repository methods and properties here
-  final FirebaseFirestore _firestore;
+
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final String userId;
 
-  CartRepository({required this.userId, FirebaseFirestore ? firestore})
-      : _firestore = firestore ?? FirebaseFirestore.instance;
+  CartRepository({required this.userId});
+
 
        CollectionReference get _cartCollection =>
       _firestore.collection('users').doc(userId).collection('cart');

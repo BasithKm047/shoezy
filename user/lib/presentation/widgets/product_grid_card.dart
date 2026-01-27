@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shoezy/data/models/product/product_model.dart';
-import 'package:shoezy/presentation/widgets/shimmer_loading.dart';
 import 'package:shoezy/utils/const/colors.dart';
+import 'package:shoezy/utils/const/commonFunctions.dart';
 
 class ProductGridCard extends StatelessWidget {
   final ProductModel product;
@@ -37,60 +37,38 @@ class ProductGridCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Product Image
-            Stack(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(12),
-                    topRight: Radius.circular(12),
+            SizedBox(
+              height: 180,
+              child: Stack(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(12),
+                      topRight: Radius.circular(12),
+                    ),
+                    child: Commonfunctions.productImage(product)
                   ),
-                  child: Image.network(
-                    product.image.first,
-                    height: 180.0,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                    loadingBuilder: (context, child, loadingProgress) {
-                      if (loadingProgress == null) {
-                        return child;
-                      } else {
-                        return Center(
-                          child: AnimationLoading.shimmerImagePlaceholder(
-                            height: 180,
-                            width: double.infinity,
-                          ),
-                        );
-                      }
-                    },
-
-                    errorBuilder: (context, error, stackTrace) {
-                      return Icon(
-                        Icons.image_not_supported,
-                        color: Colors.grey[400],
-                        size: 60,
-                      );
-                    },
-                  ),
-                ),
-                Positioned(
-                  top: 8,
-                  right: 8,
-                  child: GestureDetector(
-                    onTap: onFavouriteTap,
-                    child: Container(
-                      padding: EdgeInsets.all(6),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.8),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        isFavourite ? Icons.favorite : Icons.favorite_border,
-                        color: isFavourite ? Colors.red : Colors.grey,
-                        size: 18,
+                  Positioned(
+                    top: 8,
+                    right: 8,
+                    child: GestureDetector(
+                      onTap: onFavouriteTap,
+                      child: Container(
+                        padding: EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.8),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          isFavourite ? Icons.favorite : Icons.favorite_border,
+                          color: isFavourite ? Colors.red : Colors.grey,
+                          size: 18,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             SizedBox(height: 6),
             Padding(

@@ -8,5 +8,6 @@ abstract class ProductEvent with _$ProductEvent {
   const factory ProductEvent.sortProducts(String sortBy) = _SortProducts;
   const factory ProductEvent.loadMoreProducts() = _LoadMoreProducts;
   const factory ProductEvent.refreshProducts() = _RefreshProducts;
+
 }
 

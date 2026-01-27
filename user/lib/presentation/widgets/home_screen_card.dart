@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shoezy/data/models/product/product_model.dart';
 import 'package:shoezy/presentation/screens/product_details_screen.dart';
+import 'package:shoezy/utils/const/commonFunctions.dart';
 import 'package:shoezy/utils/const/navigation_styles.dart';
 
 
@@ -57,14 +58,7 @@ class ProductCardHorizontal extends StatelessWidget {
                         fit: StackFit.expand,
                         children: [
                           // Use Image.network so the path you provided (e.g. /mnt/data/...) will be handled upstream
-                          Image.network(
-                            product.image.first,
-                            fit: BoxFit.cover,
-                            errorBuilder: (c, e, s) => Container(
-                              color: Colors.grey[100],
-                              child: const Center(child: Icon(Icons.image, size: 42, color: Colors.grey)),
-                            ),
-                          ),
+                           Commonfunctions.productImage(product),
         
                           // Soft gradient overlay at bottom of image for legibility
                           // Positioned(
@@ -96,7 +90,7 @@ class ProductCardHorizontal extends StatelessWidget {
                                   boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 6, offset: Offset(0, 3))],
                                 ),
                                 child: Text(
-                                  product.tag.toUpperCase(),
+                                  product.tag[0].toUpperCase(),
                                   style: TextStyle(fontSize: 10, fontWeight: FontWeight.w800, color: Colors.blue.shade700),
                                 ),
                               ),

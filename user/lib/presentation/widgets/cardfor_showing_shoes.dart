@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoezy/presentation/bloc/favourite/cubit/favourie_cubit.dart';
 import 'package:shoezy/data/models/product/product_model.dart';
+import 'package:shoezy/presentation/bloc/product_cart/cubit/product_cart_cubit.dart';
 import 'package:shoezy/presentation/screens/product_details_screen.dart';
 import 'package:shoezy/presentation/widgets/lottie_widgets.dart';
 import 'package:shoezy/presentation/widgets/shimmer_loading.dart';
 import 'package:shoezy/utils/const/colors.dart';
+import 'package:shoezy/utils/const/commonFunctions.dart';
 import 'package:shoezy/utils/const/navigation_styles.dart';
 
 class HorizontalProductList extends StatelessWidget {
@@ -58,18 +60,22 @@ class HorizontalProductList extends StatelessWidget {
 
   Widget _productCard(BuildContext context, ProductModel product) {
     onFavouriteTap() {
-      context.read<FavoritesCubit>().toggleFavorite(product);
+      context.read<FavoritesCubit>().toggleFavorite(product.id!);
     }
 
-    final isFavourite = context.watch<FavoritesCubit>().isFavorite(product);
+    final isFavourite = context.select<FavoritesCubit, bool>((cubit) => cubit.isFavorite(product.id!));
 
     return GestureDetector(
       onTap: () {
-        NavigationStyles.fade(
-          context,
-          ProductDetailsScreen(product: product,),
-        );
-      },
+  NavigationStyles.fade(
+    context,
+    BlocProvider.value(
+      value: context.read<ProductCartCubit>(),
+      child: ProductDetailsScreen(product: product),
+    ),
+  );
+},
+
       child: Container(
         width: 180, 
         decoration: BoxDecoration(
@@ -94,23 +100,7 @@ class HorizontalProductList extends StatelessWidget {
                     borderRadius: BorderRadius.vertical(
                       top: Radius.circular(12),
                     ),
-                    child: Image.network(
-                      product.image.first,
-                      fit: BoxFit.cover,
-                      width: double.infinity,
-                      loadingBuilder: (context, child, progress) {
-                        if (progress == null) return child;
-                        return AnimationLoading.shimmerImagePlaceholder(
-                          height: double.infinity,
-                          width: double.infinity,
-                        );
-                      },
-                      errorBuilder: (context, error, stackTrace) => Icon(
-                        Icons.image_not_supported,
-                        color: Colors.grey[400],
-                        size: 60,
-                      ),
-                    ),
+                    child: Commonfunctions.productImage(product),
                   ),
                   Positioned(
                     top: 8,

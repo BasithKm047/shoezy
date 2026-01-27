@@ -14,13 +14,16 @@ _ProductModel _$ProductModelFromJson(Map<String, dynamic> json) =>
       categoryName: json['categoryName'] as String,
       price: json['price'] as String,
       description: json['description'] as String,
-      color: (json['color'] as List<dynamic>).map((e) => e as String).toList(),
-      size: (json['size'] as List<dynamic>).map((e) => e as String).toList(),
-      image: (json['image'] as List<dynamic>).map((e) => e as String).toList(),
-      stock: (json['stock'] as List<dynamic>).map((e) => e as String).toList(),
+      variants: (json['variants'] as List<dynamic>)
+          .map((e) => Variantsmodel.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      sizeStock: (json['sizeStock'] as List<dynamic>)
+          .map((e) => SizeStockModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
       tag: json['tag'] as String,
       gender: json['gender'] as String,
       createdAt: DateTime.parse(json['createdAt'] as String),
+      isFavourite: json['isFavourite'] as bool?,
     );
 
 Map<String, dynamic> _$ProductModelToJson(_ProductModel instance) =>
@@ -31,11 +34,10 @@ Map<String, dynamic> _$ProductModelToJson(_ProductModel instance) =>
       'categoryName': instance.categoryName,
       'price': instance.price,
       'description': instance.description,
-      'color': instance.color,
-      'size': instance.size,
-      'image': instance.image,
-      'stock': instance.stock,
+      'variants': instance.variants,
+      'sizeStock': instance.sizeStock,
       'tag': instance.tag,
       'gender': instance.gender,
       'createdAt': instance.createdAt.toIso8601String(),
+      'isFavourite': instance.isFavourite,
     };
