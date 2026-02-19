@@ -10,6 +10,7 @@ import 'package:shoezy/presentation/bloc/product_bloc/bloc/product_bloc.dart';
 
 import 'package:shoezy/data/models/product/product_model.dart';
 import 'package:shoezy/presentation/bloc/product_cart/cubit/product_cart_cubit.dart';
+import 'package:shoezy/presentation/bloc/product_details_cubit/cubit/product_details_cubit.dart';
 import 'package:shoezy/presentation/screens/product_details_screen.dart';
 
 import 'package:shoezy/presentation/widgets/loading_state_manager.dart';
@@ -31,8 +32,7 @@ import 'package:shoezy/utils/const/navigation_styles.dart';
 // ];
 
 class ProductListingScreen extends StatelessWidget {
-  final List<ProductModel>
-  products; // <- expected to be already category-filtered
+  final List<ProductModel> products;
   final String title;
 
   const ProductListingScreen({
@@ -46,13 +46,10 @@ class ProductListingScreen extends StatelessWidget {
     return BlocProvider<ProductFilterCubit>(
       create: (context) {
         final cubit = ProductFilterCubit();
-        final productState = context.read<ProductBloc>().state;
-        final allProducts = productState.maybeWhen(
-          loaded: (items) => items,
-          orElse: () => products,
-        );
+        // final productState = context.read<ProductBloc>().state;
+
         cubit.setSourceProducts(
-          allProducts,
+          products,
           initialVisible: products,
           titleFilter: title,
         );
@@ -137,10 +134,15 @@ class _ProductListingView extends StatelessWidget {
                             );
                           },
                           loaded: (_) {
-                             final favIds = context.watch<FavoritesCubit>().state;
+                            final favIds = context
+                                .watch<FavoritesCubit>()
+                                .state;
+                            final visibleProducts = fState.hasActiveFilters
+                                ? fState.filteredProducts
+                                : fState.defaultProducts;
                             return GridView.builder(
                               physics: const BouncingScrollPhysics(),
-                              itemCount: filtered.length,
+                              itemCount: visibleProducts.length,
                               gridDelegate:
                                   const SliverGridDelegateWithFixedCrossAxisCount(
                                     crossAxisCount: 2,
@@ -149,10 +151,9 @@ class _ProductListingView extends StatelessWidget {
                                     mainAxisSpacing: 12,
                                   ),
                               itemBuilder: (_, index) {
-                                final product = filtered[index];
-                                 final isFavourite = favIds.contains(product.id);
+                                final product = visibleProducts[index];
+                                final isFavourite = favIds.contains(product.id);
                                 return ProductGridCard(
-                                  
                                   product: product,
                                   isFavourite: isFavourite,
                                   onFavouriteTap: () {
@@ -165,8 +166,11 @@ class _ProductListingView extends StatelessWidget {
                                       context,
                                       BlocProvider.value(
                                         value: context.read<ProductCartCubit>(),
-                                        child: ProductDetailsScreen(
-                                          product: product,
+                                        child: BlocProvider(
+                                          create: (context) => ProductDetailsCubit(product),
+                                          child: ProductDetailsScreen(
+                                            product: product,
+                                          ),
                                         ),
                                       ),
                                     );

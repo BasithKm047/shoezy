@@ -185,7 +185,7 @@ class HomeScreenWidgets {
         );
 
         final filteredProducts = products
-            .where((p) => p.tag.contains('Best Seller'))
+            .where((p) => p.tag.contains('Top Rated') || p.tag.contains('Trending'))
             .toList();
 
         // Logger().d(filteredProducts);

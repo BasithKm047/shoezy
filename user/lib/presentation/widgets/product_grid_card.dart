@@ -41,13 +41,8 @@ class ProductGridCard extends StatelessWidget {
               height: 180,
               child: Stack(
                 children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(12),
-                      topRight: Radius.circular(12),
-                    ),
-                    child: Commonfunctions.productImage(product)
-                  ),
+                Commonfunctions.productImage(product),
+                  
                   Positioned(
                     top: 8,
                     right: 8,

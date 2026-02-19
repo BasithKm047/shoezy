@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shoezy/presentation/bloc/favourite/cubit/favourie_cubit.dart';
 import 'package:shoezy/data/models/product/product_model.dart';
 import 'package:shoezy/presentation/bloc/product_cart/cubit/product_cart_cubit.dart';
+import 'package:shoezy/presentation/bloc/product_details_cubit/cubit/product_details_cubit.dart';
 import 'package:shoezy/presentation/screens/product_details_screen.dart';
 import 'package:shoezy/presentation/widgets/lottie_widgets.dart';
 import 'package:shoezy/presentation/widgets/shimmer_loading.dart';
@@ -33,16 +33,17 @@ class HorizontalProductList extends StatelessWidget {
     if (isLoading) {
       return SizedBox(
         height: 250,
-        child: AnimationLoading.shimmerTagGrid(), // shimmer for horizontal scroll
+        child:
+            AnimationLoading.shimmerTagGrid(), // shimmer for horizontal scroll
       );
     }
 
     if (filteredProducts.isEmpty) {
-      return Center(child: LottieWidgets.noData('Product', context ,));
+      return Center(child: LottieWidgets.noData('Product', context));
     }
 
     return SizedBox(
-      height: 250, 
+      height: 250,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -51,33 +52,38 @@ class HorizontalProductList extends StatelessWidget {
           final product = filteredProducts[index];
           return Padding(
             padding: const EdgeInsets.only(right: 12.0),
-            child: _productCard(context, product),
+            child: ProductHorizontalCard(product: product),
           );
         },
       ),
     );
   }
+}
 
-  Widget _productCard(BuildContext context, ProductModel product) {
-    onFavouriteTap() {
-      context.read<FavoritesCubit>().toggleFavorite(product.id!);
-    }
+class ProductHorizontalCard extends StatelessWidget {
+  final ProductModel product;
 
-    final isFavourite = context.select<FavoritesCubit, bool>((cubit) => cubit.isFavorite(product.id!));
+  const ProductHorizontalCard({super.key, required this.product});
+
+  @override
+  Widget build(BuildContext context) {
+    final isFavourite = Commonfunctions.isFavorite(context, product);
 
     return GestureDetector(
       onTap: () {
-  NavigationStyles.fade(
-    context,
-    BlocProvider.value(
-      value: context.read<ProductCartCubit>(),
-      child: ProductDetailsScreen(product: product),
-    ),
-  );
-},
-
+        NavigationStyles.fade(
+          context,
+          BlocProvider.value(
+            value: context.read<ProductCartCubit>(),
+            child: BlocProvider(
+              create: (context) => ProductDetailsCubit(product),
+              child: ProductDetailsScreen(product: product),
+            ),
+          ),
+        );
+      },
       child: Container(
-        width: 180, 
+        width: 180,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
           color: Colors.white,
@@ -97,7 +103,7 @@ class HorizontalProductList extends StatelessWidget {
               child: Stack(
                 children: [
                   ClipRRect(
-                    borderRadius: BorderRadius.vertical(
+                    borderRadius: const BorderRadius.vertical(
                       top: Radius.circular(12),
                     ),
                     child: Commonfunctions.productImage(product),
@@ -106,9 +112,10 @@ class HorizontalProductList extends StatelessWidget {
                     top: 8,
                     right: 8,
                     child: GestureDetector(
-                      onTap: onFavouriteTap,
+                      onTap: () =>
+                          Commonfunctions.toggleFavorite(context, product),
                       child: Container(
-                        padding: EdgeInsets.all(6),
+                        padding: const EdgeInsets.all(6),
                         decoration: BoxDecoration(
                           color: Colors.white.withOpacity(0.8),
                           shape: BoxShape.circle,
@@ -124,14 +131,10 @@ class HorizontalProductList extends StatelessWidget {
                 ],
               ),
             ),
-
             Expanded(
               flex: 3,
               child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 8.0,
-                  vertical: 6.0,
-                ),
+                padding: const EdgeInsets.all(8),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -139,10 +142,9 @@ class HorizontalProductList extends StatelessWidget {
                       product.productName,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w600,
-                        color: Colors.black87,
                       ),
                     ),
                     const SizedBox(height: 4),

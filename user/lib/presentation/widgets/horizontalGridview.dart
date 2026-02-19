@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shoezy/presentation/bloc/favourite/cubit/favourie_cubit.dart';
-import 'package:shoezy/presentation/bloc/favourite/cubit/favourie_state.dart';
 import 'package:shoezy/data/models/product/product_model.dart';
 import 'package:shoezy/presentation/bloc/product_cart/cubit/product_cart_cubit.dart';
 import 'package:shoezy/presentation/bloc/product_cart/cubit/product_cart_state.dart';
+import 'package:shoezy/presentation/bloc/product_details_cubit/cubit/product_details_cubit.dart';
 import 'package:shoezy/presentation/screens/product_details_screen.dart';
 import 'package:shoezy/presentation/widgets/shimmer_loading.dart';
 import 'package:shoezy/utils/const/colors.dart';
@@ -202,17 +201,19 @@ class _HorizontalTagSectionState extends State<HorizontalTagSection>
   }) {
     return BlocBuilder<ProductCartCubit, ProductCartState>(
       builder: (context, state) {
-
         return GestureDetector(
-         onTap: () {
-  NavigationStyles.fade(
-    context,
-    BlocProvider.value(
-      value: context.read<ProductCartCubit>(),
-      child: ProductDetailsScreen(product: product),
-    ),
-  );
-},
+          onTap: () {
+            NavigationStyles.fade(
+              context,
+              BlocProvider.value(
+                value: context.read<ProductCartCubit>(),
+                child: BlocProvider(
+                  create: (context) => ProductDetailsCubit(product),
+                  child: ProductDetailsScreen(product: product),
+                ),
+              ),
+            );
+          },
 
           child: Container(
             decoration: BoxDecoration(

@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ProductDetailsState {
 
- String get selectedColor; String get selectedImage; String? get selectedSize;
+ ProductModel get product; String get selectedColor; String get selectedImage; String get selectedSize; String? get userId; String? get productId;
 /// Create a copy of ProductDetailsState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $ProductDetailsStateCopyWith<ProductDetailsState> get copyWith => _$ProductDetai
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProductDetailsState&&(identical(other.selectedColor, selectedColor) || other.selectedColor == selectedColor)&&(identical(other.selectedImage, selectedImage) || other.selectedImage == selectedImage)&&(identical(other.selectedSize, selectedSize) || other.selectedSize == selectedSize));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProductDetailsState&&(identical(other.product, product) || other.product == product)&&(identical(other.selectedColor, selectedColor) || other.selectedColor == selectedColor)&&(identical(other.selectedImage, selectedImage) || other.selectedImage == selectedImage)&&(identical(other.selectedSize, selectedSize) || other.selectedSize == selectedSize)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.productId, productId) || other.productId == productId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,selectedColor,selectedImage,selectedSize);
+int get hashCode => Object.hash(runtimeType,product,selectedColor,selectedImage,selectedSize,userId,productId);
 
 @override
 String toString() {
-  return 'ProductDetailsState(selectedColor: $selectedColor, selectedImage: $selectedImage, selectedSize: $selectedSize)';
+  return 'ProductDetailsState(product: $product, selectedColor: $selectedColor, selectedImage: $selectedImage, selectedSize: $selectedSize, userId: $userId, productId: $productId)';
 }
 
 
@@ -45,11 +45,11 @@ abstract mixin class $ProductDetailsStateCopyWith<$Res>  {
   factory $ProductDetailsStateCopyWith(ProductDetailsState value, $Res Function(ProductDetailsState) _then) = _$ProductDetailsStateCopyWithImpl;
 @useResult
 $Res call({
- String selectedColor, String selectedImage, String? selectedSize
+ ProductModel product, String selectedColor, String selectedImage, String selectedSize, String? userId, String? productId
 });
 
 
-
+$ProductModelCopyWith<$Res> get product;
 
 }
 /// @nodoc
@@ -62,15 +62,27 @@ class _$ProductDetailsStateCopyWithImpl<$Res>
 
 /// Create a copy of ProductDetailsState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? selectedColor = null,Object? selectedImage = null,Object? selectedSize = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? product = null,Object? selectedColor = null,Object? selectedImage = null,Object? selectedSize = null,Object? userId = freezed,Object? productId = freezed,}) {
   return _then(_self.copyWith(
-selectedColor: null == selectedColor ? _self.selectedColor : selectedColor // ignore: cast_nullable_to_non_nullable
+product: null == product ? _self.product : product // ignore: cast_nullable_to_non_nullable
+as ProductModel,selectedColor: null == selectedColor ? _self.selectedColor : selectedColor // ignore: cast_nullable_to_non_nullable
 as String,selectedImage: null == selectedImage ? _self.selectedImage : selectedImage // ignore: cast_nullable_to_non_nullable
-as String,selectedSize: freezed == selectedSize ? _self.selectedSize : selectedSize // ignore: cast_nullable_to_non_nullable
+as String,selectedSize: null == selectedSize ? _self.selectedSize : selectedSize // ignore: cast_nullable_to_non_nullable
+as String,userId: freezed == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
+as String?,productId: freezed == productId ? _self.productId : productId // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
-
+/// Create a copy of ProductDetailsState
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$ProductModelCopyWith<$Res> get product {
+  
+  return $ProductModelCopyWith<$Res>(_self.product, (value) {
+    return _then(_self.copyWith(product: value));
+  });
+}
 }
 
 
@@ -152,10 +164,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String selectedColor,  String selectedImage,  String? selectedSize)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( ProductModel product,  String selectedColor,  String selectedImage,  String selectedSize,  String? userId,  String? productId)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ProductDetailsState() when $default != null:
-return $default(_that.selectedColor,_that.selectedImage,_that.selectedSize);case _:
+return $default(_that.product,_that.selectedColor,_that.selectedImage,_that.selectedSize,_that.userId,_that.productId);case _:
   return orElse();
 
 }
@@ -173,10 +185,10 @@ return $default(_that.selectedColor,_that.selectedImage,_that.selectedSize);case
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String selectedColor,  String selectedImage,  String? selectedSize)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( ProductModel product,  String selectedColor,  String selectedImage,  String selectedSize,  String? userId,  String? productId)  $default,) {final _that = this;
 switch (_that) {
 case _ProductDetailsState():
-return $default(_that.selectedColor,_that.selectedImage,_that.selectedSize);case _:
+return $default(_that.product,_that.selectedColor,_that.selectedImage,_that.selectedSize,_that.userId,_that.productId);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -193,10 +205,10 @@ return $default(_that.selectedColor,_that.selectedImage,_that.selectedSize);case
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String selectedColor,  String selectedImage,  String? selectedSize)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( ProductModel product,  String selectedColor,  String selectedImage,  String selectedSize,  String? userId,  String? productId)?  $default,) {final _that = this;
 switch (_that) {
 case _ProductDetailsState() when $default != null:
-return $default(_that.selectedColor,_that.selectedImage,_that.selectedSize);case _:
+return $default(_that.product,_that.selectedColor,_that.selectedImage,_that.selectedSize,_that.userId,_that.productId);case _:
   return null;
 
 }
@@ -208,12 +220,15 @@ return $default(_that.selectedColor,_that.selectedImage,_that.selectedSize);case
 
 
 class _ProductDetailsState implements ProductDetailsState {
-  const _ProductDetailsState({required this.selectedColor, required this.selectedImage, this.selectedSize});
+  const _ProductDetailsState({required this.product, required this.selectedColor, required this.selectedImage, required this.selectedSize, this.userId, this.productId});
   
 
+@override final  ProductModel product;
 @override final  String selectedColor;
 @override final  String selectedImage;
-@override final  String? selectedSize;
+@override final  String selectedSize;
+@override final  String? userId;
+@override final  String? productId;
 
 /// Create a copy of ProductDetailsState
 /// with the given fields replaced by the non-null parameter values.
@@ -225,16 +240,16 @@ _$ProductDetailsStateCopyWith<_ProductDetailsState> get copyWith => __$ProductDe
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProductDetailsState&&(identical(other.selectedColor, selectedColor) || other.selectedColor == selectedColor)&&(identical(other.selectedImage, selectedImage) || other.selectedImage == selectedImage)&&(identical(other.selectedSize, selectedSize) || other.selectedSize == selectedSize));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProductDetailsState&&(identical(other.product, product) || other.product == product)&&(identical(other.selectedColor, selectedColor) || other.selectedColor == selectedColor)&&(identical(other.selectedImage, selectedImage) || other.selectedImage == selectedImage)&&(identical(other.selectedSize, selectedSize) || other.selectedSize == selectedSize)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.productId, productId) || other.productId == productId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,selectedColor,selectedImage,selectedSize);
+int get hashCode => Object.hash(runtimeType,product,selectedColor,selectedImage,selectedSize,userId,productId);
 
 @override
 String toString() {
-  return 'ProductDetailsState(selectedColor: $selectedColor, selectedImage: $selectedImage, selectedSize: $selectedSize)';
+  return 'ProductDetailsState(product: $product, selectedColor: $selectedColor, selectedImage: $selectedImage, selectedSize: $selectedSize, userId: $userId, productId: $productId)';
 }
 
 
@@ -245,11 +260,11 @@ abstract mixin class _$ProductDetailsStateCopyWith<$Res> implements $ProductDeta
   factory _$ProductDetailsStateCopyWith(_ProductDetailsState value, $Res Function(_ProductDetailsState) _then) = __$ProductDetailsStateCopyWithImpl;
 @override @useResult
 $Res call({
- String selectedColor, String selectedImage, String? selectedSize
+ ProductModel product, String selectedColor, String selectedImage, String selectedSize, String? userId, String? productId
 });
 
 
-
+@override $ProductModelCopyWith<$Res> get product;
 
 }
 /// @nodoc
@@ -262,16 +277,28 @@ class __$ProductDetailsStateCopyWithImpl<$Res>
 
 /// Create a copy of ProductDetailsState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? selectedColor = null,Object? selectedImage = null,Object? selectedSize = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? product = null,Object? selectedColor = null,Object? selectedImage = null,Object? selectedSize = null,Object? userId = freezed,Object? productId = freezed,}) {
   return _then(_ProductDetailsState(
-selectedColor: null == selectedColor ? _self.selectedColor : selectedColor // ignore: cast_nullable_to_non_nullable
+product: null == product ? _self.product : product // ignore: cast_nullable_to_non_nullable
+as ProductModel,selectedColor: null == selectedColor ? _self.selectedColor : selectedColor // ignore: cast_nullable_to_non_nullable
 as String,selectedImage: null == selectedImage ? _self.selectedImage : selectedImage // ignore: cast_nullable_to_non_nullable
-as String,selectedSize: freezed == selectedSize ? _self.selectedSize : selectedSize // ignore: cast_nullable_to_non_nullable
+as String,selectedSize: null == selectedSize ? _self.selectedSize : selectedSize // ignore: cast_nullable_to_non_nullable
+as String,userId: freezed == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
+as String?,productId: freezed == productId ? _self.productId : productId // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
 
-
+/// Create a copy of ProductDetailsState
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$ProductModelCopyWith<$Res> get product {
+  
+  return $ProductModelCopyWith<$Res>(_self.product, (value) {
+    return _then(_self.copyWith(product: value));
+  });
+}
 }
 
 // dart format on

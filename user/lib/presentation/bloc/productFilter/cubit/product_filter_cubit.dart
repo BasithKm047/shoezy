@@ -267,6 +267,6 @@ class ProductFilterCubit extends Cubit<ProductFilterState> {
               p.categoryName.toString().toLowerCase().contains(lowered),
         )
         .toList();
-    return scoped.isEmpty ? products : scoped;
+    return scoped;
   }
 }

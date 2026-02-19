@@ -1,46 +1,56 @@
 import 'package:bloc/bloc.dart';
 import 'package:shoezy/data/models/product/product_model.dart';
 import 'package:shoezy/presentation/bloc/product_details_cubit/cubit/product_details_state.dart';
-class ProductDetailsCubit extends Cubit<ProductDetailsState> {
-  final ProductModel product;
 
-  ProductDetailsCubit(this.product)
+class ProductDetailsCubit extends Cubit<ProductDetailsState> {
+  ProductDetailsCubit(ProductModel product)
       : super(
           ProductDetailsState(
-            selectedColor:
-                 product.variants.map((v) => v.color).isNotEmpty
-                ? product.variants.map((v) => v.color).first
+            product: product,
+            selectedColor: product.variants.isNotEmpty
+                ? product.variants.first.color
                 : '',
-            selectedImage:
-                product.variants.map((v) => v.images).expand((i) => i).isNotEmpty
-                    ? product.variants
-                        .map((v) => v.images)
-                        .expand((i) => i)
-                        .first
-                    : '',
-            selectedSize:
-                 product.sizeStock.isNotEmpty
-                ? product.sizeStock.first.toString()  : '',
+            selectedImage: product.variants.isNotEmpty &&
+                    product.variants.first.images.isNotEmpty
+                ? product.variants.first.images.first
+                : '',
+            selectedSize: product.sizeStock.isNotEmpty
+                ? product.sizeStock.first.size
+                : '',
           ),
         );
 
   void selectColor(String color) {
-    if (product.variants.isEmpty || product.variants.first.images.isEmpty) return;
+    final variant = state.product.variants.firstWhere(
+      (v) => v.color.toLowerCase().trim() ==
+          color.toLowerCase().trim(),
+      orElse: () => state.product.variants.first,
+    );
 
-    final index = product.variants.map((v) => v.color).toList().indexOf(color);
+    final firstImage =
+        variant.images.isNotEmpty ? variant.images.first : '';
 
     emit(
       state.copyWith(
-        selectedColor: color,
-        selectedImage: index >= 0 && index < product.variants.first.images.length
-            ? product.variants.first.images[index]
-            : product.variants.first.images.first,
+        selectedColor: variant.color,
+        selectedImage: firstImage,
       ),
     );
+  }
+
+  void selectImage(String image) {
+    emit(state.copyWith(selectedImage: image));
   }
 
   void selectSize(String size) {
     emit(state.copyWith(selectedSize: size));
   }
-}
 
+  void addtocart(String size, String color, String productId, String userId) {
+    emit(state.copyWith(
+      selectedSize: size,
+      selectedColor: color,
+    ));
+
+  }
+}

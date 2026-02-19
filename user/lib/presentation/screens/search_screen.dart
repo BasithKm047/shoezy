@@ -5,12 +5,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shoezy/presentation/bloc/brand_bloc/brand_bloc.dart';
 import 'package:shoezy/presentation/bloc/category/bloc/category_bloc.dart';
+import 'package:shoezy/presentation/bloc/favourite/cubit/favourie_state.dart';
 import 'package:shoezy/presentation/bloc/productFilter/cubit/product_filter_cubit.dart';
 import 'package:shoezy/presentation/bloc/productFilter/cubit/product_filter_state.dart';
 import 'package:shoezy/presentation/bloc/product_bloc/bloc/product_bloc.dart';
 import 'package:shoezy/presentation/bloc/favourite/cubit/favourie_cubit.dart';
 import 'package:shoezy/data/models/product/product_model.dart';
 import 'package:shoezy/presentation/bloc/product_cart/cubit/product_cart_cubit.dart';
+import 'package:shoezy/presentation/bloc/product_details_cubit/cubit/product_details_cubit.dart';
 import 'package:shoezy/presentation/bloc/product_sort/cubit/product_sort_cubit.dart';
 import 'package:shoezy/presentation/screens/product_details_screen.dart';
 import 'package:shoezy/presentation/widgets/filter_modal.dart';
@@ -121,7 +123,6 @@ class _SearchScreenState extends State<SearchScreen> {
         if (products.isNotEmpty && filterCubit.state.sourceProducts.isEmpty) {
           filterCubit.setSourceProducts(products);
         }
-      
 
         return Scaffold(
           appBar: AppBar(
@@ -203,8 +204,6 @@ class _SearchScreenState extends State<SearchScreen> {
                       child: ValueListenableBuilder<String>(
                         valueListenable: _queryNotifier,
                         builder: (context, query, _) {
-                         
-
                           return BlocBuilder<
                             ProductFilterCubit,
                             ProductFilterState
@@ -215,12 +214,12 @@ class _SearchScreenState extends State<SearchScreen> {
                               final defaultProducts = state.defaultProducts
                                   .take(4)
                                   .toList();
-                              final filteredProducts = state.hasActiveFilters?
-                                  state.filteredProducts :
-                                  _filterProducts(
-                                    state.sourceProducts,
-                                    query,
-                                  );
+                              final filteredProducts = state.hasActiveFilters
+                                  ? state.filteredProducts
+                                  : _filterProducts(
+                                      state.sourceProducts,
+                                      query,
+                                    );
                               return SingleChildScrollView(
                                 physics: const BouncingScrollPhysics(),
                                 child: Padding(
@@ -343,21 +342,20 @@ class _SearchScreenState extends State<SearchScreen> {
                   ],
                 ),
           bottomNavigationBar: ProductBottomNav(
-            onSortTap: () async{
-                final sortCubit = context.read<ProductSortCubit>(); // NEW
+            onSortTap: () async {
+              final sortCubit = context.read<ProductSortCubit>(); // NEW
 
-    await showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (_) => BlocProvider.value(
-        value: sortCubit,
-        child: const SortingFilterModal(),   // NEW
-      ),
-    );
-  },
-           
-            
+              await showModalBottomSheet<void>(
+                context: context,
+                isScrollControlled: true,
+                backgroundColor: Colors.transparent,
+                builder: (_) => BlocProvider.value(
+                  value: sortCubit,
+                  child: const SortingFilterModal(), // NEW
+                ),
+              );
+            },
+
             onFilterTap: () async {
               final cubit = context.read<ProductFilterCubit>();
 
@@ -385,7 +383,6 @@ class _SearchScreenState extends State<SearchScreen> {
                 ),
               );
             },
-          
           ),
         );
       },
@@ -442,23 +439,32 @@ class _SearchScreenState extends State<SearchScreen> {
       itemCount: productsList.length.clamp(0, 4), // Show max 4
       itemBuilder: (context, index) {
         final product = productsList[index];
-        final isFav = context.select<FavoritesCubit, bool>((cubit) => cubit.isFavorite(product.id!));
-        return ProductGridCard(
-          isFavourite: isFav,
-          onFavouriteTap: () {
-            context.read<FavoritesCubit>().toggleFavorite(product.id!);
-          },
-          product: product,
-        ontap: () {
-  NavigationStyles.fade(
-    context,
-    BlocProvider.value(
-      value: context.read<ProductCartCubit>(),
-      child: ProductDetailsScreen(product: product),
-    ),
-  );
-},
 
+        return BlocSelector<FavoritesCubit, Set<String>, bool>(
+          selector: (state) {
+            return state.contains(product.id!);
+          },
+          builder: (context, isFav) {
+            return ProductGridCard(
+              isFavourite: isFav,
+              onFavouriteTap: () {
+                context.read<FavoritesCubit>().toggleFavorite(product.id!);
+              },
+              product: product,
+              ontap: () {
+                NavigationStyles.fade(
+                  context,
+                  BlocProvider.value(
+                    value: context.read<ProductCartCubit>(),
+                    child: BlocProvider(
+                      create: (context) => ProductDetailsCubit(product),
+                      child: ProductDetailsScreen(product: product),
+                    ),
+                  ),
+                );
+              },
+            );
+          },
         );
       },
     );

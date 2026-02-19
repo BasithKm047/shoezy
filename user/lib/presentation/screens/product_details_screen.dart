@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
 import 'package:shoezy/data/models/cart/cart_model.dart';
-import 'package:shoezy/presentation/bloc/favourite/cubit/favourie_cubit.dart';
-import 'package:shoezy/presentation/bloc/favourite/cubit/favourie_state.dart';
 import 'package:shoezy/data/models/product/product_model.dart';
-import 'package:shoezy/presentation/bloc/product_bloc/bloc/product_bloc.dart';
+import 'package:shoezy/presentation/bloc/favourite/cubit/favourie_cubit.dart';
 import 'package:shoezy/presentation/bloc/product_cart/cubit/product_cart_cubit.dart';
 import 'package:shoezy/presentation/bloc/product_details_cubit/cubit/product_details_cubit.dart';
 import 'package:shoezy/presentation/bloc/product_details_cubit/cubit/product_details_state.dart';
 import 'package:shoezy/utils/const/colors.dart';
+import 'package:shoezy/utils/const/commonFunctions.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
@@ -26,6 +25,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   void initState() {
     super.initState();
     context.read<ProductDetailsCubit>();
+    print("Product: ${widget.product.productName}");
+    print("Variants count: ${widget.product.variants.length}");
   }
 
   @override
@@ -43,11 +44,15 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               const SizedBox(height: 20),
               _ProductHeaderSection(product: widget.product),
               const SizedBox(height: 20),
-              _SectionTitle(title: 'Colors Available'),
-              const SizedBox(height: 20),
-              ColorOptionsRow(
-                colors: widget.product.variants.map((v) => v.color).toList(),
-              ),
+              if (widget.product.variants.isNotEmpty) ...[
+                _SectionTitle(title: 'Colors Available'),
+                const SizedBox(height: 20),
+                ColorOptionsRow(
+                  colors: widget.product.variants.map((v) => v.color).toList(),
+                ),
+                const SizedBox(height: 30),
+              ],
+
               const SizedBox(height: 30),
               _SectionTitle(title: 'Size Available'),
               const SizedBox(height: 20),
@@ -72,21 +77,23 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
                 onAddToCart: () {
                   final details = context.read<ProductDetailsCubit>().state;
-                  final userId = 'currentUserId';
-                  final cartItem = CartModel(
-                    productId: widget.product.id!,
-                    color: details.selectedColor,
-                    image: details.selectedImage,
-                    quantity: 1,
-                    userId: userId,
-                    size: details.selectedSize ?? 'N/A',
-                    name: widget.product.productName,
-                    price: double.tryParse(widget.product.price) ?? 0.0,
+                  if (details.selectedColor.isEmpty ||
+                      details.selectedSize.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Please select color and size!'),
+                        duration: Duration(seconds: 2),
+                      ),
+                    );
+                    return;
+                  }
+                  context.read<ProductDetailsCubit>().addtocart(
+                    details.selectedSize,
+                    details.selectedColor,
+                    details.productId!,
+                    details.userId!,
                   );
-                  final cartCubit = context.read<ProductCartCubit>();
-                  cartCubit.addItem(cartItem);
-                  Logger().d('Adding to cart: $cartItem');
-                  Logger().d('cartItenm.productId: ${cartItem.productId}');
+
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text('Product added to cart!'),
@@ -118,6 +125,7 @@ class _ProductImageSection extends StatefulWidget {
 class _ProductImageSectionState extends State<_ProductImageSection> {
   late final PageController _pageController;
   ValueNotifier<int> currentImageIndex = ValueNotifier<int>(0);
+  String? _lastColor;
 
   @override
   void initState() {
@@ -133,55 +141,85 @@ class _ProductImageSectionState extends State<_ProductImageSection> {
 
   @override
   Widget build(BuildContext context) {
-    final productImages = widget.product.variants
-        .map((variant) => variant.images)
-        .expand((images) => images)
-        .toList();
+    return BlocBuilder<ProductDetailsCubit, ProductDetailsState>(
+      builder: (context, state) {
+        final selectedColor = state.selectedColor;
+        final variants = widget.product.variants;
+        final selectedVariant = variants.isNotEmpty
+            ? variants.firstWhere(
+                (v) =>
+                    v.color.trim().toLowerCase() ==
+                    selectedColor.trim().toLowerCase(),
+                orElse: () => variants.first,
+              )
+            : null;
+        final productImages = selectedVariant?.images ?? [];
 
-    return Column(
-      children: [
-        Container(
-          height: 500,
-          width: double.infinity,
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
-          child: Stack(
-            children: [
-              PageView.builder(
-                controller: _pageController,
-                onPageChanged: (index) {
-                  currentImageIndex.value = index;
-                },
-                itemCount: productImages.length,
-                itemBuilder: (context, index) {
-                  return Image.network(
-                    productImages[index],
-                    fit: BoxFit.contain,
-                  );
-                },
+        if (_lastColor != selectedColor) {
+          _lastColor = selectedColor;
+          currentImageIndex.value = 0;
+          if (_pageController.hasClients) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (_pageController.hasClients) {
+                _pageController.jumpToPage(0);
+              }
+            });
+          }
+        }
+
+        return Column(
+          children: [
+            Container(
+              height: 500,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
               ),
-              Positioned(
-                top: 20,
-                right: 20,
-                child: FavoriteIconButton(product: widget.product),
+              child: Stack(
+                children: [
+                  PageView.builder(
+                    controller: _pageController,
+                    onPageChanged: (index) {
+                      currentImageIndex.value = index;
+                      if (index >= 0 && index < productImages.length) {
+                        context.read<ProductDetailsCubit>().selectImage(
+                          productImages[index],
+                        );
+                      }
+                    },
+                    itemCount: productImages.length,
+                    itemBuilder: (context, index) {
+                      return Image.network(
+                        productImages[index],
+                        fit: BoxFit.contain,
+                      );
+                    },
+                  ),
+                  Positioned(
+                    top: 20,
+                    right: 20,
+                    child: FavoriteIconButton(product: widget.product),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 20),
-        SmoothPageIndicator(
-          controller: _pageController,
-          count: productImages.length,
-          effect: ExpandingDotsEffect(
-            activeDotColor: Theme.of(context).primaryColor,
-            dotHeight: 10,
-            expansionFactor: 4,
-            dotWidth: 10,
-            radius: 8,
-            dotColor: Colors.grey,
-            spacing: 10,
-          ),
-        ),
-      ],
+            ),
+            const SizedBox(height: 20),
+            SmoothPageIndicator(
+              controller: _pageController,
+              count: productImages.length,
+              effect: ExpandingDotsEffect(
+                activeDotColor: Theme.of(context).primaryColor,
+                dotHeight: 10,
+                expansionFactor: 4,
+                dotWidth: 10,
+                radius: 8,
+                dotColor: Colors.grey,
+                spacing: 10,
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
@@ -195,17 +233,17 @@ class FavoriteIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isFavorite = context.select<FavoritesCubit, bool>(
-      (cubit) => cubit.isFavorite(product.id!),
-    );
-    return IconButton(
-      icon: Icon(
-        isFavorite ? Icons.favorite : Icons.favorite_border_outlined,
-        color: Colors.red,
-        size: 30,
-      ),
-      onPressed: () {
-        context.read<FavoritesCubit>().toggleFavorite(product.id!);
+    return BlocBuilder<FavoritesCubit, Set<String>>(
+      builder: (context, state) {
+        final isFavorite = state.contains(product.id);
+        return IconButton(
+          icon: Icon(
+            isFavorite ? Icons.favorite : Icons.favorite_border_outlined,
+            color: Colors.red,
+            size: 30,
+          ),
+          onPressed: () => Commonfunctions.toggleFavorite(context, product),
+        );
       },
     );
   }

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoezy/data/models/product/product_model.dart';
 import 'package:shoezy/presentation/bloc/favourite/cubit/favourie_cubit.dart';
 import 'package:shoezy/presentation/bloc/product_bloc/bloc/product_bloc.dart';
+import 'package:shoezy/presentation/bloc/product_details_cubit/cubit/product_details_cubit.dart';
 import 'package:shoezy/presentation/screens/product_details_screen.dart';
 import 'package:shoezy/presentation/widgets/product_grid_card.dart';
 import 'package:shoezy/presentation/widgets/shimmer_loading.dart';
@@ -51,16 +52,21 @@ class FavoritesScreen extends StatelessWidget {
                   ),
                   itemBuilder: (_, i) {
                     final product = favorites[i];
+                    final isFav = context.read<FavoritesCubit>().isFavorite(
+                      product.id!,
+                    );
                     return ProductGridCard(
                       ontap: () {
                         NavigationStyles.fade(
                           context,
-                          ProductDetailsScreen(product: product),
+                          BlocProvider(
+                            create: (context) => ProductDetailsCubit(product),
+                            child: ProductDetailsScreen(product: product),
+                          ),
                         );
-                        // Navigate to product details
                       },
                       product: product,
-                      isFavourite: true,
+                      isFavourite: isFav,
                       onFavouriteTap: () {
                         context.read<FavoritesCubit>().toggleFavorite(
                           product.id!,

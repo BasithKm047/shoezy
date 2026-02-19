@@ -47,7 +47,7 @@ class TagsDetailedShowingScreen extends StatelessWidget {
                   HomeScreenWidgets.tagLabel(
                     screenWidth,
                     context,
-                    tags[index][index],
+                    tags[index],
           
                     false,
                   ),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoezy/data/models/product/product_model.dart';
+import 'package:shoezy/presentation/bloc/favourite/cubit/favourie_cubit.dart';
 
 class Commonfunctions {
   static String? usernameValidator(String? value) {
@@ -61,18 +63,35 @@ class Commonfunctions {
     );
   }
 
-  return Image.network(
-    variant.images.first,
-    fit: BoxFit.cover,
-    errorBuilder: (_, __, ___) => const Center(
-      child: Icon(Icons.image_not_supported, size: 42),
+  return ClipRRect(
+    borderRadius:  BorderRadius.circular(12),
+    child: Image.network(
+      variant.images.first,
+      fit: BoxFit.contain,
+      errorBuilder: (_, __, ___) => const Center(
+        child: Icon(Icons.image_not_supported, size: 42),
+      ),
     ),
   );
-}
+  }
 
-static bool hasTag(ProductModel product, String tag) {
-  return product.tag.contains(tag);
-}
+  static bool hasTag(ProductModel product, String tag) {
+    return product.tag.contains(tag);
+  }
 
+  /// -------- FAVOURITES HELPERS (REUSABLE) --------
 
+  /// Whether the given product is currently in favourites.
+  static bool isFavorite(BuildContext context, ProductModel product) {
+    if (product.id == null) return false;
+    return context.select<FavoritesCubit, bool>(
+      (cubit) => cubit.isFavorite(product.id!),
+    );
+  }
+
+  /// Toggle favourite state for a product.
+  static void toggleFavorite(BuildContext context, ProductModel product) {
+    if (product.id == null) return;
+    context.read<FavoritesCubit>().toggleFavorite(product.id!);
+  }
 }

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoezy/data/models/product/product_model.dart';
+import 'package:shoezy/presentation/bloc/product_details_cubit/cubit/product_details_cubit.dart';
 import 'package:shoezy/presentation/screens/product_details_screen.dart';
 import 'package:shoezy/utils/const/commonFunctions.dart';
 import 'package:shoezy/utils/const/navigation_styles.dart';
-
-
 
 /// Simple Product model
 
@@ -19,7 +19,7 @@ class ProductCardHorizontal extends StatelessWidget {
     required this.product,
     this.onAdd,
     this.width = 180,
-    this.height = 250,
+    this.height = 180,
   });
 
   @override
@@ -32,13 +32,18 @@ class ProductCardHorizontal extends StatelessWidget {
         onTap: () {
           NavigationStyles.fade(
             context,
-            ProductDetailsScreen(product: product,),
+            BlocProvider(
+              create: (context) => ProductDetailsCubit(product),
+              child: ProductDetailsScreen(product: product),
+            ),
           );
         },
         child: Card(
           color: Colors.white,
           elevation: 6,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(radius)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(radius),
+          ),
           margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 6),
           child: Stack(
             clipBehavior: Clip.none,
@@ -58,8 +63,8 @@ class ProductCardHorizontal extends StatelessWidget {
                         fit: StackFit.expand,
                         children: [
                           // Use Image.network so the path you provided (e.g. /mnt/data/...) will be handled upstream
-                           Commonfunctions.productImage(product),
-        
+                          Commonfunctions.productImage(product),
+
                           // Soft gradient overlay at bottom of image for legibility
                           // Positioned(
                           //   bottom: 0,
@@ -76,22 +81,35 @@ class ProductCardHorizontal extends StatelessWidget {
                           //     ),
                           //   ),
                           // ),
-        
+
                           // optional small top-left badge (subtle)
                           if ((product.tag).isNotEmpty)
                             Positioned(
                               left: 10,
                               top: 10,
                               child: Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                  vertical: 6,
+                                ),
                                 decoration: BoxDecoration(
                                   color: Colors.white.withOpacity(0.9),
                                   borderRadius: BorderRadius.circular(8),
-                                  boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 6, offset: Offset(0, 3))],
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black12,
+                                      blurRadius: 6,
+                                      offset: Offset(0, 3),
+                                    ),
+                                  ],
                                 ),
                                 child: Text(
-                                  product.tag[0].toUpperCase(),
-                                  style: TextStyle(fontSize: 10, fontWeight: FontWeight.w800, color: Colors.blue.shade700),
+                                  product.tag,
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w800,
+                                    color: Colors.blue.shade700,
+                                  ),
                                 ),
                               ),
                             ),
@@ -99,7 +117,7 @@ class ProductCardHorizontal extends StatelessWidget {
                       ),
                     ),
                   ),
-        
+
                   // Lower area: product title & price
                   Expanded(
                     flex: 4,
@@ -115,7 +133,10 @@ class ProductCardHorizontal extends StatelessWidget {
                             product.productName,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
+                            style: const TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
                           const SizedBox(height: 6),
                           // Price row
@@ -123,7 +144,11 @@ class ProductCardHorizontal extends StatelessWidget {
                             children: [
                               Text(
                                 '\$${product.price}',
-                                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w800, color: Colors.grey[800]),
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w800,
+                                  color: Colors.grey[800],
+                                ),
                               ),
                               const Spacer(),
                               // small hint text or rating spot (optional)
@@ -135,7 +160,7 @@ class ProductCardHorizontal extends StatelessWidget {
                   ),
                 ],
               ),
-        
+
               // Downward tag centered near the image bottom (points downward towards title)
               // Positioned(
               //   left: 0,
@@ -177,7 +202,7 @@ class ProductCardHorizontal extends StatelessWidget {
               //     ),
               //   ),
               // ),
-        
+
               // Add (plus) button bottom-right (curved)
               Positioned(
                 right: 0,
@@ -193,7 +218,13 @@ class ProductCardHorizontal extends StatelessWidget {
                         topLeft: Radius.circular(18),
                         bottomRight: Radius.circular(16),
                       ),
-                      boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 6, offset: Offset(0, 3))],
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black26,
+                          blurRadius: 6,
+                          offset: Offset(0, 3),
+                        ),
+                      ],
                     ),
                     child: const Icon(Icons.add, color: Colors.white, size: 24),
                   ),
@@ -209,7 +240,9 @@ class ProductCardHorizontal extends StatelessWidget {
 
 /// Small triangle painter used for the downward tag pointer
 class TrianglePainter extends CustomPainter {
-  final Paint _p = Paint()..style = PaintingStyle.fill..color = Colors.white;
+  final Paint _p = Paint()
+    ..style = PaintingStyle.fill
+    ..color = Colors.white;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -219,7 +252,9 @@ class TrianglePainter extends CustomPainter {
     path.lineTo(size.width, 0);
     path.close();
     // Add subtle shadow by drawing slightly offset grey path behind
-    final shadow = Paint()..color = Colors.black12..maskFilter = MaskFilter.blur(BlurStyle.normal, 4);
+    final shadow = Paint()
+      ..color = Colors.black12
+      ..maskFilter = MaskFilter.blur(BlurStyle.normal, 4);
     canvas.save();
     canvas.translate(0, 2); // offset shadow
     canvas.drawPath(path, shadow);

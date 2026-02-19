@@ -14,7 +14,6 @@ import 'package:shoezy/presentation/widgets/searchField.dart';
 import 'package:shoezy/utils/const/colors.dart';
 import 'package:shoezy/utils/const/commonFunctions.dart';
 import 'package:shoezy/utils/const/navigation_styles.dart';
-
 import 'package:shoezy/presentation/widgets/home_screen_card.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -78,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
             isLoading: isLoading,
             isEmpty: isEmpty,
             emptyMessage: 'No products available',
-            lottieAsset: 'asset/empty-box_2.json',
+            lottieAsset: 'asset/empty-box_1.json',
             child: SingleChildScrollView(
               child: Column(
                 children: [
@@ -152,6 +151,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             itemCount: filteredProducts3.length,
                             itemBuilder: (context, index) {
                               return ProductCardHorizontal(
+                                height: 180,
                                 product: filteredProducts3[index],
                                 onAdd: () {
                                   CostumWidget.showCustomSnackbar(
@@ -202,7 +202,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     height: 250,
                     child: filteredProducts.isEmpty
                         ? Center(
-                            child: LottieWidgets.emptyBox2('Product', context),
+                            child: LottieWidgets.emptyBox1('Product', context),
                           )
                         : ListView.separated(
                             padding: const EdgeInsets.symmetric(horizontal: 12),

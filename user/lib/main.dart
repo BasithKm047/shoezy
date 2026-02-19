@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:shoezy/data/models/product/product_model.dart';
 import 'package:shoezy/data/repositories/cart_repository.dart';
+import 'package:shoezy/data/repositories/favourite_repository.dart';
 import 'package:shoezy/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:shoezy/presentation/bloc/brand_bloc/brand_bloc.dart';
 import 'package:shoezy/presentation/bloc/category/bloc/category_bloc.dart';
@@ -16,6 +18,7 @@ import 'package:shoezy/presentation/bloc/product_cart/cubit/product_cart_cubit.d
 import 'package:shoezy/presentation/bloc/product_details_cubit/cubit/product_details_cubit.dart';
 import 'package:shoezy/presentation/bloc/product_sort/cubit/product_sort_cubit.dart';
 import 'package:shoezy/presentation/screens/splash_screen.dart';
+// import 'package:shoezy/utils/const/new.dart';
 import 'package:shoezy/utils/theme/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -29,6 +32,8 @@ void main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
+
+  await Hive.initFlutter();
 
   runApp(MyApp());
 }
@@ -52,7 +57,7 @@ class MyApp extends StatelessWidget {
 
         BlocProvider(create: (context) => ProductBloc(ProductRepository())),
         BlocProvider(
-          create: (context) => FavoritesCubit(),
+          create: (context) => FavoritesCubit(FavouriteRepository()),
         ),
         BlocProvider(create: (context) => CategoryBloc(CategoryRepository())),
         BlocProvider(create: (context) => ProductFilterCubit()),
@@ -61,23 +66,6 @@ class MyApp extends StatelessWidget {
           create: (context) => ProductCartCubit(
             repository: CartRepository(userId: 'currentUserId'),
             userId: 'currentUserId',
-          ),
-        ),
-        BlocProvider(
-          create: (context) => ProductDetailsCubit(
-            ProductModel(
-              id: '',
-              productName: '',
-              brandName: '',
-              description: '',
-              price: '',
-              tag: '',
-              categoryName: '',
-              variants: [],
-              sizeStock: [],
-              gender: '',
-              createdAt: DateTime.now(),
-            ),
           ),
         ),
       ],

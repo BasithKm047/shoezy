@@ -9,13 +9,23 @@ import 'package:shoezy/presentation/screens/product_listing_screen.dart';
 import 'package:shoezy/presentation/widgets/loading_state_manager.dart';
 import 'package:shoezy/utils/const/navigation_styles.dart';
 
-class CategoryScreen extends StatelessWidget {
+class CategoryScreen extends StatefulWidget {
   const CategoryScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  State<CategoryScreen> createState() => _CategoryScreenState();
+}
+
+class _CategoryScreenState extends State<CategoryScreen> {
+  @override
+  void initState() {
+    super.initState();
     context.read<CategoryBloc>().add(CategoryEvent.loadCategories());
     context.read<ProductBloc>().add(ProductEvent.loadProducts());
+  }
+
+  @override
+  Widget build(BuildContext context) {
     List<CategoryModel> categories = [];
     List<ProductModel> products = [];
     return BlocBuilder<ProductBloc, ProductState>(
@@ -96,13 +106,18 @@ class CategoryScreen extends StatelessWidget {
                       ),
                       trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                       onTap: () {
+                        String normalize(String value) {
+                          return value.trim().toLowerCase();
+                        }
+
                         final filteredProducts = products
                             .where(
                               (p) =>
-                                  p.categoryName.toLowerCase() ==
-                                  category.name.toLowerCase(),
+                                  normalize(p.categoryName) ==
+                                  normalize(category.name),
                             )
                             .toList();
+
                         NavigationStyles.scale(
                           context,
                           ProductListingScreen(

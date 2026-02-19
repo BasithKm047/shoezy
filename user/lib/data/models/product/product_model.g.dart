@@ -23,7 +23,6 @@ _ProductModel _$ProductModelFromJson(Map<String, dynamic> json) =>
       tag: json['tag'] as String,
       gender: json['gender'] as String,
       createdAt: DateTime.parse(json['createdAt'] as String),
-      isFavourite: json['isFavourite'] as bool?,
     );
 
 Map<String, dynamic> _$ProductModelToJson(_ProductModel instance) =>
@@ -39,5 +38,4 @@ Map<String, dynamic> _$ProductModelToJson(_ProductModel instance) =>
       'tag': instance.tag,
       'gender': instance.gender,
       'createdAt': instance.createdAt.toIso8601String(),
-      'isFavourite': instance.isFavourite,
     };
