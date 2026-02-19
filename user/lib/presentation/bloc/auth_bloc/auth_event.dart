@@ -43,3 +43,7 @@ class ForgetPasswordEvent extends AuthEvent{
   final String email;
   ForgetPasswordEvent(this.email);
 }
+class GetUserDataEvent extends AuthEvent{
+  final String userId;
+  GetUserDataEvent(this.userId);
+}

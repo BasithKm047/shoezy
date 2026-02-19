@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logger/logger.dart';
 import 'package:shoezy/data/models/cart/cart_model.dart';
 import 'package:shoezy/data/models/product/product_model.dart';
+import 'package:shoezy/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:shoezy/presentation/bloc/favourite/cubit/favourie_cubit.dart';
 import 'package:shoezy/presentation/bloc/product_cart/cubit/product_cart_cubit.dart';
 import 'package:shoezy/presentation/bloc/product_details_cubit/cubit/product_details_cubit.dart';
 import 'package:shoezy/presentation/bloc/product_details_cubit/cubit/product_details_state.dart';
+import 'package:shoezy/presentation/widgets/costum_widget.dart';
 import 'package:shoezy/utils/const/colors.dart';
 import 'package:shoezy/utils/const/commonFunctions.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -75,7 +76,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               PriceAndAddToCartRow(
                 price: widget.product.price,
 
-                onAddToCart: () {
+                onAddToCart: () async{
                   final details = context.read<ProductDetailsCubit>().state;
                   if (details.selectedColor.isEmpty ||
                       details.selectedSize.isEmpty) {
@@ -87,20 +88,28 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     );
                     return;
                   }
-                  context.read<ProductDetailsCubit>().addtocart(
-                    details.selectedSize,
-                    details.selectedColor,
-                    details.productId!,
-                    details.userId!,
+                  final user = context
+                      .read<AuthBloc>()
+                      .authServices
+                      .currentUser;
+
+                  final userId = user?.uid;
+
+                  final cartitem = CartModel(
+                    productId: details.productId ?? '',
+                    image: details.selectedImage,
+                    name: details.product.productName,
+                    price: double.parse(details.product.price),
+                    color: details.selectedColor,
+                    size: details.selectedSize,
+                    quantity: 1,
+                    userId: userId ?? 'guest',
                   );
 
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Product added to cart!'),
-                      duration: Duration(seconds: 2),
-                    ),
-                  );
-                  Navigator.pop(context);
+                await context.read<ProductCartCubit>().addItem(cartitem);
+                    CostumWidget.showCustomSnackbar(context: context, message: 'Added to Cart',
+                    duration: Duration(seconds: 1));
+                    Navigator.of(context).pop();
                 },
               ),
             ],
@@ -577,7 +586,10 @@ class PriceAndAddToCartRow extends StatelessWidget {
             onPressed: onAddToCart,
             style: ElevatedButton.styleFrom(
               backgroundColor: Theme.of(context).primaryColor,
-              padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 40,
+                vertical: 15,
+              ),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15),
               ),

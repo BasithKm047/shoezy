@@ -6,7 +6,6 @@ part 'cart_model.g.dart';
 @freezed
 abstract class CartModel with _$CartModel {
   const factory CartModel({
-    String? id,
     required String productId,
     required String image,
     required String name,

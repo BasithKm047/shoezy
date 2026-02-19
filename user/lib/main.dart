@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:shoezy/data/models/product/product_model.dart';
 import 'package:shoezy/data/repositories/cart_repository.dart';
 import 'package:shoezy/data/repositories/favourite_repository.dart';
 import 'package:shoezy/presentation/bloc/auth_bloc/auth_bloc.dart';
@@ -15,7 +14,6 @@ import 'package:shoezy/data/auth/auth_services.dart';
 import 'package:shoezy/data/repositories/category_repository.dart';
 import 'package:shoezy/data/repositories/product_repository.dart';
 import 'package:shoezy/presentation/bloc/product_cart/cubit/product_cart_cubit.dart';
-import 'package:shoezy/presentation/bloc/product_details_cubit/cubit/product_details_cubit.dart';
 import 'package:shoezy/presentation/bloc/product_sort/cubit/product_sort_cubit.dart';
 import 'package:shoezy/presentation/screens/splash_screen.dart';
 // import 'package:shoezy/utils/const/new.dart';
@@ -63,10 +61,8 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => ProductFilterCubit()),
         BlocProvider<ProductSortCubit>(create: (_) => ProductSortCubit()),
         BlocProvider(
-          create: (context) => ProductCartCubit(
-            repository: CartRepository(userId: 'currentUserId'),
-            userId: 'currentUserId',
-          ),
+          create: (context) =>
+              ProductCartCubit(repository: CartRepository()),
         ),
       ],
       child: MaterialApp(

@@ -29,8 +29,8 @@ class CarouselCard extends StatelessWidget {
         Navigator.of(context).push(
           PageRouteBuilder(
             pageBuilder: (context, animation, secondaryAnimation) {
-              return BlocProvider.value(
-                value: context.read<ProductDetailsCubit>(),
+              return BlocProvider(
+                create: (context) => ProductDetailsCubit(product),
                 child: ProductDetailsScreen(product: product),
               );
             },

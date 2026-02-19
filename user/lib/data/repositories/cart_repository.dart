@@ -1,42 +1,64 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:logger/logger.dart';
 import 'package:shoezy/data/models/cart/cart_model.dart';
 
 class CartRepository {
   // Add your repository methods and properties here
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final String userId;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  CartRepository({required this.userId});
+  CartRepository();
 
+  String get uid {
+    final user = _auth.currentUser;
+    if (user == null) {
+      throw Exception("User not logged in");
+    }
+    return user.uid;
+  }
 
-       CollectionReference get _cartCollection =>
-      _firestore.collection('users').doc(userId).collection('cart');
+  CollectionReference get _cartCollection =>
+      _firestore.collection('users').doc(uid).collection('cart');
 
-  Future<void> addToCart( CartModel cartData) async {
-     try{
-      final q=await _cartCollection.where('productId',isEqualTo: cartData.productId).where('color',isEqualTo: cartData.color).where('size',isEqualTo: cartData.size).limit(1).get();
+  Future<void> addToCart(CartModel cartData) async {
+    try {
+      final q = await _cartCollection
+          .where('productId', isEqualTo: cartData.productId)
+          .where('color', isEqualTo: cartData.color)
+          .where('size', isEqualTo: cartData.size)
+          .limit(1)
+          .get();
+
       if (q.docs.isNotEmpty) {
         final doc = q.docs.first;
-        final existingQty = (doc.data() as Map<String, dynamic>)['quantity'] as int? ?? 0;
+        final existingQty =
+            (doc.data() as Map<String, dynamic>)['quantity'] as int? ?? 0;
         await doc.reference.update({
           'quantity': existingQty + cartData.quantity,
           'price': cartData.price,
           'name': cartData.name,
           'image': cartData.image,
         });
+        Logger().i("🔥 Repository addToCart called");
+        Logger().i("UID: $uid");
       } else {
         final newDoc = _cartCollection.doc();
-        final data = cartData.copyWith(id: newDoc.id).toJson();
+        final data = cartData.copyWith(id: newDoc.id, userId: uid).toJson();
         await newDoc.set(data);
+
+        Logger().i(
+          'Updated existing cart item: ${cartData.productId} with new quantity: ${cartData.quantity}',
+        );
+        Logger().i("🔥 Repository addToCart called");
+        Logger().i("UID: $uid");
       }
     } catch (e) {
       rethrow;
-
-     }
+    }
   }
 
-  
   Future<List<CartModel>> getCartItems() async {
     final query = await _cartCollection.get();
     return query.docs.map((doc) {
@@ -46,7 +68,8 @@ class CartRepository {
       return CartModel.fromJson(map);
     }).toList();
   }
-    // Real-time stream for UI
+
+  // Real-time stream for UI
   Stream<List<CartModel>> cartItemsStream() {
     return _cartCollection.snapshots().map((snap) {
       return snap.docs.map((doc) {
@@ -57,10 +80,11 @@ class CartRepository {
     });
   }
 
-   Future<void> removeFromCart(String cartItemId) async {
+  Future<void> removeFromCart(String cartItemId) async {
     await _cartCollection.doc(cartItemId).delete();
   }
-   Future<void> clearCart() async {
+
+  Future<void> clearCart() async {
     const batchLimit = 500;
     QuerySnapshot snapshot = await _cartCollection.limit(batchLimit).get();
     while (snapshot.docs.isNotEmpty) {
@@ -73,7 +97,8 @@ class CartRepository {
       snapshot = await _cartCollection.limit(batchLimit).get();
     }
   }
- Future<void> updateQuantity(String cartItemId, int newQuantity) async {
+
+  Future<void> updateQuantity(String cartItemId, int newQuantity) async {
     final docRef = _cartCollection.doc(cartItemId);
     await _firestore.runTransaction((tx) async {
       final snapshot = await tx.get(docRef);
@@ -81,10 +106,4 @@ class CartRepository {
       tx.update(docRef, {'quantity': newQuantity});
     });
   }
-
-
 }
-  
- 
-
-

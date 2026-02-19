@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shoezy/presentation/bloc/brand_bloc/brand_bloc.dart';
 import 'package:shoezy/presentation/bloc/category/bloc/category_bloc.dart';
-import 'package:shoezy/presentation/bloc/favourite/cubit/favourie_state.dart';
 import 'package:shoezy/presentation/bloc/productFilter/cubit/product_filter_cubit.dart';
 import 'package:shoezy/presentation/bloc/productFilter/cubit/product_filter_state.dart';
 import 'package:shoezy/presentation/bloc/product_bloc/bloc/product_bloc.dart';

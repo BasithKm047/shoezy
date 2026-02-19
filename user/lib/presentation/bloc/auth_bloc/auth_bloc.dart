@@ -20,6 +20,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<GoogleSignInRequested>(_googleSignin);
     on<LogoutEvent>(_logout);
     on<ForgetPasswordEvent>(_forgetPassword);
+    
   }
 
   Future<void> _siginUp(SignUpEvent event, Emitter<AuthState> emit) async {
@@ -124,4 +125,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthFailure(e.toString()));
     }
   }
+    
+    
+
+
 }

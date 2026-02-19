@@ -46,11 +46,7 @@ class ProductDetailsCubit extends Cubit<ProductDetailsState> {
     emit(state.copyWith(selectedSize: size));
   }
 
-  void addtocart(String size, String color, String productId, String userId) {
-    emit(state.copyWith(
-      selectedSize: size,
-      selectedColor: color,
-    ));
+ 
 
-  }
+  
 }

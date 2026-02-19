@@ -1,21 +1,19 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:logger/logger.dart';
 import 'package:shoezy/data/models/cart/cart_model.dart';
 import 'package:shoezy/data/repositories/cart_repository.dart'; // adjust import path
 import 'product_cart_state.dart';
 
 class ProductCartCubit extends Cubit<ProductCartState> {
   final CartRepository _repo;
-  final String userId;
 
   StreamSubscription<List<CartModel>>? _subscription;
 
-  ProductCartCubit({
-    required CartRepository repository,
-    required this.userId,
-  })  : _repo = repository,
-        super(const ProductCartState.initial()) {
+  ProductCartCubit({required CartRepository repository})
+    : _repo = repository,
+      super(const ProductCartState.initial()) {
     _startListening();
   }
 
@@ -25,7 +23,7 @@ class ProductCartCubit extends Cubit<ProductCartState> {
     _subscription = _repo.cartItemsStream().listen(
       (items) {
         // filter to current user (repo already scopes by user but keep safe)
-        final userItems = items.where((i) => i.userId == userId).toList();
+        final userItems = items.where((i) => i.userId == _repo.uid).toList();
         emit(ProductCartState.loaded(userItems));
       },
       onError: (err, st) {
@@ -36,9 +34,14 @@ class ProductCartCubit extends Cubit<ProductCartState> {
 
   /// Add item to cart. Repository will merge/increment if necessary.
   Future<void> addItem(CartModel newItem) async {
-    emit(const ProductCartState.loading());
     try {
       await _repo.addToCart(newItem);
+
+      Logger().i(
+        'Updated existing cart item: $newItem with new quantity: ${newItem.quantity}',
+      );
+      Logger().i('User Id: ${_repo.uid}');
+      Logger().i("Cart path: users/${_repo.uid}/cart");
       // success — the stream will emit the updated list; no further emit needed
     } catch (e) {
       emit(ProductCartState.error(e.toString()));
@@ -46,7 +49,6 @@ class ProductCartCubit extends Cubit<ProductCartState> {
   }
 
   Future<void> removeItem(String cartItemId) async {
-    emit(const ProductCartState.loading());
     try {
       await _repo.removeFromCart(cartItemId);
     } catch (e) {
@@ -56,7 +58,6 @@ class ProductCartCubit extends Cubit<ProductCartState> {
 
   /// Clear all cart items for the user
   Future<void> clearCart() async {
-    emit(const ProductCartState.loading());
     try {
       await _repo.clearCart();
       // stream will update UI
@@ -66,14 +67,14 @@ class ProductCartCubit extends Cubit<ProductCartState> {
   }
 
   /// Set new absolute quantity (>=1). Use transaction in repository.
-  Future<void> updateQuantity(String cartItemId, int newQuantity) async {
-    if (newQuantity < 1) {
+  Future<void> updateQuantity(String id, int qty) async {
+    if (qty < 1) {
       emit(const ProductCartState.error('Quantity must be at least 1'));
       return;
     }
-    emit(const ProductCartState.loading());
+
     try {
-      await _repo.updateQuantity(cartItemId, newQuantity);
+      await _repo.updateQuantity(id, qty);
       // stream will emit updated list
     } catch (e) {
       emit(ProductCartState.error(e.toString()));
@@ -81,20 +82,35 @@ class ProductCartCubit extends Cubit<ProductCartState> {
   }
 
   /// Convenience: increment quantity by 1
-  Future<void> incrementQuantity(String cartItemId, int currentQuantity) async {
-    emit(const ProductCartState.loading());
+  Future<void> incrementQuantity(String cartItemId) async {
+    final state = this.state;
+    final item = state.maybeWhen(
+      orElse: () => null,
+      loaded: (items) => items.firstWhere(
+        (i) => i.id == cartItemId,
+        orElse: () => throw Exception('Cart item not found'),
+      ),
+    );
+
     try {
-      await _repo.updateQuantity(cartItemId, currentQuantity + 1);
+      await _repo.updateQuantity(cartItemId, item!.quantity + 1);
     } catch (e) {
       emit(ProductCartState.error(e.toString()));
     }
   }
 
   /// Convenience: decrement quantity by 1 (removes item if result < 1)
-  Future<void> decrementQuantity(String cartItemId, int currentQuantity) async {
-    emit(const ProductCartState.loading());
+  Future<void> decrementQuantity(String cartItemId) async {
+    final state = this.state;
+    final item = state.maybeWhen(
+      orElse: () => null,
+      loaded: (items) => items.firstWhere(
+        (i) => i.id == cartItemId,
+        orElse: () => throw Exception('Cart item not found'),
+      ),
+    );
     try {
-      final newQty = currentQuantity - 1;
+      final newQty = item!.quantity - 1;
       if (newQty < 1) {
         // optional: remove the item instead of setting zero
         await _repo.removeFromCart(cartItemId);
@@ -104,6 +120,19 @@ class ProductCartCubit extends Cubit<ProductCartState> {
     } catch (e) {
       emit(ProductCartState.error(e.toString()));
     }
+  }
+
+  double getTotalPrice() {
+    state.maybeWhen(
+      orElse: () => 0.0,
+      loaded: (items) {
+        return items.fold(
+          0.0,
+          (total, item) => total + (item.price * item.quantity),
+        );
+      },
+    );
+    return 0;
   }
 
   @override
