@@ -22,11 +22,14 @@ class ProductCartCubit extends Cubit<ProductCartState> {
     // Subscribe to real-time updates from repository
     _subscription = _repo.cartItemsStream().listen(
       (items) {
+        Logger().i("Stream received ${items.length} items");
         // filter to current user (repo already scopes by user but keep safe)
         final userItems = items.where((i) => i.userId == _repo.uid).toList();
+        Logger().i("Filtered to ${userItems.length} items for current user");
         emit(ProductCartState.loaded(userItems));
       },
       onError: (err, st) {
+        Logger().e("Stream error: $err");
         emit(ProductCartState.error(err.toString()));
       },
     );
@@ -36,15 +39,10 @@ class ProductCartCubit extends Cubit<ProductCartState> {
   Future<void> addItem(CartModel newItem) async {
     try {
       await _repo.addToCart(newItem);
-      emit(const ProductCartState.success()); // optional: show loading until stream updates
-
-      Logger().i(
-        'Updated existing cart item: $newItem with new quantity: ${newItem.quantity}',
-      );
-      Logger().i('User Id: ${_repo.uid}');
-      Logger().i("Cart path: users/${_repo.uid}/cart");
-      // success — the stream will emit the updated list; no further emit needed
+      emit(const ProductCartState.success());
+      Logger().i('Successfully added/updated cart item: ${newItem.productId}');
     } catch (e) {
+      Logger().e('Error adding to cart: $e');
       emit(ProductCartState.error(e.toString()));
     }
   }
@@ -87,9 +85,10 @@ class ProductCartCubit extends Cubit<ProductCartState> {
       final items = await _repo.getCartItems();
 
       emit(ProductCartState.loaded(items));
-      Logger().i('Fetched cart items: ${items.length} items for user ${_repo.uid}');
+      Logger().i(
+        'Fetched cart items: ${items.length} items for user ${_repo.uid}',
+      );
       return items;
-      
     } catch (e) {
       emit(ProductCartState.error(e.toString()));
       return [];
@@ -100,15 +99,15 @@ class ProductCartCubit extends Cubit<ProductCartState> {
   Future<void> incrementQuantity(String cartItemId) async {
     final state = this.state;
     final item = state.maybeWhen(
-      orElse: () => null,
       loaded: (items) => items.firstWhere(
-        (i) => i.userId == cartItemId,
+        (i) => i.id == cartItemId,
         orElse: () => throw Exception('Cart item not found'),
       ),
+      orElse: () => throw Exception('Cart state not loaded'),
     );
 
     try {
-      await _repo.updateQuantity(cartItemId, item!.quantity + 1);
+      await _repo.updateQuantity(cartItemId, item.quantity + 1);
     } catch (e) {
       emit(ProductCartState.error(e.toString()));
     }
@@ -118,16 +117,15 @@ class ProductCartCubit extends Cubit<ProductCartState> {
   Future<void> decrementQuantity(String cartItemId) async {
     final state = this.state;
     final item = state.maybeWhen(
-      orElse: () => null,
       loaded: (items) => items.firstWhere(
-        (i) => i.userId == cartItemId,
+        (i) => i.id == cartItemId,
         orElse: () => throw Exception('Cart item not found'),
       ),
+      orElse: () => throw Exception('Cart state not loaded'),
     );
     try {
-      final newQty = item!.quantity - 1;
+      final newQty = item.quantity - 1;
       if (newQty < 1) {
-        // optional: remove the item instead of setting zero
         await _repo.removeFromCart(cartItemId);
       } else {
         await _repo.updateQuantity(cartItemId, newQty);
@@ -138,16 +136,15 @@ class ProductCartCubit extends Cubit<ProductCartState> {
   }
 
   double getTotalPrice() {
-    state.maybeWhen(
-      orElse: () => 0.0,
+    return state.maybeWhen(
       loaded: (items) {
         return items.fold(
           0.0,
           (total, item) => total + (item.price * item.quantity),
         );
       },
+      orElse: () => 0.0,
     );
-    return 0;
   }
 
   @override

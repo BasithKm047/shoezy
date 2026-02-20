@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:logger/logger.dart';
 import 'package:shoezy/presentation/bloc/product_cart/cubit/product_cart_cubit.dart';
 import 'package:shoezy/presentation/bloc/product_cart/cubit/product_cart_state.dart';
 import 'package:shoezy/presentation/widgets/loading_state_manager.dart';
-import 'package:shoezy/presentation/widgets/shimmer_loading.dart';
 import 'package:shoezy/utils/const/colors.dart';
 
 class CartScreen extends StatefulWidget {
@@ -62,6 +62,38 @@ class _CartScreenState extends State<CartScreen> {
                       orElse: () => [],
                     );
 
+                    final error = state.maybeWhen(
+                      error: (msg) => msg,
+                      orElse: () => null,
+                    );
+
+                    if (error != null) {
+                      return Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(
+                              Icons.error_outline,
+                              color: Colors.red,
+                              size: 40,
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
+                              "Error: $error",
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(color: Colors.red),
+                            ),
+                            TextButton(
+                              onPressed: () => context
+                                  .read<ProductCartCubit>()
+                                  .getCartItems(),
+                              child: const Text("Retry"),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+
                     final isEmpty = cartItems.isEmpty;
 
                     return LoadingStateManager(
@@ -107,40 +139,74 @@ class _CartScreenState extends State<CartScreen> {
                 color: Colors.white,
                 borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
               ),
-              child: Column(
-                children: [
-                  _priceRow(context, "Subtotal", "\$1250.00"),
-                  const SizedBox(height: 10),
-                  _priceRow(context, "Shopping", "\$40.90"),
-                  const SizedBox(height: 15),
-                  const Divider(),
-                  const SizedBox(height: 15),
-                  _priceRow(context, "Total Cost", "\$1690.99", isBold: true),
-                  const SizedBox(height: 25),
+              child: BlocBuilder<ProductCartCubit, ProductCartState>(
+                builder: (context, state) {
+                  final cartItems = state.maybeWhen(
+                    loaded: (items) => items,
+                    orElse: () => [],
+                  );
+                  final isEmpty = cartItems.isEmpty;
 
-                  /// Checkout Button
-                  SizedBox(
-                    width: double.infinity,
-                    height: 55,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.blue,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
+                  final totalPrice = context
+                      .read<ProductCartCubit>()
+                      .getTotalPrice();
+
+                  final shipping = isEmpty ? 0.0 : 40.90;
+                  final grandTotal = totalPrice + shipping;
+
+                  return Column(
+                    children: [
+                      if (!isEmpty) ...[
+                        _priceRow(
+                          context,
+                          "Subtotal",
+                          "\$${totalPrice.toStringAsFixed(2)}",
                         ),
-                        elevation: 0,
+                        const SizedBox(height: 10),
+                      ],
+                      _priceRow(
+                        context,
+                        "Shipping",
+                        "\$${shipping.toStringAsFixed(2)}",
                       ),
-                      onPressed: () {},
-                      child: const Text(
-                        "Checkout",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
+                      const SizedBox(height: 15),
+                      const Divider(),
+                      const SizedBox(height: 15),
+                      _priceRow(
+                        context,
+                        "Total Cost",
+                        "\$${grandTotal.toStringAsFixed(2)}",
+                        isBold: true,
+                      ),
+                      const SizedBox(height: 25),
+
+                      /// Checkout Button
+                      SizedBox(
+                        width: double.infinity,
+                        height: 55,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: isEmpty
+                                ? Colors.grey
+                                : AppColors.blue,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            elevation: 0,
+                          ),
+                          onPressed: isEmpty ? null : () {},
+                          child: const Text(
+                            "Checkout",
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                ],
+                    ],
+                  );
+                },
               ),
             ),
           ],
@@ -151,16 +217,17 @@ class _CartScreenState extends State<CartScreen> {
 
   /// ---------------- CART ITEM ----------------
   Widget _animatedCartCard(item) {
+    bool isPressed = false;
+
     return StatefulBuilder(
       builder: (context, setLocalState) {
-        bool isPressed = false;
-
         return GestureDetector(
           onTapDown: (_) => setLocalState(() => isPressed = true),
           onTapUp: (_) => setLocalState(() => isPressed = false),
           onTapCancel: () => setLocalState(() => isPressed = false),
           child: AnimatedScale(
-            scale: isPressed ? 0.98 : 1,
+            // ignore: dead_code
+            scale: isPressed ? 0.98 : 1.0,
             duration: const Duration(milliseconds: 150),
             child: Card(
               elevation: 6,
@@ -181,9 +248,9 @@ class _CartScreenState extends State<CartScreen> {
                       blurRadius: 10,
                       offset: const Offset(0, 6),
                     ),
-                  ]
+                  ],
                 ),
-                
+
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -195,35 +262,23 @@ class _CartScreenState extends State<CartScreen> {
                         height: 90,
                         width: 90,
                         fit: BoxFit.cover,
-                          loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress == null) {
-                      return child;
-                    } else {
-                      return Center(
-                        child: AnimationLoading.shimmerImagePlaceholder(
-                          height: double.infinity,
-                          width: double.infinity,
-                        ),
-                      );
-                    }
-                  },
-                       
+                        loadingBuilder: (context, child, loadingProgress) {
+                          if (loadingProgress == null) return child;
+                          return Container(
+                            height: 90,
+                            width: 90,
+                            color: Colors.grey.shade200,
+                            child: const Center(
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                valueColor: AlwaysStoppedAnimation(Colors.grey),
+                              ),
+                            ),
+                          );
+                        },
                       ),
                     ),
-    // loadingBuilder: (context, child, loadingProgress) {
-    //                       if (loadingProgress == null) return child;
-    //                       return Container(
-    //                         height: 90,
-    //                         width: 90,
-    //                         color: Colors.grey.shade200,
-    //                         child: const Center(
-    //                           child: CircularProgressIndicator(
-    //                             strokeWidth: 2,
-    //                             valueColor: AlwaysStoppedAnimation(Colors.grey),
-    //                           ),
-    //                         ),
-    //                       );
-    //                     },
+
                     const SizedBox(width: 16),
 
                     /// Details
@@ -267,7 +322,7 @@ class _CartScreenState extends State<CartScreen> {
                           /// Price
                           Text(
                             "\$${item.price.toStringAsFixed(2)}",
-                            style:  TextStyle(
+                            style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.w600,
                               color: AppColors.blue,
@@ -282,9 +337,12 @@ class _CartScreenState extends State<CartScreen> {
                               _animatedQtyButton(
                                 icon: Icons.remove,
                                 onTap: () {
-                                  context
-                                      .read<ProductCartCubit>()
-                                      .decrementQuantity(item.id);
+                                  if (item.id != null) {
+                                    context
+                                        .read<ProductCartCubit>()
+                                        .decrementQuantity(item.id!);
+                                    Logger().i("Decremented");
+                                  }
                                 },
                               ),
                               const SizedBox(width: 12),
@@ -300,18 +358,23 @@ class _CartScreenState extends State<CartScreen> {
                                 icon: Icons.add,
                                 isAdd: true,
                                 onTap: () {
-                                  context
-                                      .read<ProductCartCubit>()
-                                      .incrementQuantity(item.id);
+                                  if (item.id != null) {
+                                    context
+                                        .read<ProductCartCubit>()
+                                        .incrementQuantity(item.id!);
+                                  }
+                                  Logger().i("Incremented");
                                 },
                               ),
                               const Spacer(),
                               InkWell(
                                 borderRadius: BorderRadius.circular(30),
                                 onTap: () {
-                                  context.read<ProductCartCubit>().removeItem(
-                                    item.id,
-                                  );
+                                  if (item.id != null) {
+                                    context.read<ProductCartCubit>().removeItem(
+                                      item.id!,
+                                    );
+                                  }
                                 },
                                 child: Container(
                                   padding: const EdgeInsets.all(6),
@@ -347,13 +410,13 @@ class _CartScreenState extends State<CartScreen> {
     bool isAdd = false,
     required VoidCallback onTap,
   }) {
+    bool pressed = false;
+
     return StatefulBuilder(
       builder: (context, setLocalState) {
-        bool pressed = false;
-
         return GestureDetector(
           onTapDown: (_) => setLocalState(() => pressed = true),
-          onTapUp: (_) {
+          onTap: () {
             setLocalState(() => pressed = false);
             onTap();
           },
@@ -366,6 +429,7 @@ class _CartScreenState extends State<CartScreen> {
               color: isAdd ? Colors.blue : Colors.grey.shade200,
               shape: BoxShape.circle,
             ),
+            // ignore: dead_code
             transform: Matrix4.identity()..scale(pressed ? 0.85 : 1.0),
             child: Icon(
               icon,

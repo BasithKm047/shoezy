@@ -23,6 +23,7 @@ class CartRepository {
       _firestore.collection('users').doc(uid).collection('cart');
 
   Future<void> addToCart(CartModel cartData) async {
+    Logger().i("DEBUG: addToCart START");
     try {
       final q = await _cartCollection
           .where('productId', isEqualTo: cartData.productId)
@@ -30,6 +31,7 @@ class CartRepository {
           .where('size', isEqualTo: cartData.size)
           .limit(1)
           .get();
+      Logger().i("DEBUG: Query found ${q.docs.length} docs");
 
       if (q.docs.isNotEmpty) {
         final doc = q.docs.first;
@@ -37,24 +39,24 @@ class CartRepository {
             (doc.data() as Map<String, dynamic>)['quantity'] as int? ?? 0;
         await doc.reference.update({
           'quantity': existingQty + cartData.quantity,
-          'price': cartData.price,
-          'name': cartData.name,
-          'image': cartData.image,
         });
-        Logger().i("🔥 Repository addToCart called");
-        Logger().i("UID: $uid");
+        Logger().i("🔥 Repository addToCart: Updated existing item quantity");
+        Logger().i("UID: $uid, ProductId: ${cartData.productId}");
       } else {
         final newDoc = _cartCollection.doc();
-        final data = cartData.copyWith(productId: newDoc.id, userId: uid).toJson();
+        // Use copyWith to set the firestore doc id and the current uid
+        // Ensure productId from cartData is preserved
+        final data = cartData.copyWith(id: newDoc.id, userId: uid).toJson();
         await newDoc.set(data);
 
         Logger().i(
-          'Updated existing cart item: ${cartData.productId} with new quantity: ${cartData.quantity}',
+          "🔥 Repository addToCart: Created new cart item ${newDoc.id} for product ${cartData.productId}",
         );
-        Logger().i("🔥 Repository addToCart called");
         Logger().i("UID: $uid");
       }
+      Logger().i("DEBUG: addToCart END");
     } catch (e) {
+      Logger().e("Error in addToCart: $e");
       rethrow;
     }
   }
@@ -100,11 +102,15 @@ class CartRepository {
   }
 
   Future<void> updateQuantity(String cartItemId, int newQuantity) async {
-    final docRef = _cartCollection.doc(cartItemId);
-    await _firestore.runTransaction((tx) async {
-      final snapshot = await tx.get(docRef);
-      if (!snapshot.exists) throw StateError('Cart item not found');
-      tx.update(docRef, {'quantity': newQuantity});
-    });
+    try {
+      final docRef = _cartCollection.doc(cartItemId);
+      await docRef.update({'quantity': newQuantity});
+      Logger().i(
+        "🔥 Repository updateQuantity: Success (ID: $cartItemId, Qty: $newQuantity)",
+      );
+    } catch (e) {
+      Logger().e("Error in updateQuantity: $e");
+      rethrow;
+    }
   }
 }

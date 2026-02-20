@@ -75,30 +75,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               ),
               const SizedBox(height: 30),
               BlocConsumer<ProductCartCubit, ProductCartState>(
-                listener: (context, state) {
-                  state.maybeWhen(
-                    orElse: () {},
-                    success: () {
-                      CostumWidget.showCustomSnackbar(
-                        context: context,
-                        message: 'Added to cart!',
-                        duration: const Duration(seconds: 1),
-                      );
-                    },
-                    error: (message) {
-                      CostumWidget.showCustomSnackbar(
-                        context: context,
-                        message: 'Failed to add to cart: $message',
-                        duration: const Duration(seconds: 1),
-                      );
-                    }
-                  );
-                },
+                listener: (context, state) {},
 
                 builder: (context, state) {
                   return PriceAndAddToCartRow(
                     price: widget.product.price,
-
                     onAddToCart: () async {
                       final details = context.read<ProductDetailsCubit>().state;
                       if (details.selectedColor.isEmpty ||
@@ -129,10 +110,32 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         userId: userId ?? 'guest',
                       );
 
+                      if (context.mounted) {
+                          CostumWidget.showCustomSnackbar(
+                          context: context,
+                          message: 'Adding to cart...',
+                          duration: const Duration(seconds: 1),
+                        );
+                      }
+
+                      await Future.delayed(const Duration(seconds: 1));
+                      if (context.mounted) {
+                        Navigator.pop(context, true);
+                      }
+
                       await context.read<ProductCartCubit>().addItem(cartitem);
 
-                      await Future.delayed(const Duration(microseconds: 1200));
-                      Navigator.pop(context, true);
+                      if (context.mounted) {
+                        // ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                        CostumWidget.showCustomSnackbar(
+                          context: context,
+                          message: 'Added to cart!',
+                          duration: const Duration(seconds: 1),
+                          
+                      
+                        );
+
+                      }
                     },
                   );
                 },
