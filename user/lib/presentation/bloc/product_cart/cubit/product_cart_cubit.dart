@@ -36,6 +36,7 @@ class ProductCartCubit extends Cubit<ProductCartState> {
   Future<void> addItem(CartModel newItem) async {
     try {
       await _repo.addToCart(newItem);
+      emit(const ProductCartState.success()); // optional: show loading until stream updates
 
       Logger().i(
         'Updated existing cart item: $newItem with new quantity: ${newItem.quantity}',
@@ -81,13 +82,27 @@ class ProductCartCubit extends Cubit<ProductCartState> {
     }
   }
 
+  Future<List<CartModel>> getCartItems() async {
+    try {
+      final items = await _repo.getCartItems();
+
+      emit(ProductCartState.loaded(items));
+      Logger().i('Fetched cart items: ${items.length} items for user ${_repo.uid}');
+      return items;
+      
+    } catch (e) {
+      emit(ProductCartState.error(e.toString()));
+      return [];
+    }
+  }
+
   /// Convenience: increment quantity by 1
   Future<void> incrementQuantity(String cartItemId) async {
     final state = this.state;
     final item = state.maybeWhen(
       orElse: () => null,
       loaded: (items) => items.firstWhere(
-        (i) => i.id == cartItemId,
+        (i) => i.userId == cartItemId,
         orElse: () => throw Exception('Cart item not found'),
       ),
     );
@@ -105,7 +120,7 @@ class ProductCartCubit extends Cubit<ProductCartState> {
     final item = state.maybeWhen(
       orElse: () => null,
       loaded: (items) => items.firstWhere(
-        (i) => i.id == cartItemId,
+        (i) => i.userId == cartItemId,
         orElse: () => throw Exception('Cart item not found'),
       ),
     );

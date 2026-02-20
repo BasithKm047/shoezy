@@ -5,6 +5,7 @@ import 'package:shoezy/data/models/product/product_model.dart';
 import 'package:shoezy/presentation/bloc/auth_bloc/auth_bloc.dart';
 import 'package:shoezy/presentation/bloc/favourite/cubit/favourie_cubit.dart';
 import 'package:shoezy/presentation/bloc/product_cart/cubit/product_cart_cubit.dart';
+import 'package:shoezy/presentation/bloc/product_cart/cubit/product_cart_state.dart';
 import 'package:shoezy/presentation/bloc/product_details_cubit/cubit/product_details_cubit.dart';
 import 'package:shoezy/presentation/bloc/product_details_cubit/cubit/product_details_state.dart';
 import 'package:shoezy/presentation/widgets/costum_widget.dart';
@@ -73,43 +74,67 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 comment: 'Great product, very comfortable!',
               ),
               const SizedBox(height: 30),
-              PriceAndAddToCartRow(
-                price: widget.product.price,
-
-                onAddToCart: () async{
-                  final details = context.read<ProductDetailsCubit>().state;
-                  if (details.selectedColor.isEmpty ||
-                      details.selectedSize.isEmpty) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Please select color and size!'),
-                        duration: Duration(seconds: 2),
-                      ),
-                    );
-                    return;
-                  }
-                  final user = context
-                      .read<AuthBloc>()
-                      .authServices
-                      .currentUser;
-
-                  final userId = user?.uid;
-
-                  final cartitem = CartModel(
-                    productId: details.productId ?? '',
-                    image: details.selectedImage,
-                    name: details.product.productName,
-                    price: double.parse(details.product.price),
-                    color: details.selectedColor,
-                    size: details.selectedSize,
-                    quantity: 1,
-                    userId: userId ?? 'guest',
+              BlocConsumer<ProductCartCubit, ProductCartState>(
+                listener: (context, state) {
+                  state.maybeWhen(
+                    orElse: () {},
+                    success: () {
+                      CostumWidget.showCustomSnackbar(
+                        context: context,
+                        message: 'Added to cart!',
+                        duration: const Duration(seconds: 1),
+                      );
+                    },
+                    error: (message) {
+                      CostumWidget.showCustomSnackbar(
+                        context: context,
+                        message: 'Failed to add to cart: $message',
+                        duration: const Duration(seconds: 1),
+                      );
+                    }
                   );
+                },
 
-                await context.read<ProductCartCubit>().addItem(cartitem);
-                    CostumWidget.showCustomSnackbar(context: context, message: 'Added to Cart',
-                    duration: Duration(seconds: 1));
-                    Navigator.of(context).pop();
+                builder: (context, state) {
+                  return PriceAndAddToCartRow(
+                    price: widget.product.price,
+
+                    onAddToCart: () async {
+                      final details = context.read<ProductDetailsCubit>().state;
+                      if (details.selectedColor.isEmpty ||
+                          details.selectedSize.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Please select color and size!'),
+                            duration: Duration(seconds: 1),
+                          ),
+                        );
+                        return;
+                      }
+                      final user = context
+                          .read<AuthBloc>()
+                          .authServices
+                          .currentUser;
+
+                      final userId = user?.uid;
+
+                      final cartitem = CartModel(
+                        productId: details.productId ?? '',
+                        image: details.selectedImage,
+                        name: details.product.productName,
+                        price: double.parse(details.product.price),
+                        color: details.selectedColor,
+                        size: details.selectedSize,
+                        quantity: 1,
+                        userId: userId ?? 'guest',
+                      );
+
+                      await context.read<ProductCartCubit>().addItem(cartitem);
+
+                      await Future.delayed(const Duration(microseconds: 1200));
+                      Navigator.pop(context, true);
+                    },
+                  );
                 },
               ),
             ],
@@ -586,10 +611,7 @@ class PriceAndAddToCartRow extends StatelessWidget {
             onPressed: onAddToCart,
             style: ElevatedButton.styleFrom(
               backgroundColor: Theme.of(context).primaryColor,
-              padding: const EdgeInsets.symmetric(
-                horizontal: 40,
-                vertical: 15,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15),
               ),

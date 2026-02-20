@@ -45,7 +45,7 @@ class CartRepository {
         Logger().i("UID: $uid");
       } else {
         final newDoc = _cartCollection.doc();
-        final data = cartData.copyWith(id: newDoc.id, userId: uid).toJson();
+        final data = cartData.copyWith(productId: newDoc.id, userId: uid).toJson();
         await newDoc.set(data);
 
         Logger().i(
@@ -65,6 +65,7 @@ class CartRepository {
       final map = Map<String, dynamic>.from(doc.data() as Map);
       // ensure id is included
       map['id'] = doc.id;
+      Logger().i("🔥 Repository getCartItems called");
       return CartModel.fromJson(map);
     }).toList();
   }

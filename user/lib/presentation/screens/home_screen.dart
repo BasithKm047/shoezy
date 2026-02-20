@@ -387,7 +387,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   //     );
                   //   },
                   // ),
-                  SizedBox(height: 10),
                   // if (products.isNotEmpty)
                   //   BlocBuilder<ProductBloc, ProductState>(
                   //     builder: (context, state) {

@@ -7,6 +7,8 @@ part 'product_cart_state.freezed.dart';
 @freezed
 class ProductCartState with _$ProductCartState {
   const factory ProductCartState.initial() = _Initial;
+  const factory ProductCartState.success() = _Success;
+  
   const factory ProductCartState.loading() = _Loading;
   const factory ProductCartState.loaded(List<CartModel> cartItems) = _Loaded;
   const factory ProductCartState.error(String message) = _Error;
