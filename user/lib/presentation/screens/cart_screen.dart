@@ -3,8 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
 import 'package:shoezy/presentation/bloc/product_cart/cubit/product_cart_cubit.dart';
 import 'package:shoezy/presentation/bloc/product_cart/cubit/product_cart_state.dart';
+import 'package:shoezy/presentation/screens/payment_screen.dart';
 import 'package:shoezy/presentation/widgets/loading_state_manager.dart';
 import 'package:shoezy/utils/const/colors.dart';
+import 'package:shoezy/utils/const/navigation_styles.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -194,7 +196,9 @@ class _CartScreenState extends State<CartScreen> {
                             ),
                             elevation: 0,
                           ),
-                          onPressed: isEmpty ? null : () {},
+                          onPressed: isEmpty ? null : () {
+                           NavigationStyles.fade(context, PaymentScreen());
+                          },
                           child: const Text(
                             "Checkout",
                             style: TextStyle(
