@@ -15,6 +15,7 @@ import 'package:shoezy/data/repositories/category_repository.dart';
 import 'package:shoezy/data/repositories/product_repository.dart';
 import 'package:shoezy/presentation/bloc/product_cart/cubit/product_cart_cubit.dart';
 import 'package:shoezy/presentation/bloc/product_sort/cubit/product_sort_cubit.dart';
+import 'package:shoezy/presentation/bloc/payment_screen_bloc/payment_screen_cubit.dart';
 import 'package:shoezy/presentation/screens/splash_screen.dart';
 // import 'package:shoezy/utils/const/new.dart';
 import 'package:shoezy/utils/theme/theme.dart';
@@ -62,8 +63,9 @@ class MyApp extends StatelessWidget {
         BlocProvider<ProductSortCubit>(create: (_) => ProductSortCubit()),
         BlocProvider(
           create: (context) =>
-              ProductCartCubit(repository: CartRepository()),
+              ProductCartCubit(AuthServices(), repository: CartRepository()),
         ),
+        BlocProvider(create: (context) => PaymentScreenCubit(AuthServices())),
       ],
       child: MaterialApp(
         theme: Apptheme.lightTheme,

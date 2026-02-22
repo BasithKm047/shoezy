@@ -73,13 +73,14 @@ class _HorizontalTagSectionState extends State<HorizontalTagSection>
   Widget build(BuildContext context) {
     return GestureDetector(
       onHorizontalDragEnd: (details) {
-        if (details.primaryVelocity == null) return;
+        final velocity = details.primaryVelocity;
+        if (velocity == null) return;
 
-        if (details.primaryVelocity! < -50) {
+        if (velocity < -50) {
           widget.selectedGender.value = getNextGender(
             widget.selectedGender.value,
           );
-        } else if (details.primaryVelocity! > 50) {
+        } else if (velocity > 50) {
           widget.selectedGender.value = getPreviousGender(
             widget.selectedGender.value,
           );

@@ -60,12 +60,12 @@ class _CartScreenState extends State<CartScreen> {
                     );
 
                     final cartItems = state.maybeWhen(
-                      loaded: (items) => items,
+                      loaded: (items, user) => items,
                       orElse: () => [],
                     );
 
                     final error = state.maybeWhen(
-                      error: (msg) => msg,
+                      error: (msg, user) => msg,
                       orElse: () => null,
                     );
 
@@ -144,9 +144,16 @@ class _CartScreenState extends State<CartScreen> {
               child: BlocBuilder<ProductCartCubit, ProductCartState>(
                 builder: (context, state) {
                   final cartItems = state.maybeWhen(
-                    loaded: (items) => items,
+                    loaded: (items, user) => items,
                     orElse: () => [],
                   );
+
+                  final user = state.maybeWhen(
+                    userLoaded: (user) => user,
+                    loaded: (items, user) => user,
+                    orElse: () => null,
+                  );
+
                   final isEmpty = cartItems.isEmpty;
 
                   final totalPrice = context
@@ -188,7 +195,7 @@ class _CartScreenState extends State<CartScreen> {
                         height: 55,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: isEmpty
+                            backgroundColor: (isEmpty || user == null)
                                 ? Colors.grey
                                 : AppColors.blue,
                             shape: RoundedRectangleBorder(
@@ -196,9 +203,14 @@ class _CartScreenState extends State<CartScreen> {
                             ),
                             elevation: 0,
                           ),
-                          onPressed: isEmpty ? null : () {
-                           NavigationStyles.fade(context, PaymentScreen());
-                          },
+                          onPressed: (isEmpty || user == null)
+                              ? null
+                              : () {
+                                  NavigationStyles.fade(
+                                    context,
+                                    PaymentScreen(totalAmount: totalPrice),
+                                  );
+                                },
                           child: const Text(
                             "Checkout",
                             style: TextStyle(

@@ -91,8 +91,8 @@ class CarouselCard extends StatelessWidget {
               ),
               SizedBox(width: 20),
               SizedBox(
-                height: imageHeight ?? height! / 1.5,
-                width: width! / 1.9,
+                height: imageHeight ?? (height != null ? height! / 1.5 : 150.0),
+                width: width != null ? width! / 1.9 : 180.0,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(15),
                   child: AspectRatio(

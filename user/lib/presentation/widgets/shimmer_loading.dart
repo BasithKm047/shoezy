@@ -13,10 +13,14 @@ class AnimationLoading {
     return LayoutBuilder(
       builder: (context, constraints) {
         final screenWidth = constraints.maxWidth;
-        final crossAxisCount = screenWidth < 600 ? 2 : screenWidth < 900 ? 3 : 4;
+        final crossAxisCount = screenWidth < 600
+            ? 2
+            : screenWidth < 900
+            ? 3
+            : 4;
         final spacing = screenWidth < 600 ? 8.0 : 12.0;
         final itemHeight = screenWidth < 600 ? 250.0 : 280.0;
-        
+
         return GridView.builder(
           itemCount: itemCount,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -27,8 +31,8 @@ class AnimationLoading {
           ),
           itemBuilder: (context, index) {
             return Shimmer.fromColors(
-              baseColor: Colors.grey[300]!,
-              highlightColor: Colors.grey[100]!,
+              baseColor: Colors.grey.shade300,
+              highlightColor: Colors.grey.shade100,
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -48,13 +52,13 @@ class AnimationLoading {
       final carouselHeight = responsiveWidth < 600 ? 150.0 : 170.0;
       final itemHeight = responsiveWidth < 600 ? 100.0 : 110.0;
       final viewportFraction = responsiveWidth < 600 ? 0.85 : 0.9;
-      
+
       return CarouselSlider.builder(
         itemCount: 3,
         itemBuilder: (context, index, realIndex) {
           return Shimmer.fromColors(
-            baseColor: Colors.grey[300]!,
-            highlightColor: Colors.grey[100]!,
+            baseColor: Colors.grey.shade300,
+            highlightColor: Colors.grey.shade100,
             child: Container(
               width: responsiveWidth * viewportFraction,
               height: itemHeight,
@@ -79,8 +83,8 @@ class AnimationLoading {
     required double width,
   }) {
     return Shimmer.fromColors(
-      baseColor: Colors.grey[300]!,
-      highlightColor: Colors.grey[100]!,
+      baseColor: Colors.grey.shade300,
+      highlightColor: Colors.grey.shade100,
       child: Container(
         height: height,
         width: width,
@@ -94,8 +98,8 @@ class AnimationLoading {
 
   static Widget shimmerCircular({required double size}) {
     return Shimmer.fromColors(
-      baseColor: Colors.grey[300]!,
-      highlightColor: Colors.grey[100]!,
+      baseColor: Colors.grey.shade300,
+      highlightColor: Colors.grey.shade100,
       child: Container(
         width: size,
         height: size,
@@ -112,18 +116,19 @@ class AnimationLoading {
         final itemHeight = screenWidth < 600 ? 120.0 : 140.0;
         final containerHeight = screenWidth < 600 ? 250.0 : 300.0;
         final spacing = screenWidth < 600 ? 8.0 : 10.0;
-        
+
         return SizedBox(
           height: containerHeight,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: (itemCount / 3).ceil(), // group shimmer into columns of 3
+            itemCount: (itemCount / 3)
+                .ceil(), // group shimmer into columns of 3
             itemBuilder: (context, index) {
               return Padding(
                 padding: EdgeInsets.only(right: spacing),
                 child: Shimmer.fromColors(
-                  baseColor: Colors.grey[300]!,
-                  highlightColor: Colors.grey[100]!,
+                  baseColor: Colors.grey.shade300,
+                  highlightColor: Colors.grey.shade100,
                   child: Column(
                     children: List.generate(3, (i) {
                       return Container(
@@ -153,12 +158,12 @@ class AnimationLoading {
         final horizontalPadding = screenWidth < 600 ? 12.0 : 16.0;
         final height = screenWidth < 600 ? 200.0 : 250.0;
         final spacing = screenWidth < 600 ? 8.0 : 10.0;
-        
+
         return Padding(
           padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
           child: Shimmer.fromColors(
-            baseColor: Colors.grey[300]!,
-            highlightColor: Colors.grey[100]!,
+            baseColor: Colors.grey.shade300,
+            highlightColor: Colors.grey.shade100,
             child: SizedBox(
               height: height,
               child: Row(
@@ -208,20 +213,16 @@ class AnimationLoading {
   }
 
   static SpinKitFadingCircle spinnerAnimation() =>
-      SpinKitFadingCircle(color: AppColors.blue, size: 50.0,
-      );
+      SpinKitFadingCircle(color: AppColors.blue, size: 50.0);
 
-  static Widget isEmptyField({
-    String? message,
-    String? lottieAsset,
-  }) {
+  static Widget isEmptyField({String? message, String? lottieAsset}) {
     return LayoutBuilder(
       builder: (context, constraints) {
         final screenWidth = constraints.maxWidth;
         final lottieSize = screenWidth < 600 ? 150.0 : 200.0;
         final fontSize = screenWidth < 600 ? 14.0 : 16.0;
         final spacing = screenWidth < 600 ? 12.0 : 16.0;
-        
+
         return Center(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.1),
@@ -252,16 +253,14 @@ class AnimationLoading {
     );
   }
 
-  static Widget emptyBoxField({
-    String? message,
-  }) {
+  static Widget emptyBoxField({String? message}) {
     return LayoutBuilder(
       builder: (context, constraints) {
         final screenWidth = constraints.maxWidth;
         final lottieSize = screenWidth < 600 ? 150.0 : 200.0;
         final fontSize = screenWidth < 600 ? 14.0 : 16.0;
         final spacing = screenWidth < 600 ? 12.0 : 16.0;
-        
+
         return Center(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.1),
@@ -292,16 +291,14 @@ class AnimationLoading {
     );
   }
 
-  static Widget boxEmptyField({
-    String? message,
-  }) {
+  static Widget boxEmptyField({String? message}) {
     return LayoutBuilder(
       builder: (context, constraints) {
         final screenWidth = constraints.maxWidth;
         final lottieSize = screenWidth < 600 ? 150.0 : 200.0;
         final fontSize = screenWidth < 600 ? 14.0 : 16.0;
         final spacing = screenWidth < 600 ? 12.0 : 16.0;
-        
+
         return Center(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.1),

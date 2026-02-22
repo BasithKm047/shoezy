@@ -20,9 +20,7 @@ class CostumWidget {
     bool? isPrefix,
     Widget? widget,
     bool? isRounded,
-    bool ? isLoading,
-    
-    
+    bool? isLoading,
   }) {
     return Container(
       width: width,
@@ -39,7 +37,7 @@ class CostumWidget {
 
         style: ElevatedButton.styleFrom(
           elevation: 0,
-          side: isRounded?? true ? BorderSide.none: BorderSide(),
+          side: isRounded ?? true ? BorderSide.none : BorderSide(),
           backgroundColor: backgroundColor,
           foregroundColor: foregroundColor,
           shape: RoundedRectangleBorder(
@@ -49,7 +47,9 @@ class CostumWidget {
         ),
         child: isLoading ?? false
             ? loading
-            : (isPrefix ??false) ?  widget: Text(
+            : (isPrefix ?? false)
+            ? widget
+            : Text(
                 title,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: foregroundColor,
@@ -194,10 +194,8 @@ class CostumWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(top: 5, left: 8),
                   child: Text(
-                
-                    fieldState.errorText!,
+                    fieldState.errorText ?? '',
                     style: TextStyle(color: AppColors.red, fontSize: 14),
-                   
                   ),
                 ),
               ),
@@ -226,42 +224,49 @@ class CostumWidget {
       ),
     );
   }
-static showCustomSnackbar({
-  required BuildContext context,
-  required String message,
-  Color backgroundColor = Colors.blue,
-  Duration duration = const Duration(seconds: 2),
-  double elevation = 5,
-  double borderRadius = 10,
-  // Color borderColor = Colors.white,
-  Color textColor = Colors.white,
-  double fontSize = 16,
-  EdgeInsetsGeometry contentPadding = const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-  EdgeInsetsGeometry margin = const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-}) {
-  final snackbar = SnackBar(
-    behavior: SnackBarBehavior.floating, 
-    margin: margin, 
-    elevation: elevation,
-    backgroundColor: backgroundColor,
-    duration: duration,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(borderRadius),
-      // side: BorderSide(color: borderColor),
+
+  static showCustomSnackbar({
+    required BuildContext context,
+    required String message,
+    Color backgroundColor = Colors.blue,
+    Duration duration = const Duration(seconds: 2),
+    double elevation = 5,
+    double borderRadius = 10,
+    // Color borderColor = Colors.white,
+    Color textColor = Colors.white,
+    double fontSize = 16,
+    EdgeInsetsGeometry contentPadding = const EdgeInsets.symmetric(
+      horizontal: 16,
+      vertical: 12,
     ),
-    content: Padding(
-      padding: contentPadding,
-      child: Text(
-        message,
-        style: TextStyle(color: textColor, fontSize: fontSize),
+    EdgeInsetsGeometry margin = const EdgeInsets.symmetric(
+      horizontal: 16,
+      vertical: 10,
+    ),
+  }) {
+    final snackbar = SnackBar(
+      behavior: SnackBarBehavior.floating,
+      margin: margin,
+      elevation: elevation,
+      backgroundColor: backgroundColor,
+      duration: duration,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(borderRadius),
+        // side: BorderSide(color: borderColor),
       ),
-    ),
-  );
+      content: Padding(
+        padding: contentPadding,
+        child: Text(
+          message,
+          style: TextStyle(color: textColor, fontSize: fontSize),
+        ),
+      ),
+    );
 
-  ScaffoldMessenger.of(context).showSnackBar(snackbar);
-}
+    ScaffoldMessenger.of(context).showSnackBar(snackbar);
+  }
 
-static Future<void> showCustomAlertDialog({
+  static Future<void> showCustomAlertDialog({
     required BuildContext context,
     required String title,
     required String content,
@@ -274,9 +279,7 @@ static Future<void> showCustomAlertDialog({
       context: context,
       barrierDismissible: false, // Prevent closing by tapping outside
       builder: (context) => Dialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         elevation: 5,
         backgroundColor: Colors.white,
         child: Padding(
@@ -299,10 +302,7 @@ static Future<void> showCustomAlertDialog({
               Text(
                 content,
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey[700],
-                ),
+                style: TextStyle(fontSize: 16, color: Colors.grey[700]),
               ),
               const SizedBox(height: 20),
 
@@ -343,7 +343,10 @@ static Future<void> showCustomAlertDialog({
                       },
                       child: Text(
                         confirmButtonText,
-                        style: const TextStyle(fontSize: 15, color: Colors.white),
+                        style: const TextStyle(
+                          fontSize: 15,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),
@@ -355,6 +358,4 @@ static Future<void> showCustomAlertDialog({
       ),
     );
   }
-  
-
 }

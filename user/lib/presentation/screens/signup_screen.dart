@@ -6,7 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:shoezy/presentation/bloc/auth_bloc/auth_bloc.dart';
 
 import 'package:shoezy/data/models/user_model.dart';
-import 'package:shoezy/presentation/screens/home_screen.dart';
+import 'package:shoezy/presentation/screens/bottom_navigation.dart';
 import 'package:shoezy/presentation/screens/signin_screen.dart';
 import 'package:shoezy/presentation/widgets/costum_widget.dart';
 import 'package:shoezy/utils/const/colors.dart';
@@ -40,12 +40,14 @@ class SignupScreen extends StatelessWidget {
               backgroundColor: AppColors.red,
             );
           } else if (state is Authcreate) {
+            FocusScope.of(context).unfocus();
             CostumWidget.showCustomSnackbar(
               context: context,
               message: 'Account created Succesfull',
             );
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => HomeScreen()),
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => BottomNavigation()),
+              (route) => false,
             );
           }
           //   else if (state is GoogleSignInstate) {
@@ -257,7 +259,8 @@ class SignupScreen extends StatelessWidget {
     GlobalKey<FormState> formkey,
     BuildContext context,
   ) async {
-    if (formkey.currentState!.validate()) {
+    final formState = formkey.currentState;
+    if (formState != null && formState.validate()) {
       UserModel user = UserModel(
         userName: usernameController.text.trim(),
         phoneNumber: '',

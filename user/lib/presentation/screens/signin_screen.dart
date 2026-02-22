@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shoezy/presentation/bloc/auth_bloc/auth_bloc.dart';
-import 'package:shoezy/presentation/screens/home_screen.dart';
+import 'package:shoezy/presentation/screens/bottom_navigation.dart';
 import 'package:shoezy/presentation/screens/recovery_password_screen.dart';
 import 'package:shoezy/presentation/screens/signup_screen.dart';
 import 'package:shoezy/presentation/widgets/costum_widget.dart';
@@ -37,24 +37,26 @@ class SigninScreen extends StatelessWidget {
                 backgroundColor: AppColors.red,
               );
             } else if (state is AuthSuccess) {
+              FocusScope.of(context).unfocus();
               CostumWidget.showCustomSnackbar(
                 context: context,
                 message: 'Sign in succesfull',
               );
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) => HomeScreen()),
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => BottomNavigation()),
+                (route) => false,
               );
-            } 
-             else if (state is GoogleSignInstate) {
+            } else if (state is GoogleSignInstate) {
+              FocusScope.of(context).unfocus();
               CostumWidget.showCustomSnackbar(
                 context: context,
                 message: state.message,
               );
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) => HomeScreen()),
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => BottomNavigation()),
+                (route) => false,
               );
             }
-
           },
           builder: (context, state) {
             return SingleChildScrollView(
@@ -161,8 +163,8 @@ class SigninScreen extends StatelessWidget {
                     SizedBox(height: 30.0),
 
                     CostumWidget.costumElevatedButton(
-                      isLoading: state is AuthLoading ? true: false,
-                      loading: CircularProgressIndicator(
+                      isLoading: state is AuthLoading,
+                      loading: const CircularProgressIndicator(
                         color: AppColors.white,
                       ),
                       context: context,
@@ -172,9 +174,11 @@ class SigninScreen extends StatelessWidget {
                       borderRadius: 50,
                       width: screenWidth / 1.1,
                       backgroundColor: AppColors.blue,
-                      ontap: () {
-                        _signIn(formKey, context);
-                      },
+                      ontap: (state is AuthLoading || state is GooleLoading)
+                          ? null
+                          : () {
+                              _signIn(formKey, context);
+                            },
                     ),
 
                     SizedBox(height: 10),
@@ -187,11 +191,22 @@ class SigninScreen extends StatelessWidget {
                       borderRadius: 50,
                       backgroundColor: AppColors.white,
                       isPrefix: true,
-                      ontap: () {
-                        context.read<AuthBloc>().add(
-                          GoogleSignInRequested(false),
-                        );
-                      },
+                      isLoading: state is GooleLoading,
+                      loading: const SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: AppColors.blue,
+                        ),
+                      ),
+                      ontap: (state is AuthLoading || state is GooleLoading)
+                          ? null
+                          : () {
+                              context.read<AuthBloc>().add(
+                                GoogleSignInRequested(false),
+                              );
+                            },
                       widget: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -256,7 +271,8 @@ class SigninScreen extends StatelessWidget {
   }
 
   _signIn(GlobalKey<FormState> formKey, BuildContext context) {
-    if (formKey.currentState!.validate()) {
+    final formState = formKey.currentState;
+    if (formState != null && formState.validate()) {
       context.read<AuthBloc>().add(
         SignInEvent(
           email: emailController.text.trim(),

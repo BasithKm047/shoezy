@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shoezy/data/models/user_model.dart';
-import 'package:shoezy/utils/const/id.dart';
 
 class AuthServices {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
@@ -17,13 +16,15 @@ class AuthServices {
     required String password,
   }) async {
     try {
-      UserCredential userCred = await firebaseAuth
+      final UserCredential userCred = await firebaseAuth
           .createUserWithEmailAndPassword(
             email: user.email,
             password: password,
           );
 
-      UserModel newModel = user.copyWith(id: userCred.user!.uid);
+      final firebaseUser = userCred.user;
+      if (firebaseUser == null) throw 'User creation failed';
+      UserModel newModel = user.copyWith(id: firebaseUser.uid);
       await firestore.doc(newModel.id).set(newModel.toMap());
     } on FirebaseAuthException catch (e) {
       throw _firebaseErrorMessage(e);
@@ -66,19 +67,24 @@ class AuthServices {
   }
 
   Future<void> updateUsername({required String userName}) async {
-    await currentUser!.updateDisplayName(userName);
+    final user = currentUser;
+    if (user == null) throw 'User not authenticated';
+    await user.updateDisplayName(userName);
   }
 
   Future<void> deleteAccount({
     required String email,
     required String password,
   }) async {
+    final user = currentUser;
+    if (user == null) throw 'User not authenticated';
+
     AuthCredential credential = EmailAuthProvider.credential(
       email: email,
       password: password,
     );
-    await currentUser!.reauthenticateWithCredential(credential);
-    await currentUser!.delete();
+    await user.reauthenticateWithCredential(credential);
+    await user.delete();
     await firebaseAuth.signOut();
   }
 
@@ -110,20 +116,47 @@ class AuthServices {
         final firebaseUser = userCredential.user;
 
         if (firebaseUser != null) {
-          final existingUser = await firestore
+          final existingDocs = await firestore
               .where('email', isEqualTo: firebaseUser.email)
               .get();
 
-          bool isNewUser = existingUser.docs.isEmpty;
-          if (isNewUser) {
+          if (existingDocs.docs.isNotEmpty) {
+            final doc = existingDocs.docs.first;
+            final data = doc.data();
+
+            // If the document is NOT named after the UID, migrate it
+            if (doc.id != firebaseUser.uid) {
+              log(
+                "Migrating user data from old ID ${doc.id} to UID ${firebaseUser.uid}",
+              );
+
+              // 1. Create new document with UID
+              await firestore.doc(firebaseUser.uid).set(data);
+
+              // 2. Update the 'id' field inside the document to the UID
+              await firestore.doc(firebaseUser.uid).update({
+                'id': firebaseUser.uid,
+              });
+
+              // 3. Delete the old orphaned document
+              await firestore.doc(doc.id).delete();
+            } else {
+              // Even if already migrated, ensure 'id' field is synced
+              await firestore.doc(firebaseUser.uid).update({
+                'id': firebaseUser.uid,
+              });
+            }
+          } else {
+            // New User flow
             final newUser = UserModel(
-              id: createId(),
+              id: firebaseUser.uid,
               userName: firebaseUser.displayName ?? '',
               email: firebaseUser.email ?? '',
-              phoneNumber: firebaseUser.phoneNumber ?? '',
+              phoneNumber: '',
               imagePath: '',
               isAdmin: false,
               isBlocked: false,
+              address: '',
             );
 
             await firestore.doc(newUser.id).set(newUser.toMap());
@@ -153,5 +186,80 @@ class AuthServices {
       default:
         return e.message ?? 'Authentication failed';
     }
+  }
+
+  Future<UserModel> getUser() async {
+    try {
+      final user = currentUser;
+      if (user == null) throw 'User not authenticated';
+      final uid = user.uid;
+
+      // Force server fetch to ensure we get latest phone/address updates
+      var snapshot = await firestore
+          .doc(uid)
+          .get(const GetOptions(source: Source.server));
+
+      // FALLBACK MIGRATION: If no document exists by UID, look for it by email
+      if (!snapshot.exists) {
+        log("No document found for UID $uid, checking by email ${user.email}");
+        final emailMatch = await firestore
+            .where('email', isEqualTo: user.email)
+            .get(const GetOptions(source: Source.server));
+
+        if (emailMatch.docs.isNotEmpty) {
+          final oldDoc = emailMatch.docs.first;
+          if (oldDoc.id != uid) {
+            log("Migrating orphaned doc ${oldDoc.id} to UID $uid");
+            final data = oldDoc.data();
+            await firestore.doc(uid).set(data);
+            await firestore.doc(uid).update({'id': uid});
+            await firestore.doc(oldDoc.id).delete();
+
+            // Re-fetch the newly created document from server
+            snapshot = await firestore
+                .doc(uid)
+                .get(const GetOptions(source: Source.server));
+          }
+        }
+      }
+
+      final data = snapshot.data();
+      if (data == null) throw 'User data is empty';
+
+      return UserModel.fromMap(data);
+    } catch (e) {
+      log("AuthServices.getUser Error: $e");
+      rethrow;
+    }
+  }
+
+  Future<void> updatePhoneNumber({required String phoneNumber}) async {
+    final uid = currentUser?.uid;
+    if (uid == null) throw 'User not authenticated';
+    await firestore.doc(uid).update({'phoneNumber': phoneNumber});
+  }
+
+  Future<void> updateAddress({required String address}) async {
+    final uid = currentUser?.uid;
+    if (uid == null) throw 'User not authenticated';
+    await firestore.doc(uid).update({'address': address});
+  }
+
+  Future<void> updateProfile({
+    required String userName,
+    required String phoneNumber,
+    required String imagePath,
+    required String address,
+  }) async {
+    final user = currentUser;
+    if (user == null) throw 'User not authenticated';
+
+    await user.updateDisplayName(userName);
+    await firestore.doc(user.uid).update({
+      'userName': userName,
+      'phoneNumber': phoneNumber,
+      'imagePath': imagePath,
+      'address': address,
+    });
   }
 }
