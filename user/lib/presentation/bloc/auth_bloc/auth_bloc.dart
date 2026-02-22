@@ -70,10 +70,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async {
     emit(AuthLoading());
     try {
-      await authServices.deleteAccount(
-        email: event.user.email,
-        password: event.password,
-      );
+      await authServices.deleteAccount(event.password);
       emit(AuthSuccess());
     } catch (e) {
       emit(AuthFailure(e.toString()));
@@ -87,7 +84,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Logger().i('Google signin called');
     emit(GooleLoading());
     try {
-      await authServices.signInWithGoogle(isNewUser: event.isNewUser);
+      await authServices.signInWithGoogle();
 
       emit(GoogleSignInstate(event.isNewUser ?'Account Created Succesfull':'SignIn Sucessfull'));
       Logger().i('Google signin Complete');
@@ -119,7 +116,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(AuthLoading());
 
     try {
-      await authServices.resetPassword(email: event.email);
+      await authServices.resetPassword(event.email);
       emit(RestPasswordState());
     } catch (e) {
       emit(AuthFailure(e.toString()));

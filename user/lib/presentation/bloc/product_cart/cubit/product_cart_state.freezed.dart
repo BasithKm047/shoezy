@@ -55,13 +55,12 @@ extension ProductCartStatePatterns on ProductCartState {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Initial value)?  initial,TResult Function( _Success value)?  success,TResult Function( _UserLoaded value)?  userLoaded,TResult Function( _Loading value)?  loading,TResult Function( _Loaded value)?  loaded,TResult Function( _Error value)?  error,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Initial value)?  initial,TResult Function( _Success value)?  success,TResult Function( _Loading value)?  loading,TResult Function( _Loaded value)?  loaded,TResult Function( _Error value)?  error,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
 return initial(_that);case _Success() when success != null:
-return success(_that);case _UserLoaded() when userLoaded != null:
-return userLoaded(_that);case _Loading() when loading != null:
+return success(_that);case _Loading() when loading != null:
 return loading(_that);case _Loaded() when loaded != null:
 return loaded(_that);case _Error() when error != null:
 return error(_that);case _:
@@ -82,13 +81,12 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Initial value)  initial,required TResult Function( _Success value)  success,required TResult Function( _UserLoaded value)  userLoaded,required TResult Function( _Loading value)  loading,required TResult Function( _Loaded value)  loaded,required TResult Function( _Error value)  error,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Initial value)  initial,required TResult Function( _Success value)  success,required TResult Function( _Loading value)  loading,required TResult Function( _Loaded value)  loaded,required TResult Function( _Error value)  error,}){
 final _that = this;
 switch (_that) {
 case _Initial():
 return initial(_that);case _Success():
-return success(_that);case _UserLoaded():
-return userLoaded(_that);case _Loading():
+return success(_that);case _Loading():
 return loading(_that);case _Loaded():
 return loaded(_that);case _Error():
 return error(_that);case _:
@@ -108,13 +106,12 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Initial value)?  initial,TResult? Function( _Success value)?  success,TResult? Function( _UserLoaded value)?  userLoaded,TResult? Function( _Loading value)?  loading,TResult? Function( _Loaded value)?  loaded,TResult? Function( _Error value)?  error,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Initial value)?  initial,TResult? Function( _Success value)?  success,TResult? Function( _Loading value)?  loading,TResult? Function( _Loaded value)?  loaded,TResult? Function( _Error value)?  error,}){
 final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
 return initial(_that);case _Success() when success != null:
-return success(_that);case _UserLoaded() when userLoaded != null:
-return userLoaded(_that);case _Loading() when loading != null:
+return success(_that);case _Loading() when loading != null:
 return loading(_that);case _Loaded() when loaded != null:
 return loaded(_that);case _Error() when error != null:
 return error(_that);case _:
@@ -134,14 +131,13 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  success,TResult Function( UserModel? user)?  userLoaded,TResult Function()?  loading,TResult Function( List<CartModel> cartItems,  UserModel? user)?  loaded,TResult Function( String message,  UserModel? user)?  error,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  success,TResult Function()?  loading,TResult Function( List<CartModel> cartItems)?  loaded,TResult Function( String message,  UserModel? user)?  error,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
 return initial();case _Success() when success != null:
-return success();case _UserLoaded() when userLoaded != null:
-return userLoaded(_that.user);case _Loading() when loading != null:
+return success();case _Loading() when loading != null:
 return loading();case _Loaded() when loaded != null:
-return loaded(_that.cartItems,_that.user);case _Error() when error != null:
+return loaded(_that.cartItems);case _Error() when error != null:
 return error(_that.message,_that.user);case _:
   return orElse();
 
@@ -160,14 +156,13 @@ return error(_that.message,_that.user);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  success,required TResult Function( UserModel? user)  userLoaded,required TResult Function()  loading,required TResult Function( List<CartModel> cartItems,  UserModel? user)  loaded,required TResult Function( String message,  UserModel? user)  error,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  success,required TResult Function()  loading,required TResult Function( List<CartModel> cartItems)  loaded,required TResult Function( String message,  UserModel? user)  error,}) {final _that = this;
 switch (_that) {
 case _Initial():
 return initial();case _Success():
-return success();case _UserLoaded():
-return userLoaded(_that.user);case _Loading():
+return success();case _Loading():
 return loading();case _Loaded():
-return loaded(_that.cartItems,_that.user);case _Error():
+return loaded(_that.cartItems);case _Error():
 return error(_that.message,_that.user);case _:
   throw StateError('Unexpected subclass');
 
@@ -185,14 +180,13 @@ return error(_that.message,_that.user);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  success,TResult? Function( UserModel? user)?  userLoaded,TResult? Function()?  loading,TResult? Function( List<CartModel> cartItems,  UserModel? user)?  loaded,TResult? Function( String message,  UserModel? user)?  error,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  success,TResult? Function()?  loading,TResult? Function( List<CartModel> cartItems)?  loaded,TResult? Function( String message,  UserModel? user)?  error,}) {final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
 return initial();case _Success() when success != null:
-return success();case _UserLoaded() when userLoaded != null:
-return userLoaded(_that.user);case _Loading() when loading != null:
+return success();case _Loading() when loading != null:
 return loading();case _Loaded() when loaded != null:
-return loaded(_that.cartItems,_that.user);case _Error() when error != null:
+return loaded(_that.cartItems);case _Error() when error != null:
 return error(_that.message,_that.user);case _:
   return null;
 
@@ -268,72 +262,6 @@ String toString() {
 /// @nodoc
 
 
-class _UserLoaded implements ProductCartState {
-  const _UserLoaded(this.user);
-  
-
- final  UserModel? user;
-
-/// Create a copy of ProductCartState
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-_$UserLoadedCopyWith<_UserLoaded> get copyWith => __$UserLoadedCopyWithImpl<_UserLoaded>(this, _$identity);
-
-
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserLoaded&&(identical(other.user, user) || other.user == user));
-}
-
-
-@override
-int get hashCode => Object.hash(runtimeType,user);
-
-@override
-String toString() {
-  return 'ProductCartState.userLoaded(user: $user)';
-}
-
-
-}
-
-/// @nodoc
-abstract mixin class _$UserLoadedCopyWith<$Res> implements $ProductCartStateCopyWith<$Res> {
-  factory _$UserLoadedCopyWith(_UserLoaded value, $Res Function(_UserLoaded) _then) = __$UserLoadedCopyWithImpl;
-@useResult
-$Res call({
- UserModel? user
-});
-
-
-
-
-}
-/// @nodoc
-class __$UserLoadedCopyWithImpl<$Res>
-    implements _$UserLoadedCopyWith<$Res> {
-  __$UserLoadedCopyWithImpl(this._self, this._then);
-
-  final _UserLoaded _self;
-  final $Res Function(_UserLoaded) _then;
-
-/// Create a copy of ProductCartState
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? user = freezed,}) {
-  return _then(_UserLoaded(
-freezed == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
-as UserModel?,
-  ));
-}
-
-
-}
-
-/// @nodoc
-
-
 class _Loading implements ProductCartState {
   const _Loading();
   
@@ -367,7 +295,7 @@ String toString() {
 
 
 class _Loaded implements ProductCartState {
-  const _Loaded(final  List<CartModel> cartItems, {this.user}): _cartItems = cartItems;
+  const _Loaded(final  List<CartModel> cartItems): _cartItems = cartItems;
   
 
  final  List<CartModel> _cartItems;
@@ -377,7 +305,6 @@ class _Loaded implements ProductCartState {
   return EqualUnmodifiableListView(_cartItems);
 }
 
- final  UserModel? user;
 
 /// Create a copy of ProductCartState
 /// with the given fields replaced by the non-null parameter values.
@@ -389,16 +316,16 @@ _$LoadedCopyWith<_Loaded> get copyWith => __$LoadedCopyWithImpl<_Loaded>(this, _
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Loaded&&const DeepCollectionEquality().equals(other._cartItems, _cartItems)&&(identical(other.user, user) || other.user == user));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Loaded&&const DeepCollectionEquality().equals(other._cartItems, _cartItems));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_cartItems),user);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_cartItems));
 
 @override
 String toString() {
-  return 'ProductCartState.loaded(cartItems: $cartItems, user: $user)';
+  return 'ProductCartState.loaded(cartItems: $cartItems)';
 }
 
 
@@ -409,7 +336,7 @@ abstract mixin class _$LoadedCopyWith<$Res> implements $ProductCartStateCopyWith
   factory _$LoadedCopyWith(_Loaded value, $Res Function(_Loaded) _then) = __$LoadedCopyWithImpl;
 @useResult
 $Res call({
- List<CartModel> cartItems, UserModel? user
+ List<CartModel> cartItems
 });
 
 
@@ -426,11 +353,10 @@ class __$LoadedCopyWithImpl<$Res>
 
 /// Create a copy of ProductCartState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? cartItems = null,Object? user = freezed,}) {
+@pragma('vm:prefer-inline') $Res call({Object? cartItems = null,}) {
   return _then(_Loaded(
 null == cartItems ? _self._cartItems : cartItems // ignore: cast_nullable_to_non_nullable
-as List<CartModel>,user: freezed == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
-as UserModel?,
+as List<CartModel>,
   ));
 }
 

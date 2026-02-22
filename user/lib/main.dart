@@ -63,7 +63,7 @@ class MyApp extends StatelessWidget {
         BlocProvider<ProductSortCubit>(create: (_) => ProductSortCubit()),
         BlocProvider(
           create: (context) =>
-              ProductCartCubit(AuthServices(), repository: CartRepository()),
+              ProductCartCubit(repository: CartRepository()),
         ),
         BlocProvider(create: (context) => PaymentScreenCubit(AuthServices())),
       ],

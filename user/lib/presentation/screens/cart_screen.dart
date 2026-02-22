@@ -60,7 +60,7 @@ class _CartScreenState extends State<CartScreen> {
                     );
 
                     final cartItems = state.maybeWhen(
-                      loaded: (items, user) => items,
+                      loaded: (items) => items,
                       orElse: () => [],
                     );
 
@@ -144,14 +144,8 @@ class _CartScreenState extends State<CartScreen> {
               child: BlocBuilder<ProductCartCubit, ProductCartState>(
                 builder: (context, state) {
                   final cartItems = state.maybeWhen(
-                    loaded: (items, user) => items,
+                    loaded: (items) => items,
                     orElse: () => [],
-                  );
-
-                  final user = state.maybeWhen(
-                    userLoaded: (user) => user,
-                    loaded: (items, user) => user,
-                    orElse: () => null,
                   );
 
                   final isEmpty = cartItems.isEmpty;
@@ -195,7 +189,7 @@ class _CartScreenState extends State<CartScreen> {
                         height: 55,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: (isEmpty || user == null)
+                            backgroundColor: (isEmpty)
                                 ? Colors.grey
                                 : AppColors.blue,
                             shape: RoundedRectangleBorder(
@@ -203,7 +197,7 @@ class _CartScreenState extends State<CartScreen> {
                             ),
                             elevation: 0,
                           ),
-                          onPressed: (isEmpty || user == null)
+                          onPressed: (isEmpty)
                               ? null
                               : () {
                                   NavigationStyles.fade(

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shoezy/presentation/bloc/product_cart/cubit/product_cart_cubit.dart';
-import 'package:shoezy/presentation/bloc/product_cart/cubit/product_cart_state.dart';
+import 'package:shoezy/data/models/user_model.dart';
 import 'package:shoezy/presentation/widgets/shimmer_loading.dart';
 import 'package:shoezy/presentation/bloc/payment_screen_bloc/payment_screen_cubit.dart';
 import 'package:shoezy/presentation/bloc/payment_screen_bloc/payment_screen_state.dart';
@@ -22,13 +21,15 @@ class _PaymentScreenState extends State<PaymentScreen> {
     false,
   );
   late TextEditingController _phoneController;
-
+  UserModel? user;
   @override
   void initState() {
     super.initState();
     _phoneController = TextEditingController();
-    // Proactively fetch latest user info
-    context.read<ProductCartCubit>().getUser();
+    // Proactively fetch latest user info using PaymentScreenCubit
+    Future.microtask(() {
+      context.read<PaymentScreenCubit>().getUser();
+    });
   }
 
   @override
@@ -46,10 +47,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
       body: BlocListener<PaymentScreenCubit, PaymentScreenState>(
         listener: (context, state) {
           state.whenOrNull(
-            success: () {
-              // Refresh original source of truth
-              context.read<ProductCartCubit>().getUser();
-            },
             error: (message) {
               CostumWidget.showCustomSnackbar(
                 context: context,
@@ -66,106 +63,116 @@ class _PaymentScreenState extends State<PaymentScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 20),
-                BlocBuilder<ProductCartCubit, ProductCartState>(
+                BlocBuilder<PaymentScreenCubit, PaymentScreenState>(
                   builder: (context, state) {
-                    final isLoadingUser = state.maybeWhen(
-                      loading: () => true,
-                      userLoaded: (user) => user == null,
-                      orElse: () => false,
-                    );
-
-                    final user = state.maybeWhen(
-                      loaded: (items, user) => user,
-                      userLoaded: (user) => user,
-                      error: (message, user) => user,
-                      orElse: () => null,
-                    );
-
-                    final currentEmail = user?.email ?? "";
-                    final currentPhone = user?.phoneNumber ?? "";
-
-                    final displayPhoneText =
-                        (currentPhone == 'PhoneNumber' || currentPhone.isEmpty)
-                        ? "Add phone number"
-                        : currentPhone;
-
-                    if (isLoadingUser && user == null) {
-                      return _buildSectionCard(
+                    return state.when(
+                      initial: () => const Center(
+                        child: CircularProgressIndicator(
+                          color: AppColors.blue,
+                          strokeWidth: 2,
+                        ),
+                      ),
+                      loading: () => _buildSectionCard(
                         child: AnimationLoading.shimmerImagePlaceholder(
-                          height:
-                              120, // Match Contact Information height aproximately
+                          height: 120,
                           width: double.infinity,
                         ),
-                      );
-                    }
-
-                    return _buildSectionCard(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          CostumWidget.labelText(
-                            context,
-                            "Contact Information",
-                            fontSize: 16,
-                          ),
-                          const SizedBox(height: 16),
-                          _buildContactTile(
-                            icon: Icons.email_outlined,
-                            title: currentEmail,
-                            subtitle: "Email",
-                          ),
-                          const SizedBox(height: 16),
-                          ValueListenableBuilder<bool>(
-                            valueListenable: _isEditingPhoneNotifier,
-                            builder: (context, isEditing, _) {
-                              return _buildContactTile(
-                                icon: Icons.phone_outlined,
-                                title: displayPhoneText,
-                                subtitle: "Phone",
-                                isEditing: isEditing,
-                                controller: _phoneController,
-                                onEdit: () {
-                                  _phoneController.text =
-                                      (currentPhone == "PhoneNumber" ||
-                                          currentPhone.isEmpty)
-                                      ? ""
-                                      : currentPhone;
-                                  _isEditingPhoneNotifier.value = true;
-                                },
-                                onSave: () {
-                                  final newNumber = _phoneController.text
-                                      .trim();
-                                  if (newNumber.isNotEmpty &&
-                                      newNumber.length == 10) {
-                                    context
-                                        .read<PaymentScreenCubit>()
-                                        .updatePhoneNumber(newNumber);
-                                    _isEditingPhoneNotifier.value = false;
-                                    CostumWidget.showCustomSnackbar(
-                                      context: context,
-                                      message: 'Phone number updated',
-                                    );
-                                  } else {
-                                    CostumWidget.showCustomSnackbar(
-                                      context: context,
-                                      message:
-                                          'Please enter a valid phone number',
-                                    );
-                                  }
-                                },
-                                onCancel: () {
-                                  _isEditingPhoneNotifier.value = false;
-                                  _phoneController.text =
-                                      (currentPhone == "PhoneNumber" ||
-                                          currentPhone.isEmpty)
-                                      ? ""
-                                      : currentPhone;
-                                },
-                              );
-                            },
-                          ),
-                        ],
                       ),
+                      loaded: (user) {
+                        final currentEmail = user.email;
+                        final currentPhone = user.phoneNumber;
+                        print(state.runtimeType);
+                        return _buildSectionCard(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CostumWidget.labelText(
+                                context,
+                                "Contact Information",
+                                fontSize: 16,
+                              ),
+                              const SizedBox(height: 16),
+                              _buildContactTile(
+                                icon: Icons.email_outlined,
+                                title: currentEmail,
+                                subtitle: "Email",
+                              ),
+                              const SizedBox(height: 16),
+                              ValueListenableBuilder<bool>(
+                                valueListenable: _isEditingPhoneNotifier,
+                                builder: (context, isEditing, _) {
+                                  final isSaving = state.maybeWhen(
+                                    loading: () => true,
+                                    orElse: () => false,
+                                  );
+                                  return _buildContactTile(
+                                    icon: Icons.phone_outlined,
+                                    keyboardType: TextInputType.phone,
+                                    title: currentPhone,
+                                    subtitle: "Phone",
+                                    isEditing: isEditing,
+                                    isLoading: isSaving,
+                                    controller: _phoneController,
+                                    onEdit: () {
+                                      _phoneController.text =
+                                          (currentPhone == "PhoneNumber" ||
+                                              currentPhone.isEmpty)
+                                          ? ""
+                                          : currentPhone;
+                                      _isEditingPhoneNotifier.value = true;
+                                    },
+                                    onSave: () {
+                                      final newNumber = _phoneController.text
+                                          .trim();
+                                      if (newNumber.isNotEmpty) {
+                                        context
+                                            .read<PaymentScreenCubit>()
+                                            .updatePhoneNumber(newNumber);
+                                      } else {
+                                        CostumWidget.showCustomSnackbar(
+                                          context: context,
+                                          message:
+                                              'Please enter a phone number',
+                                        );
+                                      }
+                                    },
+                                    onCancel: () {
+                                      _isEditingPhoneNotifier.value = false;
+                                      _phoneController.text =
+                                          (currentPhone == "PhoneNumber" ||
+                                              currentPhone.isEmpty)
+                                          ? ""
+                                          : currentPhone;
+                                    },
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                      error: (message) {
+                        return _buildSectionCard(
+                          child: Column(
+                            children: [
+                              const Icon(
+                                Icons.error_outline,
+                                color: AppColors.red,
+                                size: 40,
+                              ),
+                              const SizedBox(height: 12),
+                              Text(message),
+                              const SizedBox(height: 16),
+                              ElevatedButton(
+                                onPressed: () {
+                                  context.read<PaymentScreenCubit>().getUser();
+                                },
+                                child: const Text("Retry"),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
                     );
                   },
                 ),
@@ -274,6 +281,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
     required String title,
     required String subtitle,
     bool isEditing = false,
+    bool isLoading = false,
+    TextInputType? keyboardType,
     TextEditingController? controller,
     VoidCallback? onEdit,
     VoidCallback? onSave,
@@ -294,14 +303,15 @@ class _PaymentScreenState extends State<PaymentScreen> {
           child: isEditing
               ? TextField(
                   controller: controller,
-                  keyboardType: TextInputType.phone,
+                  keyboardType: keyboardType,
                   autofocus: true,
                   style: const TextStyle(fontSize: 14),
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     isDense: true,
-                    contentPadding: EdgeInsets.symmetric(vertical: 8),
+                    contentPadding: const EdgeInsets.symmetric(vertical: 8),
                     border: InputBorder.none,
-                    hintText: "Enter phone number",
+                    hintText: "Enter $subtitle",
+                    hintStyle: const TextStyle(color: AppColors.grey),
                   ),
                 )
               : Column(
@@ -326,16 +336,30 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   ],
                 ),
         ),
-        if (isEditing) ...[
-          IconButton(
-            onPressed: onCancel,
-            icon: const Icon(Icons.close, color: Colors.red, size: 20),
-          ),
-          IconButton(
-            onPressed: onSave,
-            icon: const Icon(Icons.check, color: Colors.green, size: 20),
-          ),
-        ] else if (onEdit != null)
+        if (isEditing)
+          if (isLoading)
+            const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: SizedBox(
+                width: 20,
+                height: 20,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: AppColors.blue,
+                ),
+              ),
+            )
+          else ...[
+            IconButton(
+              onPressed: onCancel,
+              icon: const Icon(Icons.close, color: Colors.red, size: 20),
+            ),
+            IconButton(
+              onPressed: onSave,
+              icon: const Icon(Icons.check, color: Colors.green, size: 20),
+            ),
+          ]
+        else if (onEdit != null)
           TextButton.icon(
             style: TextButton.styleFrom(
               padding: const EdgeInsets.symmetric(horizontal: 8),
