@@ -128,7 +128,11 @@ class AuthServices {
       rethrow;
     }
   }
-
+  
+  // ==========================
+  // SIGN OUT
+  // ==========================
+   
   Future<void> signOut() async {
     await _auth.signOut();
   }
@@ -180,6 +184,23 @@ class AuthServices {
   // 🔥 Step 3: Update Firestore
   await _users.doc(user.uid).update({'email': newEmail});
 }
+
+// ==========================
+// Update Address
+// ==========================
+
+  Future<void> updateAddress(String address) async {
+    final uid = currentUser?.uid;
+    if (uid == null) throw Exception("User not authenticated");
+
+    await _users.doc(uid).update({'address': address});
+  }
+ 
+
+
+// ==========================
+// DELETE ACCOUNT
+// ==========================
 
   Future<void> deleteAccount(String password) async {
     final user = currentUser;

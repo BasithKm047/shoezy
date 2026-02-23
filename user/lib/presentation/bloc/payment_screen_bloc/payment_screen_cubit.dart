@@ -13,35 +13,59 @@ class PaymentScreenCubit extends Cubit<PaymentScreenState> {
     : super(const PaymentScreenState.initial());
 
   Future<void> updatePhoneNumber(String phoneNumber) async {
-    emit(PaymentScreenState.loading());
-    _logger.i("Attempting to update phone number: $phoneNumber");
-    try {
-      await _authServices.updatePhoneNumber(phoneNumber);
-      _logger.i("Phone number updated successfully");
-      // Fetch latest after update
-      _currentUser = await _authServices.getUser();
-      emit(PaymentScreenState.loaded(_currentUser!));
-    } catch (e) {
-      _logger.e("Error updating phone number: $e");
-      emit(PaymentScreenState.error(e.toString()));
-    }
+    if (_currentUser == null) return;
+
+    final cleaned=phoneNumber.trim();
+
+     final isValid =
+      RegExp(r'^[0-9]{10}$').hasMatch(cleaned);
+
+  
+  if (!isValid) {
+    emit(
+      PaymentScreenState.loaded(
+        _currentUser!,
+        isSavingPhone: false,
+        validationMessage:
+            "Phone number must contain exactly 10 digits",
+      ),
+    );
+    return;
   }
 
-  // Future<void> updateEmail(String email,String password) async {
-  //   _logger.i("Attempting to update email: $email");
-  //   emit(PaymentScreenState.loading());
-  //   try {
-  //     await _authServices.updateEmail(newEmail: email, password: password);
-  //     _logger.i("Email updated successfully");
-  //     // Fetch latest after update
-  //     _currentUser = await _authServices.getUser();
-  //     emit(PaymentScreenState.loaded(_currentUser!));
-  //   } catch (e) {
-  //     _logger.e("Error updating email: $e");
-  //     emit(PaymentScreenState.error(e.toString(),));
-  //   }
-  // }
+        final updatedUser = _currentUser!.copyWith(phoneNumber: cleaned);
+        _currentUser = updatedUser;
 
+        emit(
+          PaymentScreenState.loaded(
+            updatedUser,
+            isSavingPhone: true,
+         
+          ),
+        );
+
+        try {
+          await _authServices.updatePhoneNumber(cleaned);
+
+          emit(PaymentScreenState.loaded(updatedUser, isSavingPhone: false));
+        } catch (e) {
+          emit(PaymentScreenState.error(e.toString()));
+        }
+      }
+    void startEditing() {
+    state.maybeWhen(
+      loaded: (user, _, validationMessage) {
+        emit(
+          PaymentScreenState.loaded(
+            user,
+            isSavingPhone: false,
+            validationMessage: validationMessage,
+          ),
+        );
+      },
+      orElse: () {},
+    );
+  }
   Future<void> getUser() async {
     _logger.i("Fetching user data");
     emit(PaymentScreenState.loading());
@@ -53,6 +77,13 @@ class PaymentScreenCubit extends Cubit<PaymentScreenState> {
       emit(PaymentScreenState.error(e.toString()));
       _logger.e("Error fetching user data: $e");
     }
-   
   }
-}
+  
+  }
+
+  
+
+
+
+
+

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:logger/logger.dart';
 import 'package:shoezy/data/models/user_model.dart';
 import 'package:shoezy/presentation/widgets/shimmer_loading.dart';
 import 'package:shoezy/presentation/bloc/payment_screen_bloc/payment_screen_cubit.dart';
@@ -54,6 +56,16 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 backgroundColor: AppColors.red,
               );
             },
+            loaded: (user, isSavingPhone, validationMessage) {
+              if (validationMessage != null) {
+                CostumWidget.showCustomSnackbar(
+                  context: context,
+                  message: validationMessage,
+                  backgroundColor: AppColors.red,
+                );
+              }
+            
+            },
           );
         },
         child: SingleChildScrollView(
@@ -78,10 +90,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
                           width: double.infinity,
                         ),
                       ),
-                      loaded: (user) {
+                      loaded: (user, isSavingPhone, _) {
                         final currentEmail = user.email;
                         final currentPhone = user.phoneNumber;
-                        print(state.runtimeType);
+                        // print(state.runtimeType);
                         return _buildSectionCard(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -101,49 +113,46 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               ValueListenableBuilder<bool>(
                                 valueListenable: _isEditingPhoneNotifier,
                                 builder: (context, isEditing, _) {
-                                  final isSaving = state.maybeWhen(
-                                    loading: () => true,
-                                    orElse: () => false,
-                                  );
+                                  Logger().i("isEditing: $isEditing");
                                   return _buildContactTile(
                                     icon: Icons.phone_outlined,
                                     keyboardType: TextInputType.phone,
-                                    title: currentPhone,
+                                    title:
+                                        currentPhone.isEmpty ||
+                                            currentPhone == "PhoneNumber"
+                                        ? "Add phone number"
+                                        : currentPhone,
                                     subtitle: "Phone",
                                     isEditing: isEditing,
-                                    isLoading: isSaving,
+                                    isLoading: isSavingPhone,
                                     controller: _phoneController,
                                     onEdit: () {
-                                      _phoneController.text =
-                                          (currentPhone == "PhoneNumber" ||
-                                              currentPhone.isEmpty)
-                                          ? ""
-                                          : currentPhone;
+
+                                      _phoneController.text = currentPhone;
+
+                                      context
+                                          .read<PaymentScreenCubit>()
+                                          .startEditing();
+
                                       _isEditingPhoneNotifier.value = true;
                                     },
-                                    onSave: () {
-                                      final newNumber = _phoneController.text
-                                          .trim();
-                                      if (newNumber.isNotEmpty) {
-                                        context
-                                            .read<PaymentScreenCubit>()
-                                            .updatePhoneNumber(newNumber);
-                                      } else {
-                                        CostumWidget.showCustomSnackbar(
-                                          context: context,
-                                          message:
-                                              'Please enter a phone number',
-                                        );
-                                      }
-                                    },
+
                                     onCancel: () {
                                       _isEditingPhoneNotifier.value = false;
-                                      _phoneController.text =
-                                          (currentPhone == "PhoneNumber" ||
-                                              currentPhone.isEmpty)
-                                          ? ""
-                                          : currentPhone;
                                     },
+
+                                    onSave: !isSavingPhone
+                                        ? () {
+                                            final newNumber = _phoneController
+                                                .text
+                                                .trim();
+
+                                            context
+                                                .read<PaymentScreenCubit>()
+                                                .updatePhoneNumber(newNumber);
+                                            _isEditingPhoneNotifier.value = false;
+                                          }
+                                        : null,
                                   );
                                 },
                               ),
@@ -304,9 +313,13 @@ class _PaymentScreenState extends State<PaymentScreen> {
               ? TextField(
                   controller: controller,
                   keyboardType: keyboardType,
+                  maxLength: 10,
                   autofocus: true,
+
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   style: const TextStyle(fontSize: 14),
                   decoration: InputDecoration(
+                    counterText: '',
                     isDense: true,
                     contentPadding: const EdgeInsets.symmetric(vertical: 8),
                     border: InputBorder.none,
@@ -356,7 +369,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
             ),
             IconButton(
               onPressed: onSave,
-              icon: const Icon(Icons.check, color: Colors.green, size: 20),
+              icon: Icon(
+                Icons.check,
+                color: onSave != null ? AppColors.green : AppColors.grey,
+                size: 20,
+              ),
             ),
           ]
         else if (onEdit != null)

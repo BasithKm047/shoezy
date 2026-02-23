@@ -128,12 +128,12 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( UserModel user)?  loaded,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( UserModel user,  bool isSavingPhone,  String? validationMessage)?  loaded,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
 return initial();case _Loading() when loading != null:
 return loading();case _Loaded() when loaded != null:
-return loaded(_that.user);case _Error() when error != null:
+return loaded(_that.user,_that.isSavingPhone,_that.validationMessage);case _Error() when error != null:
 return error(_that.message);case _:
   return orElse();
 
@@ -152,12 +152,12 @@ return error(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( UserModel user)  loaded,required TResult Function( String message)  error,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( UserModel user,  bool isSavingPhone,  String? validationMessage)  loaded,required TResult Function( String message)  error,}) {final _that = this;
 switch (_that) {
 case _Initial():
 return initial();case _Loading():
 return loading();case _Loaded():
-return loaded(_that.user);case _Error():
+return loaded(_that.user,_that.isSavingPhone,_that.validationMessage);case _Error():
 return error(_that.message);case _:
   throw StateError('Unexpected subclass');
 
@@ -175,12 +175,12 @@ return error(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( UserModel user)?  loaded,TResult? Function( String message)?  error,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( UserModel user,  bool isSavingPhone,  String? validationMessage)?  loaded,TResult? Function( String message)?  error,}) {final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
 return initial();case _Loading() when loading != null:
 return loading();case _Loaded() when loaded != null:
-return loaded(_that.user);case _Error() when error != null:
+return loaded(_that.user,_that.isSavingPhone,_that.validationMessage);case _Error() when error != null:
 return error(_that.message);case _:
   return null;
 
@@ -257,10 +257,12 @@ String toString() {
 
 
 class _Loaded implements PaymentScreenState {
-  const _Loaded(this.user);
+  const _Loaded(this.user, {this.isSavingPhone = false, this.validationMessage});
   
 
  final  UserModel user;
+@JsonKey() final  bool isSavingPhone;
+ final  String? validationMessage;
 
 /// Create a copy of PaymentScreenState
 /// with the given fields replaced by the non-null parameter values.
@@ -272,16 +274,16 @@ _$LoadedCopyWith<_Loaded> get copyWith => __$LoadedCopyWithImpl<_Loaded>(this, _
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Loaded&&(identical(other.user, user) || other.user == user));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Loaded&&(identical(other.user, user) || other.user == user)&&(identical(other.isSavingPhone, isSavingPhone) || other.isSavingPhone == isSavingPhone)&&(identical(other.validationMessage, validationMessage) || other.validationMessage == validationMessage));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,user);
+int get hashCode => Object.hash(runtimeType,user,isSavingPhone,validationMessage);
 
 @override
 String toString() {
-  return 'PaymentScreenState.loaded(user: $user)';
+  return 'PaymentScreenState.loaded(user: $user, isSavingPhone: $isSavingPhone, validationMessage: $validationMessage)';
 }
 
 
@@ -292,7 +294,7 @@ abstract mixin class _$LoadedCopyWith<$Res> implements $PaymentScreenStateCopyWi
   factory _$LoadedCopyWith(_Loaded value, $Res Function(_Loaded) _then) = __$LoadedCopyWithImpl;
 @useResult
 $Res call({
- UserModel user
+ UserModel user, bool isSavingPhone, String? validationMessage
 });
 
 
@@ -309,10 +311,12 @@ class __$LoadedCopyWithImpl<$Res>
 
 /// Create a copy of PaymentScreenState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? user = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? user = null,Object? isSavingPhone = null,Object? validationMessage = freezed,}) {
   return _then(_Loaded(
 null == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
-as UserModel,
+as UserModel,isSavingPhone: null == isSavingPhone ? _self.isSavingPhone : isSavingPhone // ignore: cast_nullable_to_non_nullable
+as bool,validationMessage: freezed == validationMessage ? _self.validationMessage : validationMessage // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 

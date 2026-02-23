@@ -6,6 +6,9 @@ part 'payment_screen_state.freezed.dart';
 class PaymentScreenState with _$PaymentScreenState {
   const factory PaymentScreenState.initial() = _Initial;
   const factory PaymentScreenState.loading() = _Loading;
-  const factory PaymentScreenState.loaded(UserModel user) = _Loaded;
+  const factory PaymentScreenState.loaded(UserModel user,{
+    @Default(false) bool isSavingPhone,
+    String? validationMessage,
+  }) = _Loaded;
   const factory PaymentScreenState.error(String message) = _Error;
 }
