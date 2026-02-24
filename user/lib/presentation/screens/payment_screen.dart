@@ -186,30 +186,62 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   },
                 ),
                 const SizedBox(height: 20),
-                _buildSectionCard(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CostumWidget.labelText(context, "Address", fontSize: 16),
-                      const SizedBox(height: 12),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Newahall St 36, London, 12908 - UK",
-                            style: Theme.of(context).textTheme.bodyMedium
-                                ?.copyWith(color: AppColors.grey),
-                          ),
-                          const Icon(
-                            Icons.keyboard_arrow_down,
-                            color: AppColors.grey,
-                          ),
-                        ],
+                BlocBuilder<PaymentScreenCubit, PaymentScreenState>(
+                  builder: (context, state) {
+                    return state.when(
+                      initial: () => const SizedBox(),
+                      loading: () => _buildSectionCard(
+                        child: AnimationLoading.shimmerImagePlaceholder(
+                          height: 120,
+                          width: double.infinity,
+                        ),
                       ),
-                      const SizedBox(height: 16),
-                      _buildMapPreview(),
-                    ],
-                  ),
+                      loaded: (user, _, __) {
+                        final address = user.address;
+
+                        return _buildSectionCard(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CostumWidget.labelText(
+                                context,
+                                "Address",
+                                fontSize: 16,
+                              ),
+                              const SizedBox(height: 12),
+
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      (address != null && address.isNotEmpty)
+                                          ? address
+                                          : "Select your location",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium
+                                          ?.copyWith(color: AppColors.grey),
+                                    ),
+                                  ),
+                                  const Icon(
+                                    Icons.keyboard_arrow_down,
+                                    color: AppColors.grey,
+                                  ),
+                                ],
+                              ),
+
+                              const SizedBox(height: 16),
+                              _buildMapPreview(),
+                            ],
+                          ),
+                        );
+                      },
+                      error: (message) =>
+                          _buildSectionCard(child: Text(message)),
+                    );
+                  },
                 ),
                 const SizedBox(height: 20),
                 _buildSectionCard(
@@ -410,16 +442,18 @@ class _PaymentScreenState extends State<PaymentScreen> {
         Logger().i("Navigating to Location Map Screen");
         final result = await Navigator.push(
           context,
-          MaterialPageRoute(
-            builder: (context) => const LocationMapScreen(),
-          ),
+          MaterialPageRoute(builder: (context) => const LocationMapScreen()),
         );
-
-        //  if(result!=null){
-        //   // Handle the selected location result here
-        //   Logger().i("Selected Location: $result");
-        //   context.read<LocationCubit>().updateLocation(result);
-        //  }
+        print(result);
+        if (result != null) {
+          // Handle the selected location result here
+          Logger().i("Selected Location: $result");
+          context.read<PaymentScreenCubit>().updateUserAddressFromLocation(
+            result.latitude,
+            result.longitude,
+          );
+          Logger().i("Updating user address with selected location from map");
+        }
       },
 
       child: Container(

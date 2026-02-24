@@ -163,6 +163,11 @@ class AuthServices {
     await _users.doc(uid).update({'phoneNumber': phone});
   }
 
+  /// Update email with reauthentication
+  /// Requires current password for security
+  ///   Throws exception if reauthentication fails or update fails
+  ///   Note: After calling this method, the user will receive a verification email to confirm the new email address.
+
   Future<void> updateEmail({
   required String newEmail,
   required String password,
