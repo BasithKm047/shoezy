@@ -2,9 +2,9 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:shoezy/data/models/product/product_model.dart';
 import 'package:shoezy/presentation/bloc/brand_bloc/brand_bloc.dart';
 import 'package:shoezy/presentation/bloc/product_bloc/bloc/product_bloc.dart';
-import 'package:shoezy/data/models/product/product_model.dart';
 import 'package:shoezy/presentation/screens/brand_field_screen.dart';
 import 'package:shoezy/presentation/screens/home_screen.dart';
 import 'package:shoezy/presentation/widgets/brands_feild.dart';
@@ -13,8 +13,8 @@ import 'package:shoezy/presentation/widgets/costum_widget.dart';
 import 'package:shoezy/presentation/widgets/dots_button.dart';
 import 'package:shoezy/presentation/widgets/lottie_widgets.dart';
 import 'package:shoezy/presentation/widgets/shimmer_loading.dart';
-import 'package:shoezy/utils/const/colors.dart';
-import 'package:shoezy/utils/const/navigation_styles.dart';
+import 'package:shoezy/core/utils/const/colors.dart';
+import 'package:shoezy/core/utils/const/navigation_styles.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class HomeScreenWidgets {

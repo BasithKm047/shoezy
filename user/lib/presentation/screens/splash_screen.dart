@@ -9,7 +9,7 @@ import 'package:shoezy/presentation/screens/bottom_navigation.dart';
 import 'package:shoezy/presentation/screens/signin_screen.dart';
 import 'package:shoezy/presentation/screens/signup_screen.dart';
 import 'package:shoezy/presentation/widgets/costum_widget.dart';
-import 'package:shoezy/utils/const/colors.dart';
+import 'package:shoezy/core/utils/const/colors.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

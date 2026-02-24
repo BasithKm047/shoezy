@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoezy/data/models/product/product_model.dart';
-import 'package:shoezy/presentation/bloc/favourite/cubit/favourie_cubit.dart';
 import 'package:shoezy/presentation/bloc/product_bloc/bloc/product_bloc.dart';
-import 'package:shoezy/presentation/bloc/product_details_cubit/cubit/product_details_cubit.dart';
+import 'package:shoezy/presentation/cubit/favourite/favourie_cubit.dart';
+import 'package:shoezy/presentation/cubit/product_details_cubit/product_details_cubit.dart';
 import 'package:shoezy/presentation/screens/product_details_screen.dart';
 import 'package:shoezy/presentation/widgets/product_grid_card.dart';
 import 'package:shoezy/presentation/widgets/shimmer_loading.dart';
-import 'package:shoezy/utils/const/navigation_styles.dart';
+import 'package:shoezy/core/utils/const/navigation_styles.dart';
 
 // ignore: must_be_immutable
 class FavoritesScreen extends StatelessWidget {

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoezy/data/models/product/product_model.dart';
-import 'package:shoezy/presentation/bloc/product_details_cubit/cubit/product_details_cubit.dart';
+import 'package:shoezy/presentation/cubit/product_details_cubit/product_details_cubit.dart';
 import 'package:shoezy/presentation/screens/product_details_screen.dart';
 import 'package:shoezy/presentation/widgets/costum_widget.dart';
-import 'package:shoezy/utils/const/colors.dart';
-import 'package:shoezy/utils/const/commonFunctions.dart';
+import 'package:shoezy/core/utils/const/colors.dart';
+import 'package:shoezy/core/utils/const/commonFunctions.dart';
 
 class CarouselCard extends StatelessWidget {
   final ProductModel product;

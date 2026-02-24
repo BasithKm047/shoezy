@@ -9,7 +9,7 @@ import 'package:shoezy/presentation/screens/profile_screen.dart';
 import 'package:shoezy/presentation/screens/settings_screen.dart';
 import 'package:shoezy/presentation/screens/signin_screen.dart';
 import 'package:shoezy/presentation/widgets/costum_widget.dart';
-import 'package:shoezy/utils/const/colors.dart';
+import 'package:shoezy/core/utils/const/colors.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({super.key});

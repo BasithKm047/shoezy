@@ -9,8 +9,8 @@ import 'package:shoezy/data/models/user_model.dart';
 import 'package:shoezy/presentation/screens/bottom_navigation.dart';
 import 'package:shoezy/presentation/screens/signin_screen.dart';
 import 'package:shoezy/presentation/widgets/costum_widget.dart';
-import 'package:shoezy/utils/const/colors.dart';
-import 'package:shoezy/utils/const/commonFunctions.dart';
+import 'package:shoezy/core/utils/const/colors.dart';
+import 'package:shoezy/core/utils/const/commonFunctions.dart';
 
 // ignore: must_be_immutable
 class SignupScreen extends StatelessWidget {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shoezy/data/models/product/product_model.dart';
-import 'package:shoezy/utils/const/colors.dart';
-import 'package:shoezy/utils/const/commonFunctions.dart';
+import 'package:shoezy/core/utils/const/colors.dart';
+import 'package:shoezy/core/utils/const/commonFunctions.dart';
 
 class ProductGridCard extends StatelessWidget {
   final ProductModel product;

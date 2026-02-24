@@ -2,7 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
 import 'package:shoezy/data/auth/auth_services.dart';
 import 'package:shoezy/data/models/user_model.dart';
-import 'package:shoezy/presentation/bloc/payment_screen_bloc/payment_screen_state.dart';
+import 'package:shoezy/presentation/cubit/payment_screen_cubit/payment_screen_state.dart';
 
 class PaymentScreenCubit extends Cubit<PaymentScreenState> {
   final AuthServices _authServices;
@@ -78,6 +78,7 @@ class PaymentScreenCubit extends Cubit<PaymentScreenState> {
       _logger.e("Error fetching user data: $e");
     }
   }
+  
   
   }
 

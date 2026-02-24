@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:shoezy/data/models/product/product_model.dart';
 import 'package:shoezy/presentation/screens/product_listing_screen.dart';
 import 'package:shoezy/presentation/widgets/shimmer_loading.dart';
-import 'package:shoezy/utils/const/colors.dart';
-import 'package:shoezy/utils/const/navigation_styles.dart';
+import 'package:shoezy/core/utils/const/colors.dart';
+import 'package:shoezy/core/utils/const/navigation_styles.dart';
 
 class BrandsFeild extends StatelessWidget {
   final String imagePath;

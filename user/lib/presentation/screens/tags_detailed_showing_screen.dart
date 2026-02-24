@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shoezy/presentation/bloc/product_bloc/bloc/product_bloc.dart';
 import 'package:shoezy/data/models/product/product_model.dart';
+import 'package:shoezy/presentation/bloc/product_bloc/bloc/product_bloc.dart';
 import 'package:shoezy/presentation/widgets/cardfor_showing_shoes.dart';
 import 'package:shoezy/presentation/widgets/home_screen_widgets.dart';
 import 'package:shoezy/presentation/widgets/shimmer_loading.dart';
-import 'package:shoezy/utils/const/colors.dart';
+import 'package:shoezy/core/utils/const/colors.dart';
 
 class TagsDetailedShowingScreen extends StatelessWidget {
 

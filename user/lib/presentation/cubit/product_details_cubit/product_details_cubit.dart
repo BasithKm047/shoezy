@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:shoezy/data/models/product/product_model.dart';
-import 'package:shoezy/presentation/bloc/product_details_cubit/cubit/product_details_state.dart';
+import 'package:shoezy/presentation/cubit/product_details_cubit/product_details_state.dart';
 
 class ProductDetailsCubit extends Cubit<ProductDetailsState> {
   ProductDetailsCubit(ProductModel product)

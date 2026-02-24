@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
+import 'package:shoezy/core/utils/const/navigation_styles.dart';
 import 'package:shoezy/data/models/user_model.dart';
+import 'package:shoezy/presentation/cubit/payment_screen_cubit/payment_screen_cubit.dart';
+import 'package:shoezy/presentation/cubit/payment_screen_cubit/payment_screen_state.dart';
+import 'package:shoezy/presentation/screens/location_map_screen.dart';
 import 'package:shoezy/presentation/widgets/shimmer_loading.dart';
-import 'package:shoezy/presentation/bloc/payment_screen_bloc/payment_screen_cubit.dart';
-import 'package:shoezy/presentation/bloc/payment_screen_bloc/payment_screen_state.dart';
-import 'package:shoezy/utils/const/colors.dart';
+import 'package:shoezy/core/utils/const/colors.dart';
 import 'package:shoezy/presentation/widgets/costum_widget.dart';
 
 class PaymentScreen extends StatefulWidget {
@@ -28,7 +30,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
   void initState() {
     super.initState();
     _phoneController = TextEditingController();
-    // Proactively fetch latest user info using PaymentScreenCubit
     Future.microtask(() {
       context.read<PaymentScreenCubit>().getUser();
     });
@@ -64,7 +65,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   backgroundColor: AppColors.red,
                 );
               }
-            
             },
           );
         },
@@ -127,7 +127,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     isLoading: isSavingPhone,
                                     controller: _phoneController,
                                     onEdit: () {
-
                                       _phoneController.text = currentPhone;
 
                                       context
@@ -150,7 +149,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                             context
                                                 .read<PaymentScreenCubit>()
                                                 .updatePhoneNumber(newNumber);
-                                            _isEditingPhoneNotifier.value = false;
+                                            _isEditingPhoneNotifier.value =
+                                                false;
                                           }
                                         : null,
                                   );
@@ -405,17 +405,35 @@ class _PaymentScreenState extends State<PaymentScreen> {
   }
 
   Widget _buildMapPreview() {
-    return Container(
-      height: 120,
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: AppColors.blue.withOpacity(0.05),
-        borderRadius: BorderRadius.circular(16),
-        image: const DecorationImage(
-          image: AssetImage(
-            "asset/ChatGPT Image Feb 21, 2026, 08_31_34 PM.png", // Generic map placeholder
+    return GestureDetector(
+      onTap: () async {
+        Logger().i("Navigating to Location Map Screen");
+        final result = await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const LocationMapScreen(),
           ),
-          fit: BoxFit.cover,
+        );
+
+        //  if(result!=null){
+        //   // Handle the selected location result here
+        //   Logger().i("Selected Location: $result");
+        //   context.read<LocationCubit>().updateLocation(result);
+        //  }
+      },
+
+      child: Container(
+        height: 120,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: AppColors.blue.withOpacity(0.05),
+          borderRadius: BorderRadius.circular(16),
+          image: const DecorationImage(
+            image: AssetImage(
+              "asset/ChatGPT Image Feb 21, 2026, 08_31_34 PM.png", // Generic map placeholder
+            ),
+            fit: BoxFit.cover,
+          ),
         ),
       ),
     );

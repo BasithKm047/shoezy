@@ -1,8 +1,8 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shoezy/presentation/bloc/product_bloc/bloc/product_bloc.dart';
 import 'package:shoezy/data/models/product/product_model.dart';
+import 'package:shoezy/presentation/bloc/product_bloc/bloc/product_bloc.dart';
 import 'package:shoezy/presentation/screens/search_screen.dart';
 import 'package:shoezy/presentation/screens/tags_detailed_showing_screen.dart';
 import 'package:shoezy/presentation/widgets/costum_widget.dart';
@@ -11,9 +11,9 @@ import 'package:shoezy/presentation/widgets/home_screen_widgets.dart';
 import 'package:shoezy/presentation/widgets/loading_state_manager.dart';
 import 'package:shoezy/presentation/widgets/lottie_widgets.dart';
 import 'package:shoezy/presentation/widgets/searchField.dart';
-import 'package:shoezy/utils/const/colors.dart';
-import 'package:shoezy/utils/const/commonFunctions.dart';
-import 'package:shoezy/utils/const/navigation_styles.dart';
+import 'package:shoezy/core/utils/const/colors.dart';
+import 'package:shoezy/core/utils/const/commonFunctions.dart';
+import 'package:shoezy/core/utils/const/navigation_styles.dart';
 import 'package:shoezy/presentation/widgets/home_screen_card.dart';
 
 class HomeScreen extends StatefulWidget {

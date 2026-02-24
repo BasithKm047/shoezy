@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoezy/data/models/product/product_model.dart';
-import 'package:shoezy/presentation/bloc/productFilter/cubit/product_filter_state.dart';
-import 'package:shoezy/utils/const/filtering_finctions.dart';
+import 'package:shoezy/core/utils/const/filtering_finctions.dart';
+import 'package:shoezy/presentation/cubit/productFilter/cubit/product_filter_state.dart';
 
 class ProductFilterCubit extends Cubit<ProductFilterState> {
   ProductFilterCubit({

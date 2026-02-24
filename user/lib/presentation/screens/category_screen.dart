@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
-import 'package:shoezy/presentation/bloc/category/bloc/category_bloc.dart';
-import 'package:shoezy/presentation/bloc/product_bloc/bloc/product_bloc.dart';
 import 'package:shoezy/data/models/category/category_model.dart';
 import 'package:shoezy/data/models/product/product_model.dart';
+import 'package:shoezy/presentation/bloc/category/category_bloc.dart';
+import 'package:shoezy/presentation/bloc/product_bloc/bloc/product_bloc.dart';
 import 'package:shoezy/presentation/screens/product_listing_screen.dart';
 import 'package:shoezy/presentation/widgets/loading_state_manager.dart';
-import 'package:shoezy/utils/const/navigation_styles.dart';
+import 'package:shoezy/core/utils/const/navigation_styles.dart';
 
 class CategoryScreen extends StatefulWidget {
   const CategoryScreen({super.key});

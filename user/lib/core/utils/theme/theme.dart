@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:shoezy/utils/theme/appbar_theme.dart';
-import 'package:shoezy/utils/theme/bottomSheet_theme.dart';
-import 'package:shoezy/utils/theme/elevatedbutton_theme.dart';
-import 'package:shoezy/utils/theme/text_theme.dart';
+import 'package:shoezy/core/utils/theme/appbar_theme.dart';
+import 'package:shoezy/core/utils/theme/bottomsheet_theme.dart';
+import 'package:shoezy/core/utils/theme/elevatedbutton_theme.dart';
+import 'package:shoezy/core/utils/theme/text_theme.dart';
 
 class Apptheme {
   Apptheme._();

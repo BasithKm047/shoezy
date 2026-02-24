@@ -1,15 +1,17 @@
 // lib/presentation/widgets/sorting_filter_modal.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shoezy/presentation/bloc/product_sort/cubit/product_sort_cubit.dart';
-import 'package:shoezy/presentation/bloc/product_sort/cubit/product_sort_state.dart';
-import 'package:shoezy/utils/const/colors.dart';
+import 'package:shoezy/core/utils/const/colors.dart';
+import 'package:shoezy/presentation/cubit/product_sort/product_sort_cubit.dart';
+import 'package:shoezy/presentation/cubit/product_sort/product_sort_state.dart';
 
 class SortingFilterModal extends StatelessWidget {
+
   const SortingFilterModal({super.key});
 
   @override
   Widget build(BuildContext context) {
+
     return BlocBuilder<ProductSortCubit, ProductSortState>(
       builder: (context, state) {
         return SortingFilterModalBody(state: state); // NEW

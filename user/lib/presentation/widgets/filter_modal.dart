@@ -2,9 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/web.dart';
-import 'package:shoezy/presentation/bloc/productFilter/cubit/product_filter_cubit.dart';
-import 'package:shoezy/presentation/bloc/productFilter/cubit/product_filter_state.dart';
-import 'package:shoezy/utils/const/colors.dart';
+import 'package:shoezy/core/utils/const/colors.dart';
+import 'package:shoezy/presentation/cubit/productFilter/cubit/product_filter_cubit.dart';
+import 'package:shoezy/presentation/cubit/productFilter/cubit/product_filter_state.dart';
 
 const List<String> predefinedColorOptions = [
   'Black',

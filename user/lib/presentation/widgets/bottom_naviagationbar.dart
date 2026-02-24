@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shoezy/utils/const/colors.dart';
+import 'package:shoezy/core/utils/const/colors.dart';
 
 class BottomNaviagationbar extends StatelessWidget {
   const BottomNaviagationbar({super.key});

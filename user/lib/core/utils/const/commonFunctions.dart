@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoezy/data/models/product/product_model.dart';
-import 'package:shoezy/presentation/bloc/favourite/cubit/favourie_cubit.dart';
+import 'package:shoezy/presentation/cubit/favourite/favourie_cubit.dart';
 
 class Commonfunctions {
   static String? usernameValidator(String? value) {
