@@ -1,0 +1,134 @@
+{
+  "project_info": {
+    "project_number": "5296069020",
+    "project_id": "shoezy-29a92",
+    "storage_bucket": "shoezy-29a92.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:5296069020:android:0923b5ef9ba95b89815059",
+        "android_client_info": {
+          "package_name": "com.example.loginpage"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "5296069020-9gdnvmpri1b2p7jla4q6aue2u79ku9r3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALACy2iDLSuGFEaCzzqEkVJle7-UTDmV0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "5296069020-9gdnvmpri1b2p7jla4q6aue2u79ku9r3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "5296069020-9rjdbic1qqifo57eiugun5g6mh6mf371.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.shoezy"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:5296069020:android:d29349512110ae3a815059",
+        "android_client_info": {
+          "package_name": "com.example.shoezy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "5296069020-nd3i5l2uns14ouud6h20mrpv4gecr6cd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.shoezy",
+            "certificate_hash": "05c6150203cf5434780f021d87e684311c057fc0"
+          }
+        },
+        {
+          "client_id": "5296069020-9gdnvmpri1b2p7jla4q6aue2u79ku9r3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALACy2iDLSuGFEaCzzqEkVJle7-UTDmV0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "5296069020-9gdnvmpri1b2p7jla4q6aue2u79ku9r3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "5296069020-9rjdbic1qqifo57eiugun5g6mh6mf371.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.shoezy"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:5296069020:android:5e18a68e20961969815059",
+        "android_client_info": {
+          "package_name": "com.example.shoezy_admin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "5296069020-pr2tmkbog3om5pq2a9ndpinvtqmkuq8j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.shoezy_admin",
+            "certificate_hash": "05c6150203cf5434780f021d87e684311c057fc0"
+          }
+        },
+        {
+          "client_id": "5296069020-9gdnvmpri1b2p7jla4q6aue2u79ku9r3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALACy2iDLSuGFEaCzzqEkVJle7-UTDmV0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "5296069020-9gdnvmpri1b2p7jla4q6aue2u79ku9r3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "5296069020-9rjdbic1qqifo57eiugun5g6mh6mf371.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.shoezy"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

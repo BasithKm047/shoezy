@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoezy_admin/fetures/utils/const/commonFunction.dart';
 import 'package:shoezy_admin/presentation/bloc/adminProfile/bloc/admin_profile_bloc.dart';
-import 'package:shoezy_admin/presentation/widgets/costumWidget.dart';
+import 'package:shoezy_admin/widgets/costumWidget.dart';
 
 class Settingsscreen extends StatelessWidget {
    Settingsscreen({super.key});

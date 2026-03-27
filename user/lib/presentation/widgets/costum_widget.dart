@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:shoezy/utils/const/colors.dart';
+import 'package:shoezy/core/utils/const/colors.dart';
 
 class CostumWidget {
   static costumElevatedButton({
     required BuildContext context,
     required String title,
     Widget? child,
+    Widget? loading,
     Color backgroundColor = Colors.blue,
     Color foregroundColor = Colors.white,
     double? borderRadius,
@@ -18,6 +19,8 @@ class CostumWidget {
     FontWeight? fontWeight,
     bool? isPrefix,
     Widget? widget,
+    bool? isRounded,
+    bool? isLoading,
   }) {
     return Container(
       width: width,
@@ -34,7 +37,7 @@ class CostumWidget {
 
         style: ElevatedButton.styleFrom(
           elevation: 0,
-          side: BorderSide.none,
+          side: isRounded ?? true ? BorderSide.none : BorderSide(),
           backgroundColor: backgroundColor,
           foregroundColor: foregroundColor,
           shape: RoundedRectangleBorder(
@@ -42,7 +45,9 @@ class CostumWidget {
             borderRadius: BorderRadius.all(Radius.circular(borderRadius ?? 10)),
           ),
         ),
-        child: isPrefix ?? false
+        child: isLoading ?? false
+            ? loading
+            : (isPrefix ?? false)
             ? widget
             : Text(
                 title,
@@ -184,11 +189,14 @@ class CostumWidget {
             ),
             // Custom error text displayed outside
             if (fieldState.hasError)
-              Padding(
-                padding: const EdgeInsets.only(top: 5, left: 8),
-                child: Text(
-                  fieldState.errorText!,
-                  style: TextStyle(color: AppColors.red, fontSize: 14),
+              SizedBox(
+                width: width,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 5, left: 8),
+                  child: Text(
+                    fieldState.errorText ?? '',
+                    style: TextStyle(color: AppColors.red, fontSize: 14),
+                  ),
                 ),
               ),
           ],
@@ -224,23 +232,130 @@ class CostumWidget {
     Duration duration = const Duration(seconds: 2),
     double elevation = 5,
     double borderRadius = 10,
-    Color borderColor = Colors.white,
+    // Color borderColor = Colors.white,
     Color textColor = Colors.white,
     double fontSize = 16,
+    EdgeInsetsGeometry contentPadding = const EdgeInsets.symmetric(
+      horizontal: 16,
+      vertical: 12,
+    ),
+    EdgeInsetsGeometry margin = const EdgeInsets.symmetric(
+      horizontal: 16,
+      vertical: 10,
+    ),
   }) {
     final snackbar = SnackBar(
-      content: Text(
-        message,
-        style: TextStyle(color: textColor, fontSize: fontSize),
-      ),
+      behavior: SnackBarBehavior.floating,
+      margin: margin,
+      elevation: elevation,
       backgroundColor: backgroundColor,
       duration: duration,
-      elevation: elevation,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
-        side: BorderSide(color: borderColor),
+        borderRadius: BorderRadius.circular(borderRadius),
+        // side: BorderSide(color: borderColor),
+      ),
+      content: Padding(
+        padding: contentPadding,
+        child: Text(
+          message,
+          style: TextStyle(color: textColor, fontSize: fontSize),
+        ),
       ),
     );
+
     ScaffoldMessenger.of(context).showSnackBar(snackbar);
+  }
+
+  static Future<void> showCustomAlertDialog({
+    required BuildContext context,
+    required String title,
+    required String content,
+    required String confirmButtonText,
+    required Color confirmButtonColor,
+    required VoidCallback onConfirm,
+    String cancelButtonText = 'Cancel',
+  }) async {
+    await showDialog(
+      context: context,
+      barrierDismissible: false, // Prevent closing by tapping outside
+      builder: (context) => Dialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        elevation: 5,
+        backgroundColor: Colors.white,
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Title
+              Text(
+                title,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(height: 12),
+
+              // Content
+              Text(
+                content,
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 16, color: Colors.grey[700]),
+              ),
+              const SizedBox(height: 20),
+
+              // Buttons
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  // Cancel Button
+                  Expanded(
+                    child: OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        side: BorderSide(color: Colors.grey.shade300),
+                      ),
+                      onPressed: () => Navigator.pop(context),
+                      child: Text(
+                        cancelButtonText,
+                        style: const TextStyle(fontSize: 15),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  // Confirm Button
+                  Expanded(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: confirmButtonColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        elevation: 2,
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context); // Close dialog
+                        onConfirm(); // Callback
+                      },
+                      child: Text(
+                        confirmButtonText,
+                        style: const TextStyle(
+                          fontSize: 15,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

@@ -4,8 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:shoezy_admin/fetures/utils/const/routes.dart';
 import 'package:shoezy_admin/presentation/bloc/orderSelection_cubit/cubit/order_selection_cubit.dart';
-import 'package:shoezy_admin/presentation/widgets/costumWidget.dart';
-import 'package:shoezy_admin/presentation/widgets/orderDetilsFilteration.dart';
+import 'package:shoezy_admin/widgets/costumWidget.dart';
+import 'package:shoezy_admin/widgets/orderDetilsFilteration.dart';
 
 class OrderlistScreen extends StatefulWidget {
   const OrderlistScreen({super.key});

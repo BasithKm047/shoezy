@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shoezy_admin/fetures/utils/const/routes.dart';
-import 'package:shoezy_admin/presentation/widgets/costumWidget.dart';
+import 'package:shoezy_admin/widgets/costumWidget.dart';
 
 class Catogeryscreen extends StatelessWidget {
   const Catogeryscreen({super.key});
@@ -60,11 +60,12 @@ class Catogeryscreen extends StatelessWidget {
                   Expanded(
                     child: ListView.separated(
                       itemBuilder: (context, index) {
-                        final listofCategory = ['Men', 'Women', 'Children'];
+                        final listofCategory = ['Sneakers', 'Casual', 'Sports'];
                         final products=[10,20,50];
                         return _widget(
                           context: context,
-                          title: listofCategory[index],
+                          image: 'image',
+                          name: listofCategory[index],
                           product: products[index],
                         );
                       },
@@ -83,7 +84,8 @@ class Catogeryscreen extends StatelessWidget {
 }
 Widget _widget({
   required BuildContext context,
-  required String title,
+  required String name,
+  required String image,
   required int product,
   // bool? isFeild,
 }) {
@@ -91,27 +93,38 @@ Widget _widget({
     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
     child: Row(
       children: [
-        Expanded(
+          Expanded(
           flex: 3,
           child: CostumWidget.labelText(
             context,
-            title,
+           image ,
             fontSize: 15,
             fontWeight: FontWeight.w500,
           ),
         ),
 
+        
         Expanded(
           flex: 2,
-          child: Center(
-            child: CostumWidget.labelText(
-              context,
-              product.toString(),
-              fontSize: 15,
-              fontWeight: FontWeight.w500,
-            ),
+          child: CostumWidget.labelText(
+            context,
+            name,
+            fontSize: 15,
+            fontWeight: FontWeight.w500,
           ),
         ),
+
+        // Expanded(
+        //   flex: 2,
+        //   child: Center(
+        //     child: CostumWidget.labelText(
+        //       context,
+        //       product.toString(),
+        //       fontSize: 15,
+        //       fontWeight: FontWeight.w500,
+        //     ),
+        //   ),
+        // ),
 
         Expanded(
           flex: 2,
@@ -139,8 +152,17 @@ Widget header({required BuildContext context}) {
     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
     child: Row(
       children: [
-        Expanded(
+          Expanded(
           flex: 3,
+          child: CostumWidget.labelText(
+            context,
+            'Image',
+            fontSize: 15,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        Expanded(
+          flex: 2,
           child: CostumWidget.labelText(
             context,
             'Name',
@@ -149,17 +171,17 @@ Widget header({required BuildContext context}) {
           ),
         ),
 
-        Expanded(
-          flex: 2,
-          child: Center(
-            child: CostumWidget.labelText(
-              context,
-              'Products',
-              fontSize: 15,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
+        // Expanded(
+        //   flex: 2,
+        //   child: Center(
+        //     child: CostumWidget.labelText(
+        //       context,
+        //       'Products',
+        //       fontSize: 15,
+        //       fontWeight: FontWeight.bold,
+        //     ),
+        //   ),
+        // ),
 
         Expanded(
           flex: 2,

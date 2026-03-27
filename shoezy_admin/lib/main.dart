@@ -1,0 +1,156 @@
+import 'dart:developer';
+// ignore: depend_on_referenced_packages
+import 'package:flutter_web_plugins/url_strategy.dart';
+
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:shoezy_admin/data/repositories/brand_services.dart';
+import 'package:shoezy_admin/data/repositories/category_services.dart';
+import 'package:shoezy_admin/data/repositories/product_services.dart';
+import 'package:shoezy_admin/data/repositories/tag_services.dart';
+import 'package:shoezy_admin/data/repositories/user_services.dart';
+import 'package:shoezy_admin/fetures/utils/const/routes.dart';
+import 'package:shoezy_admin/fetures/utils/theme/theme.dart';
+import 'package:shoezy_admin/firebase_options.dart';
+import 'package:shoezy_admin/presentation/bloc/addProducts/bloc/product_bloc.dart';
+import 'package:shoezy_admin/presentation/bloc/adminProfile/bloc/admin_profile_bloc.dart';
+
+import 'package:shoezy_admin/presentation/bloc/admin_details_bloc/cubit/admin_login_cubit.dart';
+import 'package:shoezy_admin/presentation/bloc/brand/bloc/brand_bloc.dart';
+import 'package:shoezy_admin/presentation/bloc/category_bloc/bloc/category_bloc.dart';
+import 'package:shoezy_admin/presentation/bloc/dashBoard_bloc/bloc/dashboard_bloc_bloc.dart';
+import 'package:shoezy_admin/presentation/bloc/gender/cubit/gender_cubit.dart';
+import 'package:shoezy_admin/presentation/bloc/orderSelection_cubit/cubit/order_selection_cubit.dart';
+import 'package:shoezy_admin/presentation/bloc/size_stock/bloc/size_stock_bloc.dart';
+import 'package:shoezy_admin/presentation/bloc/tag_bloc/bloc/tag_bloc.dart';
+import 'package:shoezy_admin/presentation/bloc/user/bloc/user_bloc.dart';
+import 'package:shoezy_admin/presentation/bloc/varients_bloc/bloc/varients_bloc.dart';
+import 'package:shoezy_admin/presentation/screens/addBrand_screen.dart';
+import 'package:shoezy_admin/presentation/screens/addCategory_screen.dart';
+import 'package:shoezy_admin/presentation/screens/addProductScreen.dart';
+import 'package:shoezy_admin/presentation/screens/addTag_screen.dart';
+import 'package:shoezy_admin/presentation/screens/brandScreen.dart';
+import 'package:shoezy_admin/presentation/screens/catogeryScreen.dart';
+import 'package:shoezy_admin/presentation/screens/dashboard.dart';
+import 'package:shoezy_admin/presentation/screens/loginscreen.dart';
+import 'package:shoezy_admin/presentation/screens/order_detail_screen.dart';
+import 'package:shoezy_admin/presentation/screens/orderlistScreen.dart';
+import 'package:shoezy_admin/presentation/screens/productScreen.dart';
+import 'package:shoezy_admin/presentation/screens/settingsScreen.dart';
+import 'package:shoezy_admin/presentation/screens/tag_screen.dart';
+import 'package:shoezy_admin/presentation/screens/usersList.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  usePathUrlStrategy();
+
+  try {
+    log('Initializing Firebase...');
+    if (Firebase.apps.isEmpty) {
+      Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+    }
+
+    log('Firebase initialized successfully');
+  } catch (e, stack) {
+    print('Firebase initialization error: $e');
+    print('Stack trace: $stack');
+    // Create bloc providers only after firebase init attempt (some repos may rely on Firebase)
+  }
+  runApp(
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => AdminLoginCubit()),
+        BlocProvider(create: (_) => DashboardBlocBloc()),
+        BlocProvider(create: (_) => BrandBloc(BrandServices())),
+        BlocProvider(create: (_) => AdminProfileBloc()),
+        BlocProvider(create: (_) => OrderSelectionCubit()),
+        BlocProvider(create: (_) => VariantsBloc()),
+        BlocProvider(create: (_) => CategoryBloc(CategoryServices())),
+        BlocProvider(create: (_) => ProductBloc(ProductServices())),
+        BlocProvider(create: (_) => SizeStockBloc()),
+        BlocProvider(create: (_) => UserBloc(UserServices())),
+        BlocProvider(create: (_) => TagBloc(tagServices: TagServices())),
+        BlocProvider(create: (_) => GenderCubit()),
+      ],
+      child: MyApp(),
+    ),
+  );
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final GoRouter router = GoRouter(
+      initialLocation: Routes.login,
+
+      routes: [
+        GoRoute(path: Routes.login, builder: (context, state) => Loginscreen()),
+        GoRoute(
+          path: Routes.dashboard,
+          builder: (context, state) => DashboardScreen(),
+        ),
+        GoRoute(path: Routes.users, builder: (context, state) => Userslist()),
+        GoRoute(path: Routes.brand, builder: (context, state) => Brandscreen()),
+        GoRoute(
+          path: Routes.category,
+          builder: (context, state) => Catogeryscreen(),
+        ),
+        GoRoute(
+          path: Routes.orderList,
+          builder: (context, state) => OrderlistScreen(),
+        ),
+        GoRoute(
+          path: Routes.setting,
+          builder: (context, state) => Settingsscreen(),
+        ),
+
+        GoRoute(
+          path: Routes.products,
+          builder: (context, state) => Productscreen(),
+        ),
+        GoRoute(
+          path: Routes.addproductscreen,
+          builder: (context, state) => Addproductscreen(),
+        ),
+        GoRoute(
+          path: Routes.orderDetailScreen,
+          builder: (context, state) => OrderDetailScreen(),
+        ),
+        GoRoute(
+          path: Routes.addCategoryScreen,
+          builder: (context, state) => AddcategoryScreen(),
+        ),
+        GoRoute(
+          path: Routes.addBrandScreen,
+          builder: (context, state) => AddbrandScreen(),
+        ),
+        GoRoute(
+          path: Routes.tagScreen,
+          builder: (context, state) => TagScreen(),
+        ),
+        GoRoute(
+          path: Routes.addTagScreen,
+          builder: (context, state) => AddTagScreen(),
+        ),
+        // GoRoute(path: Routes.OfferManagerScreen,
+        // builder: (context, state) => const OfferManagerScreen(),),
+        // GoRoute(path: Routes.editOfferScreen,
+        // builder: (context, state) => const OfferManagerScreen(),)
+
+      ],
+    );
+
+    return MaterialApp.router(
+      title: 'Shoezy',
+      themeMode: ThemeMode.system,
+      theme: Apptheme.lightTheme,
+      darkTheme: Apptheme.darkTheme,
+      debugShowCheckedModeBanner: false,
+      routerConfig: router,
+    );
+  }
+}

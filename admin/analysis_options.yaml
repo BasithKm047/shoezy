@@ -13,6 +13,9 @@ analyzer:
     avoid_print: ignore
     use_build_context_synchronously: ignore
     deprecated_member_use: ignore
+    depend_on_referenced_packages: ignore
+    collection_methods_unrelated_type: ignore
+    must_be_immutable: ignore
 include: package:flutter_lints/flutter.yaml
 
 linter:

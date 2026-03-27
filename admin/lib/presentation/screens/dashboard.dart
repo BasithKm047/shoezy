@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:shoezy_admin/presentation/widgets/costumWidget.dart';
-import 'package:shoezy_admin/presentation/widgets/costumresponsiveAppbar.dart';
-import 'package:shoezy_admin/presentation/widgets/drawer.dart';
-import 'package:shoezy_admin/presentation/widgets/revenueChart.dart';
+import 'package:shoezy_admin/widgets/costumWidget.dart';
+import 'package:shoezy_admin/widgets/costumresponsiveAppbar.dart';
+import 'package:shoezy_admin/widgets/drawer.dart';
+import 'package:shoezy_admin/widgets/revenueChart.dart';
 
 // ignore: must_be_immutable
 class DashboardScreen extends StatelessWidget {

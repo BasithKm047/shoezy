@@ -42,6 +42,29 @@ dependencies:
   shimmer: ^3.0.0
   flutter_svg: ^2.2.0
   freezed_annotation: ^3.1.0
+  bloc: ^9.0.0
+  flutter_bloc: ^9.1.1
+  logger: ^2.6.1
+  google_sign_in: ^6.3.0
+  firebase_ui_oauth_google: ^2.0.0
+  http: ^1.6.0
+  flutter_font_icons: ^2.2.7
+  icons_flutter: ^0.0.5
+  carousel_slider: ^5.1.1
+  smooth_page_indicator: ^1.2.1
+  equatable: ^2.0.7
+  flutter_spinkit: ^5.2.2
+  lottie: ^3.3.1
+  animations: ^2.1.0
+  shared_preferences: ^2.5.3
+  connectivity_plus: ^7.0.0
+  internet_connection_checker: ^1.0.0+1
+  file_picker: ^10.3.6
+  json_annotation: ^4.9.0
+  dio: ^5.9.0
+  dio_handler: ^0.0.1-beta-2
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
 
 dev_dependencies:
   flutter_test:
@@ -76,7 +99,20 @@ flutter:
   assets:
   - ./asset/generated-image.png
   - ./asset/icons8-google.svg
-  
+  - ./asset/avatar.png
+  - ./asset/brand-nike-svgrepo-com.svg
+  - ./asset/adidas-svgrepo-com.svg
+  - ./asset/converse-logo3-logo-svgrepo-com.svg
+  - ./asset/puma-logo.svg
+  - ./asset/shoe_image_100.png
+  - ./asset/shoe_image_111.png
+  - ./asset/shoe_image_222.png
+  - ./asset/shoe_image_333.png
+  - ./asset/No Data.json
+  - ./asset/empty-box_2.json
+  - ./asset/box_empty_1.json
+  - ./asset/No Internet.json
+  - ./asset/ChatGPT Image Feb 21, 2026, 08_31_34 PM.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

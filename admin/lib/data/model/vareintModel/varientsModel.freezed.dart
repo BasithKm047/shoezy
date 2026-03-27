@@ -1,0 +1,307 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
+// ignore_for_file: type=lint
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
+
+part of 'varientsModel.dart';
+
+// **************************************************************************
+// FreezedGenerator
+// **************************************************************************
+
+// dart format off
+T _$identity<T>(T value) => value;
+
+/// @nodoc
+mixin _$Variantsmodel {
+
+ String? get id; List<String> get size; List<String> get color; int get stock; List<String> get images;
+/// Create a copy of Variantsmodel
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$VariantsmodelCopyWith<Variantsmodel> get copyWith => _$VariantsmodelCopyWithImpl<Variantsmodel>(this as Variantsmodel, _$identity);
+
+  /// Serializes this Variantsmodel to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Variantsmodel&&(identical(other.id, id) || other.id == id)&&const DeepCollectionEquality().equals(other.size, size)&&const DeepCollectionEquality().equals(other.color, color)&&(identical(other.stock, stock) || other.stock == stock)&&const DeepCollectionEquality().equals(other.images, images));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id,const DeepCollectionEquality().hash(size),const DeepCollectionEquality().hash(color),stock,const DeepCollectionEquality().hash(images));
+
+@override
+String toString() {
+  return 'Variantsmodel(id: $id, size: $size, color: $color, stock: $stock, images: $images)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $VariantsmodelCopyWith<$Res>  {
+  factory $VariantsmodelCopyWith(Variantsmodel value, $Res Function(Variantsmodel) _then) = _$VariantsmodelCopyWithImpl;
+@useResult
+$Res call({
+ String? id, List<String> size, List<String> color, int stock, List<String> images
+});
+
+
+
+
+}
+/// @nodoc
+class _$VariantsmodelCopyWithImpl<$Res>
+    implements $VariantsmodelCopyWith<$Res> {
+  _$VariantsmodelCopyWithImpl(this._self, this._then);
+
+  final Variantsmodel _self;
+  final $Res Function(Variantsmodel) _then;
+
+/// Create a copy of Variantsmodel
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? size = null,Object? color = null,Object? stock = null,Object? images = null,}) {
+  return _then(_self.copyWith(
+id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String?,size: null == size ? _self.size : size // ignore: cast_nullable_to_non_nullable
+as List<String>,color: null == color ? _self.color : color // ignore: cast_nullable_to_non_nullable
+as List<String>,stock: null == stock ? _self.stock : stock // ignore: cast_nullable_to_non_nullable
+as int,images: null == images ? _self.images : images // ignore: cast_nullable_to_non_nullable
+as List<String>,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [Variantsmodel].
+extension VariantsmodelPatterns on Variantsmodel {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _Variantsmodel value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _Variantsmodel() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _Variantsmodel value)  $default,){
+final _that = this;
+switch (_that) {
+case _Variantsmodel():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _Variantsmodel value)?  $default,){
+final _that = this;
+switch (_that) {
+case _Variantsmodel() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? id,  List<String> size,  List<String> color,  int stock,  List<String> images)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _Variantsmodel() when $default != null:
+return $default(_that.id,_that.size,_that.color,_that.stock,_that.images);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? id,  List<String> size,  List<String> color,  int stock,  List<String> images)  $default,) {final _that = this;
+switch (_that) {
+case _Variantsmodel():
+return $default(_that.id,_that.size,_that.color,_that.stock,_that.images);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? id,  List<String> size,  List<String> color,  int stock,  List<String> images)?  $default,) {final _that = this;
+switch (_that) {
+case _Variantsmodel() when $default != null:
+return $default(_that.id,_that.size,_that.color,_that.stock,_that.images);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _Variantsmodel implements Variantsmodel {
+   _Variantsmodel({this.id, required final  List<String> size, required final  List<String> color, required this.stock, required final  List<String> images}): _size = size,_color = color,_images = images;
+  factory _Variantsmodel.fromJson(Map<String, dynamic> json) => _$VariantsmodelFromJson(json);
+
+@override final  String? id;
+ final  List<String> _size;
+@override List<String> get size {
+  if (_size is EqualUnmodifiableListView) return _size;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_size);
+}
+
+ final  List<String> _color;
+@override List<String> get color {
+  if (_color is EqualUnmodifiableListView) return _color;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_color);
+}
+
+@override final  int stock;
+ final  List<String> _images;
+@override List<String> get images {
+  if (_images is EqualUnmodifiableListView) return _images;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_images);
+}
+
+
+/// Create a copy of Variantsmodel
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$VariantsmodelCopyWith<_Variantsmodel> get copyWith => __$VariantsmodelCopyWithImpl<_Variantsmodel>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$VariantsmodelToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Variantsmodel&&(identical(other.id, id) || other.id == id)&&const DeepCollectionEquality().equals(other._size, _size)&&const DeepCollectionEquality().equals(other._color, _color)&&(identical(other.stock, stock) || other.stock == stock)&&const DeepCollectionEquality().equals(other._images, _images));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id,const DeepCollectionEquality().hash(_size),const DeepCollectionEquality().hash(_color),stock,const DeepCollectionEquality().hash(_images));
+
+@override
+String toString() {
+  return 'Variantsmodel(id: $id, size: $size, color: $color, stock: $stock, images: $images)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$VariantsmodelCopyWith<$Res> implements $VariantsmodelCopyWith<$Res> {
+  factory _$VariantsmodelCopyWith(_Variantsmodel value, $Res Function(_Variantsmodel) _then) = __$VariantsmodelCopyWithImpl;
+@override @useResult
+$Res call({
+ String? id, List<String> size, List<String> color, int stock, List<String> images
+});
+
+
+
+
+}
+/// @nodoc
+class __$VariantsmodelCopyWithImpl<$Res>
+    implements _$VariantsmodelCopyWith<$Res> {
+  __$VariantsmodelCopyWithImpl(this._self, this._then);
+
+  final _Variantsmodel _self;
+  final $Res Function(_Variantsmodel) _then;
+
+/// Create a copy of Variantsmodel
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? size = null,Object? color = null,Object? stock = null,Object? images = null,}) {
+  return _then(_Variantsmodel(
+id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String?,size: null == size ? _self._size : size // ignore: cast_nullable_to_non_nullable
+as List<String>,color: null == color ? _self._color : color // ignore: cast_nullable_to_non_nullable
+as List<String>,stock: null == stock ? _self.stock : stock // ignore: cast_nullable_to_non_nullable
+as int,images: null == images ? _self._images : images // ignore: cast_nullable_to_non_nullable
+as List<String>,
+  ));
+}
+
+
+}
+
+// dart format on
